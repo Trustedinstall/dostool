@@ -35,6 +35,8 @@ title 　
 color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
+set ver=20210502
+set versize=148654
 goto qidongjs
 set qidongjd=0
 set qidongbz=█████████████████
@@ -230,6 +232,7 @@ if /i !caidan!=="kcd" set tzwz=a&goto kcd
 if /i !caidan!=="gcd" set tzwz=a&goto gcd
 if /i !caidan!=="xz" set tzwz=a&goto xz
 if /i !caidan!=="js" set tzwz=a&goto 49
+if /i !caidan!=="gx" set tzwz=a&goto update
 if /i !caidan!=="go1" goto a
 if /i !caidan!=="go2" goto b
 if /i !caidan!=="go3" goto c
@@ -267,40 +270,41 @@ echo [8]打开注册表
 echo [9]打开控制面板
 echo [0]退出                                             %nx%
 echo _______________________________________________________________________________
-set caidan2=
-set/p caidan2=请输入你的选择:
-set caidan2="%caidan2:|=%"
-if !caidan2!=="1" goto 10
-if !caidan2!=="2" goto 11
-if !caidan2!=="3" goto 12
-if !caidan2!=="4" goto 13
-if !caidan2!=="5" goto 14
-if !caidan2!=="6" goto 15
-if !caidan2!=="7" goto 16
-if !caidan2!=="8" goto 17
-if !caidan2!=="9" goto 18
-if !caidan2!=="0" goto 00
-if !caidan2!=="-" goto a
-if !caidan2!=="+" goto c
-if /i !caidan2!=="a" goto a
-if /i !caidan2!=="s" goto c
-if /i !caidan2!=="vbsjsq" set tzwz=b&goto vbsjsq
-if /i !caidan2!=="guanji" set tzwz=b&goto guanji
-if !caidan2!=="BATJIAMI" set tzwz=b&goto batjiami
-if /i !caidan2!=="guanyu" set tzwz=b&goto guanyu
-if /i !caidan2!=="csh" goto chushihua
-if /i !caidan2!=="kcd" set tzwz=b&goto kcd
-if /i !caidan2!=="gcd" set tzwz=b&goto gcd
-if /i !caidan2!=="xz" set tzwz=b&goto xz
-if /i !caidan2!=="js" set tzwz=b&goto 49
-if /i !caidan2!=="go1" goto a
-if /i !caidan2!=="go2" goto b
-if /i !caidan2!=="go3" goto c
-if /i !caidan2!=="go4" goto d
-if /i !caidan2!=="go5" goto e
-if /i !caidan2!=="go6" goto f
-if /i !caidan2!=="go7" goto g
-if /i !caidan2!=="go8" goto h
+set caidan=
+set/p caidan=请输入你的选择:
+set caidan="%caidan:|=%"
+if !caidan!=="1" goto 10
+if !caidan!=="2" goto 11
+if !caidan!=="3" goto 12
+if !caidan!=="4" goto 13
+if !caidan!=="5" goto 14
+if !caidan!=="6" goto 15
+if !caidan!=="7" goto 16
+if !caidan!=="8" goto 17
+if !caidan!=="9" goto 18
+if !caidan!=="0" goto 00
+if !caidan!=="-" goto a
+if !caidan!=="+" goto c
+if /i !caidan!=="a" goto a
+if /i !caidan!=="s" goto c
+if /i !caidan!=="vbsjsq" set tzwz=b&goto vbsjsq
+if /i !caidan!=="guanji" set tzwz=b&goto guanji
+if !caidan!=="BATJIAMI" set tzwz=b&goto batjiami
+if /i !caidan!=="guanyu" set tzwz=b&goto guanyu
+if /i !caidan!=="csh" goto chushihua
+if /i !caidan!=="kcd" set tzwz=b&goto kcd
+if /i !caidan!=="gcd" set tzwz=b&goto gcd
+if /i !caidan!=="xz" set tzwz=b&goto xz
+if /i !caidan!=="js" set tzwz=b&goto 49
+if /i !caidan!=="gx" set tzwz=a&goto update
+if /i !caidan!=="go1" goto a
+if /i !caidan!=="go2" goto b
+if /i !caidan!=="go3" goto c
+if /i !caidan!=="go4" goto d
+if /i !caidan!=="go5" goto e
+if /i !caidan!=="go6" goto f
+if /i !caidan!=="go7" goto g
+if /i !caidan!=="go8" goto h
 echo 请输入正确的选项！
 ping/n 2 0.0>nul
 goto b
@@ -330,40 +334,41 @@ echo [8]免疫U盘病毒
 echo [9]磁盘碎片整理
 echo [0]退出                                             %nx%
 echo _______________________________________________________________________________
-set caidan3=
-set/p caidan3=请输入你的选择:
-set caidan3="%caidan3:|=%"
-if !caidan3!=="1" goto 19
-if !caidan3!=="2" goto 20
-if !caidan3!=="3" goto 21
-if !caidan3!=="4" goto 22
-if !caidan3!=="5" goto 23
-if !caidan3!=="6" goto 24
-if !caidan3!=="7" goto 25
-if !caidan3!=="8" goto 26
-if !caidan3!=="9" goto 27
-if !caidan3!=="0" goto 00
-if !caidan3!=="-" goto b
-if !caidan3!=="+" goto d
-if /i !caidan3!=="a" goto b
-if /i !caidan3!=="s" goto d
-if /i !caidan3!=="vbsjsq" set tzwz=c&goto vbsjsq
-if /i !caidan3!=="guanji" set tzwz=c&goto guanji
-if !caidan3!=="BATJIAMI" set tzwz=c&goto batjiami
-if /i !caidan3!=="guanyu" set tzwz=c&goto guanyu
-if /i !caidan3!=="csh" goto chushihua
-if /i !caidan3!=="kcd" set tzwz=c&goto kcd
-if /i !caidan3!=="gcd" set tzwz=c&goto gcd
-if /i !caidan3!=="xz" set tzwz=c&goto xz
-if /i !caidan3!=="js" set tzwz=c&goto 49
-if /i !caidan3!=="go1" goto a
-if /i !caidan3!=="go2" goto b
-if /i !candan3!=="go3" goto c
-if /i !caidan3!=="go4" goto d
-if /i !caidan3!=="go5" goto e
-if /i !caidan3!=="go6" goto f
-if /i !caidan3!=="go7" goto g
-if /i !caidan3!=="go8" goto h
+set caidan=
+set/p caidan=请输入你的选择:
+set caidan="%caidan:|=%"
+if !caidan!=="1" goto 19
+if !caidan!=="2" goto 20
+if !caidan!=="3" goto 21
+if !caidan!=="4" goto 22
+if !caidan!=="5" goto 23
+if !caidan!=="6" goto 24
+if !caidan!=="7" goto 25
+if !caidan!=="8" goto 26
+if !caidan!=="9" goto 27
+if !caidan!=="0" goto 00
+if !caidan!=="-" goto b
+if !caidan!=="+" goto d
+if /i !caidan!=="a" goto b
+if /i !caidan!=="s" goto d
+if /i !caidan!=="vbsjsq" set tzwz=c&goto vbsjsq
+if /i !caidan!=="guanji" set tzwz=c&goto guanji
+if !caidan!=="BATJIAMI" set tzwz=c&goto batjiami
+if /i !caidan!=="guanyu" set tzwz=c&goto guanyu
+if /i !caidan!=="csh" goto chushihua
+if /i !caidan!=="kcd" set tzwz=c&goto kcd
+if /i !caidan!=="gcd" set tzwz=c&goto gcd
+if /i !caidan!=="xz" set tzwz=c&goto xz
+if /i !caidan!=="js" set tzwz=c&goto 49
+if /i !caidan!=="gx" set tzwz=c&goto update
+if /i !caidan!=="go1" goto a
+if /i !caidan!=="go2" goto b
+if /i !caidan!=="go3" goto c
+if /i !caidan!=="go4" goto d
+if /i !caidan!=="go5" goto e
+if /i !caidan!=="go6" goto f
+if /i !caidan!=="go7" goto g
+if /i !caidan!=="go8" goto h
 echo 请输入正确的选项！
 ping/n 2 0.0>nul
 goto c
@@ -393,40 +398,41 @@ echo [8]删除每个盘符下的System Volume Information文件夹
 echo [9]二进制转换器
 echo [0]退出                                             %nx%
 echo _______________________________________________________________________________
-set caidan4=
-set/p caidan4=请输入你的选择:
-set caidan4="%caidan4:|=%"
-if !caidan4!=="1" goto 28
-if !caidan4!=="2" goto 29
-if !caidan4!=="3" goto 30
-if !caidan4!=="4" goto 31
-if !caidan4!=="5" goto 32
-if !caidan4!=="6" goto 33
-if !caidan4!=="7" goto 34
-if !caidan4!=="8" goto 35
-if !caidan4!=="9" goto 36
-if !caidan4!=="0" goto 00
-if !caidan4!=="-" goto c
-if !caidan4!=="+" goto e
-if /i !caidan4!=="a" goto c
-if /i !caidan4!=="s" goto e
-if /i !caidan4!=="vbsjsq" set tzwz=d&goto vbsjsq
-if /i !caidan4!=="guanji" set tzwz=d&goto guanji
-if !caidan4!=="BATJIAMI" set tzwz=d&goto batjiami
-if /i !caidan4!=="guanyu" set tzwz=d&goto guanyu
-if /i !caidan4!=="csh" goto chushihua
-if /i !caidan4!=="kcd" set tzwz=d&goto kcd
-if /i !caidan4!=="gcd" set tzwz=d&goto gcd
-if /i !caidan4!=="xz" set tzwz=d&goto xz
-if /i !caidan4!=="js" set tzwz=d&goto 49
-if /i !caidan4!=="go1" goto a
-if /i !caidan4!=="go2" goto b
-if /i !caidan4!=="go3" goto c
-if /i !caidan4!=="go4" goto d
-if /i !caidan4!=="go5" goto e
-if /i !caidan4!=="go6" goto f
-if /i !caidan4!=="go7" goto g
-if /i !caidan4!=="go8" goto h
+set caidan=
+set/p caidan=请输入你的选择:
+set caidan="%caidan:|=%"
+if !caidan!=="1" goto 28
+if !caidan!=="2" goto 29
+if !caidan!=="3" goto 30
+if !caidan!=="4" goto 31
+if !caidan!=="5" goto 32
+if !caidan!=="6" goto 33
+if !caidan!=="7" goto 34
+if !caidan!=="8" goto 35
+if !caidan!=="9" goto 36
+if !caidan!=="0" goto 00
+if !caidan!=="-" goto c
+if !caidan!=="+" goto e
+if /i !caidan!=="a" goto c
+if /i !caidan!=="s" goto e
+if /i !caidan!=="vbsjsq" set tzwz=d&goto vbsjsq
+if /i !caidan!=="guanji" set tzwz=d&goto guanji
+if !caidan!=="BATJIAMI" set tzwz=d&goto batjiami
+if /i !caidan!=="guanyu" set tzwz=d&goto guanyu
+if /i !caidan!=="csh" goto chushihua
+if /i !caidan!=="kcd" set tzwz=d&goto kcd
+if /i !caidan!=="gcd" set tzwz=d&goto gcd
+if /i !caidan!=="xz" set tzwz=d&goto xz
+if /i !caidan!=="js" set tzwz=d&goto 49
+if /i !caidan!=="gx" set tzwz=d&goto update
+if /i !caidan!=="go1" goto a
+if /i !caidan!=="go2" goto b
+if /i !caidan!=="go3" goto c
+if /i !caidan!=="go4" goto d
+if /i !caidan!=="go5" goto e
+if /i !caidan!=="go6" goto f
+if /i !caidan!=="go7" goto g
+if /i !caidan!=="go8" goto h
 echo 请输入正确的选项！
 ping/n 2 0.0>nul
 goto d
@@ -456,40 +462,41 @@ echo [8]文件搜索
 echo [9]修复已损坏的文件
 echo [0]退出                                             %nx%
 echo _______________________________________________________________________________
-set caidan5=
-set/p caidan5=请输入你的选择:
-set caidan5="%caidan5:|=%"
-if !caidan5!=="1" goto 37
-if !caidan5!=="2" goto 38
-if !caidan5!=="3" goto 39
-if !caidan5!=="4" goto 40
-if !caidan5!=="5" goto 41
-if !caidan5!=="6" goto 42
-if !caidan5!=="7" goto 43
-if !caidan5!=="8" goto 44
-if !caidan5!=="9" goto 45
-if !caidan5!=="0" goto 00
-if !caidan5!=="-" goto d
-if !caidan5!=="+" goto f
-if /i !caidan5!=="a" goto d
-if /i !caidan5!=="s" goto f
-if /i !caidan5!=="vbsjsq" set tzwz=e&goto vbsjsq
-if /i !caidan5!=="guanji" set tzwz=e&goto guanji
-if !caidan5!=="BATJIAMI" set tzwz=e&goto batjiami
-if /i !caidan5!=="guanyu" set tzwz=e&goto guanyu
-if /i !caidan5!=="csh" goto chushihua
-if /i !caidan5!=="kcd" set tzwz=e&goto kcd
-if /i !caidan5!=="gcd" set tzwz=e&goto gcd
-if /i !caidan5!=="xz" set tzwz=e&goto xz
-if /i !caidan5!=="js" set tzwz=e&goto 49
-if /i !caidan5!=="go1" goto a
-if /i !caidan5!=="go2" goto b
-if /i !caidan5!=="go3" goto c
-if /i !caidan5!=="go4" goto d
-if /i !caidan5!=="go5" goto e
-if /i !caidan5!=="go6" goto f
-if /i !caidan5!=="go7" goto g
-if /i !caidan5!=="go8" goto h
+set caidan=
+set/p caidan=请输入你的选择:
+set caidan="%caidan:|=%"
+if !caidan!=="1" goto 37
+if !caidan!=="2" goto 38
+if !caidan!=="3" goto 39
+if !caidan!=="4" goto 40
+if !caidan!=="5" goto 41
+if !caidan!=="6" goto 42
+if !caidan!=="7" goto 43
+if !caidan!=="8" goto 44
+if !caidan!=="9" goto 45
+if !caidan!=="0" goto 00
+if !caidan!=="-" goto d
+if !caidan!=="+" goto f
+if /i !caidan!=="a" goto d
+if /i !caidan!=="s" goto f
+if /i !caidan!=="vbsjsq" set tzwz=e&goto vbsjsq
+if /i !caidan!=="guanji" set tzwz=e&goto guanji
+if !caidan!=="BATJIAMI" set tzwz=e&goto batjiami
+if /i !caidan!=="guanyu" set tzwz=e&goto guanyu
+if /i !caidan!=="csh" goto chushihua
+if /i !caidan!=="kcd" set tzwz=e&goto kcd
+if /i !caidan!=="gcd" set tzwz=e&goto gcd
+if /i !caidan!=="xz" set tzwz=e&goto xz
+if /i !caidan!=="js" set tzwz=e&goto 49
+if /i !caidan!=="gx" set tzwz=e&goto update
+if /i !caidan!=="go1" goto a
+if /i !caidan!=="go2" goto b
+if /i !caidan!=="go3" goto c
+if /i !caidan!=="go4" goto d
+if /i !caidan!=="go5" goto e
+if /i !caidan!=="go6" goto f
+if /i !caidan!=="go7" goto g
+if /i !caidan!=="go8" goto h
 echo 请输入正确的选项！
 ping/n 2 0.0>nul
 goto e
@@ -519,40 +526,41 @@ echo [8]已知年月日计算星期
 echo [9]查询系统激活状态
 echo [0]退出                                             %nx%
 echo _______________________________________________________________________________
-set caidan6=
-set/p caidan6=请输入你的选择:
-set caidan6="%caidan6:|=%"
-if !caidan6!=="1" goto 46
-if !caidan6!=="2" goto 47
-if !caidan6!=="3" goto 48
-if !caidan6!=="4" set tzwz=f&goto 49
-if !caidan6!=="5" goto 50
-if !caidan6!=="6" goto 51
-if !caidan6!=="7" goto 52
-if !caidan6!=="8" goto 53
-if !caidan6!=="9" goto 54
-if !caidan6!=="0" goto 00
-if !caidan6!=="-" goto e
-if !caidan6!=="+" goto g
-if /i !caidan6!=="a" goto e
-if /i !caidan6!=="s" goto g
-if /i !caidan6!=="vbsjsq" set tzwz=f&goto vbsjsq
-if /i !caidan6!=="guanji" set tzwz=f&goto guanji
-if !caidan6!=="BATJIAMI" set tzwz=f&goto batjiami
-if /i !caidan6!=="guanyu" set tzwz=f&goto guanyu
-if /i !caidan6!=="csh" goto chushihua
-if /i !caidan6!=="kcd" set tzwz=f&goto kcd
-if /i !caidan6!=="gcd" set tzwz=f&goto gcd
-if /i !caidan6!=="xz" set tzwz=f&goto xz
-if /i !caidan6!=="js" set tzwz=f&goto 49
-if /i !caidan6!=="go1" goto a
-if /i !caidan6!=="go2" goto b
-if /i !caidan6!=="go3" goto c
-if /i !caidan6!=="go4" goto d
-if /i !caidan6!=="go5" goto e
-if /i !caidan6!=="go6" goto f
-if /i !caidna6!=="go7" goto g
-if /i !caidan6!=="go8" goto h
+set caidan=
+set/p caidan=请输入你的选择:
+set caidan="%caidan:|=%"
+if !caidan!=="1" goto 46
+if !caidan!=="2" goto 47
+if !caidan!=="3" goto 48
+if !caidan!=="4" set tzwz=f&goto 49
+if !caidan!=="5" goto 50
+if !caidan!=="6" goto 51
+if !caidan!=="7" goto 52
+if !caidan!=="8" goto 53
+if !caidan!=="9" goto 54
+if !caidan!=="0" goto 00
+if !caidan!=="-" goto e
+if !caidan!=="+" goto g
+if /i !caidan!=="a" goto e
+if /i !caidan!=="s" goto g
+if /i !caidan!=="vbsjsq" set tzwz=f&goto vbsjsq
+if /i !caidan!=="guanji" set tzwz=f&goto guanji
+if !caidan!=="BATJIAMI" set tzwz=f&goto batjiami
+if /i !caidan!=="guanyu" set tzwz=f&goto guanyu
+if /i !caidan!=="csh" goto chushihua
+if /i !caidan!=="kcd" set tzwz=f&goto kcd
+if /i !caidan!=="gcd" set tzwz=f&goto gcd
+if /i !caidan!=="xz" set tzwz=f&goto xz
+if /i !caidan!=="js" set tzwz=f&goto 49
+if /i !caidan!=="gx" set tzwz=f&goto update
+if /i !caidan!=="go1" goto a
+if /i !caidan!=="go2" goto b
+if /i !caidan!=="go3" goto c
+if /i !caidan!=="go4" goto d
+if /i !caidan!=="go5" goto e
+if /i !caidan!=="go6" goto f
+if /i !caidna!=="go7" goto g
+if /i !caidan!=="go8" goto h
 echo 请输入正确的选项！
 ping/n 2 0.0>nul
 goto f
@@ -582,40 +590,41 @@ echo [8]注册表搜索
 echo [9]Base64编解码
 echo [0]退出                                                      %nx%
 echo _______________________________________________________________________________
-set caidan7=
-set/p caidan7=请输入你的选择:
-set caidan7="%caidan7:|=%"
-if !caidan7!=="1" goto 55
-if !caidan7!=="2" goto 56
-if !caidan7!=="3" goto 57
-if !caidan7!=="4" goto 58
-if !caidan7!=="5" goto 59
-if !caidan7!=="6" goto 60
-if !caidan7!=="7" goto 61
-if !caidan7!=="8" goto 62
-if !caidan7!=="9" goto 63
-if !caidan7!=="0" goto 00
-if !caidan7!=="-" goto f
-if !caidan7!=="+" goto h
-if /i !caidan7!=="a" goto f
-if /i !caidan7!=="s" goto h
-if /i !caidan7!=="vbsjsq" set tzwz=g&goto vbsjsq
-if /i !caidan7!=="guanji" set tzwz=g&goto guanji
-if !caidan7!=="BATJIAMI" set tzwz=g&goto batjiami
-if /i !caidan7!=="guanyu" set tzwz=g&goto guanyu
-if /i !caidan7!=="csh" goto chushihua
-if /i !caidan7!=="kcd" set tzwz=g&goto kcd
-if /i !caidan7!=="gcd" set tzwz=g&goto gcd
-if /i !caidan7!=="xz" set tzwz=g&goto xz
-if /i !caidan7!=="js" set tzwz=g&goto 49
-if /i !caidan7!=="go1" goto a
-if /i !caidan7!=="go2" goto b
-if /i !caidan7!=="go3" goto c
-if /i !caidan7!=="go4" goto d
-if /i !caidan7!=="go5" goto e
-if /i !caidan7!=="go6" goto f
-if /i !caidan7!=="go7" goto g
-if /i !caidan7!=="go8" goto h
+set caidan=
+set/p caidan=请输入你的选择:
+set caidan="%caidan:|=%"
+if !caidan!=="1" goto 55
+if !caidan!=="2" goto 56
+if !caidan!=="3" goto 57
+if !caidan!=="4" goto 58
+if !caidan!=="5" goto 59
+if !caidan!=="6" goto 60
+if !caidan!=="7" goto 61
+if !caidan!=="8" goto 62
+if !caidan!=="9" goto 63
+if !caidan!=="0" goto 00
+if !caidan!=="-" goto f
+if !caidan!=="+" goto h
+if /i !caidan!=="a" goto f
+if /i !caidan!=="s" goto h
+if /i !caidan!=="vbsjsq" set tzwz=g&goto vbsjsq
+if /i !caidan!=="guanji" set tzwz=g&goto guanji
+if !caidan!=="BATJIAMI" set tzwz=g&goto batjiami
+if /i !caidan!=="guanyu" set tzwz=g&goto guanyu
+if /i !caidan!=="csh" goto chushihua
+if /i !caidan!=="kcd" set tzwz=g&goto kcd
+if /i !caidan!=="gcd" set tzwz=g&goto gcd
+if /i !caidan!=="xz" set tzwz=g&goto xz
+if /i !caidan!=="js" set tzwz=g&goto 49
+if /i !caidan!=="gx" set tzwz=g&goto update
+if /i !caidan!=="go1" goto a
+if /i !caidan!=="go2" goto b
+if /i !caidan!=="go3" goto c
+if /i !caidan!=="go4" goto d
+if /i !caidan!=="go5" goto e
+if /i !caidan!=="go6" goto f
+if /i !caidan!=="go7" goto g
+if /i !caidan!=="go8" goto h
 echo 请输入正确的选项！
 ping/n 2 0.0>nul
 goto g
@@ -639,32 +648,33 @@ echo [2]智能NTFS压缩
 echo [3]计算文件哈希值
 echo [0]退出                                                      %nx7%
 echo _______________________________________________________________________________
-set caidan7=
-set/p caidan7=请输入你的选择:
-set caidan7="%caidan7:|=%"
-if !caidan7!=="1" goto 64
-if !caidan7!=="2" goto 65
-if !caidan7!=="3" goto 66
-if !caidan7!=="0" goto 00
-if !caidan7!=="-" goto g
-if /i !caidan7!=="a" goto g
-if /i !caidan7!=="vbsjsq" set tzwz=h&goto vbsjsq
-if /i !caidan7!=="guanji" set tzwz=h&goto guanji
-if !caidan7!=="BATJIAMI" set tzwz=h&goto batjiami
-if /i !caidan7!=="guanyu" set tzwz=h&goto guanyu
-if /i !caidan7!=="csh" goto chushihua
-if /i !caidan7!=="kcd" set tzwz=h&goto kcd
-if /i !caidan7!=="gcd" set tzwz=h&goto gcd
-if /i !caidan7!=="xz" set tzwz=h&goto xz
-if /i !caidan7!=="js" set tzwz=h&goto 49
-if /i !caidan7!=="go1" goto a
-if /i !caidan7!=="go2" goto b
-if /i !caidan7!=="go3" goto c
-if /i !caidan7!=="go4" goto d
-if /i !caidan7!=="go5" goto e
-if /i !caidan7!=="go6" goto f
-if /i !caidan7!=="go7" goto g
-if /i !caidna7!=="go8" goto h
+set caidan=
+set/p caidan=请输入你的选择:
+set caidan="%caidan:|=%"
+if !caidan!=="1" goto 64
+if !caidan!=="2" goto 65
+if !caidan!=="3" goto 66
+if !caidan!=="0" goto 00
+if !caidan!=="-" goto g
+if /i !caidan!=="a" goto g
+if /i !caidan!=="vbsjsq" set tzwz=h&goto vbsjsq
+if /i !caidan!=="guanji" set tzwz=h&goto guanji
+if !caidan!=="BATJIAMI" set tzwz=h&goto batjiami
+if /i !caidan!=="guanyu" set tzwz=h&goto guanyu
+if /i !caidan!=="csh" goto chushihua
+if /i !caidan!=="kcd" set tzwz=h&goto kcd
+if /i !caidan!=="gcd" set tzwz=h&goto gcd
+if /i !caidan!=="xz" set tzwz=h&goto xz
+if /i !caidan!=="js" set tzwz=h&goto 49
+if /i !caidan!=="gx" set tzwz=a&goto update
+if /i !caidan!=="go1" goto a
+if /i !caidan!=="go2" goto b
+if /i !caidan!=="go3" goto c
+if /i !caidan!=="go4" goto d
+if /i !caidan!=="go5" goto e
+if /i !caidan!=="go6" goto f
+if /i !caidan!=="go7" goto g
+if /i !caidna!=="go8" goto h
 echo 请输入正确的选项！
 ping/n 2 0.0>nul
 goto h
@@ -2451,14 +2461,14 @@ goto vbsjsq
 :guanyu
 setlocal enabledelayedexpansion
 title 关于DOS工具箱 - %system%
-if %daxiao%==147703 set daxiao1=%daxiao%字节
-if %daxiao% neq 147703 set daxiao1=%daxiao%字节  (文件大小异常,可能已被修改)
+if %daxiao%==%versize% set daxiao1=%daxiao%字节
+if %daxiao% neq %versize% set daxiao1=%daxiao%字节  (文件大小异常,可能已被修改)
 set dosjssj=%time%
 call :sjc "%dosqssj%" "%dosjssj%"
 cls
 echo 关于DOS工具箱
 echo _______________________________________________________________________________
-echo 版本: 1.8.3 (20210501.147703)
+echo 版本: 1.8.3 (%ver%.%versize%)
 echo 操作系统: %system% %bit%位
 echo 版权所有 2012-2021 Administrator 保留所有权利
 echo _______________________________________________________________________________
@@ -3633,6 +3643,23 @@ goto :eof
 :powershell
 powershell -mta -nologo -noprofile -executionpolicy bypass -file "%temp%\powershell.ps1"
 goto :eof
+:update
+cls
+title 更新DOS工具箱 - 当前版本: %ver% - %system%
+echo 检查最新版本...
+timeout /t 2 /nobreak>nul
+bitsadmin /transfer dostoolupdate https://raw.githubusercontent.com/Trustedinstall/dostool/main/update %temp%\dostoolupdate
+cls
+for /f "tokens=*" %%a in (%temp%\dostoolupdate) do (
+set /a gxjg=%%a-!ver!
+if !gxjg! gtr 0 (echo 检查到更新版本: %%a&goto startupdate) else (echo 没有检查到更新版本))
+del /f /q %temp%\dostoolupdate>nul 2>nul
+echo _______________________________________________________________________________
+echo 按任意键返回菜单&pause>nul
+goto %tzwz%
+:startupdate
+timeout /t 2 /nobreak>nul
+bitsadmin /transfer dostoolupdate https://raw.githubusercontent.com/Trustedinstall/dostool/main/DOS%E5%B7%A5%E5%85%B7%E7%AE%B1.bat %0&start cmd /c %0&exit
 :sjc
 set kssj=%1
 set jssj=%2
