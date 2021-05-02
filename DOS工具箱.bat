@@ -58,7 +58,7 @@ for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 cd/d "%disk%\"
 set cishu=3
 set ver=20210504
-set versize=151969
+set versize=151992
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
 for /f "delims=" %%a in ('"wmic os get caption"') do cls&echo %%a|find /i "Microsoft"&&Set system=%%a
@@ -3733,7 +3733,7 @@ goto %tzwz%
 :startupdate
 timeout /t 2 /nobreak>nul
 del /f /q %temp%\dostoolupdate 1>nul 2>nul
-bitsadmin /transfer dostoolupdate https://raw.githubusercontent.com/Trustedinstall/dostool/main/DOS工具箱.bat %weizhi%&start cmd /c %0&exit
+bitsadmin /transfer 下载最新版本... /priority FOREGROUND https://raw.githubusercontent.com/Trustedinstall/dostool/main/DOS工具箱.bat %weizhi%&start cmd /c %0&exit
 :sjc
 set kssj=%1
 set jssj=%2
