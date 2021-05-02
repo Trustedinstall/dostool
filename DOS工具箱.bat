@@ -58,7 +58,7 @@ for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 cd/d "%disk%\"
 set cishu=3
 set ver=20210504
-set versize=152264
+set versize=152284
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
 for /f "delims=" %%a in ('"wmic os get caption"') do cls&echo %%a|find /i "Microsoft"&&Set system=%%a
@@ -3706,7 +3706,7 @@ echo.
 echo 港币HKD    → 人民币CNY
 echo 	1  → %hkdtocny%
 echo.
-echo 新台币TWD   → 人民币CNY
+echo 新台币TWD  → 人民币CNY
 echo 	1  → %twdtocny%
 echo _______________________________________________________________________________
 echo 按任意键返回菜单&pause>nul
@@ -3739,7 +3739,7 @@ goto %tzwz%
 :startupdate
 timeout /t 2 /nobreak>nul
 del /f /q %temp%\dostoolupdate 1>nul 2>nul
-bitsadmin /transfer dostoolupdate https://raw.githubusercontent.com/Trustedinstall/dostool/main/DOS工具箱.bat %weizhi%&start cmd /c %0&exit
+bitsadmin /transfer 下载更新中... /priority FOREGROUND https://raw.githubusercontent.com/Trustedinstall/dostool/main/DOS工具箱.bat %weizhi%&start cmd /c %0&exit
 :sjc
 set kssj=%1
 set jssj=%2
