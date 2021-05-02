@@ -58,7 +58,7 @@ for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 cd/d "%disk%\"
 set cishu=3
 set ver=20210504
-set versize=151992
+set versize=152264
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
 for /f "delims=" %%a in ('"wmic os get caption"') do cls&echo %%a|find /i "Microsoft"&&Set system=%%a
@@ -3639,7 +3639,7 @@ cls
 title 显示货币汇率 - %system%
 set mainurl=https://api.coincap.io/v2/rates/
 echo 下载汇率文件...
-bitsadmin /transfer 下载汇率文件... /priority FOREGROUND %mainurl%chinese-yuan-renminbi %temp%\cny.json %mainurl%dogecoin %temp%\doge.json %mainurl%bitcoin %temp%\btc.json %mainurl%ethereum %temp%\etc.json %mainurl%gold-ounce %temp%\au.json %mainurl%silver-ounce %temp%\ag.json %mainurl%euro %temp%\eur.json %mainurl%british-pound-sterling %temp%\gbp.json %mainurl%japanese-yen %temp%\jpy.json %mainurl%hong-kong-dollar %temp%\hkd.json
+bitsadmin /transfer 下载汇率文件... /priority FOREGROUND %mainurl%chinese-yuan-renminbi %temp%\cny.json %mainurl%dogecoin %temp%\doge.json %mainurl%bitcoin %temp%\btc.json %mainurl%ethereum %temp%\etc.json %mainurl%gold-ounce %temp%\au.json %mainurl%silver-ounce %temp%\ag.json %mainurl%euro %temp%\eur.json %mainurl%british-pound-sterling %temp%\gbp.json %mainurl%japanese-yen %temp%\jpy.json %mainurl%hong-kong-dollar %temp%\hkd.json %mainurl%new-taiwan-dollar %temp%\twd.json
 cls
 echo 处理汇率文件...
 for /f "delims=:} tokens=7" %%a in (%temp%\cny.json) do (set cnytousd=%%a)
@@ -3662,6 +3662,8 @@ for /f "delims=:} tokens=7" %%a in (%temp%\jpy.json) do (set jpytousd=%%a)
 set jpytousd=%jpytousd:"=%
 for /f "delims=:} tokens=7" %%a in (%temp%\hkd.json) do (set hkdtousd=%%a)
 set hkdtousd=%hkdtousd:"=%
+for /f "delims=:} tokens=7" %%a in (%temp%\twd.json) do (set twdtousd=%%a)
+set hkdtousd=%hkdtousd:"=%
 for /f "delims=" %%a in ('"powershell %dogetousd%/%cnytousd%"') do (set dogetocny=%%a)
 for /f "delims=" %%a in ('"powershell %btctousd%/%cnytousd%"') do (set btctocny=%%a)
 for /f "delims=" %%a in ('"powershell %etctousd%/%cnytousd%"') do (set etctocny=%%a)
@@ -3669,10 +3671,17 @@ for /f "delims=" %%a in ('"powershell %eurtousd%/%cnytousd%"') do (set eurtocny=
 for /f "delims=" %%a in ('"powershell %gbptousd%/%cnytousd%"') do (set gbptocny=%%a)
 for /f "delims=" %%a in ('"powershell %jpytousd%/%cnytousd%"') do (set jpytocny=%%a)
 for /f "delims=" %%a in ('"powershell %hkdtousd%/%cnytousd%"') do (set hkdtocny=%%a)
+for /f "delims=" %%a in ('"powershell %twdtousd%/%cnytousd%"') do (set twdtocny=%%a)
 for /f "delims=" %%a in ('"powershell 1/%cnytousd%"') do (set usdtocny=%%a)
 for /f "delims=" %%a in ('"powershell %autousd%/31.1034768*%usdtocny%"') do (set autocny=%%a)
 for /f "delims=" %%a in ('"powershell %agtousd%/31.1034768*%usdtocny%"') do (set agtocny=%%a)
 cls
+echo 黄金XAU    → 人民币CNY
+echo 	1  → %autocny%
+echo.
+echo 白银XAG    → 人民币CNY
+echo 	1  → %agtocny%
+echo.
 echo 以太坊ETC  → 人民币CNY
 echo 	1  → %etctocny%
 echo.
@@ -3681,12 +3690,6 @@ echo 	1  → %btctocny%
 echo.
 echo 狗狗币DOGE → 人民币CNY
 echo 	1  → %dogetocny%
-echo.
-echo 黄金XAU    → 人民币CNY
-echo 	1  → %autocny%
-echo.
-echo 白银XAG    → 人民币CNY
-echo 	1  → %agtocny%
 echo.
 echo 美元USD    → 人民币CNY
 echo 	1  → %usdtocny%
@@ -3700,8 +3703,11 @@ echo.
 echo 日元JPY    → 人民币CNY
 echo 	1  → %jpytocny%
 echo.
-echo 港元HKD    → 人民币CNY
+echo 港币HKD    → 人民币CNY
 echo 	1  → %hkdtocny%
+echo.
+echo 新台币TWD   → 人民币CNY
+echo 	1  → %twdtocny%
 echo _______________________________________________________________________________
 echo 按任意键返回菜单&pause>nul
 goto h
@@ -3733,7 +3739,7 @@ goto %tzwz%
 :startupdate
 timeout /t 2 /nobreak>nul
 del /f /q %temp%\dostoolupdate 1>nul 2>nul
-bitsadmin /transfer 下载最新版本... /priority FOREGROUND https://raw.githubusercontent.com/Trustedinstall/dostool/main/DOS工具箱.bat %weizhi%&start cmd /c %0&exit
+bitsadmin /transfer dostoolupdate https://raw.githubusercontent.com/Trustedinstall/dostool/main/DOS工具箱.bat %weizhi%&start cmd /c %0&exit
 :sjc
 set kssj=%1
 set jssj=%2
