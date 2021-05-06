@@ -55,10 +55,11 @@ set "zmlj=%zmlj:"=%"
 set weizhi=%0
 for /f "delims=" %%a in ("%weizhi%") do set daxiao=%%~za
 for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
+for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
-set ver=20210505
-set versize=152544
+set ver=20210506
+set versize=152716
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
 for /f "delims=" %%a in ('"wmic os get caption"') do cls&echo %%a|find /i "Microsoft"&&Set system=%%a
@@ -905,7 +906,8 @@ goto 08
 :09
 title 命令提示符 - %system%
 cls
-cmd
+ver
+cmd /k prompt %username%@%hostname%:%~d0\#$s
 goto a
 :10
 title 将磁盘格式转换为NTFS - %system%
@@ -3727,19 +3729,20 @@ cls
 title 更新DOS工具箱 - 当前版本: %ver% - %system%
 echo 检查最新版本...
 timeout /t 2 /nobreak>nul
+if exits %temp%\dostoolupdate del /f /q %temp%\dostoolupdate>nul 2>nul
 certutil -urlcache -split -f https://raw.githubusercontent.com/Trustedinstall/dostool/main/update %temp%\dostoolupdate
 ::bitsadmin /transfer 检查最新版本... /priority FOREGROUND https://raw.githubusercontent.com/Trustedinstall/dostool/main/update %temp%\dostoolupdate
 cls
 for /f "tokens=*" %%a in (%temp%\dostoolupdate) do (
 set /a gxjg=%%a-!ver!
 if !gxjg! gtr 0 (echo 检查到更新版本: %%a&goto startupdate) else (echo 没有检查到更新版本))
-del /f /q %temp%\dostoolupdate 1>nul 2>nul
+del /f /q %temp%\dostoolupdate>nul 2>nul
 echo _______________________________________________________________________________
 echo 按任意键返回菜单&pause>nul
 goto %tzwz%
 :startupdate
 timeout /t 2 /nobreak>nul
-del /f /q %temp%\dostoolupdate 1>nul 2>nul
+del /f /q %temp%\dostoolupdate>nul 2>nul
 certutil -urlcache -split -f https://raw.githubusercontent.com/Trustedinstall/dostool/main/DOS工具箱.bat %weizhi%&start cmd /c %0&exit
 ::bitsadmin /transfer 下载更新中... /priority FOREGROUND https://raw.githubusercontent.com/Trustedinstall/dostool/main/DOS工具箱.bat %weizhi%&start cmd /c %0&exit
 :sjc
