@@ -1632,8 +1632,8 @@ echo ___________________________________________________________________________
 choice /c 12340 /n /m «Î ‰»Îƒ„µƒ—°‘Ò:
 if "%errorlevel%" equ "1" goto 23(1)
 if "%errorlevel%" equ "2" goto 23(2)
-if "%errorlevel%" equ "3" goto 23(3)
-if "%errorlevel%" equ "4" goto 23(4)
+if "%errorlevel%" equ "3" goto 23(6)
+if "%errorlevel%" equ "4" goto 23(10)
 if "%errorlevel%" equ "5" goto c
 goto 23
 set dosjc=
