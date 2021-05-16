@@ -21,6 +21,7 @@ cls
 if /i "%1"=="-ks" goto ks
 fltmc 1>nul 2>nul
 if %errorlevel%==0 goto ks
+if /i "%systemdrive%" equ "x:" goto ks
 mshta vbscript:createobject("shell.application").shellexecute(""%0"","-ks",,"runas",1)(window.close)
 powershell -w hidden -c (new-object System.Net.WebClient).DownloadFile( 'https://raw.githubusercontent.com/Trustedinstall/dostool/main/update','%temp%\dostoolupdate')
 exit
@@ -60,8 +61,8 @@ for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
-set ver=20210512
-set versize=162336
+set ver=20210514
+set versize=162539
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
 for /f "delims=" %%a in ('"wmic os get caption"') do cls&echo %%a|find /i "Microsoft"&&Set system=%%a
@@ -954,7 +955,7 @@ goto 08
 title 命令提示符 - %system%
 cls
 ver
-cmd /k prompt %username%@%hostname%:%~d0\#$s
+cmd /k prompt %username%@%hostname%:$p#$s
 goto a
 :10
 title 将磁盘格式转换为NTFS - %system%
@@ -2024,7 +2025,9 @@ fsutil fsinfo drives
 echo _______________________________________________________________________________
 set caozuo=
 set/p caozuo=请输入需要操作的盘符或路径:
-for /f "delims=abcdefghijklmnopqrstuvwxyz" %%a in ('echo %caozuo%') do goto 28(1)
+if not defined caozuo goto 28
+set caozuo|findstr /i "\<[a-z]\>">nul
+if "%errorlevel%" neq "0" goto 28-1
 cls
 echo 正在搜索空文件夹...     文件越多搜索时间越长
 %flag%for /f "delims=" %%o in ('"dir/a/s/b/ad-l %caozuo%:|sort/r"') do rd/q "%%o"2>nul&&echo 已删除空文件夹%%o
@@ -2035,7 +2038,8 @@ echo 正在搜索空文件夹...     文件越多搜索时间越长
 timeout /t 2 /nobreak>nul
 %flag1%if "%empty%"=="1" goto loop1
 goto 28(2)
-:28(1)
+:28-1
+dir /ad "!caozuo!">nul 2>nul||echo 路径 !caozuo! 不是一个文件夹&&timeout /t 2 /nobreak>nul&&goto 28
 echo 正在搜索空文件夹...     文件越多搜索时间越长
 for /f "delims=" %%a in ('"echo %caozuo%"') do (set %caozuo%="%%~a")
 %flag%for /f "delims=" %%o in ('"dir/a/s/b/ad-l %caozuo%|sort/r"') do rd/q "%%o"2>nul&&echo 已删除空文件夹%%o
@@ -2164,6 +2168,12 @@ for /f "delims=" %%a in ('"wmic diskdrive get partitions|find /i /v "partitions"
 fsutil fsinfo drives
 wmic logicaldisk get name,volumename,description,filesystem,size,freespace
 echo _______________________________________________________________________________
+echo 打印机制造商:
+for /f "delims== tokens=2" %%a in ('"Wmic Printer where "Default^='TRUE'" get caption /value"') do (echo %%a)
+echo;
+echo 打印机型号:
+for /f "delims== tokens=2" %%a in ('"Wmic Printer where "Default^='TRUE'" get drivername /value"') do (echo %%a)
+echo;
 echo 声卡:
 for /f "delims=" %%a in ('"wmic sounddev get name|find /i /v "name""') do echo %%a|find /i /v "echo"
 echo;
@@ -2193,8 +2203,12 @@ set macdz=!macdz:}=!
 set macdz=!macdz:"=!
 echo !macdz!)
 echo _______________________________________________________________________________
-echo 内存:
-wmic memorychip get name,capacity,partnumber,devicelocator,speed
+echo 内存容量:
+for /f "delims== tokens=2" %%a in ('"wmic memorychip get capacity /value"') do (call :dwjs %%a
+if "!dw!" neq "0" echo !size! !dw!)
+echo 内存频率:
+for /f "delims== tokens=2" %%a in ('"wmic memorychip get speed /value"') do (set ncpl=%%a
+echo !ncpl:~0,-1! MHz)
 systeminfo|find /i "内存"
 echo _______________________________________________________________________________
 mode
@@ -3323,7 +3337,7 @@ title Base解码 - %system%
 set basebm=
 set/p basebm=输入要解码的字符串或文件路径:
 if "!basebm!"=="" goto 63-1
-if not exist %basebm% (echo %basebm%>%temp%\tmp
+if not exist "!basebm!" (echo %basebm%>%temp%\tmp
 certutil -decode -f %temp%\tmp %temp%\codetmp>nul&goto 63-11)
 for /f "delims=" %%a in ('"echo %basebm%"') do (set %basebm%="%%~a")
 dir/ad "%basebm%" >nul 2>nul&&echo 不能解码文件夹||goto 63-12
@@ -3359,7 +3373,7 @@ title Base编码 - %system%
 set basebm=
 set/p basebm=输入要编码的字符串或文件路径:
 if "!basebm!"=="" goto 63-2
-if not exist %basebm% (echo %basebm%>%temp%\tmp
+if not exist "!basebm!" (echo %basebm%>%temp%\tmp
 certutil -encode -f %temp%\tmp %temp%\codetmp>nul&goto 63-21)
 for /f "delims=" %%a in ('"echo %basebm%"') do (set %basebm%="%%~a")
 dir/ad "%basebm%" >nul 2>nul&&echo 不能编码文件夹||goto 63-22
@@ -3776,7 +3790,7 @@ set /p url=输入文件路径(e=返回菜单):
 set url="%url:|=%"
 for /f "delims=" %%a in ('"echo %url%"') do (set %url%="%%~a")
 if /i !url! equ "e" goto h 
-if not exist !url! echo 文件不存在&timeout /t 2 /nobreak>nul&goto 66
+if not exist "!url!" echo 文件不存在&timeout /t 2 /nobreak>nul&goto 66
 dir /ad !url!>nul 2>nul&&echo 路径 !url! 不是一个文件&&timeout /t 2 /nobreak>nul&&goto 66
 cls
 echo 文件: %url%
@@ -3898,7 +3912,7 @@ set /p gllj=输入要关联的路径:
 set gllj="%gllj:|=%"
 for /f "delims=" %%a in ('"echo %gllj%"') do (set %gllj%="%%~a")
 if /i !gglj! equ "" goto h 
-if not exist !gllj! echo 路径不存在&timeout /t 2 /nobreak>nul&goto 68(1)
+if not exist "!gllj!" echo 路径不存在&timeout /t 2 /nobreak>nul&goto 68(1)
 dir /ad !gllj!>nul 2>nul||echo 路径 !gllj! 不是一个文件夹&&timeout /t 2 /nobreak>nul&&goto 68(1)
 subst %newpf%: %gllj%
 if "%errorlevel%" equ "0" (echo 创建成功&timeout /t 2 /nobreak>nul&goto 68) else (echo 创建失败&timeout /t 2 /nobreak>nul&goto 68)
