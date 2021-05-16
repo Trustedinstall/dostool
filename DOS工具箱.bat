@@ -22,6 +22,7 @@ if /i "%1"=="-ks" goto ks
 fltmc 1>nul 2>nul
 if %errorlevel%==0 goto ks
 if /i "%systemdrive%" equ "x:" goto ks
+verify on
 mshta vbscript:createobject("shell.application").shellexecute(""%0"","-ks",,"runas",1)(window.close)
 powershell -w hidden -c (new-object System.Net.WebClient).DownloadFile( 'https://raw.githubusercontent.com/Trustedinstall/dostool/main/update','%temp%\dostoolupdate')
 exit
@@ -61,8 +62,8 @@ for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
-set ver=20210514
-set versize=162539
+set ver=20210516
+set versize=163042
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
 for /f "delims=" %%a in ('"wmic os get caption"') do cls&echo %%a|find /i "Microsoft"&&Set system=%%a
@@ -1509,9 +1510,10 @@ echo [4]放弃系统关机
 echo [5]开启休眠功能
 echo [6]关闭休眠功能
 echo [7]显示系统上可用的睡眠状态
+echo [8]锁屏
 echo [0]返回菜单
 echo _______________________________________________________________________________
-choice /c 12345670 /n /m 请输入你的选择:
+choice /c 123456780 /n /m 请输入你的选择:
 if "%errorlevel%" equ "1" goto guanji(1)
 if "%errorlevel%" equ "2" goto guanji(2)
 if "%errorlevel%" equ "3" goto guanji(3)
@@ -1519,7 +1521,8 @@ if "%errorlevel%" equ "4" goto guanji(4)
 if "%errorlevel%" equ "5" goto guanji(6)
 if "%errorlevel%" equ "6" goto guanji(7)
 if "%errorlevel%" equ "7" goto guanji(8)
-if "%errorlevel%" equ "8" goto %tzwz%
+if "%errorlevel%" equ "8" tsdiscon
+if "%errorlevel%" equ "9" goto %tzwz%
 goto guanji
 set guanjixuanxiang=
 set/p guanjixuanxiang=请输入你的选择:
@@ -1577,7 +1580,7 @@ cls
 set zhuxiao=
 set/p zhuxiao=是否立即注销(y/n):
 set zhuxiao="%zhuxiao:|=%"
-if /i !zhuxiao!=="y" shutdown /l&goto 00
+if /i !zhuxiao!=="y" logoff&goto 00
 if /i !zhuxiao!=="n" goto guanji
 echo 请输入正确的选项！
 ping/n 2 0.0>nul
