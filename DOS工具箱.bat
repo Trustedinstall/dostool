@@ -63,7 +63,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20210516
-set versize=163053
+set versize=163223
 set flag=
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
@@ -3448,6 +3448,8 @@ title 智能NTFS压缩 - %system%
 cls
 set url=
 set/p url=请输入要压缩的文件夹:
+set url="%url:|=%"
+dir /ad !url!>nul 2>nul||echo 路径 !url! 不是一个文件夹&&timeout /t 2 /nobreak>nul&&goto 65
 echo //5JAGYAIAAoAC0ATgBPAFQAIAAoAFsAUwBlAGMAdQByAGkAdAB5AC4AUAByAGkA>%temp%\base
 echo bgBjAGkAcABhAGwALgBXAGkAbgBkAG8AdwBzAFAAcgBpAG4AYwBpAHAAYQBsAF0A>>%temp%\base
 echo IABbAFMAZQBjAHUAcgBpAHQAeQAuAFAAcgBpAG4AYwBpAHAAYQBsAC4AVwBpAG4A>>%temp%\base
@@ -3791,6 +3793,7 @@ title 计算文件哈希值 - %system%
 cls
 set url=
 set /p url=输入文件路径(e=返回菜单):
+if not defined url goto 66
 set url="%url:|=%"
 for /f "delims=" %%a in ('"echo %url%"') do (set %url%="%%~a")
 if /i !url! equ "e" goto h 
@@ -3913,6 +3916,7 @@ set newpf|findstr /i "\<[a-z]\>">nul
 if "%errorlevel%" neq "0" echo 无效输入&timeout /t 2 /nobreak>nul&goto 68(1)
 set gllj=
 set /p gllj=输入要关联的路径:
+if not defined gllj goto 68
 set gllj="%gllj:|=%"
 for /f "delims=" %%a in ('"echo %gllj%"') do (set %gllj%="%%~a")
 if /i !gglj! equ "" goto h 
