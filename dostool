@@ -68,7 +68,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20210518
-set versize=165560
+set versize=165555
 set gxflag=
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
@@ -3989,7 +3989,7 @@ set xzflag=::
 set xzflag1=
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag%pushd %temp%
-%xzflag%curl -# -O https://cdn.jsdelivr.net/gh/Trustedinstall/dostool@main/dostool
+%xzflag%curl -# -O https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool
 %xzflag%popd
 %xzflag%copy /z %temp%\dostool %weizhi%&start cmd /c %0&exit
 %xzflag1%certutil -urlcache -split -f https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool %weizhi%&start cmd /c %0&exit
