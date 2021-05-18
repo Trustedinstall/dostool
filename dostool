@@ -23,7 +23,7 @@ fltmc 1>nul 2>nul
 if %errorlevel%==0 goto ks
 if /i "%systemdrive%" equ "x:" goto ks
 verify on
-mshta vbscript:createobject("shell.application").shellexecute(""%0"","-ks",,"runas",1)(window.close)
+start cmd /c mshta vbscript:createobject("shell.application").shellexecute(""%0"","-ks",,"runas",1)(window.close)
 set xzflag1=
 set xzflag=::
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
@@ -68,7 +68,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20210518
-set versize=165580
+set versize=165593
 set gxflag=
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
