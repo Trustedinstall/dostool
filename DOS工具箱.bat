@@ -55,16 +55,16 @@ if "%qidongjd%"=="105" goto qidongjs
 goto qidong
 :qidongjs
 for /f "delims=" %%a in ('"reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v desktop"') do (set zmlj=%%a)
-for /f "delims=" %%a in ('"echo %zmlj%"') do (set %zmlj%="%%~a")
+if "%zmlj:~0,1%%zmlj:~-1%" neq """" for /f "delims=" %%a in ('"echo %zmlj%"') do (set %zmlj%="%%~a")
 set weizhi=%0
 for /f "delims=" %%a in ("%weizhi%") do set daxiao=%%~za
 for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
-set ver=20210516
-set versize=163223
-set flag=
+set ver=20210518
+set versize=164307
+set gxflag=
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
 for /f "delims=" %%a in ('"wmic os get caption"') do cls&echo %%a|find /i "Microsoft"&&Set system=%%a
@@ -109,7 +109,7 @@ set scw=rdasd123
 set ad=
 if /i "%processor_architecture%"=="x86" (set bit=32) else (set bit=64)
 if "!system:~8,2!"=="XP" (set zmlj=%zmlj:~19%\) else (set zmlj=%zmlj:~25%\)
-for /f "delims=" %%a in ('"echo %zmlj%"') do (set %zmlj%="%%~a")
+if "%zmlj:~0,1%%zmlj:~-1%" neq """" for /f "delims=" %%a in ('"echo %zmlj%"') do (set %zmlj%="%%~a")
 if /i "%2" neq "" goto chanshu2
 fltmc 1>nul 2>nul
 if %errorlevel% neq 0 (echo 部分功能无法正常使用，请以管理员身份运行
@@ -204,9 +204,9 @@ color %color%%color1%
 if exist %temp%\dostoolupdate (
 for /f "tokens=*" %%a in (%temp%\dostoolupdate) do (
 set /a gxjg=%%a-!ver!
-if !gxjg! gtr 0 (set flag= - 检查到更新版本: %%a))
+if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a))
 del /f /q %temp%\dostoolupdate)
-title DOS工具箱 - %system%%flag%
+title DOS工具箱 - %system%%gxflag%
 cls
 echo                                     菜单 - 第1页
 echo 现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
@@ -271,9 +271,9 @@ color %color%%color1%
 if exist %temp%\dostoolupdate (
 for /f "tokens=*" %%a in (%temp%\dostoolupdate) do (
 set /a gxjg=%%a-!ver!
-if !gxjg! gtr 0 (set flag= - 检查到更新版本: %%a))
+if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a))
 del /f /q %temp%\dostoolupdate)
-title DOS工具箱 - %system%%flag%
+title DOS工具箱 - %system%%gxflag%
 cls
 echo                                     菜单 - 第2页
 echo 现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
@@ -340,9 +340,9 @@ color %color%%color1%
 if exist %temp%\dostoolupdate (
 for /f "tokens=*" %%a in (%temp%\dostoolupdate) do (
 set /a gxjg=%%a-!ver!
-if !gxjg! gtr 0 (set flag= - 检查到更新版本: %%a))
+if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a))
 del /f /q %temp%\dostoolupdate)
-title DOS工具箱 - %system%%flag%
+title DOS工具箱 - %system%%gxflag%
 cls
 echo                                     菜单 - 第3页
 echo 现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
@@ -409,9 +409,9 @@ color %color%%color1%
 if exist %temp%\dostoolupdate (
 for /f "tokens=*" %%a in (%temp%\dostoolupdate) do (
 set /a gxjg=%%a-!ver!
-if !gxjg! gtr 0 (set flag= - 检查到更新版本: %%a))
+if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a))
 del /f /q %temp%\dostoolupdate)
-title DOS工具箱 - %system%%flag%
+title DOS工具箱 - %system%%gxflag%
 cls
 echo                                     菜单 - 第4页
 echo 现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
@@ -478,9 +478,9 @@ color %color%%color1%
 if exist %temp%\dostoolupdate (
 for /f "tokens=*" %%a in (%temp%\dostoolupdate) do (
 set /a gxjg=%%a-!ver!
-if !gxjg! gtr 0 (set flag= - 检查到更新版本: %%a))
+if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a))
 del /f /q %temp%\dostoolupdate)
-title DOS工具箱 - %system%%flag%
+title DOS工具箱 - %system%%gxflag%
 cls
 echo                                     菜单 - 第5页
 echo 现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
@@ -547,9 +547,9 @@ color %color%%color1%
 if exist %temp%\dostoolupdate (
 for /f "tokens=*" %%a in (%temp%\dostoolupdate) do (
 set /a gxjg=%%a-!ver!
-if !gxjg! gtr 0 (set flag= - 检查到更新版本: %%a))
+if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a))
 del /f /q %temp%\dostoolupdate)
-title DOS工具箱 - %system%%flag%
+title DOS工具箱 - %system%%gxflag%
 cls
 echo                                     菜单 - 第6页
 echo 现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
@@ -616,9 +616,9 @@ color %color%%color1%
 if exist %temp%\dostoolupdate (
 for /f "tokens=*" %%a in (%temp%\dostoolupdate) do (
 set /a gxjg=%%a-!ver!
-if !gxjg! gtr 0 (set flag= - 检查到更新版本: %%a))
+if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a))
 del /f /q %temp%\dostoolupdate)
-title DOS工具箱 - %system%%flag%
+title DOS工具箱 - %system%%gxflag%
 cls
 echo                                     菜单 - 第7页
 echo 现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
@@ -685,9 +685,9 @@ color %color%%color1%
 if exist %temp%\dostoolupdate (
 for /f "tokens=*" %%a in (%temp%\dostoolupdate) do (
 set /a gxjg=%%a-!ver!
-if !gxjg! gtr 0 (set flag= - 检查到更新版本: %%a))
+if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a))
 del /f /q %temp%\dostoolupdate)
-title DOS工具箱 - %system%%flag%
+title DOS工具箱 - %system%%gxflag%
 cls
 echo                                     菜单 - 第8页
 echo 现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
@@ -1047,7 +1047,7 @@ set jiami=
 set/p jiami=拖动需要加密的文件到此窗口:
 set jiami="%jiami:|=%"
 if /i !jiami!=="e" goto batjiami
-for /f "delims=" %%a in ('"echo %jiami%"') do (set %jiami%="%%~a")
+if "%jiami:~0,1%%jiami:~-1%" neq """" for /f "delims=" %%a in ('"echo %jiami%"') do (set %jiami%="%%~a")
 :batpd
 cls
 for /f "delims=" %%a in ("%jiami%") do set jmdx=%%~za
@@ -1093,7 +1093,7 @@ set jiemi=
 set/p jiemi=拖动需要解密的文件到此窗口:
 set jiemi="%jiemi:|=%"
 if /i !jiemi!=="e" goto batjiami
-for /f "delims=" %%a in ('"echo %jiemi%"') do (set %jiemi%="%%~a")
+if "%jiemi:~0,1%%jiemi:-1%" neq """" for /f "delims=" %%a in ('"echo %jiemi%"') do (set %jiemi%="%%~a")
 :jiemipause
 for /f "delims=" %%f in ("%jiemi%") do if %%~xf==.bat set geshi=bat&set wjm=%%~nf&goto batjiami(2)(1)
 for /f "delims=" %%f in ("%jiemi%") do if %%~xf==.txt set geshi=txt&set wjm=%%~nf&goto batjiami(2)(1)
@@ -1152,7 +1152,7 @@ set jiami2=
 set/p jiami2=拖动需要加密的文件到此窗口:
 set jiami2="%jiami2:|=%"
 if /i !jiami2!=="e" goto batjiami
-for /f "delims=" %%a in ('"echo %jiami2%"') do (set %jiami2%="%%~a")
+if "%jiami2:~0,1%%jiami2:-1%" neq """" for /f "delims=" %%a in ('"echo %jiami2%"') do (set %jiami2%="%%~a")
 :jiami2pause
 for /f "delims=" %%g in ("%jiami2%") do if %%~xg==.bat set geshi=bat&set wjm=%%~ng&goto jiami2(1)
 for /f "delims=" %%g in ("%jiami2%") do if %%~xg==.txt set geshi=txt&set wjm=%%~ng&goto jiami2(1)
@@ -1600,7 +1600,7 @@ set/p size=设置休眠文件占用总内存比例(40~100)(默认100)(e=返回):
 set size="%size:|=%"
 if /i !size!=="e" goto guanji
 if /i !size!=="|=" set size=100&goto xm
-for /f "delims=" %%a in ('"echo %size%"') do (set %size%="%%~a")
+if "%size:~0,1%%size:~-1%" neq """" for /f "delims=" %%a in ('"echo %size%"') do (set %size%="%%~a")
 if !size! geq 40 if !size! leq 100 goto xm
 echo 请输入正确的选项！
 ping/n 2 0.0>nul
@@ -2045,7 +2045,7 @@ goto 28(2)
 :28-1
 dir /ad "!caozuo!">nul 2>nul||echo 路径 !caozuo! 不是一个文件夹&&timeout /t 2 /nobreak>nul&&goto 28
 echo 正在搜索空文件夹...     文件越多搜索时间越长
-for /f "delims=" %%a in ('"echo %caozuo%"') do (set %caozuo%="%%~a")
+if "%caozuo:~0,1%%caozuo:~-1%" neq """" for /f "delims=" %%a in ('"echo %caozuo%"') do (set %caozuo%="%%~a")
 %flag%for /f "delims=" %%o in ('"dir/a/s/b/ad-l %caozuo%|sort/r"') do rd/q "%%o"2>nul&&echo 已删除空文件夹%%o
 ::%flag1%for /f "delims=" %%o in ('""%EverythingInstallPath%\es.exe" -sort path-descending /ad-l %caozuo%"') do rd/q "%%o"2>nul&&echo 已删除空文件夹%%o
 :loop2
@@ -2371,7 +2371,7 @@ set/p dsyxmc=请指定任务名称:
 echo _______________________________________________________________________________
 set dsyxlj=
 set/p dsyxlj=请拖动需要定时运行的文件到此窗口:
-for /f "delims=" %%a in ('"echo %dsyxlj%"') do (set %dsyxlj%="%%~a")
+if "%dsyxlj:~0,1%%dsyxlj:~-1%" neq """" for /f "delims=" %%a in ('"echo %dsyxlj%"') do (set %dsyxlj%="%%~a")
 echo _______________________________________________________________________________
 set dsyxrq=
 set/p dsyxrq=请设置提醒日期(格式: yyyy/mm/dd 例如2015/08/05):
@@ -2599,7 +2599,7 @@ del/f/q %systemdrive%\windows\temp.vbs
 goto vbsjsq
 :guanyu
 setlocal enabledelayedexpansion
-title 关于DOS工具箱 - %system%%flag%
+title 关于DOS工具箱 - %system%%gxflag%
 if %daxiao%==%versize% set daxiao1=%daxiao%字节
 if %daxiao% neq %versize% set daxiao1=%daxiao%字节  (文件大小异常,可能已被修改)
 set dosjssj=%time%
@@ -2626,7 +2626,7 @@ echo F=显示下个文件,Q=退出,等号显示行数,空格显示下一页,回车显示下一行
 echo _______________________________________________________________________________
 set wenben=
 set/p wenben=拖动需要显示的文件到此窗口:
-for /f "delims=" %%a in ('"echo %wenben%"') do (set %wenben%="%%~a")
+if "%wenben:~0,1%%wenben:~-1%" neq """" for /f "delims=" %%a in ('"echo %wenben%"') do (set %wenben%="%%~a")
 echo _______________________________________________________________________________
 more/e/p "%wenben%"
 echo _______________________________________________________________________________
@@ -2674,7 +2674,7 @@ title NTFS解压 - %system%
 cls
 set jieya=
 set/p jieya=拖动需要解压的文件到此窗口:
-for /f "delims=" %%a in ('"echo %jieya%"') do (set %jieya%="%%~a")
+if "%jieya:~0,1%%jieya:~-1%" neq """" for /f "delims=" %%a in ('"echo %jieya%"') do (set %jieya%="%%~a")
 echo _______________________________________________________________________________
 compact /u /a /i /f "%jieya%"
 echo _______________________________________________________________________________
@@ -2685,7 +2685,7 @@ title NTFS压缩 - %system%
 cls
 set yasuo=
 set/p yasuo=拖动需要压缩的文件到此窗口:
-for /f "delims=" %%a in ('"echo %yasuo%"') do (set %yasuo%="%%~a")
+if "%yasuo:~0,1%%yasuo:~-1%" neq """" for /f "delims=" %%a in ('"echo %yasuo%"') do (set %yasuo%="%%~a")
 echo _______________________________________________________________________________
 compact /c /a /i /f "%yasuo%"
 echo _______________________________________________________________________________
@@ -2696,7 +2696,7 @@ title NTFS解压文件夹 - %system%
 cls
 set jieya=
 set/p jieya=拖动需要解压的文件夹到此窗口:
-for /f "delims=" %%a in ('"echo %jieya%"') do (set %jieya%="%%~a")
+if "%jieya:~0,1%" neq """" for /f "delims=" %%a in ('"echo %jieya%"') do (set %jieya%="%%~a")
 echo _______________________________________________________________________________
 compact /u /a /i /f /s:"%jieya%"
 echo _______________________________________________________________________________
@@ -2707,7 +2707,7 @@ title NTFS压缩文件夹 - %system%
 cls
 set jieya=
 set/p jieya=拖动需要压缩的文件夹到此窗口:
-for /f "delims=" %%a in ('"echo %jieya%"') do (set %jieya%="%%~a")
+if "%jieya:~0,1%%jieya:~-1%" neq """" for /f "delims=" %%a in ('"echo %jieya%"') do (set %jieya%="%%~a")
 echo _______________________________________________________________________________
 compact /c /a /i /f /s:"%jieya%"
 echo _______________________________________________________________________________
@@ -2720,7 +2720,7 @@ echo 此功能只能用于NTFS分区
 echo _______________________________________________________________________________
 set ntfswjqx=
 set/p ntfswjqx=拖动需要获取所有权限的文件或者文件夹到此窗口:
-for /f "delims=" %%a in ('"echo %ntfswjqx%"') do (set %ntfswjqx%="%%~a")
+if "%ntfswjqx:~0,1%%ntfsjqx:~-1%" neq """" for /f "delims=" %%a in ('"echo %ntfswjqx%"') do (set %ntfswjqx%="%%~a")
 echo _______________________________________________________________________________
 attrib -s -h -r "%ntfswjqx%" 2>nul
 takeown/f "%ntfswjqx%" 2>nul
@@ -2783,7 +2783,7 @@ set dx=0
 cls
 set batfx=
 set/p batfx=拖动要分析的文件到此窗口:
-for /f "delims=" %%a in ('"echo %batfx%"') do (set %batfx%="%%~a")
+if "%batfx:~0,1%%batfx:~-1%" neq """" for /f "delims=" %%a in ('"echo %batfx%"') do (set %batfx%="%%~a")
 echo _______________________________________________________________________________
 find /n /i "del" "%batfx%"&&set/a dx=%dx%+1
 find /n /i "rd" "%batfx%"&&set/a dx=%dx%+1
@@ -2822,7 +2822,7 @@ title 修复已损坏的文件 - %system%
 cls
 set xfwj=
 set/p xfwj=拖动要修复的文件到此窗口:
-for /f "delims=" %%a in ('"echo %xwfj%"') do (set %xfwj%="%%~a")
+if "%xfwj:~0,1%%xfwj:~-1%" neq """" for /f "delims=" %%a in ('"echo %xwfj%"') do (set %xfwj%="%%~a")
 echo _______________________________________________________________________________
 recover "%xfwj%"
 echo _______________________________________________________________________________
@@ -2842,7 +2842,7 @@ if exist "%rarpd%" (goto rarjs) else (echo 没有安装WinRAR.按任意键返回菜单&pause
 :rarjs
 cls
 set/p yswjlj=拖动要破解的压缩包到此窗口(e=返回菜单):
-for /f "delims=" %%a in ('"echo %yswjlj%"') do (set %yswjlj%="%%~a")
+if "%yswjlj:~0,1%%yswjlj:~-1%" neq """" for /f "delims=" %%a in ('"echo %yswjlj%"') do (set %yswjlj%="%%~a")
 for /f "delims=" %%a in ("%yswjlj%") do if %%~xa==.7z goto rarwjok1
 for /f "delims=" %%a in ("%yswjlj%") do if %%~xa==.rar goto rarwjok
 for /f "delims=" %%a in ("%yswjlj%") do if %%~xa==.zip goto rarwjok1
@@ -2851,14 +2851,14 @@ echo 无效的文件格式！&ping/n 2 0.0>nul
 goto 46
 :rarwjok
 set/p pjzd=拖动字典文件到此窗口(e=返回菜单):
-for /f "delims=" %%a in ('"echo %pjzd%"') do (set %pjzd%="%%~a")
+if "%pjzd:~0,1%%pjzd:~-1%" neq """" for /f "delims=" %%a in ('"echo %pjzd%"') do (set %pjzd%="%%~a")
 for /f "delims=" %%a in ("%pjzd%") do if %%~xa==.txt goto kspj
 if /i "%pjzd%"=="e" goto f
 echo 不是txt文件！&ping/n 2 0.0>nul
 goto 46
 :rarwjok1
 set/p pjzd=拖动字典文件到此窗口(e=返回菜单):
-for /f "delims=" %%a in ('"echo %pjzd%"') do (set %pjzd%="%%~a")
+if "%pjzd:~0,1%%pjzd:~-1%" neq """" for /f "delims=" %%a in ('"echo %pjzd%"') do (set %pjzd%="%%~a")
 for /f "delims=" %%a in ("%pjzd%") do if %%~xa==.txt goto kspj1
 if /i "%pjzd%"=="e" goto f
 echo 不是txt文件！&ping/n 2 0.0>nul
@@ -2989,7 +2989,7 @@ echo 拖动要反编译的chm文件到此窗口
 set/p chmlj=反编译后的文件保存在桌面(e=返回):
 set chmlj="%chmlj:|=%"
 if /i !chmlj!=="e" goto f
-for /f "delims=" %%a in ('"echo %chmlj%"') do (set %chmlj%="%%~a")
+if "%chmlj:~0,1%%chmlj:~-1%" neq """" for /f "delims=" %%a in ('"echo %chmlj%"') do (set %chmlj%="%%~a")
 for /f "delims=" %%a in ("%chmlj%") do (
 if /i not %%~xa==.chm goto nochm
 set chmcglj=
@@ -3140,7 +3140,7 @@ title 创建指定文件的快捷方式到桌面 - %system%
 set kjfs=
 set/p kjfs=请拖动目标文件到此窗口:
 if "!kjfs!"=="" goto 55(1)
-for /f "delims=" %%a in ('"echo %kjfs%"') do (set %kjfs%="%%~a")
+if "%kjfs:~0,1%%kjfs:~-1%" neq """" for /f "delims=" %%a in ('"echo %kjfs%"') do (set %kjfs%="%%~a")
 for /f "delims=" %%a in ("%kjfs%") do set kjfsmc=%%~na
 mshta VBScript:Execute("Set a=CreateObject(""WScript.Shell""):Set b=a.CreateShortcut(a.SpecialFolders(""Desktop"") & ""\%kjfsmc%.lnk""):b.TargetPath=""%kjfs%"":b.WorkingDirectory=""%~dp0"":b.Save:close")
 :55(1)
@@ -3168,8 +3168,8 @@ set swjj=
 set cwjj=
 set/p swjj=输入要链接的文件夹路径:
 set/p cwjj=输入链接文件夹的输出路径:
-for /f "delims=" %%a in ('"echo %swjj%"') do (set %swjj%="%%~a")
-for /f "delims=" %%a in ('"echo %cwjj%"') do (set %cwjj%="%%~a")
+if "%swjj:~0,1%%swjj:~-1%" neq """" for /f "delims=" %%a in ('"echo %swjj%"') do (set %swjj%="%%~a")
+if "%cwjj:~0,1%%cwjj:~-1%" neq """" for /f "delims=" %%a in ('"echo %cwjj%"') do (set %cwjj%="%%~a")
 mklink /j %cwjj% %swjj%
 echo _______________________________________________________________________________
 echo 按任意键返回菜单&pause>nul
@@ -3184,7 +3184,7 @@ cls
 title 解除Streams文件锁定 - %system%
 set jcwjsd=
 set/p jcwjsd=拖动目标文件到此窗口:
-for /f "delims=" %%a in ('"echo %jcwjsd%"') do (set %jcwjsd%="%%~a")
+if "%jcwjsd:~0,1%%jcwjsd:~-1%" neq """" for /f "delims=" %%a in ('"echo %jcwjsd%"') do (set %jcwjsd%="%%~a")
 echo>"%jcwjsd%:Zone.Identifier"
 echo 操作完成
 echo _______________________________________________________________________________
@@ -3343,7 +3343,7 @@ set/p basebm=输入要解码的字符串或文件路径:
 if "!basebm!"=="" goto 63-1
 if not exist "!basebm!" (echo %basebm%>%temp%\tmp
 certutil -decode -f %temp%\tmp %temp%\codetmp>nul&goto 63-11)
-for /f "delims=" %%a in ('"echo %basebm%"') do (set %basebm%="%%~a")
+if "%basebm:~0,1%%basebm:~-1%" neq """" for /f "delims=" %%a in ('"echo %basebm%"') do (set %basebm%="%%~a")
 dir/ad "%basebm%" >nul 2>nul&&echo 不能解码文件夹||goto 63-12
 ping/n 2 0.0>nul
 goto 63-1
@@ -3379,7 +3379,7 @@ set/p basebm=输入要编码的字符串或文件路径:
 if "!basebm!"=="" goto 63-2
 if not exist "!basebm!" (echo %basebm%>%temp%\tmp
 certutil -encode -f %temp%\tmp %temp%\codetmp>nul&goto 63-21)
-for /f "delims=" %%a in ('"echo %basebm%"') do (set %basebm%="%%~a")
+if "%basebm:~0,1%%basebm:~-1%" neq """" for /f "delims=" %%a in ('"echo %basebm%"') do (set %basebm%="%%~a")
 dir/ad "%basebm%" >nul 2>nul&&echo 不能编码文件夹||goto 63-22
 ping/n 2 0.0>nul
 goto 63-2
@@ -3795,7 +3795,7 @@ set url=
 set /p url=输入文件路径(e=返回菜单):
 if not defined url goto 66
 set url="%url:|=%"
-for /f "delims=" %%a in ('"echo %url%"') do (set %url%="%%~a")
+if "%url:~0,1%%url:~-1%" neq """" for /f "delims=" %%a in ('"echo %url%"') do (set %url%="%%~a")
 if /i !url! equ "e" goto h 
 if not exist "!url!" echo 文件不存在&timeout /t 2 /nobreak>nul&goto 66
 dir /ad !url!>nul 2>nul&&echo 路径 !url! 不是一个文件&&timeout /t 2 /nobreak>nul&&goto 66
@@ -3918,7 +3918,7 @@ set gllj=
 set /p gllj=输入要关联的路径:
 if not defined gllj goto 68
 set gllj="%gllj:|=%"
-for /f "delims=" %%a in ('"echo %gllj%"') do (set %gllj%="%%~a")
+if "%gllj:~0,1%%gllj:~-1%" neq """" for /f "delims=" %%a in ('"echo %gllj%"') do (set %gllj%="%%~a")
 if /i !gglj! equ "" goto h 
 if not exist "!gllj!" echo 路径不存在&timeout /t 2 /nobreak>nul&goto 68(1)
 dir /ad !gllj!>nul 2>nul||echo 路径 !gllj! 不是一个文件夹&&timeout /t 2 /nobreak>nul&&goto 68(1)
