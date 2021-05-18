@@ -68,7 +68,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20210518
-set versize=165593
+set versize=165595
 set gxflag=
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
@@ -3962,7 +3962,7 @@ goto :eof
 :update
 cls
 title 更新DOS工具箱 - 当前版本: %ver% - %system%
-if defined flag goto startupdate
+if defined gxflag goto startupdate
 echo 检查最新版本...
 timeout /t 2 /nobreak>nul
 if exist %temp%\dostoolupdate del /f /q %temp%\dostoolupdate>nul 2>nul
