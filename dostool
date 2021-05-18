@@ -24,7 +24,12 @@ if %errorlevel%==0 goto ks
 if /i "%systemdrive%" equ "x:" goto ks
 verify on
 mshta vbscript:createobject("shell.application").shellexecute(""%0"","-ks",,"runas",1)(window.close)
-powershell -w hidden -c (new-object System.Net.WebClient).DownloadFile( 'https://raw.githubusercontent.com/Trustedinstall/dostool/main/update','%temp%\dostoolupdate')
+set xzflag1=
+set xzflag=::
+if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
+%xzflag%cd /d %temp%
+%xzflag%powershell -w hidden -c curl -# -o dostoolupdate https://cdn.jsdelivr.net/gh/Trustedinstall/dostool@main/update
+%xzflag1%powershell -w hidden -c (new-object System.Net.WebClient).DownloadFile( 'https://cdn.jsdelivr.net/gh/Trustedinstall/dostool@main/update','%temp%\dostoolupdate')
 exit
 ::if %errorlevel% neq 0 (echo Set UAC = CreateObject^("Shell.Application"^)>"%temp%\tmp.vbs"
 ::echo UAC.ShellExecute %0,"","","runas",^1>>"%temp%\tmp.vbs"
@@ -63,7 +68,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20210518
-set versize=164307
+set versize=165586
 set gxflag=
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
@@ -3816,7 +3821,13 @@ cls
 title 显示货币汇率 - %system%
 set mainurl=https://api.coincap.io/v2/rates/
 echo 下载汇率文件...
-bitsadmin /transfer 下载汇率文件... /priority FOREGROUND %mainurl%chinese-yuan-renminbi %temp%\cny.json %mainurl%dogecoin %temp%\doge.json %mainurl%bitcoin %temp%\btc.json %mainurl%ethereum %temp%\etc.json %mainurl%gold-ounce %temp%\au.json %mainurl%silver-ounce %temp%\ag.json %mainurl%euro %temp%\eur.json %mainurl%british-pound-sterling %temp%\gbp.json %mainurl%japanese-yen %temp%\jpy.json %mainurl%hong-kong-dollar %temp%\hkd.json %mainurl%new-taiwan-dollar %temp%\twd.json
+set xzflag=::
+set xzflag1=
+if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
+%xzflag%pushd %temp%
+%xzflag%curl -# -o cny.json %mainurl%chinese-yuan-renminbi -o doge.json %mainurl%dogecoin -o btc.json %mainurl%bitcoin -o etc.json %mainurl%ethereum -o au.json %mainurl%gold-ounce -o ag.json %mainurl%silver-ounce -o eur.json %mainurl%euro -o gbp.json %mainurl%british-pound-sterling -o jpy.json %mainurl%japanese-yen -o hkd.json %mainurl%hong-kong-dollar -o twd.json %mainurl%new-taiwan-dollar
+%xzflag%popd
+%xzflag1%bitsadmin /transfer 下载汇率文件... /priority FOREGROUND %mainurl%chinese-yuan-renminbi %temp%\cny.json %mainurl%dogecoin %temp%\doge.json %mainurl%bitcoin %temp%\btc.json %mainurl%ethereum %temp%\etc.json %mainurl%gold-ounce %temp%\au.json %mainurl%silver-ounce %temp%\ag.json %mainurl%euro %temp%\eur.json %mainurl%british-pound-sterling %temp%\gbp.json %mainurl%japanese-yen %temp%\jpy.json %mainurl%hong-kong-dollar %temp%\hkd.json %mainurl%new-taiwan-dollar %temp%\twd.json
 cls
 echo 处理汇率文件...
 for /f "delims=:} tokens=7" %%a in (%temp%\cny.json) do (set cnytousd=%%a)
@@ -3955,8 +3966,14 @@ if defined flag goto startupdate
 echo 检查最新版本...
 timeout /t 2 /nobreak>nul
 if exist %temp%\dostoolupdate del /f /q %temp%\dostoolupdate>nul 2>nul
-certutil -urlcache -split -f https://raw.githubusercontent.com/Trustedinstall/dostool/main/update %temp%\dostoolupdate
-::bitsadmin /transfer 检查最新版本... /priority FOREGROUND https://raw.githubusercontent.com/Trustedinstall/dostool/main/update %temp%\dostoolupdate
+set xzflag=::
+set xzflag1=
+if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
+%xzflag%pushd %temp%
+%xzflag%curl -# -o dostoolupdate https://cdn.jsdelivr.net/gh/Trustedinstall/dostool@main/update
+%xzflag%popd
+%xzflag1%certutil -urlcache -split -f https://cdn.jsdelivr.net/gh/Trustedinstall/dostool@main/update %temp%\dostoolupdate
+::bitsadmin /transfer 检查最新版本... /priority FOREGROUND https://cdn.jsdelivr.net/gh/Trustedinstall/dostool@main/update %temp%\dostoolupdate
 cls
 for /f "tokens=*" %%a in (%temp%\dostoolupdate) do (
 set /a gxjg=%%a-!ver!
@@ -3968,8 +3985,15 @@ goto %tzwz%
 :startupdate
 timeout /t 2 /nobreak>nul
 if exist %temp%\dostoolupdate del /f /q %temp%\dostoolupdate>nul 2>nul
-certutil -urlcache -split -f https://raw.githubusercontent.com/Trustedinstall/dostool/main/DOS工具箱.bat %weizhi%&start cmd /c %0&exit
-::bitsadmin /transfer 下载更新中... /priority FOREGROUND https://raw.githubusercontent.com/Trustedinstall/dostool/main/DOS工具箱.bat %weizhi%&start cmd /c %0&exit
+set xzflag=::
+set xzflag1=
+if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
+%xzflag%pushd %temp%
+%xzflag%curl -# -O https://cdn.jsdelivr.net/gh/Trustedinstall/dostool@main/dostool
+%xzflag%popd
+%xzflag%copy /z %temp%\dostool %weizhi%&start cmd /c %0&exit
+%xzflag1%certutil -urlcache -split -f https://cdn.jsdelivr.net/gh/Trustedinstall/dostool@main/dostool %weizhi%&start cmd /c %0&exit
+::bitsadmin /transfer 下载更新中... /priority FOREGROUND https://cdn.jsdelivr.net/gh/Trustedinstall/dostool@main/dostool %weizhi%&start cmd /c %0&exit
 :sjc
 set kssj=%1
 set jssj=%2
