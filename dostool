@@ -28,7 +28,7 @@ set xzflag1=
 set xzflag=::
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag%cd /d %temp%
-%xzflag%powershell -w hidden -c curl -# -o dostoolupdate https://cdn.jsdelivr.net/gh/Trustedinstall/dostool@main/update
+%xzflag%start /min cmd /c curl -# -o dostoolupdate https://cdn.jsdelivr.net/gh/Trustedinstall/dostool@main/update
 %xzflag1%powershell -w hidden -c (new-object System.Net.WebClient).DownloadFile( 'https://cdn.jsdelivr.net/gh/Trustedinstall/dostool@main/update','%temp%\dostoolupdate')
 exit
 ::if %errorlevel% neq 0 (echo Set UAC = CreateObject^("Shell.Application"^)>"%temp%\tmp.vbs"
@@ -68,7 +68,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20210518
-set versize=165586
+set versize=165580
 set gxflag=
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
