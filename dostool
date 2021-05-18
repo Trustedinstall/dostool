@@ -68,7 +68,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20210518
-set versize=165555
+set versize=165577
 set gxflag=
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
@@ -3983,6 +3983,7 @@ echo ___________________________________________________________________________
 echo 按任意键返回菜单&pause>nul
 goto %tzwz%
 :startupdate
+echo 正在下载更新...
 timeout /t 2 /nobreak>nul
 if exist %temp%\dostoolupdate del /f /q %temp%\dostoolupdate>nul 2>nul
 set xzflag=::
