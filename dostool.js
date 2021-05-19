@@ -28,8 +28,8 @@ set xzflag1=
 set xzflag=::
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag%cd /d %temp%
-%xzflag%start /min cmd /c curl -# -o dostoolupdate https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update
-%xzflag1%powershell -w hidden -c (new-object System.Net.WebClient).DownloadFile( 'https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update','%temp%\dostoolupdate')
+%xzflag%start /min cmd /c curl -# -o dostoolupdate https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.min.js
+%xzflag1%powershell -w hidden -c (new-object System.Net.WebClient).DownloadFile( 'https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.min.js','%temp%\dostoolupdate')
 exit
 ::if %errorlevel% neq 0 (echo Set UAC = CreateObject^("Shell.Application"^)>"%temp%\tmp.vbs"
 ::echo UAC.ShellExecute %0,"","","runas",^1>>"%temp%\tmp.vbs"
@@ -67,8 +67,8 @@ for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
-set ver=20210518
-set versize=165637
+set ver=20210519
+set versize=165693
 set gxflag=
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
@@ -3970,10 +3970,10 @@ set xzflag=::
 set xzflag1=
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag%pushd %temp%
-%xzflag%curl -# -o dostoolupdate https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update
+%xzflag%curl -# -o dostoolupdate https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.min.js
 %xzflag%popd
-%xzflag1%certutil -urlcache -split -f https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update %temp%\dostoolupdate
-::bitsadmin /transfer 检查最新版本... /priority FOREGROUND https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update %temp%\dostoolupdate
+%xzflag1%certutil -urlcache -split -f https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.min.js %temp%\dostoolupdate
+::bitsadmin /transfer 检查最新版本... /priority FOREGROUND https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.min.js %temp%\dostoolupdate
 cls
 for /f "tokens=*" %%a in (%temp%\dostoolupdate) do (
 set /a gxjg=%%a-!ver!
@@ -3991,11 +3991,11 @@ set xzflag=::
 set xzflag1=
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag%pushd %temp%
-%xzflag%curl -# -O https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool
+%xzflag%curl -# -O https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.min.js
 %xzflag%popd
 %xzflag%copy /z %temp%\dostool %weizhi%&start cmd /c %0&exit
-%xzflag1%certutil -urlcache -split -f https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool %weizhi%&start cmd /c %0&exit
-::bitsadmin /transfer 下载更新中... /priority FOREGROUND https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool %weizhi%&start cmd /c %0&exit
+%xzflag1%certutil -urlcache -split -f https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.min.js %weizhi%&start cmd /c %0&exit
+::bitsadmin /transfer 下载更新中... /priority FOREGROUND https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.min.js %weizhi%&start cmd /c %0&exit
 :sjc
 set kssj=%1
 set jssj=%2
