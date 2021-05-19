@@ -68,7 +68,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20210518
-set versize=165577
+set versize=165637
 set gxflag=
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
@@ -3986,6 +3986,7 @@ goto %tzwz%
 echo 正在下载更新...
 timeout /t 2 /nobreak>nul
 if exist %temp%\dostoolupdate del /f /q %temp%\dostoolupdate>nul 2>nul
+if exist %temp%\dostool del /f /q %temp%\dostool>nul 2>nul
 set xzflag=::
 set xzflag1=
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
