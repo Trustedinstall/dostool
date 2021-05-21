@@ -68,7 +68,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20210521
-set versize=166726
+set versize=166739
 set gxflag=
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
@@ -3828,7 +3828,7 @@ goto h
 cls
 title 显示货币汇率 - %system%
 set mainurl=https://api.coincap.io/v2/rates/
-echo 下载汇率文件...
+echo 下载汇率文件(总共7个文件)...
 set xzflag=::
 set xzflag1=
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
