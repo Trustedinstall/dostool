@@ -28,8 +28,8 @@ set xzflag1=
 set xzflag=::
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag%cd /d %temp%
-%xzflag%start /min cmd /c curl -# -o dostoolupdate https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.min.js
-%xzflag1%powershell -w hidden -c (new-object System.Net.WebClient).DownloadFile( 'https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.min.js','%temp%\dostoolupdate')
+%xzflag%start /min cmd /c curl -# -o dostoolupdate https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js
+%xzflag1%powershell -w hidden -c (new-object System.Net.WebClient).DownloadFile( 'https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js','%temp%\dostoolupdate')
 exit
 ::if %errorlevel% neq 0 (echo Set UAC = CreateObject^("Shell.Application"^)>"%temp%\tmp.vbs"
 ::echo UAC.ShellExecute %0,"","","runas",^1>>"%temp%\tmp.vbs"
@@ -67,8 +67,8 @@ for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
-set ver=20210519
-set versize=165693
+set ver=20210521
+set versize=166712
 set gxflag=
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
@@ -207,9 +207,10 @@ if %color%==4 set color=9
 if %color%==6 set color=f&set color1=1
 color %color%%color1%
 if exist %temp%\dostoolupdate (
-for /f "tokens=*" %%a in (%temp%\dostoolupdate) do (
+for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
 set /a gxjg=%%a-!ver!
-if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a))
+if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a
+for /f "delims=: tokens=2" %%b in (%temp%\dostoolupdate) do (set doshash="%%b")))
 del /f /q %temp%\dostoolupdate)
 title DOS工具箱 - %system%%gxflag%
 cls
@@ -274,9 +275,10 @@ if %color%==4 set color=9
 if %color%==6 set color=f&set color1=1
 color %color%%color1%
 if exist %temp%\dostoolupdate (
-for /f "tokens=*" %%a in (%temp%\dostoolupdate) do (
+for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
 set /a gxjg=%%a-!ver!
-if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a))
+if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a
+for /f "delims=: tokens=2" %%b in (%temp%\dostoolupdate) do (set doshash="%%b")))
 del /f /q %temp%\dostoolupdate)
 title DOS工具箱 - %system%%gxflag%
 cls
@@ -343,9 +345,10 @@ if %color%==4 set color=9
 if %color%==6 set color=f&set color1=1
 color %color%%color1%
 if exist %temp%\dostoolupdate (
-for /f "tokens=*" %%a in (%temp%\dostoolupdate) do (
+for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
 set /a gxjg=%%a-!ver!
-if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a))
+if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a
+for /f "delims=: tokens=2" %%b in (%temp%\dostoolupdate) do (set doshash="%%b")))
 del /f /q %temp%\dostoolupdate)
 title DOS工具箱 - %system%%gxflag%
 cls
@@ -412,9 +415,10 @@ if %color%==4 set color=9
 if %color%==6 set color=f&set color1=1
 color %color%%color1%
 if exist %temp%\dostoolupdate (
-for /f "tokens=*" %%a in (%temp%\dostoolupdate) do (
+for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
 set /a gxjg=%%a-!ver!
-if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a))
+if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a
+for /f "delims=: tokens=2" %%b in (%temp%\dostoolupdate) do (set doshash="%%b")))
 del /f /q %temp%\dostoolupdate)
 title DOS工具箱 - %system%%gxflag%
 cls
@@ -481,9 +485,10 @@ if %color%==4 set color=9
 if %color%==6 set color=f&set color1=1
 color %color%%color1%
 if exist %temp%\dostoolupdate (
-for /f "tokens=*" %%a in (%temp%\dostoolupdate) do (
+for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
 set /a gxjg=%%a-!ver!
-if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a))
+if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a
+for /f "delims=: tokens=2" %%b in (%temp%\dostoolupdate) do (set doshash="%%b")))
 del /f /q %temp%\dostoolupdate)
 title DOS工具箱 - %system%%gxflag%
 cls
@@ -550,9 +555,10 @@ if %color%==4 set color=9
 if %color%==6 set color=f&set color1=1
 color %color%%color1%
 if exist %temp%\dostoolupdate (
-for /f "tokens=*" %%a in (%temp%\dostoolupdate) do (
+for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
 set /a gxjg=%%a-!ver!
-if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a))
+if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a
+for /f "delims=: tokens=2" %%b in (%temp%\dostoolupdate) do (set doshash="%%b")))
 del /f /q %temp%\dostoolupdate)
 title DOS工具箱 - %system%%gxflag%
 cls
@@ -619,9 +625,10 @@ if %color%==4 set color=9
 if %color%==6 set color=f&set color1=1
 color %color%%color1%
 if exist %temp%\dostoolupdate (
-for /f "tokens=*" %%a in (%temp%\dostoolupdate) do (
+for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
 set /a gxjg=%%a-!ver!
-if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a))
+if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a
+for /f "delims=: tokens=2" %%b in (%temp%\dostoolupdate) do (set doshash="%%b")))
 del /f /q %temp%\dostoolupdate)
 title DOS工具箱 - %system%%gxflag%
 cls
@@ -688,9 +695,10 @@ if %color%==4 set color=9
 if %color%==6 set color=f&set color1=1
 color %color%%color1%
 if exist %temp%\dostoolupdate (
-for /f "tokens=*" %%a in (%temp%\dostoolupdate) do (
+for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
 set /a gxjg=%%a-!ver!
-if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a))
+if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a
+for /f "delims=: tokens=2" %%b in (%temp%\dostoolupdate) do (set doshash="%%b")))
 del /f /q %temp%\dostoolupdate)
 title DOS工具箱 - %system%%gxflag%
 cls
@@ -3970,12 +3978,13 @@ set xzflag=::
 set xzflag1=
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag%pushd %temp%
-%xzflag%curl -# -o dostoolupdate https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.min.js
+%xzflag%curl -# -o dostoolupdate https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js
 %xzflag%popd
-%xzflag1%certutil -urlcache -split -f https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.min.js %temp%\dostoolupdate
-::bitsadmin /transfer 检查最新版本... /priority FOREGROUND https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.min.js %temp%\dostoolupdate
+%xzflag1%certutil -urlcache -split -f https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js %temp%\dostoolupdate
+::bitsadmin /transfer 检查最新版本... /priority FOREGROUND https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js %temp%\dostoolupdate
 cls
-for /f "tokens=*" %%a in (%temp%\dostoolupdate) do (
+for /f "delims=: tokens=2" %%a in (%temp%\dostoolupdate) do (set doshash="%%a")
+for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
 set /a gxjg=%%a-!ver!
 if !gxjg! gtr 0 (echo 检查到更新版本: %%a&goto startupdate) else (echo 没有检查到更新版本))
 del /f /q %temp%\dostoolupdate>nul 2>nul
@@ -3991,11 +4000,16 @@ set xzflag=::
 set xzflag1=
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag%pushd %temp%
-%xzflag%curl -# -O https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.min.js
+%xzflag%curl -# -O https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js
 %xzflag%popd
-%xzflag%copy /z %temp%\dostool %weizhi%&start cmd /c %0&exit
-%xzflag1%certutil -urlcache -split -f https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.min.js %weizhi%&start cmd /c %0&exit
-::bitsadmin /transfer 下载更新中... /priority FOREGROUND https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.min.js %weizhi%&start cmd /c %0&exit
+%xzflag%call :hash %temp%\dostool sha1
+%xzflag%if "%hash%" equ %doshash% copy /z /y %temp%\dostool %weizhi%&start cmd /c %0&exit
+%xzflag1%certutil -urlcache -split -f https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js %temp%\dostool
+%xzflag1%call :hash %temp%\dostool sha1
+%xzflag1%if "%hash%" equ %doshash% copy /z /y %temp%\dostool %weizhi%&start cmd /c %0&exit
+echo 文件无效&timeout /t 2 /nobreak>nul
+goto %tzwz%
+::bitsadmin /transfer 下载更新中... /priority FOREGROUND https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js %weizhi%&start cmd /c %0&exit
 :sjc
 set kssj=%1
 set jssj=%2
