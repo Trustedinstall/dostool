@@ -68,7 +68,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20210523
-set versize=167340
+set versize=167352
 set gxflag=
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
@@ -1236,6 +1236,7 @@ set/p tuichusuijishu=
 set tuichusuijishu="%tuichusuijishu:|=%"
 if /i !tuichusuijishu!=="e" goto b
 if /i !tuichusuijishu!=="|=" goto 15(1)
+goto 15(3)
 :16
 title Çå³ýKHATRA²¡¶¾ - %system%
 cls
