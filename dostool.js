@@ -67,8 +67,8 @@ for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
-set ver=20210521
-set versize=166739
+set ver=20210523
+set versize=167177
 set gxflag=
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
@@ -1525,9 +1525,10 @@ echo [5]开启休眠功能
 echo [6]关闭休眠功能
 echo [7]显示系统上可用的睡眠状态
 echo [8]锁屏
+echo [9]循环显示唤醒计时器与电源请求
 echo [0]返回菜单
 echo _______________________________________________________________________________
-choice /c 123456780 /n /m 请输入你的选择:
+choice /c 1234567890 /n /m 请输入你的选择:
 if "%errorlevel%" equ "1" goto guanji(1)
 if "%errorlevel%" equ "2" goto guanji(2)
 if "%errorlevel%" equ "3" goto guanji(3)
@@ -1536,7 +1537,8 @@ if "%errorlevel%" equ "5" goto guanji(6)
 if "%errorlevel%" equ "6" goto guanji(7)
 if "%errorlevel%" equ "7" goto guanji(8)
 if "%errorlevel%" equ "8" tsdiscon
-if "%errorlevel%" equ "9" goto %tzwz%
+if "%errorlevel%" equ "9" goto guanji-9
+if "%errorlevel%" equ "10" goto %tzwz%
 goto guanji
 set guanjixuanxiang=
 set/p guanjixuanxiang=请输入你的选择:
@@ -1637,6 +1639,16 @@ powercfg -a
 echo _______________________________________________________________________________
 echo 按任意键返回&pause>nul
 goto guanji
+:guanji-9
+title 循环显示唤醒计时器与电源请求 - %system%
+cls
+powercfg /requests
+powercfg /waketimers
+echo _______________________________________________________________________________
+echo 按e返回菜单
+choice /c 1e /t 1 /d 1 >nul
+if "%errorlevel%" equ ="2" goto guanji
+goto guanji-9
 :23
 title DOS任务管理器 - %system%
 cls
@@ -2199,11 +2211,14 @@ for /f "delims== tokens=2" %%a in ('"Wmic Path Win32_NetworkAdapterConfiguration
 echo;
 echo 网关地址:
 for /f "delims== tokens=2" %%a in ('"Wmic Path Win32_NetworkAdapterConfiguration WHERE "IPEnabled^='TRUE'" get defaultipgateway /value"') do (set mrwg=%%a
+set mrwg=!mrwg:~0,-1!
+if "!mrwg!" equ "" goto mrwgtc
 set mrwg=!mrwg:{=!
 set mrwg=!mrwg:}=!
 set mrwg=!mrwg:"=!
 set mrwg=!mrwg:,=	!
 echo !mrwg!)
+:mrwgtc
 echo;
 echo IP:
 for /f "delims== tokens=2" %%a in ('"Wmic Path Win32_NetworkAdapterConfiguration WHERE "IPEnabled^='TRUE'" get ipaddress /value"') do (set ipdz=%%a
