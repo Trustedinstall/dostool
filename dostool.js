@@ -68,7 +68,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20210523
-set versize=167177
+set versize=167340
 set gxflag=
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
@@ -1684,6 +1684,7 @@ echo ___________________________________________________________________________
 echo (e=返回)(f=刷新)
 set jcjs=
 set/p jcjs=输入要结束的进程PID或名称:
+if not defined jcjs goto 23(1)
 set jcjs="%jcjs:|=%"
 if /i !jcjs!=="f" goto 23(1)
 if /i !jcjs!=="e" goto 23
@@ -1697,6 +1698,7 @@ echo ___________________________________________________________________________
 echo (e=返回)(f=刷新)
 set jcfw=
 set/p jcfw=输入要结束的进程PID或名称:
+if not defined jcfw goto 23(2)
 set jcfw="%jcfw:|=%"
 if /i !jcfw!=="f" goto 23(2)
 if /i !jcfw!=="e" goto 23
@@ -1711,6 +1713,7 @@ echo ___________________________________________________________________________
 echo (e=返回)(f=刷新)
 set jclj=
 set/p jclj=输入要显示的进程PID:
+if not defined jclj goto 23(1)
 set jclj="%jclj:|=%"
 if /i !jclj!=="f" goto 23(1)
 if /i !jclj!=="e" goto 23
@@ -1721,6 +1724,7 @@ echo ___________________________________________________________________________
 echo (e=返回)(f=刷新)(d=打开文件位置)
 set jcljxs=
 set/p jcljxs=请输入你的选择:
+if not defined jcljxs goto 23(6)
 set jcljxs="%jcljxs:|=%"
 if /i !jcljxs!=="f" goto 23(6)
 if /i !jcljxs!=="e" goto 23
@@ -1740,6 +1744,7 @@ echo ___________________________________________________________________________
 echo (e=返回)(f=刷新)
 set jcxq=
 set/p jcxq=请输入要显示的进程的PID:
+if not defined jcxq goto 23(10)
 set jcxq="%jcxq:|=%"
 if /i !jcxq!=="e" goto 23
 if /i !jcxq!=="f" goto 23(10)
