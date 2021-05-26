@@ -67,8 +67,8 @@ for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
-set ver=20210523
-set versize=167352
+set ver=20210525
+set versize=167809
 set gxflag=
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
@@ -1718,11 +1718,17 @@ if not defined jclj goto 23(1)
 set jclj="%jclj:|=%"
 if /i !jclj!=="f" goto 23(1)
 if /i !jclj!=="e" goto 23
+tasklist /fi "pid eq %jclj%"|findstr /i "%jclj%"||echo 没有此进程&&timeout /t 2 /nobreak>nul&&goto 23(6)
 cls
 for /f "delims=" %%a in ('"wmic process where processid=!jclj! get /format:value|find /i "executablepath""') do set jclj1=%%a
-echo 文件路径:%jclj1:~15%
+echo 文件路径: %jclj1:~15%
 echo _______________________________________________________________________________
 echo (e=返回)(f=刷新)(d=打开文件位置)
+choice /c efd /n /m 请输入你的选择:
+if "%errorlevel%" equ "1" goto 23(6)
+if "%errorlevel%" equ "2" goto 23
+if "%errorlevel%" equ "3" goto 23(8)
+goto 23(7)
 set jcljxs=
 set/p jcljxs=请输入你的选择:
 if not defined jcljxs goto 23(6)
@@ -1749,48 +1755,52 @@ if not defined jcxq goto 23(10)
 set jcxq="%jcxq:|=%"
 if /i !jcxq!=="e" goto 23
 if /i !jcxq!=="f" goto 23(10)
+tasklist /fi "pid eq %jcxq%"|findstr /i "%jcxq%"||echo 没有此进程&&timeout /t 2 /nobreak>nul&&goto 23(10)
 cls
 echo _______________________________________________________________________________
 set jcmz=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "caption""') do set jcmz=%%a
-echo 进程名称:%jcmz:~8%
+echo 进程名称: %jcmz:~8%
 set jcmlh=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "commandline""') do set jcmlh=%%a
-echo 进程命令行:%jcmlh:~12%
+echo 进程命令行: %jcmlh:~12%
 set jcrq=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "creationdate""') do set jcrq=%%a
-echo 进程启动日期:%jcrq:~13,4%年%jcrq:~17,2%月%jcrq:~19,2%日 %jcrq:~21,2%:%jcrq:~23,2%:%jcrq:~25,2%
+echo 进程启动日期: %jcrq:~13,4%年%jcrq:~17,2%月%jcrq:~19,2%日 %jcrq:~21,2%:%jcrq:~23,2%:%jcrq:~25,2%
 set jclj=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "executablepath""') do set jclj=%%a
-echo 进程路径:"%jclj:~15%"
+echo 进程路径: "%jclj:~15%"
 set jcpid=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "processid""') do set jcpid=%%a
-echo 进程PID:%jcpid:~10%
+echo 进程PID: %jcpid:~10%
 set jchx=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "kernelmodetime""') do set jchx=%%a
-echo 进程核心模式时间:%jchx:~15%
-echo 系统名称:%system% %bit%位
+echo 进程核心模式时间: %jchx:~15%
+echo 系统名称: %system% %bit%位
 set jcymcw=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "pagefaults""') do set jcymcw=%%a
-echo 进程页面错误:%jcymcw:~12%
+echo 进程页面错误: %jcymcw:~12%
 set jctj=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "pagefileusage""') do set jctj=%%a
-echo 进程提交大小:%jctj:~18% KB
+call :dwjs %jctj:~18% 1
+echo 进程提交大小: %size% %dw%
 set jcfid=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "parentprocessid""') do set jcfid=%%a
-echo 进程父系PID:%jcfid:~16%
+echo 进程父系PID: %jcfid:~16%
 set jcfzysy=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "peakpagefileusage""') do set jcfzysy=%%a
-echo 进程峰值页面文件使用:%jcfzysy:~18% KB
+call :dwjs %jcfzysy:~18% 1
+echo 进程峰值页面文件使用: %size% %dw%
 set jcfzgz=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "peakworking""') do set jcfzgz=%%a
-echo 进程峰值工作:%jcfzgz:~19% KB
+call :dwjs %jcfzgz:~19% 1
+echo 进程峰值工作: %size% %dw%
 set jcyxj=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "priority""') do set jcyxj=%%a
-echo 进程优先级:%jcyxj:~9%
+echo 进程优先级: %jcyxj:~9%
 set jchhid=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "sessionid""') do set jchhid=%%a
-echo 进程回话ID:%jchhid:~10%
+echo 进程回话ID: %jchhid:~10%
 tasklist /fi "pid eq %jcxq%" /m
 ver
 echo _______________________________________________________________________________
