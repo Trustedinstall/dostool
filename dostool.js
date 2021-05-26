@@ -68,7 +68,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20210525
-set versize=167809
+set versize=167806
 set gxflag=
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
@@ -3458,7 +3458,7 @@ echo [1]查询8.3短文件名状态
 echo [2]禁止8.3短文件名创建
 echo [0]返回菜单
 echo _______________________________________________________________________________
-choice /c 123450 /n /m 请输入你的选择:
+choice /c 120 /n /m 请输入你的选择:
 if "%errorlevel%" equ "1" goto 64-1
 if "%errorlevel%" equ "2" goto 64-2
 if "%errorlevel%" equ "3" goto h
