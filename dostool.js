@@ -68,7 +68,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20210525
-set versize=167806
+set versize=167875
 set gxflag=
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
@@ -1537,7 +1537,8 @@ if "%errorlevel%" equ "4" goto guanji(4)
 if "%errorlevel%" equ "5" goto guanji(6)
 if "%errorlevel%" equ "6" goto guanji(7)
 if "%errorlevel%" equ "7" goto guanji(8)
-if "%errorlevel%" equ "8" tsdiscon
+::if "%errorlevel%" equ "8" tsdiscon
+if "%errorlevel%" equ "8" rundll32.exe user32.dll LockWorkStation
 if "%errorlevel%" equ "9" goto guanji-9
 if "%errorlevel%" equ "10" goto %tzwz%
 goto guanji
