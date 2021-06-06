@@ -67,8 +67,8 @@ for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
-set ver=20210525
-set versize=167875
+set ver=20210606
+set versize=168236
 set gxflag=
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
@@ -3860,14 +3860,14 @@ goto h
 cls
 title 显示货币汇率 - %system%
 set mainurl=https://api.coincap.io/v2/rates/
-echo 下载汇率文件(总共7个文件)...
+echo 下载汇率文件(总共12个文件)...
 set xzflag=::
 set xzflag1=
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag%pushd %temp%
-%xzflag%curl -# -o cny.json %mainurl%chinese-yuan-renminbi -o doge.json %mainurl%dogecoin -o btc.json %mainurl%bitcoin -o etc.json %mainurl%ethereum -o au.json %mainurl%gold-ounce -o ag.json %mainurl%silver-ounce -o eur.json %mainurl%euro -o gbp.json %mainurl%british-pound-sterling -o jpy.json %mainurl%japanese-yen -o hkd.json %mainurl%hong-kong-dollar -o twd.json %mainurl%new-taiwan-dollar
+%xzflag%curl -# -o cny.json %mainurl%chinese-yuan-renminbi -o doge.json %mainurl%dogecoin -o btc.json %mainurl%bitcoin -o etc.json %mainurl%ethereum -o au.json %mainurl%gold-ounce -o ag.json %mainurl%silver-ounce -o eur.json %mainurl%euro -o gbp.json %mainurl%british-pound-sterling -o jpy.json %mainurl%japanese-yen -o hkd.json %mainurl%hong-kong-dollar -o twd.json %mainurl%new-taiwan-dollar -o xmr.json https://api.coincap.io/v2/assets/monero
 %xzflag%popd
-%xzflag1%bitsadmin /transfer 下载汇率文件... /priority FOREGROUND %mainurl%chinese-yuan-renminbi %temp%\cny.json %mainurl%dogecoin %temp%\doge.json %mainurl%bitcoin %temp%\btc.json %mainurl%ethereum %temp%\etc.json %mainurl%gold-ounce %temp%\au.json %mainurl%silver-ounce %temp%\ag.json %mainurl%euro %temp%\eur.json %mainurl%british-pound-sterling %temp%\gbp.json %mainurl%japanese-yen %temp%\jpy.json %mainurl%hong-kong-dollar %temp%\hkd.json %mainurl%new-taiwan-dollar %temp%\twd.json
+%xzflag1%bitsadmin /transfer 下载汇率文件... /priority FOREGROUND %mainurl%chinese-yuan-renminbi %temp%\cny.json %mainurl%dogecoin %temp%\doge.json %mainurl%bitcoin %temp%\btc.json %mainurl%ethereum %temp%\etc.json %mainurl%gold-ounce %temp%\au.json %mainurl%silver-ounce %temp%\ag.json %mainurl%euro %temp%\eur.json %mainurl%british-pound-sterling %temp%\gbp.json %mainurl%japanese-yen %temp%\jpy.json %mainurl%hong-kong-dollar %temp%\hkd.json %mainurl%new-taiwan-dollar %temp%\twd.json https://api.coincap.io/v2/assets/monero %temp%\xmr.json
 cls
 echo 处理汇率文件...
 for /f "delims=:} tokens=7" %%a in (%temp%\cny.json) do (set cnytousd=%%a)
@@ -3892,6 +3892,8 @@ for /f "delims=:} tokens=7" %%a in (%temp%\hkd.json) do (set hkdtousd=%%a)
 set hkdtousd=%hkdtousd:"=%
 for /f "delims=:} tokens=7" %%a in (%temp%\twd.json) do (set twdtousd=%%a)
 set hkdtousd=%hkdtousd:"=%
+for /f "delims=:, tokens=19" %%a in (%temp%\xmr.json) do (set xmrtousd=%%a)
+set xmrtousd=%xmrtousd:"=%
 for /f "delims=" %%a in ('"powershell %dogetousd%/%cnytousd%"') do (set dogetocny=%%a)
 for /f "delims=" %%a in ('"powershell %btctousd%/%cnytousd%"') do (set btctocny=%%a)
 for /f "delims=" %%a in ('"powershell %etctousd%/%cnytousd%"') do (set etctocny=%%a)
@@ -3900,6 +3902,7 @@ for /f "delims=" %%a in ('"powershell %gbptousd%/%cnytousd%"') do (set gbptocny=
 for /f "delims=" %%a in ('"powershell %jpytousd%/%cnytousd%"') do (set jpytocny=%%a)
 for /f "delims=" %%a in ('"powershell %hkdtousd%/%cnytousd%"') do (set hkdtocny=%%a)
 for /f "delims=" %%a in ('"powershell %twdtousd%/%cnytousd%"') do (set twdtocny=%%a)
+for /f "delims=" %%a in ('"powershell %xmrtousd%/%cnytousd%"') do (set xmrtocny=%%a)
 for /f "delims=" %%a in ('"powershell 1/%cnytousd%"') do (set usdtocny=%%a)
 for /f "delims=" %%a in ('"powershell %autousd%/31.1034768*%usdtocny%"') do (set autocny=%%a)
 for /f "delims=" %%a in ('"powershell %agtousd%/31.1034768*%usdtocny%"') do (set agtocny=%%a)
@@ -3915,6 +3918,9 @@ echo 	1  → %etctocny%
 echo;
 echo 比特币BTC  → 人民币CNY
 echo 	1  → %btctocny%
+echo;
+echo 门罗币XMR  → 人民币CNY
+echo 	1  → %xmrtocny%
 echo;
 echo 狗狗币DOGE → 人民币CNY
 echo 	1  → %dogetocny%
