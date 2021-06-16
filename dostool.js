@@ -67,8 +67,8 @@ for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
-set ver=20210606
-set versize=168236
+set ver=20210616
+set versize=169069
 set gxflag=
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
@@ -3859,25 +3859,35 @@ goto h
 :67
 cls
 title 显示货币汇率 - %system%
-set mainurl=https://api.coincap.io/v2/rates/
+set mainurl=https://api.coincap.io/v2/assets/
+set mainurl1=https://api.coincap.io/v2/rates/
 echo 下载汇率文件(总共12个文件)...
 set xzflag=::
 set xzflag1=
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag%pushd %temp%
-%xzflag%curl -# -o cny.json %mainurl%chinese-yuan-renminbi -o doge.json %mainurl%dogecoin -o btc.json %mainurl%bitcoin -o etc.json %mainurl%ethereum -o au.json %mainurl%gold-ounce -o ag.json %mainurl%silver-ounce -o eur.json %mainurl%euro -o gbp.json %mainurl%british-pound-sterling -o jpy.json %mainurl%japanese-yen -o hkd.json %mainurl%hong-kong-dollar -o twd.json %mainurl%new-taiwan-dollar -o xmr.json https://api.coincap.io/v2/assets/monero
+%xzflag%curl -# -o cny.json %mainurl1%chinese-yuan-renminbi -o doge.json %mainurl%dogecoin -o btc.json %mainurl%bitcoin -o eth.json %mainurl%ethereum -o au.json %mainurl1%gold-ounce -o ag.json %mainurl1%silver-ounce -o eur.json %mainurl1%euro -o gbp.json %mainurl1%british-pound-sterling -o jpy.json %mainurl1%japanese-yen -o hkd.json %mainurl1%hong-kong-dollar -o twd.json %mainurl1%new-taiwan-dollar -o xmr.json %mainurl%monero
 %xzflag%popd
-%xzflag1%bitsadmin /transfer 下载汇率文件... /priority FOREGROUND %mainurl%chinese-yuan-renminbi %temp%\cny.json %mainurl%dogecoin %temp%\doge.json %mainurl%bitcoin %temp%\btc.json %mainurl%ethereum %temp%\etc.json %mainurl%gold-ounce %temp%\au.json %mainurl%silver-ounce %temp%\ag.json %mainurl%euro %temp%\eur.json %mainurl%british-pound-sterling %temp%\gbp.json %mainurl%japanese-yen %temp%\jpy.json %mainurl%hong-kong-dollar %temp%\hkd.json %mainurl%new-taiwan-dollar %temp%\twd.json https://api.coincap.io/v2/assets/monero %temp%\xmr.json
+%xzflag1%bitsadmin /transfer 下载汇率文件... /priority FOREGROUND %mainurl1%chinese-yuan-renminbi %temp%\cny.json %mainurl%dogecoin %temp%\doge.json %mainurl%bitcoin %temp%\btc.json %mainurl%ethereum %temp%\eth.json %mainurl1%gold-ounce %temp%\au.json %mainurl1%silver-ounce %temp%\ag.json %mainurl1%euro %temp%\eur.json %mainurl1%british-pound-sterling %temp%\gbp.json %mainurl1%japanese-yen %temp%\jpy.json %mainurl1%hong-kong-dollar %temp%\hkd.json %mainurl1%new-taiwan-dollar %temp%\twd.json %mainurl%monero %temp%\xmr.json
 cls
 echo 处理汇率文件...
 for /f "delims=:} tokens=7" %%a in (%temp%\cny.json) do (set cnytousd=%%a)
 set cnytousd=%cnytousd:"=%
-for /f "delims=:} tokens=7" %%a in (%temp%\doge.json) do (set dogetousd=%%a)
+for /f "delims=:, tokens=19,21" %%a in (%temp%\doge.json) do (set dogetousd=%%a&&set doge24h=%%b)
 set dogetousd=%dogetousd:"=%
-for /f "delims=:} tokens=7" %%a in (%temp%\btc.json) do (set btctousd=%%a)
+set doge24h=%doge24h:"=%
+for /f "delims=. tokens=1,2" %%a in ('"echo %doge24h%"') do (set doge24h1=%%a&&set doge24h2=%%b)
+set doge24h=%doge24h1%.%doge24h2:~0,3%
+for /f "delims=:, tokens=19,21" %%a in (%temp%\btc.json) do (set btctousd=%%a&&set btc24h=%%b)
 set btctousd=%btctousd:"=%
-for /f "delims=:} tokens=7" %%a in (%temp%\etc.json) do (set etctousd=%%a)
-set etctousd=%etctousd:"=%
+set btc24h=%btc24h:"=%
+for /f "delims=. tokens=1,2" %%a in ('"echo %btc24h%"') do (set btc24h1=%%a&&set btc24h2=%%b)
+set btc24h=%btc24h1%.%btc24h2:~0,3%
+for /f "delims=:, tokens=19,21" %%a in (%temp%\eth.json) do (set ethtousd=%%a&&set eth24h=%%b)
+set ethtousd=%ethtousd:"=%
+set eth24h=%eth24h:"=%
+for /f "delims=. tokens=1,2" %%a in ('"echo %eth24h%"') do (set eth24h1=%%a&&set eth24h2=%%b)
+set eth24h=%eth24h1%.%eth24h2:~0,3%
 for /f "delims=:} tokens=7" %%a in (%temp%\au.json) do (set autousd=%%a)
 set autousd=%autousd:"=%
 for /f "delims=:} tokens=7" %%a in (%temp%\ag.json) do (set agtousd=%%a)
@@ -3892,11 +3902,14 @@ for /f "delims=:} tokens=7" %%a in (%temp%\hkd.json) do (set hkdtousd=%%a)
 set hkdtousd=%hkdtousd:"=%
 for /f "delims=:} tokens=7" %%a in (%temp%\twd.json) do (set twdtousd=%%a)
 set hkdtousd=%hkdtousd:"=%
-for /f "delims=:, tokens=19" %%a in (%temp%\xmr.json) do (set xmrtousd=%%a)
+for /f "delims=:, tokens=19,21" %%a in (%temp%\xmr.json) do (set xmrtousd=%%a&&set xmr24h=%%b)
 set xmrtousd=%xmrtousd:"=%
+set xmr24h=%xmr24h:"=%
+for /f "delims=. tokens=1,2" %%a in ('"echo %xmr24h%"') do (set xmr24h1=%%a&&set xmr24h2=%%b)
+set xmr24h=%xmr24h1%.%xmr24h2:~0,3%
 for /f "delims=" %%a in ('"powershell %dogetousd%/%cnytousd%"') do (set dogetocny=%%a)
 for /f "delims=" %%a in ('"powershell %btctousd%/%cnytousd%"') do (set btctocny=%%a)
-for /f "delims=" %%a in ('"powershell %etctousd%/%cnytousd%"') do (set etctocny=%%a)
+for /f "delims=" %%a in ('"powershell %ethtousd%/%cnytousd%"') do (set ethtocny=%%a)
 for /f "delims=" %%a in ('"powershell %eurtousd%/%cnytousd%"') do (set eurtocny=%%a)
 for /f "delims=" %%a in ('"powershell %gbptousd%/%cnytousd%"') do (set gbptocny=%%a)
 for /f "delims=" %%a in ('"powershell %jpytousd%/%cnytousd%"') do (set jpytocny=%%a)
@@ -3913,17 +3926,17 @@ echo;
 echo 白银XAG    → 人民币CNY
 echo 	1  → %agtocny%
 echo;
-echo 以太坊ETC  → 人民币CNY
-echo 	1  → %etctocny%
+echo 以太坊ETH  → 人民币CNY
+echo 	1  → %ethtocny%		24小时涨跌幅: %eth24h%%%
 echo;
 echo 比特币BTC  → 人民币CNY
-echo 	1  → %btctocny%
+echo 	1  → %btctocny%		24小时涨跌幅: %btc24h%%%
 echo;
 echo 门罗币XMR  → 人民币CNY
-echo 	1  → %xmrtocny%
+echo 	1  → %xmrtocny%		24小时涨跌幅: %xmr24h%%%
 echo;
 echo 狗狗币DOGE → 人民币CNY
-echo 	1  → %dogetocny%
+echo 	1  → %dogetocny%		24小时涨跌幅: %doge24h%%%
 echo;
 echo 美元USD    → 人民币CNY
 echo 	1  → %usdtocny%
