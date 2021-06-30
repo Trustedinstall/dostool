@@ -67,8 +67,8 @@ for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
-set ver=20210616
-set versize=169069
+set ver=20210630
+set versize=170308
 set gxflag=
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
@@ -710,6 +710,7 @@ echo [2]智能NTFS压缩
 echo [3]计算文件哈希值
 echo [4]显示货币汇率
 echo [5]创建虚拟盘符
+echo [6]解压msi安装文件
 echo [0]退出                                                      %nx7%
 echo _______________________________________________________________________________
 set caidan=
@@ -720,6 +721,7 @@ if !caidan!=="2" goto 65
 if !caidan!=="3" goto 66
 if !caidan!=="4" goto 67
 if !caidan!=="5" goto 68
+if !caidan!=="6" goto 69
 if !caidan!=="0" goto 00
 if !caidan!=="-" goto g
 if /i !caidan!=="a" goto g
@@ -2652,7 +2654,7 @@ call :sjc "%dosqssj%" "%dosjssj%"
 cls
 echo 关于DOS工具箱
 echo _______________________________________________________________________________
-echo 版本: 1.8.3 (%ver%.%versize%)
+echo 版本: 1.8.6 (%ver%.%versize%)
 echo 操作系统: %system% %bit%位
 echo 版权所有 2012-2021 Administrator 保留所有权利
 echo _______________________________________________________________________________
@@ -3839,8 +3841,7 @@ cls
 set url=
 set /p url=输入文件路径(e=返回菜单):
 if not defined url goto 66
-set url="%url:|=%"
-if "%url:~0,1%%url:~-1%" neq """" for /f "delims=" %%a in ('"echo %url%"') do (set %url%="%%~a")
+if "%url:~0,1%%url:~-1%" neq """" for /f "delims=" %%a in ('"echo %url%"') do (set url="%%~a")
 if /i !url! equ "e" goto h 
 if not exist "!url!" echo 文件不存在&timeout /t 2 /nobreak>nul&goto 66
 dir /ad !url!>nul 2>nul&&echo 路径 !url! 不是一个文件&&timeout /t 2 /nobreak>nul&&goto 66
@@ -4007,6 +4008,27 @@ set xzxnp|findstr /i "\<[a-z]\>">nul
 if "%errorlevel%" neq "0" echo 无效输入&timeout /t 2 /nobreak>nul&goto 68(2)
 subst %xzxnp%: /d
 if "%errorlevel%" equ "0" (echo 卸载成功&timeout /t 2 /nobreak>nul&goto 68) else (echo 卸载失败&timeout /t 2 /nobreak>nul&goto 68)
+:69
+title 解压msi安装文件 - %system%
+cls
+set msiurl=
+set /p msiurl=输入msi文件路径(e=返回菜单):
+if not defined msiurl goto h
+if "%msiurl:~0,1%%msiurl:~-1%" neq """" for /f "delims=" %%a in ('"echo %msiurl%"') do (set msiurl="%%~a")
+if /i !msiurl! equ "e" goto h
+if not exist "!msiurl!" echo 文件不存在&timeout /t 2 /nobreak>nul&goto h
+dir /ad !msiurl!>nul 2>nul&&echo 路径 !msiurl! 不是一个文件&&timeout /t 2 /nobreak>nul&&goto h
+for /f "delims=" %%a in ('"echo !msiurl!"') do (if /i "%%~xa" neq ".msi" echo 不是msi文件&&timeout /t 2 /nobreak>nul&&goto h)
+set msidir=
+set /p msidir=输入msi文件解压路径(默认路径为msi文件所在路径)(e=返回菜单):
+if not defined msidir for /f "delims=" %%a in ('"echo !msiurl!"') do (set msidir="%%~dpna")
+if "%msidir:~0,1%%msidir:~-1%" neq """" for /f "delims=" %%a in ('"echo %msidir%"') do (set msidir="%%~a")
+if /i !msidir! equ "e" goto h
+if not exist "!msidir!" (msiexec /a !msiurl! /quiet /passive /qn targetdir=!msidir!) else (echo 不能解压到已存在的文件夹&&timeout /t 2 /nobreak>nul)
+rd /s /q %systemdriver%\config.msi>nul 2>nul
+echo _______________________________________________________________________________
+echo 按任意键返回菜单&pause>nul
+goto h
 :hash
 set url=%1
 set shuanfa=%2
