@@ -68,7 +68,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20210630
-set versize=170308
+set versize=170324
 set gxflag=
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
@@ -2871,7 +2871,7 @@ set xfwj=
 set/p xfwj=拖动要修复的文件到此窗口:
 if "%xfwj:~0,1%%xfwj:~-1%" neq """" for /f "delims=" %%a in ('"echo %xwfj%"') do (set %xfwj%="%%~a")
 echo _______________________________________________________________________________
-recover "%xfwj%"
+recover %xfwj%
 echo _______________________________________________________________________________
 echo 按任意键返回菜单&pause>nul
 goto e
@@ -4024,6 +4024,7 @@ set /p msidir=输入msi文件解压路径(默认路径为msi文件所在路径)(e=返回菜单):
 if not defined msidir for /f "delims=" %%a in ('"echo !msiurl!"') do (set msidir="%%~dpna")
 if "%msidir:~0,1%%msidir:~-1%" neq """" for /f "delims=" %%a in ('"echo %msidir%"') do (set msidir="%%~a")
 if /i !msidir! equ "e" goto h
+echo 开始解压...
 if not exist "!msidir!" (msiexec /a !msiurl! /quiet /passive /qn targetdir=!msidir!) else (echo 不能解压到已存在的文件夹&&timeout /t 2 /nobreak>nul)
 rd /s /q %systemdriver%\config.msi>nul 2>nul
 echo _______________________________________________________________________________
