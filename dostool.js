@@ -67,8 +67,8 @@ for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
-set ver=20210630
-set versize=170324
+set ver=20211218
+set versize=170618
 set gxflag=
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
@@ -230,37 +230,36 @@ echo [0]退出                                                         %nx1%
 echo _______________________________________________________________________________
 set caidan=
 set/p caidan=请输入你的选择:
-set caidan="%caidan:|=%"
-if !caidan!=="1" goto 01
-if !caidan!=="2" goto 02
-if !caidan!=="3" goto 03
-if !caidan!=="4" goto 04
-if !caidan!=="5" goto 05
-if !caidan!=="6" goto 06
-if !caidan!=="7" goto 07
-if !caidan!=="8" goto 08
-if !caidan!=="9" goto 09
-if !caidan!=="0" goto 00
-if !caidan!=="+" goto b
-if /i !caidan!=="s" goto b
-if /i !caidan!=="vbsjsq" set tzwz=a&goto vbsjsq
-if /i !caidan!=="guanji" set tzwz=a&goto guanji
-if !caidan!=="BATJIAMI" set tzwz=a&goto batjiami
-if /i !caidan!=="guanyu" set tzwz=a&goto guanyu
-if /i !caidan!=="csh" goto chushihua
-if /i !caidan!=="kcd" set tzwz=a&goto kcd
-if /i !caidan!=="gcd" set tzwz=a&goto gcd
-if /i !caidan!=="xz" set tzwz=a&goto xz
-if /i !caidan!=="js" set tzwz=a&goto 49
-if /i !caidan!=="gx" set tzwz=a&goto update
-if /i !caidan!=="go1" goto a
-if /i !caidan!=="go2" goto b
-if /i !caidan!=="go3" goto c
-if /i !caidan!=="go4" goto d
-if /i !caidan!=="go5" goto e
-if /i !caidan!=="go6" goto f
-if /i !caidan!=="go7" goto g
-if /i !caidan!=="go8" goto h
+if "!caidan!"=="1" goto 01
+if "!caidan!"=="2" goto 02
+if "!caidan!"=="3" goto 03
+if "!caidan!"=="4" goto 04
+if "!caidan!"=="5" goto 05
+if "!caidan!"=="6" goto 06
+if "!caidan!"=="7" goto 07
+if "!caidan!"=="8" goto 08
+if "!caidan!"=="9" goto 09
+if "!caidan!"=="0" goto 00
+if "!caidan!"=="+" goto b
+if /i "!caidan!"=="s" goto b
+if /i "!caidan!"=="vbsjsq" set tzwz=a&goto vbsjsq
+if /i "!caidan!"=="guanji" set tzwz=a&goto guanji
+if "!caidan!"=="BATJIAMI" set tzwz=a&goto batjiami
+if /i "!caidan!"=="guanyu" set tzwz=a&goto guanyu
+if /i "!caidan!"=="csh" goto chushihua
+if /i "!caidan!"=="kcd" set tzwz=a&goto kcd
+if /i "!caidan!"=="gcd" set tzwz=a&goto gcd
+if /i "!caidan!"=="xz" set tzwz=a&goto xz
+if /i "!caidan!"=="js" set tzwz=a&goto 49
+if /i "!caidan!"=="gx" set tzwz=a&goto update
+if /i "!caidan!"=="go1" goto a
+if /i "!caidan!"=="go2" goto b
+if /i "!caidan!"=="go3" goto c
+if /i "!caidan!"=="go4" goto d
+if /i "!caidan!"=="go5" goto e
+if /i "!caidan!"=="go6" goto f
+if /i "!caidan!"=="go7" goto g
+if /i "!caidan!"=="go8" goto h
 echo 请输入正确的选项！
 ping/n 2 0.0>nul
 goto a
@@ -298,39 +297,38 @@ echo [0]退出                                             %nx%
 echo _______________________________________________________________________________
 set caidan=
 set/p caidan=请输入你的选择:
-set caidan="%caidan:|=%"
-if !caidan!=="1" goto 10
-if !caidan!=="2" goto 11
-if !caidan!=="3" goto 12
-if !caidan!=="4" goto 13
-if !caidan!=="5" goto 14
-if !caidan!=="6" goto 15
-if !caidan!=="7" goto 16
-if !caidan!=="8" goto 17
-if !caidan!=="9" goto 18
-if !caidan!=="0" goto 00
-if !caidan!=="-" goto a
-if !caidan!=="+" goto c
-if /i !caidan!=="a" goto a
-if /i !caidan!=="s" goto c
-if /i !caidan!=="vbsjsq" set tzwz=b&goto vbsjsq
-if /i !caidan!=="guanji" set tzwz=b&goto guanji
-if !caidan!=="BATJIAMI" set tzwz=b&goto batjiami
-if /i !caidan!=="guanyu" set tzwz=b&goto guanyu
-if /i !caidan!=="csh" goto chushihua
-if /i !caidan!=="kcd" set tzwz=b&goto kcd
-if /i !caidan!=="gcd" set tzwz=b&goto gcd
-if /i !caidan!=="xz" set tzwz=b&goto xz
-if /i !caidan!=="js" set tzwz=b&goto 49
-if /i !caidan!=="gx" set tzwz=a&goto update
-if /i !caidan!=="go1" goto a
-if /i !caidan!=="go2" goto b
-if /i !caidan!=="go3" goto c
-if /i !caidan!=="go4" goto d
-if /i !caidan!=="go5" goto e
-if /i !caidan!=="go6" goto f
-if /i !caidan!=="go7" goto g
-if /i !caidan!=="go8" goto h
+if "!caidan!"=="1" goto 10
+if "!caidan!"=="2" goto 11
+if "!caidan!"=="3" goto 12
+if "!caidan!"=="4" goto 13
+if "!caidan!"=="5" goto 14
+if "!caidan!"=="6" goto 15
+if "!caidan!"=="7" goto 16
+if "!caidan!"=="8" goto 17
+if "!caidan!"=="9" goto 18
+if "!caidan!"=="0" goto 00
+if "!caidan!"=="-" goto a
+if "!caidan!"=="+" goto c
+if /i "!caidan!"=="a" goto a
+if /i "!caidan!"=="s" goto c
+if /i "!caidan!"=="vbsjsq" set tzwz=b&goto vbsjsq
+if /i "!caidan!"=="guanji" set tzwz=b&goto guanji
+if "!caidan!"=="BATJIAMI" set tzwz=b&goto batjiami
+if /i "!caidan!"=="guanyu" set tzwz=b&goto guanyu
+if /i "!caidan!"=="csh" goto chushihua
+if /i "!caidan!"=="kcd" set tzwz=b&goto kcd
+if /i "!caidan!"=="gcd" set tzwz=b&goto gcd
+if /i "!caidan!"=="xz" set tzwz=b&goto xz
+if /i "!caidan!"=="js" set tzwz=b&goto 49
+if /i "!caidan!"=="gx" set tzwz=a&goto update
+if /i "!caidan!"=="go1" goto a
+if /i "!caidan!"=="go2" goto b
+if /i "!caidan!"=="go3" goto c
+if /i "!caidan!"=="go4" goto d
+if /i "!caidan!"=="go5" goto e
+if /i "!caidan!"=="go6" goto f
+if /i "!caidan!"=="go7" goto g
+if /i "!caidan!"=="go8" goto h
 echo 请输入正确的选项！
 ping/n 2 0.0>nul
 goto b
@@ -368,39 +366,38 @@ echo [0]退出                                             %nx%
 echo _______________________________________________________________________________
 set caidan=
 set/p caidan=请输入你的选择:
-set caidan="%caidan:|=%"
-if !caidan!=="1" goto 19
-if !caidan!=="2" goto 20
-if !caidan!=="3" goto 21
-if !caidan!=="4" goto 22
-if !caidan!=="5" goto 23
-if !caidan!=="6" goto 24
-if !caidan!=="7" goto 25
-if !caidan!=="8" goto 26
-if !caidan!=="9" goto 27
-if !caidan!=="0" goto 00
-if !caidan!=="-" goto b
-if !caidan!=="+" goto d
-if /i !caidan!=="a" goto b
-if /i !caidan!=="s" goto d
-if /i !caidan!=="vbsjsq" set tzwz=c&goto vbsjsq
-if /i !caidan!=="guanji" set tzwz=c&goto guanji
-if !caidan!=="BATJIAMI" set tzwz=c&goto batjiami
-if /i !caidan!=="guanyu" set tzwz=c&goto guanyu
-if /i !caidan!=="csh" goto chushihua
-if /i !caidan!=="kcd" set tzwz=c&goto kcd
-if /i !caidan!=="gcd" set tzwz=c&goto gcd
-if /i !caidan!=="xz" set tzwz=c&goto xz
-if /i !caidan!=="js" set tzwz=c&goto 49
-if /i !caidan!=="gx" set tzwz=c&goto update
-if /i !caidan!=="go1" goto a
-if /i !caidan!=="go2" goto b
-if /i !caidan!=="go3" goto c
-if /i !caidan!=="go4" goto d
-if /i !caidan!=="go5" goto e
-if /i !caidan!=="go6" goto f
-if /i !caidan!=="go7" goto g
-if /i !caidan!=="go8" goto h
+if "!caidan!"=="1" goto 19
+if "!caidan!"=="2" goto 20
+if "!caidan!"=="3" goto 21
+if "!caidan!"=="4" goto 22
+if "!caidan!"=="5" goto 23
+if "!caidan!"=="6" goto 24
+if "!caidan!"=="7" goto 25
+if "!caidan!"=="8" goto 26
+if "!caidan!"=="9" goto 27
+if "!caidan!"=="0" goto 00
+if "!caidan!"=="-" goto b
+if "!caidan!"=="+" goto d
+if /i "!caidan!"=="a" goto b
+if /i "!caidan!"=="s" goto d
+if /i "!caidan!"=="vbsjsq" set tzwz=c&goto vbsjsq
+if /i "!caidan!"=="guanji" set tzwz=c&goto guanji
+if "!caidan!"=="BATJIAMI" set tzwz=c&goto batjiami
+if /i "!caidan!"=="guanyu" set tzwz=c&goto guanyu
+if /i "!caidan!"=="csh" goto chushihua
+if /i "!caidan!"=="kcd" set tzwz=c&goto kcd
+if /i "!caidan!"=="gcd" set tzwz=c&goto gcd
+if /i "!caidan!"=="xz" set tzwz=c&goto xz
+if /i "!caidan!"=="js" set tzwz=c&goto 49
+if /i "!caidan!"=="gx" set tzwz=c&goto update
+if /i "!caidan!"=="go1" goto a
+if /i "!caidan!"=="go2" goto b
+if /i "!caidan!"=="go3" goto c
+if /i "!caidan!"=="go4" goto d
+if /i "!caidan!"=="go5" goto e
+if /i "!caidan!"=="go6" goto f
+if /i "!caidan!"=="go7" goto g
+if /i "!caidan!"=="go8" goto h
 echo 请输入正确的选项！
 ping/n 2 0.0>nul
 goto c
@@ -438,39 +435,38 @@ echo [0]退出                                             %nx%
 echo _______________________________________________________________________________
 set caidan=
 set/p caidan=请输入你的选择:
-set caidan="%caidan:|=%"
-if !caidan!=="1" goto 28
-if !caidan!=="2" goto 29
-if !caidan!=="3" goto 30
-if !caidan!=="4" goto 31
-if !caidan!=="5" goto 32
-if !caidan!=="6" goto 33
-if !caidan!=="7" goto 34
-if !caidan!=="8" goto 35
-if !caidan!=="9" goto 36
-if !caidan!=="0" goto 00
-if !caidan!=="-" goto c
-if !caidan!=="+" goto e
-if /i !caidan!=="a" goto c
-if /i !caidan!=="s" goto e
-if /i !caidan!=="vbsjsq" set tzwz=d&goto vbsjsq
-if /i !caidan!=="guanji" set tzwz=d&goto guanji
-if !caidan!=="BATJIAMI" set tzwz=d&goto batjiami
-if /i !caidan!=="guanyu" set tzwz=d&goto guanyu
-if /i !caidan!=="csh" goto chushihua
-if /i !caidan!=="kcd" set tzwz=d&goto kcd
-if /i !caidan!=="gcd" set tzwz=d&goto gcd
-if /i !caidan!=="xz" set tzwz=d&goto xz
-if /i !caidan!=="js" set tzwz=d&goto 49
-if /i !caidan!=="gx" set tzwz=d&goto update
-if /i !caidan!=="go1" goto a
-if /i !caidan!=="go2" goto b
-if /i !caidan!=="go3" goto c
-if /i !caidan!=="go4" goto d
-if /i !caidan!=="go5" goto e
-if /i !caidan!=="go6" goto f
-if /i !caidan!=="go7" goto g
-if /i !caidan!=="go8" goto h
+if "!caidan!"=="1" goto 28
+if "!caidan!"=="2" goto 29
+if "!caidan!"=="3" goto 30
+if "!caidan!"=="4" goto 31
+if "!caidan!"=="5" goto 32
+if "!caidan!"=="6" goto 33
+if "!caidan!"=="7" goto 34
+if "!caidan!"=="8" goto 35
+if "!caidan!"=="9" goto 36
+if "!caidan!"=="0" goto 00
+if "!caidan!"=="-" goto c
+if "!caidan!"=="+" goto e
+if /i "!caidan!"=="a" goto c
+if /i "!caidan!"=="s" goto e
+if /i "!caidan!"=="vbsjsq" set tzwz=d&goto vbsjsq
+if /i "!caidan!"=="guanji" set tzwz=d&goto guanji
+if "!caidan!"=="BATJIAMI" set tzwz=d&goto batjiami
+if /i "!caidan!"=="guanyu" set tzwz=d&goto guanyu
+if /i "!caidan!"=="csh" goto chushihua
+if /i "!caidan!"=="kcd" set tzwz=d&goto kcd
+if /i "!caidan!"=="gcd" set tzwz=d&goto gcd
+if /i "!caidan!"=="xz" set tzwz=d&goto xz
+if /i "!caidan!"=="js" set tzwz=d&goto 49
+if /i "!caidan!"=="gx" set tzwz=d&goto update
+if /i "!caidan!"=="go1" goto a
+if /i "!caidan!"=="go2" goto b
+if /i "!caidan!"=="go3" goto c
+if /i "!caidan!"=="go4" goto d
+if /i "!caidan!"=="go5" goto e
+if /i "!caidan!"=="go6" goto f
+if /i "!caidan!"=="go7" goto g
+if /i "!caidan!"=="go8" goto h
 echo 请输入正确的选项！
 ping/n 2 0.0>nul
 goto d
@@ -508,39 +504,38 @@ echo [0]退出                                             %nx%
 echo _______________________________________________________________________________
 set caidan=
 set/p caidan=请输入你的选择:
-set caidan="%caidan:|=%"
-if !caidan!=="1" goto 37
-if !caidan!=="2" goto 38
-if !caidan!=="3" goto 39
-if !caidan!=="4" goto 40
-if !caidan!=="5" goto 41
-if !caidan!=="6" goto 42
-if !caidan!=="7" goto 43
-if !caidan!=="8" goto 44
-if !caidan!=="9" goto 45
-if !caidan!=="0" goto 00
-if !caidan!=="-" goto d
-if !caidan!=="+" goto f
-if /i !caidan!=="a" goto d
-if /i !caidan!=="s" goto f
-if /i !caidan!=="vbsjsq" set tzwz=e&goto vbsjsq
-if /i !caidan!=="guanji" set tzwz=e&goto guanji
-if !caidan!=="BATJIAMI" set tzwz=e&goto batjiami
-if /i !caidan!=="guanyu" set tzwz=e&goto guanyu
-if /i !caidan!=="csh" goto chushihua
-if /i !caidan!=="kcd" set tzwz=e&goto kcd
-if /i !caidan!=="gcd" set tzwz=e&goto gcd
-if /i !caidan!=="xz" set tzwz=e&goto xz
-if /i !caidan!=="js" set tzwz=e&goto 49
-if /i !caidan!=="gx" set tzwz=e&goto update
-if /i !caidan!=="go1" goto a
-if /i !caidan!=="go2" goto b
-if /i !caidan!=="go3" goto c
-if /i !caidan!=="go4" goto d
-if /i !caidan!=="go5" goto e
-if /i !caidan!=="go6" goto f
-if /i !caidan!=="go7" goto g
-if /i !caidan!=="go8" goto h
+if "!caidan!"=="1" goto 37
+if "!caidan!"=="2" goto 38
+if "!caidan!"=="3" goto 39
+if "!caidan!"=="4" goto 40
+if "!caidan!"=="5" goto 41
+if "!caidan!"=="6" goto 42
+if "!caidan!"=="7" goto 43
+if "!caidan!"=="8" goto 44
+if "!caidan!"=="9" goto 45
+if "!caidan!"=="0" goto 00
+if "!caidan!"=="-" goto d
+if "!caidan!"=="+" goto f
+if /i "!caidan!"=="a" goto d
+if /i "!caidan!"=="s" goto f
+if /i "!caidan!"=="vbsjsq" set tzwz=e&goto vbsjsq
+if /i "!caidan!"=="guanji" set tzwz=e&goto guanji
+if "!caidan!"=="BATJIAMI" set tzwz=e&goto batjiami
+if /i "!caidan!"=="guanyu" set tzwz=e&goto guanyu
+if /i "!caidan!"=="csh" goto chushihua
+if /i "!caidan!"=="kcd" set tzwz=e&goto kcd
+if /i "!caidan!"=="gcd" set tzwz=e&goto gcd
+if /i "!caidan!"=="xz" set tzwz=e&goto xz
+if /i "!caidan!"=="js" set tzwz=e&goto 49
+if /i "!caidan!"=="gx" set tzwz=e&goto update
+if /i "!caidan!"=="go1" goto a
+if /i "!caidan!"=="go2" goto b
+if /i "!caidan!"=="go3" goto c
+if /i "!caidan!"=="go4" goto d
+if /i "!caidan!"=="go5" goto e
+if /i "!caidan!"=="go6" goto f
+if /i "!caidan!"=="go7" goto g
+if /i "!caidan!"=="go8" goto h
 echo 请输入正确的选项！
 ping/n 2 0.0>nul
 goto e
@@ -578,39 +573,38 @@ echo [0]退出                                             %nx%
 echo _______________________________________________________________________________
 set caidan=
 set/p caidan=请输入你的选择:
-set caidan="%caidan:|=%"
-if !caidan!=="1" goto 46
-if !caidan!=="2" goto 47
-if !caidan!=="3" goto 48
-if !caidan!=="4" set tzwz=f&goto 49
-if !caidan!=="5" goto 50
-if !caidan!=="6" goto 51
-if !caidan!=="7" goto 52
-if !caidan!=="8" goto 53
-if !caidan!=="9" goto 54
-if !caidan!=="0" goto 00
-if !caidan!=="-" goto e
-if !caidan!=="+" goto g
-if /i !caidan!=="a" goto e
-if /i !caidan!=="s" goto g
-if /i !caidan!=="vbsjsq" set tzwz=f&goto vbsjsq
-if /i !caidan!=="guanji" set tzwz=f&goto guanji
-if !caidan!=="BATJIAMI" set tzwz=f&goto batjiami
-if /i !caidan!=="guanyu" set tzwz=f&goto guanyu
-if /i !caidan!=="csh" goto chushihua
-if /i !caidan!=="kcd" set tzwz=f&goto kcd
-if /i !caidan!=="gcd" set tzwz=f&goto gcd
-if /i !caidan!=="xz" set tzwz=f&goto xz
-if /i !caidan!=="js" set tzwz=f&goto 49
-if /i !caidan!=="gx" set tzwz=f&goto update
-if /i !caidan!=="go1" goto a
-if /i !caidan!=="go2" goto b
-if /i !caidan!=="go3" goto c
-if /i !caidan!=="go4" goto d
-if /i !caidan!=="go5" goto e
-if /i !caidan!=="go6" goto f
+if "!caidan!"=="1" goto 46
+if "!caidan!"=="2" goto 47
+if "!caidan!"=="3" goto 48
+if "!caidan!"=="4" set tzwz=f&goto 49
+if "!caidan!"=="5" goto 50
+if "!caidan!"=="6" goto 51
+if "!caidan!"=="7" goto 52
+if "!caidan!"=="8" goto 53
+if "!caidan!"=="9" goto 54
+if "!caidan!"=="0" goto 00
+if "!caidan!"=="-" goto e
+if "!caidan!"=="+" goto g
+if /i "!caidan!"=="a" goto e
+if /i "!caidan!"=="s" goto g
+if /i "!caidan!"=="vbsjsq" set tzwz=f&goto vbsjsq
+if /i "!caidan!"=="guanji" set tzwz=f&goto guanji
+if "!caidan!"=="BATJIAMI" set tzwz=f&goto batjiami
+if /i "!caidan!"=="guanyu" set tzwz=f&goto guanyu
+if /i "!caidan!"=="csh" goto chushihua
+if /i "!caidan!"=="kcd" set tzwz=f&goto kcd
+if /i "!caidan!"=="gcd" set tzwz=f&goto gcd
+if /i "!caidan!"=="xz" set tzwz=f&goto xz
+if /i "!caidan!"=="js" set tzwz=f&goto 49
+if /i "!caidan!"=="gx" set tzwz=f&goto update
+if /i "!caidan!"=="go1" goto a
+if /i "!caidan!"=="go2" goto b
+if /i "!caidan!"=="go3" goto c
+if /i "!caidan!"=="go4" goto d
+if /i "!caidan!"=="go5" goto e
+if /i "!caidan!"=="go6" goto f
 if /i !caidna!=="go7" goto g
-if /i !caidan!=="go8" goto h
+if /i "!caidan!"=="go8" goto h
 echo 请输入正确的选项！
 ping/n 2 0.0>nul
 goto f
@@ -648,39 +642,38 @@ echo [0]退出                                                      %nx%
 echo _______________________________________________________________________________
 set caidan=
 set/p caidan=请输入你的选择:
-set caidan="%caidan:|=%"
-if !caidan!=="1" goto 55
-if !caidan!=="2" goto 56
-if !caidan!=="3" goto 57
-if !caidan!=="4" goto 58
-if !caidan!=="5" goto 59
-if !caidan!=="6" goto 60
-if !caidan!=="7" goto 61
-if !caidan!=="8" goto 62
-if !caidan!=="9" goto 63
-if !caidan!=="0" goto 00
-if !caidan!=="-" goto f
-if !caidan!=="+" goto h
-if /i !caidan!=="a" goto f
-if /i !caidan!=="s" goto h
-if /i !caidan!=="vbsjsq" set tzwz=g&goto vbsjsq
-if /i !caidan!=="guanji" set tzwz=g&goto guanji
-if !caidan!=="BATJIAMI" set tzwz=g&goto batjiami
-if /i !caidan!=="guanyu" set tzwz=g&goto guanyu
-if /i !caidan!=="csh" goto chushihua
-if /i !caidan!=="kcd" set tzwz=g&goto kcd
-if /i !caidan!=="gcd" set tzwz=g&goto gcd
-if /i !caidan!=="xz" set tzwz=g&goto xz
-if /i !caidan!=="js" set tzwz=g&goto 49
-if /i !caidan!=="gx" set tzwz=g&goto update
-if /i !caidan!=="go1" goto a
-if /i !caidan!=="go2" goto b
-if /i !caidan!=="go3" goto c
-if /i !caidan!=="go4" goto d
-if /i !caidan!=="go5" goto e
-if /i !caidan!=="go6" goto f
-if /i !caidan!=="go7" goto g
-if /i !caidan!=="go8" goto h
+if "!caidan!"=="1" goto 55
+if "!caidan!"=="2" goto 56
+if "!caidan!"=="3" goto 57
+if "!caidan!"=="4" goto 58
+if "!caidan!"=="5" goto 59
+if "!caidan!"=="6" goto 60
+if "!caidan!"=="7" goto 61
+if "!caidan!"=="8" goto 62
+if "!caidan!"=="9" goto 63
+if "!caidan!"=="0" goto 00
+if "!caidan!"=="-" goto f
+if "!caidan!"=="+" goto h
+if /i "!caidan!"=="a" goto f
+if /i "!caidan!"=="s" goto h
+if /i "!caidan!"=="vbsjsq" set tzwz=g&goto vbsjsq
+if /i "!caidan!"=="guanji" set tzwz=g&goto guanji
+if "!caidan!"=="BATJIAMI" set tzwz=g&goto batjiami
+if /i "!caidan!"=="guanyu" set tzwz=g&goto guanyu
+if /i "!caidan!"=="csh" goto chushihua
+if /i "!caidan!"=="kcd" set tzwz=g&goto kcd
+if /i "!caidan!"=="gcd" set tzwz=g&goto gcd
+if /i "!caidan!"=="xz" set tzwz=g&goto xz
+if /i "!caidan!"=="js" set tzwz=g&goto 49
+if /i "!caidan!"=="gx" set tzwz=g&goto update
+if /i "!caidan!"=="go1" goto a
+if /i "!caidan!"=="go2" goto b
+if /i "!caidan!"=="go3" goto c
+if /i "!caidan!"=="go4" goto d
+if /i "!caidan!"=="go5" goto e
+if /i "!caidan!"=="go6" goto f
+if /i "!caidan!"=="go7" goto g
+if /i "!caidan!"=="go8" goto h
 echo 请输入正确的选项！
 ping/n 2 0.0>nul
 goto g
@@ -715,33 +708,32 @@ echo [0]退出                                                      %nx7%
 echo _______________________________________________________________________________
 set caidan=
 set/p caidan=请输入你的选择:
-set caidan="%caidan:|=%"
-if !caidan!=="1" goto 64
-if !caidan!=="2" goto 65
-if !caidan!=="3" goto 66
-if !caidan!=="4" goto 67
-if !caidan!=="5" goto 68
-if !caidan!=="6" goto 69
-if !caidan!=="0" goto 00
-if !caidan!=="-" goto g
-if /i !caidan!=="a" goto g
-if /i !caidan!=="vbsjsq" set tzwz=h&goto vbsjsq
-if /i !caidan!=="guanji" set tzwz=h&goto guanji
-if !caidan!=="BATJIAMI" set tzwz=h&goto batjiami
-if /i !caidan!=="guanyu" set tzwz=h&goto guanyu
-if /i !caidan!=="csh" goto chushihua
-if /i !caidan!=="kcd" set tzwz=h&goto kcd
-if /i !caidan!=="gcd" set tzwz=h&goto gcd
-if /i !caidan!=="xz" set tzwz=h&goto xz
-if /i !caidan!=="js" set tzwz=h&goto 49
-if /i !caidan!=="gx" set tzwz=a&goto update
-if /i !caidan!=="go1" goto a
-if /i !caidan!=="go2" goto b
-if /i !caidan!=="go3" goto c
-if /i !caidan!=="go4" goto d
-if /i !caidan!=="go5" goto e
-if /i !caidan!=="go6" goto f
-if /i !caidan!=="go7" goto g
+if "!caidan!"=="1" goto 64
+if "!caidan!"=="2" goto 65
+if "!caidan!"=="3" goto 66
+if "!caidan!"=="4" goto 67
+if "!caidan!"=="5" goto 68
+if "!caidan!"=="6" goto 69
+if "!caidan!"=="0" goto 00
+if "!caidan!"=="-" goto g
+if /i "!caidan!"=="a" goto g
+if /i "!caidan!"=="vbsjsq" set tzwz=h&goto vbsjsq
+if /i "!caidan!"=="guanji" set tzwz=h&goto guanji
+if "!caidan!"=="BATJIAMI" set tzwz=h&goto batjiami
+if /i "!caidan!"=="guanyu" set tzwz=h&goto guanyu
+if /i "!caidan!"=="csh" goto chushihua
+if /i "!caidan!"=="kcd" set tzwz=h&goto kcd
+if /i "!caidan!"=="gcd" set tzwz=h&goto gcd
+if /i "!caidan!"=="xz" set tzwz=h&goto xz
+if /i "!caidan!"=="js" set tzwz=h&goto 49
+if /i "!caidan!"=="gx" set tzwz=a&goto update
+if /i "!caidan!"=="go1" goto a
+if /i "!caidan!"=="go2" goto b
+if /i "!caidan!"=="go3" goto c
+if /i "!caidan!"=="go4" goto d
+if /i "!caidan!"=="go5" goto e
+if /i "!caidan!"=="go6" goto f
+if /i "!caidan!"=="go7" goto g
 if /i !caidna!=="go8" goto h
 echo 请输入正确的选项！
 ping/n 2 0.0>nul
@@ -1042,11 +1034,10 @@ echo [0]返回菜单
 echo _______________________________________________________________________________
 set batjmxx=
 set/p batjmxx=请输入你的选择:
-set batjmxx="%batjmxx:|=%"
-if !batjmxx!=="1" goto batjiami(1)
-if !batjmxx!=="2" goto batjiami(2)
-if !batjmxx!=="3" goto batjiami(3)
-if !batjmxx!=="0" goto %tzwz%
+if "!batjmxx!"=="1" goto batjiami(1)
+if "!batjmxx!"=="2" goto batjiami(2)
+if "!batjmxx!"=="3" goto batjiami(3)
+if "!batjmxx!"=="0" goto %tzwz%
 echo 请输入正确的选项！
 ping/n 2 0.0>nul
 goto batjiami
@@ -1060,31 +1051,30 @@ echo 加密文件会在桌面生成(e=返回):
 echo _______________________________________________________________________________
 set jiami=
 set/p jiami=拖动需要加密的文件到此窗口:
-set jiami="%jiami:|=%"
-if /i !jiami!=="e" goto batjiami
-if "%jiami:~0,1%%jiami:~-1%" neq """" for /f "delims=" %%a in ('"echo %jiami%"') do (set %jiami%="%%~a")
+if /i "!jiami!"=="e" goto batjiami
+if "!jiami:~0,1!!jiami:~-1!" neq """" for /f "delims=" %%a in ('"echo !jiami!"') do (set !jiami!="%%~a")
 :batpd
 cls
-for /f "delims=" %%a in ("%jiami%") do set jmdx=%%~za
-set/a batpdjg=%jmdx%%%2
-if "%batpdjg%"=="1" goto jiamipause
-if "%batpdjg%"=="0" goto beiyongjiamipause
+for /f "delims=" %%a in ("!jiami!") do set jmdx=%%~za
+set/a batpdjg=!jmdx!%%2
+if "!batpdjg!"=="1" goto jiamipause
+if "!batpdjg!"=="0" goto beiyongjiamipause
 echo 请输入正确的选项！
 ping/n 2 0.0>nul
 goto batjiami(1)
 :jiamipause
-for /f "delims=" %%e in ("%jiami%") do if %%~xe==.bat set geshi=bat&set wjm=%%~ne&goto batjiami(1)(1)
-for /f "delims=" %%e in ("%jiami%") do if %%~xe==.txt set geshi=txt&set wjm=%%~ne&goto batjiami(1)(1)
-for /f "delims=" %%e in ("%jiami%") do if %%~xe==.log set geshi=log&set wjm=%%~ne&goto batjiami(1)(1)
-for /f "delims=" %%e in ("%jiami%") do if %%~xe==.inf set geshi=inf&set wjm=%%~ne&goto batjiami(1)(1)
-for /f "delims=" %%e in ("%jiami%") do if %%~xe==.cmd set geshi=cmd&set wjm=%%~ne&goto batjiami(1)(1)
-for /f "delims=" %%e in ("%jiami%") do if %%~xe==.ini set geshi=ini&set wjm=%%~ne&goto batjiami(1)(1)
-for /f "delims=" %%e in ("%jiami%") do if %%~xe==.lrc set geshi=lrc&set wjm=%%~ne&goto batjiami(1)(1)
+for /f "delims=" %%e in ("!jiami!") do if %%~xe==.bat set geshi=bat&set wjm=%%~ne&goto batjiami(1)(1)
+for /f "delims=" %%e in ("!jiami!") do if %%~xe==.txt set geshi=txt&set wjm=%%~ne&goto batjiami(1)(1)
+for /f "delims=" %%e in ("!jiami!") do if %%~xe==.log set geshi=log&set wjm=%%~ne&goto batjiami(1)(1)
+for /f "delims=" %%e in ("!jiami!") do if %%~xe==.inf set geshi=inf&set wjm=%%~ne&goto batjiami(1)(1)
+for /f "delims=" %%e in ("!jiami!") do if %%~xe==.cmd set geshi=cmd&set wjm=%%~ne&goto batjiami(1)(1)
+for /f "delims=" %%e in ("!jiami!") do if %%~xe==.ini set geshi=ini&set wjm=%%~ne&goto batjiami(1)(1)
+for /f "delims=" %%e in ("!jiami!") do if %%~xe==.lrc set geshi=lrc&set wjm=%%~ne&goto batjiami(1)(1)
 echo 无效的文件格式！
 ping/n 2 0.0>nul
 goto batjiami(1)
 :batjiami(1)(1)
-copy/y "%jiami%" %systemdrive%linshiwenjian.tmp
+copy/y "!jiami!" %systemdrive%linshiwenjian.tmp
 echo %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a >%systemdrive%1.tmp
 echo cls>%systemdrive%2.tmp
 copy/b %systemdrive%1.tmp+%systemdrive%2.tmp+%systemdrive%linshiwenjian.tmp "%zmlj%已加密的%wjm%.%geshi%"
@@ -1106,22 +1096,21 @@ echo 解密文件会在桌面生成(e=返回)
 echo _______________________________________________________________________________
 set jiemi=
 set/p jiemi=拖动需要解密的文件到此窗口:
-set jiemi="%jiemi:|=%"
-if /i !jiemi!=="e" goto batjiami
-if "%jiemi:~0,1%%jiemi:-1%" neq """" for /f "delims=" %%a in ('"echo %jiemi%"') do (set %jiemi%="%%~a")
+if /i "!jiemi!"=="e" goto batjiami
+if "!jiemi:~0,1!!jiemi:-1!" neq """" for /f "delims=" %%a in ('"echo !jiemi!"') do (set !jiemi!="%%~a")
 :jiemipause
-for /f "delims=" %%f in ("%jiemi%") do if %%~xf==.bat set geshi=bat&set wjm=%%~nf&goto batjiami(2)(1)
-for /f "delims=" %%f in ("%jiemi%") do if %%~xf==.txt set geshi=txt&set wjm=%%~nf&goto batjiami(2)(1)
-for /f "delims=" %%f in ("%jiemi%") do if %%~xf==.log set geshi=log&set wjm=%%~nf&goto batjiami(2)(1)
-for /f "delims=" %%f in ("%jiemi%") do if %%~xf==.inf set geshi=inf&set wjm=%%~nf&goto batjiami(2)(1)
-for /f "delims=" %%f in ("%jiemi%") do if %%~xf==.cmd set geshi=cmd&set wjm=%%~nf&goto batjiami(2)(1)
-for /f "delims=" %%f in ("%jiemi%") do if %%~xf==.ini set geshi=ini&set wjm=%%~nf&goto batjiami(2)(1)
-for /f "delims=" %%f in ("%jiemi%") do if %%~xf==.lrc set geshi=lrc&set wjm=%%~nf&goto batjiami(2)(1)
+for /f "delims=" %%f in ("!jiemi!") do if %%~xf==.bat set geshi=bat&set wjm=%%~nf&goto batjiami(2)(1)
+for /f "delims=" %%f in ("!jiemi!") do if %%~xf==.txt set geshi=txt&set wjm=%%~nf&goto batjiami(2)(1)
+for /f "delims=" %%f in ("!jiemi!") do if %%~xf==.log set geshi=log&set wjm=%%~nf&goto batjiami(2)(1)
+for /f "delims=" %%f in ("!jiemi!") do if %%~xf==.inf set geshi=inf&set wjm=%%~nf&goto batjiami(2)(1)
+for /f "delims=" %%f in ("!jiemi!") do if %%~xf==.cmd set geshi=cmd&set wjm=%%~nf&goto batjiami(2)(1)
+for /f "delims=" %%f in ("!jiemi!") do if %%~xf==.ini set geshi=ini&set wjm=%%~nf&goto batjiami(2)(1)
+for /f "delims=" %%f in ("!jiemi!") do if %%~xf==.lrc set geshi=lrc&set wjm=%%~nf&goto batjiami(2)(1)
 echo 无效的文件格式！
 ping/n 2 0.0>nul
 goto batjiami(2)
 :batjiami(2)(1)
-copy/y "%jiemi%" %systemdrive%linshiwenjian.tmp
+copy/y "!jiemi!" %systemdrive%linshiwenjian.tmp
 echo;>%systemdrive%3.tmp
 copy/b %systemdrive%3.tmp+%systemdrive%linshiwenjian.tmp "%zmlj%已解密的%wjm%.%geshi%"
 del/f/q 3.tmp
@@ -1133,18 +1122,18 @@ ping/n 2 0.0>nul
 goto batjiami
 :beiyongjiamipause
 del/f/q %systemdrive%linshiwenjian.tmp>nul
-for /f "delims=" %%g in ("%jiami%") do if %%~xg==.bat set geshi=bat&set wjm=%%~ng&goto beiyongjiami(1)
-for /f "delims=" %%g in ("%jiami%") do if %%~xg==.txt set geshi=txt&set wjm=%%~ng&goto beiyongjiami(1)
-for /f "delims=" %%g in ("%jiami%") do if %%~xg==.log set geshi=log&set wjm=%%~ng&goto beiyongjiami(1)
-for /f "delims=" %%g in ("%jiami%") do if %%~xg==.inf set geshi=inf&set wjm=%%~ng&goto beiyongjiami(1)
-for /f "delims=" %%g in ("%jiami%") do if %%~xg==.cmd set geshi=cmd&set wjm=%%~ng&goto beiyongjiami(1)
-for /f "delims=" %%g in ("%jiami%") do if %%~xg==.ini set geshi=ini&set wjm=%%~ng&goto beiyongjiami(1)
-for /f "delims=" %%g in ("%jiami%") do if %%~xg==.lrc set geshi=lrc&set wjm=%%~ng&goto beiyongjiami(1)
+for /f "delims=" %%g in ("!jiami!") do if %%~xg==.bat set geshi=bat&set wjm=%%~ng&goto beiyongjiami(1)
+for /f "delims=" %%g in ("!jiami!") do if %%~xg==.txt set geshi=txt&set wjm=%%~ng&goto beiyongjiami(1)
+for /f "delims=" %%g in ("!jiami!") do if %%~xg==.log set geshi=log&set wjm=%%~ng&goto beiyongjiami(1)
+for /f "delims=" %%g in ("!jiami!") do if %%~xg==.inf set geshi=inf&set wjm=%%~ng&goto beiyongjiami(1)
+for /f "delims=" %%g in ("!jiami!") do if %%~xg==.cmd set geshi=cmd&set wjm=%%~ng&goto beiyongjiami(1)
+for /f "delims=" %%g in ("!jiami!") do if %%~xg==.ini set geshi=ini&set wjm=%%~ng&goto beiyongjiami(1)
+for /f "delims=" %%g in ("!jiami!") do if %%~xg==.lrc set geshi=lrc&set wjm=%%~ng&goto beiyongjiami(1)
 echo 无效的文件格式！
 ping/n 2 0.0>nul
 goto batjiami(1)
 :beiyongjiami(1)
-copy/y "%jiami%" %systemdrive%linshiwenjian.tmp
+copy/y "!jiami!" %systemdrive%linshiwenjian.tmp
 echo %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a>%systemdrive%4.tmp
 echo cls>%systemdrive%5.tmp
 copy/b %systemdrive%4.tmp+%systemdrive%5.tmp+%systemdrive%linshiwenjian.tmp "%zmlj%已加密的%wjm%.%geshi%"
@@ -1165,24 +1154,25 @@ echo 加密文件会在桌面生成(e=返回)
 echo _______________________________________________________________________________
 set jiami2=
 set/p jiami2=拖动需要加密的文件到此窗口:
-set jiami2="%jiami2:|=%"
-if /i !jiami2!=="e" goto batjiami
-if "%jiami2:~0,1%%jiami2:-1%" neq """" for /f "delims=" %%a in ('"echo %jiami2%"') do (set %jiami2%="%%~a")
+if /i "!jiami2!"=="e" goto batjiami
+if "!jiami2:~0,1!!jiami2:-1!" neq """" for /f "delims=" %%a in ('"echo !jiami2!"') do (set !jiami2!="%%~a")
 :jiami2pause
-for /f "delims=" %%g in ("%jiami2%") do if %%~xg==.bat set geshi=bat&set wjm=%%~ng&goto jiami2(1)
-for /f "delims=" %%g in ("%jiami2%") do if %%~xg==.txt set geshi=txt&set wjm=%%~ng&goto jiami2(1)
-for /f "delims=" %%g in ("%jiami2%") do if %%~xg==.log set geshi=log&set wjm=%%~ng&goto jiami2(1)
-for /f "delims=" %%g in ("%jiami2%") do if %%~xg==.inf set geshi=inf&set wjm=%%~ng&goto jiami2(1)
-for /f "delims=" %%g in ("%jiami2%") do if %%~xg==.cmd set geshi=cmd&set wjm=%%~ng&goto jiami2(1)
-for /f "delims=" %%g in ("%jiami2%") do if %%~xg==.ini set geshi=ini&set wjm=%%~ng&goto jiami2(1)
-for /f "delims=" %%g in ("%jiami2%") do if %%~xg==.lrc set geshi=lrc&set wjm=%%~ng&goto jiami2(1)
+for /f "delims=" %%g in ("!jiami2!") do if %%~xg==.bat set geshi=bat&set wjm=%%~ng&goto jiami2(1)
+for /f "delims=" %%g in ("!jiami2!") do if %%~xg==.txt set geshi=txt&set wjm=%%~ng&goto jiami2(1)
+for /f "delims=" %%g in ("!jiami2!") do if %%~xg==.log set geshi=log&set wjm=%%~ng&goto jiami2(1)
+for /f "delims=" %%g in ("!jiami2!") do if %%~xg==.inf set geshi=inf&set wjm=%%~ng&goto jiami2(1)
+for /f "delims=" %%g in ("!jiami2!") do if %%~xg==.cmd set geshi=cmd&set wjm=%%~ng&goto jiami2(1)
+for /f "delims=" %%g in ("!jiami2!") do if %%~xg==.ini set geshi=ini&set wjm=%%~ng&goto jiami2(1)
+for /f "delims=" %%g in ("!jiami2!") do if %%~xg==.lrc set geshi=lrc&set wjm=%%~ng&goto jiami2(1)
 echo 无效的文件格式！
 ping/n 2 0.0>nul
 goto batjiami(3)
 :jiami2(1)
 cls
-copy/y "%jiami2%" %systemdrive%temp.0
-echo ?兀>%systemdrive%temp
+verify on
+copy/y "!jiami2!" %systemdrive%temp.0
+set /p =//4NCg==<nul>%temp%\tmpcode
+certutil -decode -f %temp%\tmpcode %systemdrive%temp>nul
 copy/b %systemdrive%temp+%systendrive%temp.0 "%zmlj%已加密的%wjm%.%geshi%"
 del/f/q %systemdrive%temp
 del/f/q %systemdrive%temp.0
@@ -1619,7 +1609,8 @@ set/p size=设置休眠文件占用总内存比例(40~100)(默认100)(e=返回):
 set size="%size:|=%"
 if /i !size!=="e" goto guanji
 if /i !size!=="|=" set size=100&goto xm
-if "%size:~0,1%%size:~-1%" neq """" for /f "delims=" %%a in ('"echo %size%"') do (set %size%="%%~a")
+if "%size:~0,1%%size:~-1%" neq """" for /f "delims=" %%a in ('"echo %size%"') do (set %size%=%%~a)
+set size=!size:"=!
 if !size! geq 40 if !size! leq 100 goto xm
 echo 请输入正确的选项！
 ping/n 2 0.0>nul
