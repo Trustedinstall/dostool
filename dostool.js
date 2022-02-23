@@ -67,8 +67,8 @@ for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
-set ver=20211218
-set versize=170618
+set ver=20220223
+set versize=176124
 set gxflag=
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
@@ -112,6 +112,7 @@ if %%a==10 set nx1=[S]下一页&set nx=[A]上一页   [S]下一页&set nx7=[A]上一页)
 set sc=delasd123
 set scw=rdasd123
 set ad=
+for /f "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1) do rem"') do set cswz=%%b[
 if /i "%processor_architecture%"=="x86" (set bit=32) else (set bit=64)
 if "!system:~8,2!"=="XP" (set zmlj=%zmlj:~19%\) else (set zmlj=%zmlj:~25%\)
 if "%zmlj:~0,1%%zmlj:~-1%" neq """" for /f "delims=" %%a in ('"echo %zmlj%"') do (set %zmlj%="%%~a")
@@ -152,8 +153,7 @@ echo ___________________________________________________________________________
 echo 机器码:%jqm%
 set mima=
 set/p mima=请输入注册码:
-set mima="%mima:|=%"
-if /i !mima!=="!zh!" goto yes
+if /i "!mima!"=="!zh!" goto yes
 echo 注册码错误
 ping/n 2 0.0>nul
 goto ks
@@ -176,8 +176,7 @@ echo 现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
 echo _______________________________________________________________________________
 set mima=
 set/p mima=请输入密码:
-set mima="%mima:|=%"
-set /p =!mima!<nul>%temp%\mima.tmp
+set /p ="!mima!"<nul>%temp%\mima.tmp
 call :hash %temp%\mima.tmp
 del /f /q %temp%\mima.tmp
 if /i "%hash%"=="DCA9A6E6D000573FDC4DF6FEBA6035B87A8CE07C" goto mima1
@@ -199,12 +198,12 @@ if /i "%2" neq "" goto %2
 :a
 set color=
 set color1=f
-set/a color=%random%%%7
-if %color%==0 set color=8
-if %color%==2 set color=8
-if %color%==3 set color=9
-if %color%==4 set color=9
-if %color%==6 set color=f&set color1=1
+set/a color=%random%%%5
+if %color%==0 set ysbak=40;97m
+if %color%==1 set ysbak=44;97m
+if %color%==2 set color=5&set ysbak=45;97m
+if %color%==3 set ysbak=46;97m
+if %color%==4 set color=7&set color1=8&set ysbak=47;90m
 color %color%%color1%
 if exist %temp%\dostoolupdate (
 for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
@@ -214,7 +213,7 @@ for /f "delims=: tokens=2" %%b in (%temp%\dostoolupdate) do (set doshash="%%b"))
 del /f /q %temp%\dostoolupdate)
 title DOS工具箱 - %system%%gxflag%
 cls
-echo                                     菜单 - 第1页
+echo                                     菜单 - 第!cswz!!ysbak:~0,3!92m1!cswz!!ysbak!页
 echo 现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
 echo _______________________________________________________________________________
 echo [1]清除U盘里的lpk.dll病毒
@@ -226,7 +225,7 @@ echo [6]显示被隐藏文件(中了该类病毒后)
 echo [7]解除注册表被禁用
 echo [8]计算开平方
 echo [9]切换到命令提示符
-echo [0]退出                                                         %nx1%
+echo [0]退出                                                         !cswz!42;97m%nx1%!cswz!!ysbak!
 echo _______________________________________________________________________________
 set caidan=
 set/p caidan=请输入你的选择:
@@ -266,12 +265,12 @@ goto a
 :b
 set color=
 set color1=f
-set/a color=%random%%%7
-if %color%==0 set color=8
-if %color%==2 set color=8
-if %color%==3 set color=9
-if %color%==4 set color=9
-if %color%==6 set color=f&set color1=1
+set/a color=%random%%%5
+if %color%==0 set ysbak=40;97m
+if %color%==1 set ysbak=44;97m
+if %color%==2 set color=5&set ysbak=45;97m
+if %color%==3 set ysbak=46;97m
+if %color%==4 set color=7&set color1=8&set ysbak=47;90m
 color %color%%color1%
 if exist %temp%\dostoolupdate (
 for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
@@ -281,7 +280,7 @@ for /f "delims=: tokens=2" %%b in (%temp%\dostoolupdate) do (set doshash="%%b"))
 del /f /q %temp%\dostoolupdate)
 title DOS工具箱 - %system%%gxflag%
 cls
-echo                                     菜单 - 第2页
+echo                                     菜单 - 第!cswz!!ysbak:~0,3!92m2!cswz!!ysbak!页
 echo 现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
 echo _______________________________________________________________________________
 echo [1]将磁盘格式转换为NTFS
@@ -293,7 +292,7 @@ echo [6]随机数生成器
 echo [7]清除KHATRA病毒
 echo [8]打开注册表
 echo [9]打开控制面板
-echo [0]退出                                             %nx%
+echo [0]退出                                             !cswz!42;97m%nx%!cswz!!ysbak!
 echo _______________________________________________________________________________
 set caidan=
 set/p caidan=请输入你的选择:
@@ -335,12 +334,12 @@ goto b
 :c
 set color=
 set color1=f
-set/a color=%random%%%7
-if %color%==0 set color=8
-if %color%==2 set color=8
-if %color%==3 set color=9
-if %color%==4 set color=9
-if %color%==6 set color=f&set color1=1
+set/a color=%random%%%5
+if %color%==0 set ysbak=40;97m
+if %color%==1 set ysbak=44;97m
+if %color%==2 set color=5&set ysbak=45;97m
+if %color%==3 set ysbak=46;97m
+if %color%==4 set color=7&set color1=8&set ysbak=47;90m
 color %color%%color1%
 if exist %temp%\dostoolupdate (
 for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
@@ -350,7 +349,7 @@ for /f "delims=: tokens=2" %%b in (%temp%\dostoolupdate) do (set doshash="%%b"))
 del /f /q %temp%\dostoolupdate)
 title DOS工具箱 - %system%%gxflag%
 cls
-echo                                     菜单 - 第3页
+echo                                     菜单 - 第!cswz!!ysbak:~0,3!92m3!cswz!!ysbak!页
 echo 现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
 echo _______________________________________________________________________________
 echo [1]打开DirectX诊断工具
@@ -362,7 +361,7 @@ echo [6]文件系统信息查询
 echo [7]创建指定大小的文件
 echo [8]免疫U盘病毒
 echo [9]磁盘碎片整理
-echo [0]退出                                             %nx%
+echo [0]退出                                             !cswz!42;97m%nx%!cswz!!ysbak!
 echo _______________________________________________________________________________
 set caidan=
 set/p caidan=请输入你的选择:
@@ -404,12 +403,12 @@ goto c
 :d
 set color=
 set color1=f
-set/a color=%random%%%7
-if %color%==0 set color=8
-if %color%==2 set color=8
-if %color%==3 set color=9
-if %color%==4 set color=9
-if %color%==6 set color=f&set color1=1
+set/a color=%random%%%5
+if %color%==0 set ysbak=40;97m
+if %color%==1 set ysbak=44;97m
+if %color%==2 set color=5&set ysbak=45;97m
+if %color%==3 set ysbak=46;97m
+if %color%==4 set color=7&set color1=8&set ysbak=47;90m
 color %color%%color1%
 if exist %temp%\dostoolupdate (
 for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
@@ -419,7 +418,7 @@ for /f "delims=: tokens=2" %%b in (%temp%\dostoolupdate) do (set doshash="%%b"))
 del /f /q %temp%\dostoolupdate)
 title DOS工具箱 - %system%%gxflag%
 cls
-echo                                     菜单 - 第4页
+echo                                     菜单 - 第!cswz!!ysbak:~0,3!92m4!cswz!!ysbak!页
 echo 现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
 echo _______________________________________________________________________________
 echo [1]一键删除空文件夹
@@ -431,7 +430,7 @@ echo [6]计时器
 echo [7]随机密码生成器
 echo [8]删除每个盘符下的System Volume Information文件夹
 echo [9]二进制转换器
-echo [0]退出                                             %nx%
+echo [0]退出                                             !cswz!42;97m%nx%!cswz!!ysbak!
 echo _______________________________________________________________________________
 set caidan=
 set/p caidan=请输入你的选择:
@@ -473,12 +472,12 @@ goto d
 :e
 set color=
 set color1=f
-set/a color=%random%%%7
-if %color%==0 set color=8
-if %color%==2 set color=8
-if %color%==3 set color=9
-if %color%==4 set color=9
-if %color%==6 set color=f&set color1=1
+set/a color=%random%%%5
+if %color%==0 set ysbak=40;97m
+if %color%==1 set ysbak=44;97m
+if %color%==2 set color=5&set ysbak=45;97m
+if %color%==3 set ysbak=46;97m
+if %color%==4 set color=7&set color1=8&set ysbak=47;90m
 color %color%%color1%
 if exist %temp%\dostoolupdate (
 for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
@@ -488,7 +487,7 @@ for /f "delims=: tokens=2" %%b in (%temp%\dostoolupdate) do (set doshash="%%b"))
 del /f /q %temp%\dostoolupdate)
 title DOS工具箱 - %system%%gxflag%
 cls
-echo                                     菜单 - 第5页
+echo                                     菜单 - 第!cswz!!ysbak:~0,3!92m5!cswz!!ysbak!页
 echo 现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
 echo _______________________________________________________________________________
 echo [1]文本浏览
@@ -500,7 +499,7 @@ echo [6]语音阅读器
 echo [7]批处理文件风险分析
 echo [8]文件搜索
 echo [9]修复已损坏的文件
-echo [0]退出                                             %nx%
+echo [0]退出                                             !cswz!42;97m%nx%!cswz!!ysbak!
 echo _______________________________________________________________________________
 set caidan=
 set/p caidan=请输入你的选择:
@@ -542,12 +541,12 @@ goto e
 :f
 set color=
 set color1=f
-set/a color=%random%%%7
-if %color%==0 set color=8
-if %color%==2 set color=8
-if %color%==3 set color=9
-if %color%==4 set color=9
-if %color%==6 set color=f&set color1=1
+set/a color=%random%%%5
+if %color%==0 set ysbak=40;97m
+if %color%==1 set ysbak=44;97m
+if %color%==2 set color=5&set ysbak=45;97m
+if %color%==3 set ysbak=46;97m
+if %color%==4 set color=7&set color1=8&set ysbak=47;90m
 color %color%%color1%
 if exist %temp%\dostoolupdate (
 for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
@@ -557,7 +556,7 @@ for /f "delims=: tokens=2" %%b in (%temp%\dostoolupdate) do (set doshash="%%b"))
 del /f /q %temp%\dostoolupdate)
 title DOS工具箱 - %system%%gxflag%
 cls
-echo                                     菜单 - 第6页
+echo                                     菜单 - 第!cswz!!ysbak:~0,3!92m6!cswz!!ysbak!页
 echo 现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
 echo _______________________________________________________________________________
 echo [1]暴力破解压缩包密码
@@ -569,7 +568,7 @@ echo [6]将文字写入剪切板
 echo [7]打开系统服务设置
 echo [8]已知年月日计算星期
 echo [9]查询系统激活状态
-echo [0]退出                                             %nx%
+echo [0]退出                                             !cswz!42;97m%nx%!cswz!!ysbak!
 echo _______________________________________________________________________________
 set caidan=
 set/p caidan=请输入你的选择:
@@ -611,12 +610,12 @@ goto f
 :g
 set color=
 set color1=f
-set/a color=%random%%%7
-if %color%==0 set color=8
-if %color%==2 set color=8
-if %color%==3 set color=9
-if %color%==4 set color=9
-if %color%==6 set color=f&set color1=1
+set/a color=%random%%%5
+if %color%==0 set ysbak=40;97m
+if %color%==1 set ysbak=44;97m
+if %color%==2 set color=5&set ysbak=45;97m
+if %color%==3 set ysbak=46;97m
+if %color%==4 set color=7&set color1=8&set ysbak=47;90m
 color %color%%color1%
 if exist %temp%\dostoolupdate (
 for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
@@ -626,7 +625,7 @@ for /f "delims=: tokens=2" %%b in (%temp%\dostoolupdate) do (set doshash="%%b"))
 del /f /q %temp%\dostoolupdate)
 title DOS工具箱 - %system%%gxflag%
 cls
-echo                                     菜单 - 第7页
+echo                                     菜单 - 第!cswz!!ysbak:~0,3!92m7!cswz!!ysbak!页
 echo 现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
 echo _______________________________________________________________________________
 echo [1]创建指定文件的快捷方式到桌面
@@ -638,7 +637,7 @@ echo [6]解除Streams文件锁定
 echo [7]创建、删除或列出卷装入点
 echo [8]注册表搜索
 echo [9]Base64编解码
-echo [0]退出                                                      %nx%
+echo [0]退出                                             !cswz!42;97m%nx%!cswz!!ysbak!
 echo _______________________________________________________________________________
 set caidan=
 set/p caidan=请输入你的选择:
@@ -680,12 +679,12 @@ goto g
 :h
 set color=
 set color1=f
-set/a color=%random%%%7
-if %color%==0 set color=8
-if %color%==2 set color=8
-if %color%==3 set color=9
-if %color%==4 set color=9
-if %color%==6 set color=f&set color1=1
+set/a color=%random%%%5
+if %color%==0 set ysbak=40;97m
+if %color%==1 set ysbak=44;97m
+if %color%==2 set color=5&set ysbak=45;97m
+if %color%==3 set ysbak=46;97m
+if %color%==4 set color=7&set color1=8&set ysbak=47;90m
 color %color%%color1%
 if exist %temp%\dostoolupdate (
 for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
@@ -695,7 +694,7 @@ for /f "delims=: tokens=2" %%b in (%temp%\dostoolupdate) do (set doshash="%%b"))
 del /f /q %temp%\dostoolupdate)
 title DOS工具箱 - %system%%gxflag%
 cls
-echo                                     菜单 - 第8页
+echo                                     菜单 - 第!cswz!!ysbak:~0,3!92m8!cswz!!ysbak!页
 echo 现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
 echo _______________________________________________________________________________
 echo [1]8.3短文件名管理
@@ -704,7 +703,9 @@ echo [3]计算文件哈希值
 echo [4]显示货币汇率
 echo [5]创建虚拟盘符
 echo [6]解压msi安装文件
-echo [0]退出                                                      %nx7%
+echo [7]生成CMD控制台色彩表
+echo [8]KMS激活Windows 10
+echo [0]退出                                                      !cswz!42;97m%nx7%!cswz!!ysbak!
 echo _______________________________________________________________________________
 set caidan=
 set/p caidan=请输入你的选择:
@@ -714,6 +715,8 @@ if "!caidan!"=="3" goto 66
 if "!caidan!"=="4" goto 67
 if "!caidan!"=="5" goto 68
 if "!caidan!"=="6" goto 69
+if "!caidan!"=="7" goto 70
+if "!caidan!"=="8" goto 71
 if "!caidan!"=="0" goto 00
 if "!caidan!"=="-" goto g
 if /i "!caidan!"=="a" goto g
@@ -964,7 +967,7 @@ goto 08
 title 命令提示符 - %system%
 cls
 ver
-cmd /k prompt %username%@%hostname%:$p#$s
+cmd /k prompt !cswz!!ysbak:~0,3!92m%username%!cswz!!ysbak!@%hostname%:$p#$s
 goto a
 :10
 title 将磁盘格式转换为NTFS - %system%
@@ -2098,9 +2101,14 @@ title ping测试网络延迟 - %system%
 cls
 set ping=
 set pingcishu=
+if exist %systemroot%\system32\curl.exe (ping /n 1 www.baidu.com>nul&&set /p =本机IPV4地址: <nul&curl 4.ipw.cn&echo;)
+if exist %systemroot%\system32\curl.exe (ping /n 1 240c::6666>nul&&set /p =本机IPV6地址: <nul&curl 6.ipw.cn&echo;)
 set/p ping=请输入目标IP或者网址:
 set/p pingcishu=请输入ping次数:
 cls
+if exist %systemroot%\system32\curl.exe (ping /n 1 www.baidu.com>nul&&set /p =本机IPV4地址: <nul&curl 4.ipw.cn&echo;)
+if exist %systemroot%\system32\curl.exe (ping /n 1 240c::6666>nul&&set /p =本机IPV6地址: <nul&curl 6.ipw.cn&echo;)
+echo;
 echo 正在测试%ping%的网络延迟...
 ping/n %pingcishu% %ping% /a
 echo _______________________________________________________________________________
@@ -2231,6 +2239,8 @@ echo !mrwg!)
 :mrwgtc
 echo;
 echo IP:
+if exist %systemroot%\system32\curl.exe (ping /n 1 www.baidu.com>nul&&curl 4.ipw.cn)
+echo;
 for /f "delims== tokens=2" %%a in ('"Wmic Path Win32_NetworkAdapterConfiguration WHERE "IPEnabled^='TRUE'" get ipaddress /value"') do (set ipdz=%%a
 set ipdz=!ipdz:{=!
 set ipdz=!ipdz:}=!
@@ -2343,7 +2353,7 @@ choice /c YN /n /m 请问这里有你想的数吗?(Y=有,N=没有)[7\7]
 if "%errorlevel%" equ "1" set /a num=num+64
 if "%errorlevel%" equ "2" set /a num=num
 cls
-echo 经过电脑复杂的计算后,得出你大脑里想的那个数是:%num%
+echo 经过电脑复杂的计算后,得出你大脑里想的那个数是:!cswz!41;92m %num% !cswz!!ysbak!
 echo _______________________________________________________________________________
 echo 按任意键返回菜单&pause>nul
 goto d
@@ -2645,9 +2655,9 @@ call :sjc "%dosqssj%" "%dosjssj%"
 cls
 echo 关于DOS工具箱
 echo _______________________________________________________________________________
-echo 版本: 1.8.6 (%ver%.%versize%)
+echo 版本: 1.8.8 (%ver%.%versize%)
 echo 操作系统: %system% %bit%位
-echo 版权所有 2012-2021 Administrator 保留所有权利
+echo 版权所有 2012-2022 Administrator 保留所有权利
 echo _______________________________________________________________________________
 echo 本次已运行:%sjc:~0,2%时%sjc:~2,2%分%sjc:~4,2%.%sjc:~6,2%秒
 echo DOS工具箱所在路径:%weizhi%
@@ -3379,20 +3389,20 @@ title Base解码 - %system%
 set basebm=
 set/p basebm=输入要解码的字符串或文件路径:
 if "!basebm!"=="" goto 63-1
-if not exist "!basebm!" (echo %basebm%>%temp%\tmp
+if not exist "!basebm!" (echo !basebm!>%temp%\tmp
 certutil -decode -f %temp%\tmp %temp%\codetmp>nul&goto 63-11)
-if "%basebm:~0,1%%basebm:~-1%" neq """" for /f "delims=" %%a in ('"echo %basebm%"') do (set %basebm%="%%~a")
-dir/ad "%basebm%" >nul 2>nul&&echo 不能解码文件夹||goto 63-12
+if "!basebm:~0,1!!basebm:~-1!" neq """" for /f "delims=" %%a in ('"echo !basebm!"') do (set !basebm!="%%~a")
+dir/ad "!basebm!" >nul 2>nul&&echo 不能解码文件夹||goto 63-12
 ping/n 2 0.0>nul
 goto 63-1
 :63-12
-certutil -decode -f "%basebm%" %temp%\codetmp>nul
+certutil -decode -f "!basebm!" %temp%\codetmp>nul
 :63-11
 cls
 echo _______________________________________________________________________________
-echo 输入内容: %basebm%
+echo 输入内容: !basebm!
 echo 解码内容:
-for /f "delims=" %%a in (%temp%\codetmp) do (if "%%a" neq "-----BEGIN CERTIFICATE-----" (if "%%a" neq "-----END CERTIFICATE-----" (echo %%a)))
+if exist %temp%\codetmp (for /f "delims=" %%a in (%temp%\codetmp) do (if "%%a" neq "-----BEGIN CERTIFICATE-----" (if "%%a" neq "-----END CERTIFICATE-----" (echo %%a)))) else (echo 解码失败)
 echo _______________________________________________________________________________
 set bxz=
 set/p bxz=输入"y"保存编码,其他输入返回上级菜单:
@@ -3403,7 +3413,7 @@ goto 63
 set basebc=
 set/p basebc=输入保存路径:
 echo _______________________________________________________________________________
-copy/y/z %temp%\codetmp %basebc%
+copy/y/z %temp%\codetmp !basebc!
 if %errorlevel% neq 0 (echo 保存失败) else (echo 保存成功)
 echo _______________________________________________________________________________
 echo 按任意键返回菜单&pause>nul
@@ -3415,18 +3425,18 @@ title Base编码 - %system%
 set basebm=
 set/p basebm=输入要编码的字符串或文件路径:
 if "!basebm!"=="" goto 63-2
-if not exist "!basebm!" (echo %basebm%>%temp%\tmp
+if not exist "!basebm!" (set /p =!basebm!<nul>%temp%\tmp
 certutil -encode -f %temp%\tmp %temp%\codetmp>nul&goto 63-21)
-if "%basebm:~0,1%%basebm:~-1%" neq """" for /f "delims=" %%a in ('"echo %basebm%"') do (set %basebm%="%%~a")
-dir/ad "%basebm%" >nul 2>nul&&echo 不能编码文件夹||goto 63-22
+if "!basebm:~0,1!!basebm:~-1!" neq """" for /f "delims=" %%a in ('"echo !basebm!"') do (set !basebm!="%%~a")
+dir/ad "!basebm!" >nul 2>nul&&echo 不能编码文件夹||goto 63-22
 ping/n 2 0.0>nul
 goto 63-2
 :63-22
-certutil -encode -f "%basebm%" %temp%\codetmp>nul
+certutil -encode -f "!basebm!" %temp%\codetmp>nul
 :63-21
 cls 
 echo _______________________________________________________________________________
-echo 输入内容: %basebm%
+echo 输入内容: !basebm!
 echo 编码内容:
 for /f "delims=" %%a in (%temp%\codetmp) do (if "%%a" neq "-----BEGIN CERTIFICATE-----" (if "%%a" neq "-----END CERTIFICATE-----" (echo %%a)))
 echo _______________________________________________________________________________
@@ -3439,7 +3449,7 @@ goto 63
 set basebc=
 set/p basebc=输入保存路径:
 echo _______________________________________________________________________________
-copy/y/z %temp%\codetmp %basebc%
+copy/y/z %temp%\codetmp !basebc!
 if %errorlevel% neq 0 (echo 保存失败) else (echo 保存成功)
 echo _______________________________________________________________________________
 echo 按任意键返回菜单&pause>nul
@@ -4019,6 +4029,90 @@ echo 开始解压...
 if not exist "!msidir!" (msiexec /a !msiurl! /quiet /passive /qn targetdir=!msidir!) else (echo 不能解压到已存在的文件夹&&timeout /t 2 /nobreak>nul)
 rd /s /q %systemdriver%\config.msi>nul 2>nul
 echo _______________________________________________________________________________
+echo 按任意键返回菜单&pause>nul
+goto h
+:70
+title 生成CMD控制台色彩表 - %system%
+cls
+color 07
+set cs=0
+for /l %%a in (40,1,47) do (for /l %%b in (90,1,97) do (
+if %%a lss 10 (set xh1=0%%a) else (set xh1=%%a)
+if %%b lss 10 (set xh2=0%%b) else (set xh2=%%b)
+if !xh1! equ 40 set bj=0
+if !xh1! equ 41 set bj=4
+if !xh1! equ 42 set bj=2
+if !xh1! equ 43 set bj=6
+if !xh1! equ 44 set bj=1
+if !xh1! equ 45 set bj=5
+if !xh1! equ 46 set bj=3
+if !xh1! equ 47 set bj=7
+if !xh2! equ 90 set zt=8
+if !xh2! equ 91 set zt=c
+if !xh2! equ 92 set zt=a
+if !xh2! equ 93 set zt=e
+if !xh2! equ 94 set zt=9
+if !xh2! equ 95 set zt=d
+if !xh2! equ 96 set zt=b
+if !xh2! equ 97 set zt=f
+if !cs! lss 7 (set /p =!cswz!!xh2!;!xh1!m  !bj!!zt!  !cswz!0m<nul&set /a cs=!cs!+1) else (echo !cswz!!xh2!;!xh1!m  !bj!!zt!  !cswz!0m&set cs=0)))
+set cs=0
+for /l %%a in (40,1,47) do (for /l %%b in (90,1,97) do (
+if %%a lss 10 (set xh1=0%%a) else (set xh1=%%a)
+if %%b lss 10 (set xh2=0%%b) else (set xh2=%%b)
+if !cs! lss 7 (set /p =!cswz!!xh2!;!xh1!m !xh2!;!xh1!!cswz!0m<nul&set /a cs=!cs!+1) else (echo !cswz!!xh2!;!xh1!m !xh2!;!xh1!!cswz!0m&set cs=0)))
+for /l %%a in (90,1,97) do (for /l %%b in (40,1,47) do (
+if %%a lss 10 (set xh1=0%%a) else (set xh1=%%a)
+if %%b lss 10 (set xh2=0%%b) else (set xh2=%%b)
+if !cs! lss 7 (set /p =!cswz!!xh2!;!xh1!m !xh2!;!xh1!!cswz!0m<nul&set /a cs=!cs!+1) else (echo !cswz!!xh2!;!xh1!m !xh2!;!xh1!!cswz!0m&set cs=0)))
+echo _______________________________________________________________________________
+echo 按任意键返回菜单&pause>nul
+goto h
+:71
+title KMS激活Windows 10 - %system%
+cls
+set Core=TX9XD-98N7V-6WMQ6-BX7FG-H8Q99
+set CoreCountrySpecific=PVMJN-6DFY6-9CCP6-7BKTT-D3WVR
+set CoreN=3KHY7-WNT83-DGQKR-F7HPR-844BM
+set CoreSingleLanguage=7HNRX-D7KGG-3K4RQ-4WPJ4-YTDFH
+set ProfessionalStudent=YNXW3-HV3VB-Y83VG-KPBXM-6VH3Q
+set ProfessionalStudentN=8G9XJ-GN6PJ-GW787-MVV7G-GMR99
+set Professional=W269N-WFGWX-YVC9B-4J6C9-T83GX
+set ProfessionalN=MH37W-N47XK-V7XM9-C7227-GCQG9
+set ProfessionalSN=8Q36Y-N2F39-HRMHT-4XW33-TCQR4
+set ProfessionalWMC=NKPM6-TCVPT-3HRFX-Q4H9B-QJ34Y
+set Enterprise=NPPR9-FWDCX-D2C8J-H872K-2YT43
+set EnterpriseN=DPH2V-TTNVB-4X9Q3-TJR4H-KHJW4
+set Education=NW6C2-QMPVW-D7KKK-3GKT6-VCFB2
+set EducationN=2WH4N-8QGBV-H22JP-CT43Q-MDWWJ
+set EnterpriseS=WNMTR-4C88C-JK8YV-HQ7T2-76DF9
+set EnterpriseSN=2F77B-TNFGY-69QQF-B8YKP-D69TJ
+for /f "tokens=3 delims= " %%a in ('reg QUERY "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v "EditionID"') do set sysid=%%a
+set server=
+if defined !sysid! (echo 系统名称: !cswz!!ysbak:~0,3!94m%system%!sysid!!cswz!!ysbak!) else (echo !cswz!!ysbak:~0,3!91m没有当前系统的激活密钥!cswz!!ysbak!)
+ping /n 1 www.baidu.com>nul||echo !cswz!!ysbak:~0,3!91m没有网络连接!cswz!!ysbak!
+echo 请选择KMS服务器
+echo _______________________________________________________________________________
+echo [1]!cswz!!ysbak:~0,3!94mxykz.f3322.org!cswz!!ysbak!
+echo [2]!cswz!!ysbak:~0,3!94mkms.03k.org!cswz!!ysbak!
+echo [0]返回菜单
+echo _______________________________________________________________________________
+choice /c 120 /n /m 请输入你的选择:
+if "%errorlevel%" equ "1" set server=xykz.f3322.org&goto 71.1
+if "%errorlevel%" equ "2" set server=kms.03k.org&goto 71.1
+if "%errorlevel%" equ "3" goto h
+goto 71
+:71.1
+cls
+echo KMS服务器: !cswz!!ysbak:~0,3!94m!server!!cswz!!ysbak!
+echo 系统名称: !cswz!!ysbak:~0,3!94m%system%!cswz!!ysbak!
+echo;
+cscript //Nologo %windir%\system32\slmgr.vbs /ipk !%sysid%!
+cscript //Nologo %windir%\system32\slmgr.vbs /skms !server!
+cscript //Nologo %windir%\system32\slmgr.vbs /ato
+start slmgr.vbs -xpr
+echo _______________________________________________________________________________
+echo 如果显示激活失败[错误: 0xC004F074]，应更换KMS服务器.
 echo 按任意键返回菜单&pause>nul
 goto h
 :hash
