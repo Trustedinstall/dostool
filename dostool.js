@@ -67,8 +67,8 @@ for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
-set ver=20220223
-set versize=176124
+set ver=20220224
+set versize=182104
 set gxflag=
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
@@ -112,6 +112,7 @@ if %%a==10 set nx1=[S]ÏÂÒ»Ò³&set nx=[A]ÉÏÒ»Ò³   [S]ÏÂÒ»Ò³&set nx7=[A]ÉÏÒ»Ò³)
 set sc=delasd123
 set scw=rdasd123
 set ad=
+call :list
 for /f "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1) do rem"') do set cswz=%%b[
 if /i "%processor_architecture%"=="x86" (set bit=32) else (set bit=64)
 if "!system:~8,2!"=="XP" (set zmlj=%zmlj:~19%\) else (set zmlj=%zmlj:~25%\)
@@ -123,7 +124,7 @@ echo ___________________________________________________________________________
 echo °´ÈÎÒâ¼ü¼ÌĞøÔËĞĞ&pause>nul)
 forfiles /p %~dp0 /m %~nx0 /c "cmd /c echo 0x070x07"
 cls
-goto a
+goto memuv2
 for /f "delims=" %%a in ('"wmic cpu get processorid|find /i /v "processorid""') do (for /f "delims=" %%b in ('"echo %%a|find /i /v "echo""') do (set a=%%b))
 for /f "delims=" %%a in ('"wmic bios get smbiosbiosversion|find /i /v "smbiosbiosversion""') do (for /f "delims=" %%b in ('"echo %%a|find /i /v "echo""') do (set b=%%b))
 set jqm=%a: =%%b: =%
@@ -195,6 +196,79 @@ ping/n 2 0.0>nul
 goto a
 :chanshu2
 if /i "%2" neq "" goto %2
+:memuv2
+if !start! lss 1 set start=1
+if !start! equ 1 set memuys=1
+if !start! equ 10 set memuys=2
+if !start! equ 19 set memuys=3
+if !start! equ 28 set memuys=4
+if !start! equ 37 set memuys=5
+if !start! equ 46 set memuys=6
+if !start! equ 55 set memuys=7
+if !start! equ 64 set memuys=8
+if !start! gtr 64 set start=64
+set color=
+set color1=f
+set/a color=%random%%%5
+if %color%==0 set ysbak=40;97m
+if %color%==1 set ysbak=44;97m
+if %color%==2 set color=5&set ysbak=45;97m
+if %color%==3 set ysbak=46;97m
+if %color%==4 set color=7&set color1=8&set ysbak=47;90m
+color %color%%color1%
+if exist %temp%\dostoolupdate (
+for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
+set /a gxjg=%%a-!ver!
+if !gxjg! gtr 0 (set gxflag= - ¼ì²éµ½¸üĞÂ°æ±¾: %%a
+for /f "delims=: tokens=2" %%b in (%temp%\dostoolupdate) do (set doshash="%%b")))
+del /f /q %temp%\dostoolupdate)
+title DOS¹¤¾ßÏä - %system%%gxflag%
+cls
+echo                                     ²Ëµ¥ - µÚ!cswz!!ysbak:~0,3!92m!memuys!!cswz!!ysbak!Ò³
+echo ÏÖÔÚÊÇ%date:~0,4%Äê%date:~5,2%ÔÂ%date:~8,2%ÈÕ %xingqi% %time:~0,8%
+echo !fy!
+set /a end=!start!+8
+set xx=0
+for /l %%a in (!start!,1,!end!) do (if defined a%%a (set /a xx=!xx!+1&echo [!xx!]!a%%a!&set xz!xx!=%%a))
+if !start! equ 1 (echo [0]ÍË³ö                                                         !cswz!42;97m%nx1%!cswz!!ysbak!) else (if !start! equ 64 (echo [0]ÍË³ö                                                      !cswz!42;97m%nx7%!cswz!!ysbak!) else (echo [0]ÍË³ö                                             !cswz!42;97m%nx%!cswz!!ysbak!))
+echo !fy!
+set caidan=
+set/p caidan=ÇëÊäÈëÄãµÄÑ¡Ôñ:
+if "!caidan!" equ "1" if !xz1! lss 10 (goto 0!xz1!) else (goto !xz1!)
+if "!caidan!" equ "2" if !xz1! lss 10 (goto 0!xz2!) else (goto !xz2!)
+if "!caidan!" equ "3" if !xz1! lss 10 (goto 0!xz3!) else (goto !xz3!)
+if "!caidan!" equ "4" if !xz1! lss 10 (goto 0!xz4!) else (goto !xz4!)
+if "!caidan!" equ "5" if !xz1! lss 10 (goto 0!xz5!) else (goto !xz5!)
+if "!caidan!" equ "6" if !xz1! lss 10 (goto 0!xz6!) else (goto !xz6!)
+if "!caidan!" equ "7" if !xz1! lss 10 (goto 0!xz7!) else (goto !xz7!)
+if "!caidan!" equ "8" if !xz1! lss 10 (goto 0!xz8!) else (goto !xz8!)
+if "!caidan!" equ "9" if !xz1! lss 10 (goto 0!xz9!) else (goto !xz9!)
+if "!caidan!" equ "0" exit
+if "!caidan!" equ "-" set /a start=!start!-9&goto memuv2
+if "!caidan!" equ "+" set /a start=!start!+9&goto memuv2
+if /i "!caidan!" equ "a" set /a start=!start!-9&goto memuv2
+if /i "!caidan!" equ "s" set /a start=!start!+9&goto memuv2
+if /i "!caidan!" equ "vbsjsq" set tzwz=!start!&goto vbsjsq
+if /i "!caidan!" equ "guanji" set tzwz=!start!&goto guanji
+if "!caidan!" equ "BATJIAMI" set tzwz=!start!&goto batjiami
+if /i "!caidan!" equ "guanyu" set tzwz=!start!&goto guanyu
+if /i "!caidan!" equ "csh" goto chushihua
+if /i "!caidan!" equ "kcd" set tzwz=!start!&goto kcd
+if /i "!caidan!" equ "gcd" set tzwz=!start!&goto gcd
+if /i "!caidan!" equ "xz" set tzwz=!start!&goto xz
+if /i "!caidan!" equ "js" set tzwz=!start!&goto 49
+if /i "!caidan!" equ "gx" set tzwz=!start!&goto update
+if /i "!caidan!" equ "go1" set start=1&goto memuv2
+if /i "!caidan!" equ "go2" set start=10&goto memuv2
+if /i "!caidan!" equ "go3" set start=19&goto memuv2
+if /i "!caidan!" equ "go4" set start=28&goto memuv2
+if /i "!caidan!" equ "go5" set start=37&goto memuv2
+if /i "!caidan!" equ "go6" set start=46&goto memuv2
+if /i "!caidan!" equ "go7" set start=55&goto memuv2
+if /i "!caidan!" equ "go8" set start=64&goto memuv2
+echo ÇëÊäÈëÕıÈ·µÄÑ¡Ïî£¡
+timeout /t 2 /nobreak>nul
+goto memuv2
 :a
 set color=
 set color1=f
@@ -1040,7 +1114,7 @@ set/p batjmxx=ÇëÊäÈëÄãµÄÑ¡Ôñ:
 if "!batjmxx!"=="1" goto batjiami(1)
 if "!batjmxx!"=="2" goto batjiami(2)
 if "!batjmxx!"=="3" goto batjiami(3)
-if "!batjmxx!"=="0" goto %tzwz%
+if "!batjmxx!"=="0" if "!tzwz!" equ "!start!" (goto memuv2) else (goto !tzwz!)
 echo ÇëÊäÈëÕıÈ·µÄÑ¡Ïî£¡
 ping/n 2 0.0>nul
 goto batjiami
@@ -1535,7 +1609,7 @@ if "%errorlevel%" equ "7" goto guanji(8)
 ::if "%errorlevel%" equ "8" tsdiscon
 if "%errorlevel%" equ "8" rundll32.exe user32.dll LockWorkStation
 if "%errorlevel%" equ "9" goto guanji-9
-if "%errorlevel%" equ "10" goto %tzwz%
+if "%errorlevel%" equ "10" if "!tzwz!" equ "!start!" (goto memuv2) else (goto !tzwz!)
 goto guanji
 set guanjixuanxiang=
 set/p guanjixuanxiang=ÇëÊäÈëÄãµÄÑ¡Ôñ:
@@ -1547,7 +1621,7 @@ if !guanjixuanxiang!=="4" goto guanji(4)
 if !guanjixuanxiang!=="5" goto guanji(6)
 if !guanjixuanxiang!=="6" goto guanji(7)
 if !guanjixuanxiang!=="7" goto guanji(8)
-if !guanjixuanxiang!=="0" goto %tzwz%
+if !guanjixuanxiang!=="0" if "!tzwz!" equ "!start!" (goto memuv2) else (goto !tzwz!)
 echo ÇëÊäÈëÕıÈ·µÄÑ¡Ïî£¡
 ping/n 2 0.0>nul
 goto guanji
@@ -2639,7 +2713,7 @@ cls
 echo e=·µ»Ø²Ëµ¥
 set/p vbsbds=ÇëÊäÈë±í´ïÊ½:
 :for /f "delims=eE" %%a in ('echo %vbsbds%') do goto js
-if /i "%vbsbds%"=="e" goto %tzwz%
+if /i "%vbsbds%"=="e" if "!tzwz!" equ "!start!" (goto memuv2) else (goto !tzwz!)
 :js
 echo msgbox %vbsbds%,"65","VBS¼ÆËãÆ÷">%systemdrive%\windows\temp.vbs
 %systemdrive%\windows\temp.vbs
@@ -2664,7 +2738,7 @@ echo DOS¹¤¾ßÏäËùÔÚÂ·¾¶:%weizhi%
 echo ÎÄ¼ş´óĞ¡:%daxiao1%
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto %tzwz%
+if "!tzwz!" equ "!start!" (goto memuv2) else (goto !tzwz!)
 :37
 title ÎÄ±¾ä¯ÀÀ - %system%
 cls
@@ -2810,10 +2884,10 @@ echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
 goto e
 :kcd
 start mshta "javascript:new ActiveXObject('WMPlayer.OCX').cdromCollection.Item(0).Eject();window.close();"
-goto %tzwz%
+if "!tzwz!" equ "!start!" (goto memuv2) else (goto !tzwz!)
 :gcd
 start mshta "javascript:with (new ActiveXObject('WMPlayer.OCX').cdromCollection.Item(0)){Eject();Eject();}window.close();"
-goto %tzwz%
+if "!tzwz!" equ "!start!" (goto memuv2) else (goto !tzwz!)
 :42
 title ÓïÒôÔÄ¶ÁÆ÷ - %system%
 cls
@@ -3067,7 +3141,7 @@ set xzgjx=
 set/p xzgjx=ÊÇ·ñĞ¶ÔØ¹¤¾ßÏä(Y/N)?
 set xzgjx="%xzgjx:|=%"
 if /i !xzgjx!=="y" goto xzgjx
-if /i !xzgjx!=="n" goto %tzwz%
+if /i !xzgjx!=="n" if "!tzwz!" equ "!start!" (goto memuv2) else (goto !tzwz!)
 echo ÇëÊäÈëÕıÈ·µÄÑ¡Ôñ
 ping/n 2 0.0>nul
 goto xz
@@ -3084,7 +3158,7 @@ cls
 taskkill /f /fi "status eq not responding"
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto %tzwz%
+if "!tzwz!" equ "!start!" (goto memuv2) else (goto !tzwz!)
 :50
 title ÎÄ¼ş±È½ÏÆ÷ - %system%
 cls
@@ -4149,7 +4223,7 @@ if !gxjg! gtr 0 (echo ¼ì²éµ½¸üĞÂ°æ±¾: %%a&goto startupdate) else (echo Ã»ÓĞ¼ì²éµ
 del /f /q %temp%\dostoolupdate>nul 2>nul
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto %tzwz%
+if "!tzwz!" equ "!start!" (goto memuv2) else (goto !tzwz!)
 :startupdate
 echo ÕıÔÚÏÂÔØ¸üĞÂ...
 timeout /t 2 /nobreak>nul
@@ -4167,7 +4241,7 @@ if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag1%call :hash %temp%\dostool sha1
 %xzflag1%if /i "%hash%" equ %doshash% copy /z /y %temp%\dostool %weizhi%&start cmd /c %0&exit
 echo ÎÄ¼şÎŞĞ§&timeout /t 2 /nobreak>nul
-goto %tzwz%
+if "!tzwz!" equ "!start!" (goto memuv2) else (goto !tzwz!)
 ::bitsadmin /transfer ÏÂÔØ¸üĞÂÖĞ... /priority FOREGROUND https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js %weizhi%&start cmd /c %0&exit
 :sjc
 set kssj=%1
@@ -4244,6 +4318,81 @@ if "%dw%" equ "3" set dw=GB
 if "%dw%" equ "4" set dw=TB
 if "%dw%" equ "5" set dw=EB
 if "%size%" equ "0" set size=
+goto :eof
+:list
+set start=1
+set fy=_______________________________________________________________________________
+set a1=Çå³ıUÅÌÀïµÄlpk.dll²¡¶¾
+set a2=Çå³ıUÅÌÀïµÄjwgkvsq.vmx²¡¶¾£¬²¢ÃâÒß¸Ã²¡¶¾
+set a3=ÇåÀíÏµÍ³À¬»ø
+set a4=ÏÔÊ¾ÏµÍ³ĞÅÏ¢
+set a5=½â³ıÈÎÎñ¹ÜÀíÆ÷±»½ûÓÃ
+set a6=ÏÔÊ¾±»Òş²ØÎÄ¼ş(ÖĞÁË¸ÃÀà²¡¶¾ºó)
+set a7=½â³ı×¢²á±í±»½ûÓÃ
+set a8=¼ÆËã¿ªÆ½·½
+set a9=ÇĞ»»µ½ÃüÁîÌáÊ¾·û
+set a10=½«´ÅÅÌ¸ñÊ½×ª»»ÎªNTFS
+set a11=´ÅÅÌ´íÎóĞŞ¸´
+set a12=¸ñÊ½»¯
+set a13=DOS¼ÆËãÆ÷
+set a14=½â³ıÃüÁîÌáÊ¾·û±»½ûÓÃ
+set a15=Ëæ»úÊıÉú³ÉÆ÷
+set a16=Çå³ıKHATRA²¡¶¾
+set a17=´ò¿ª×¢²á±í
+set a18=´ò¿ª¿ØÖÆÃæ°å
+set a19=´ò¿ªDirectXÕï¶Ï¹¤¾ß
+set a20=´ò¿ª¼ÆËã»ú¹ÜÀí
+set a21=ÓÃ»§¹ÜÀí
+set a22=´ò¿ª×é²ßÂÔ
+set a23=DOSÈÎÎñ¹ÜÀíÆ÷
+set a24=ÎÄ¼şÏµÍ³ĞÅÏ¢²éÑ¯
+set a25=´´½¨Ö¸¶¨´óĞ¡µÄÎÄ¼ş
+set a26=ÃâÒßUÅÌ²¡¶¾
+set a27=´ÅÅÌËéÆ¬ÕûÀí
+set a28=Ò»¼üÉ¾³ı¿ÕÎÄ¼ş¼Ğ
+set a29=ping²âÊÔÍøÂçÑÓ³Ù
+set a30=Ó²¼ş¼ì²â
+set a31=¶ÁĞÄÊõ
+set a32=DOSÄÖÖÓ
+set a33=¼ÆÊ±Æ÷
+set a34=Ëæ»úÃÜÂëÉú³ÉÆ÷
+set a35=É¾³ıÃ¿¸öÅÌ·ûÏÂµÄSystem Volume InformationÎÄ¼ş¼Ğ
+set a36=¶ş½øÖÆ×ª»»Æ÷
+set a37=ÎÄ±¾ä¯ÀÀ
+set a38=ÏÔÊ¾¼ÆËã»úÓëÓÃ»§µÄÉèÖÃ
+set a39=NTFSÑ¹Ëõ
+set a40=ĞŞ¸ÄÎÄ¼şÈ¨ÏŞ
+set a41=ÏÔÊ¾¿ª»úÆô¶¯Ïî
+set a42=ÓïÒôÔÄ¶ÁÆ÷
+set a43=Åú´¦ÀíÎÄ¼ş·çÏÕ·ÖÎö
+set a44=ÎÄ¼şËÑË÷
+set a45=ĞŞ¸´ÒÑËğ»µµÄÎÄ¼ş
+set a46=±©Á¦ÆÆ½âÑ¹Ëõ°üÃÜÂë
+set a47=WifiÈÈµã
+set a48=·´±àÒëchmÎÄ¼ş
+set a49=¹Ø±ÕÎŞÏìÓ¦½ø³Ì
+set a50=ÎÄ¼ş±È½ÏÆ÷
+set a51=½«ÎÄ×ÖĞ´Èë¼ôÇĞ°å
+set a52=´ò¿ªÏµÍ³·şÎñÉèÖÃ
+set a53=ÒÑÖªÄêÔÂÈÕ¼ÆËãĞÇÆÚ
+set a54=²éÑ¯ÏµÍ³¼¤»î×´Ì¬
+set a55=´´½¨Ö¸¶¨ÎÄ¼şµÄ¿ì½İ·½Ê½µ½×ÀÃæ
+set a56=´ò¿ªÏµÍ³ÅäÖÃ
+set a57=×ÖÊıÍ³¼Æ
+set a58=´´½¨·ûºÅÁ´½Ó
+set a59=´ò¿ª¹ÜÀí¿ØÖÆÌ¨
+set a60=½â³ıStreamsÎÄ¼şËø¶¨
+set a61=´´½¨¡¢É¾³ı»òÁĞ³ö¾í×°Èëµã
+set a62=×¢²á±íËÑË÷
+set a63=Base64±à½âÂë
+set a64=8.3¶ÌÎÄ¼şÃû¹ÜÀí
+set a65=ÖÇÄÜNTFSÑ¹Ëõ
+set a66=¼ÆËãÎÄ¼ş¹şÏ£Öµ
+set a67=ÏÔÊ¾»õ±Ò»ãÂÊ
+set a68=´´½¨ĞéÄâÅÌ·û
+set a69=½âÑ¹msi°²×°ÎÄ¼ş
+set a70=Éú³ÉCMD¿ØÖÆÌ¨É«²Ê±í
+set a71=KMS¼¤»îWindows 10
 goto :eof
 :00
 exit
