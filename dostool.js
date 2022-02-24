@@ -68,7 +68,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20220224
-set versize=182104
+set versize=182688
 set gxflag=
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
@@ -3983,6 +3983,10 @@ set xmrtousd=%xmrtousd:"=%
 set xmr24h=%xmr24h:"=%
 for /f "delims=. tokens=1,2" %%a in ('"echo %xmr24h%"') do (set xmr24h1=%%a&&set xmr24h2=%%b)
 set xmr24h=%xmr24h1%.%xmr24h2:~0,3%
+if "!eth24h:~0,1!" equ "-" (set eth24h=%cswz%%ysbak:~0,3%92m!eth24h!%cswz%%ysbak%) else (set eth24h=%cswz%%ysbak:~0,3%91m!eth24h!%cswz%%ysbak%)
+if "!btc24h:~0,1!" equ "-" (set btc24h=%cswz%%ysbak:~0,3%92m!btc24h!%cswz%%ysbak%) else (set btc24h=%cswz%%ysbak:~0,3%91m!btc24h!%cswz%%ysbak%)
+if "!xmr24h:~0,1!" equ "-" (set xmr24h=%cswz%%ysbak:~0,3%92m!xmr24h!%cswz%%ysbak%) else (set xmr24h=%cswz%%ysbak:~0,3%91m!xmr24h!%cswz%%ysbak%)
+if "!doge24h:~0,1!" equ "-" (set doge24h=%cswz%%ysbak:~0,3%92m!doge24h!%cswz%%ysbak%) else (set doge24h=%cswz%ysbak:~0,3%91m!doge24h!%cswz%%ysbak%)
 for /f "delims=" %%a in ('"powershell %dogetousd%/%cnytousd%"') do (set dogetocny=%%a)
 for /f "delims=" %%a in ('"powershell %btctousd%/%cnytousd%"') do (set btctocny=%%a)
 for /f "delims=" %%a in ('"powershell %ethtousd%/%cnytousd%"') do (set ethtocny=%%a)
@@ -3997,40 +4001,40 @@ for /f "delims=" %%a in ('"powershell %autousd%/31.1034768*%usdtocny%"') do (set
 for /f "delims=" %%a in ('"powershell %agtousd%/31.1034768*%usdtocny%"') do (set agtocny=%%a)
 cls
 echo 黄金XAU    → 人民币CNY
-echo 	1  → %autocny%
+echo 	1  → !autocny!
 echo;
 echo 白银XAG    → 人民币CNY
-echo 	1  → %agtocny%
+echo 	1  → !agtocny!
 echo;
 echo 以太坊ETH  → 人民币CNY
-echo 	1  → %ethtocny%		24小时涨跌幅: %eth24h%%%
+echo 	1  → !ethtocny!		24小时涨跌幅: %eth24h%%%
 echo;
 echo 比特币BTC  → 人民币CNY
-echo 	1  → %btctocny%		24小时涨跌幅: %btc24h%%%
+echo 	1  → !btctocny!		24小时涨跌幅: %btc24h%%%
 echo;
 echo 门罗币XMR  → 人民币CNY
-echo 	1  → %xmrtocny%		24小时涨跌幅: %xmr24h%%%
+echo 	1  → !xmrtocny!		24小时涨跌幅: %xmr24h%%%
 echo;
 echo 狗狗币DOGE → 人民币CNY
-echo 	1  → %dogetocny%		24小时涨跌幅: %doge24h%%%
+echo 	1  → !dogetocny!		24小时涨跌幅: %doge24h%%%
 echo;
 echo 美元USD    → 人民币CNY
-echo 	1  → %usdtocny%
+echo 	1  → !usdtocny!
 echo;
 echo 欧元EUR    → 人民币CNY
-echo 	1  → %eurtocny%
+echo 	1  → !eurtocny!
 echo;
 echo 英镑GBP    → 人民币CNY
-echo 	1  → %gbptocny%
+echo 	1  → !gbptocny!
 echo;
 echo 日元JPY    → 人民币CNY
-echo 	1  → %jpytocny%
+echo 	1  → !jpytocny!
 echo;
 echo 港币HKD    → 人民币CNY
-echo 	1  → %hkdtocny%
+echo 	1  → !hkdtocny!
 echo;
 echo 新台币TWD  → 人民币CNY
-echo 	1  → %twdtocny%
+echo 	1  → !twdtocny!
 echo _______________________________________________________________________________
 echo 按任意键返回菜单&pause>nul
 goto h
