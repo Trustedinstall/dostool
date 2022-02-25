@@ -67,8 +67,8 @@ for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
-set ver=20220224
-set versize=182688
+set ver=202202225
+set versize=183362
 set gxflag=
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
@@ -112,8 +112,8 @@ if %%a==10 set nx1=[S]下一页&set nx=[A]上一页   [S]下一页&set nx7=[A]上一页)
 set sc=delasd123
 set scw=rdasd123
 set ad=
-call :list
 for /f "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1) do rem"') do set cswz=%%b[
+call :list
 if /i "%processor_architecture%"=="x86" (set bit=32) else (set bit=64)
 if "!system:~8,2!"=="XP" (set zmlj=%zmlj:~19%\) else (set zmlj=%zmlj:~25%\)
 if "%zmlj:~0,1%%zmlj:~-1%" neq """" for /f "delims=" %%a in ('"echo %zmlj%"') do (set %zmlj%="%%~a")
@@ -198,15 +198,8 @@ goto a
 if /i "%2" neq "" goto %2
 :memuv2
 if !start! lss 1 set start=1
-if !start! equ 1 set memuys=1
-if !start! equ 10 set memuys=2
-if !start! equ 19 set memuys=3
-if !start! equ 28 set memuys=4
-if !start! equ 37 set memuys=5
-if !start! equ 46 set memuys=6
-if !start! equ 55 set memuys=7
-if !start! equ 64 set memuys=8
-if !start! gtr 64 set start=64
+set /a memuys=!start!/9+1
+if not defined a!start! set /a !start!=!start!-9
 set color=
 set color1=f
 set/a color=%random%%%5
@@ -216,6 +209,7 @@ if %color%==2 set color=5&set ysbak=45;97m
 if %color%==3 set ysbak=46;97m
 if %color%==4 set color=7&set color1=8&set ysbak=47;90m
 color %color%%color1%
+set fy=!cswz!!ysbak:~0,3!91m_!cswz!!ysbak!!cswz!!ysbak:~0,3!92m_!cswz!!ysbak!!cswz!!ysbak:~0,3!93m_!cswz!!ysbak!
 if exist %temp%\dostoolupdate (
 for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
 set /a gxjg=%%a-!ver!
@@ -226,28 +220,33 @@ title DOS工具箱 - %system%%gxflag%
 cls
 echo                                     菜单 - 第!cswz!!ysbak:~0,3!92m!memuys!!cswz!!ysbak!页
 echo 现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
-echo !fy!
+for /l %%a in (1,1,26) do (if %%a lss 26 (set /p =!fy!<nul) else (echo !fy!))
 set /a end=!start!+8
 set xx=0
 for /l %%a in (!start!,1,!end!) do (if defined a%%a (set /a xx=!xx!+1&echo [!xx!]!a%%a!&set xz!xx!=%%a))
-if !start! equ 1 (echo [0]退出                                                         !cswz!42;97m%nx1%!cswz!!ysbak!) else (if !start! equ 64 (echo [0]退出                                                      !cswz!42;97m%nx7%!cswz!!ysbak!) else (echo [0]退出                                             !cswz!42;97m%nx%!cswz!!ysbak!))
-echo !fy!
+set /a pd=!end!+1
+if not defined a!pd! (echo [0]退出                                             !cswz!42;97m%nx7%!cswz!!ysbak!)
+set /a pd1=!start!-1
+if !pd1! lss 1 (echo [0]退出                                                         !cswz!42;97m%nx1%!cswz!!ysbak!)
+if defined a!pd! (if not !pd1! lss 1 echo [0]退出                                             !cswz!42;97m%nx%!cswz!!ysbak!)
+::if !start! equ 1 (echo [0]退出                                                         !cswz!42;97m%nx1%!cswz!!ysbak!) else (if !start! equ 64 (echo [0]退出                                                      !cswz!42;97m%nx7%!cswz!!ysbak!) else (echo [0]退出                                             !cswz!42;97m%nx%!cswz!!ysbak!))
+for /l %%a in (1,1,26) do (if %%a lss 26 (set /p =!fy!<nul) else (echo !fy!))
 set caidan=
 set/p caidan=请输入你的选择:
 if "!caidan!" equ "1" if !xz1! lss 10 (goto 0!xz1!) else (goto !xz1!)
-if "!caidan!" equ "2" if !xz1! lss 10 (goto 0!xz2!) else (goto !xz2!)
-if "!caidan!" equ "3" if !xz1! lss 10 (goto 0!xz3!) else (goto !xz3!)
-if "!caidan!" equ "4" if !xz1! lss 10 (goto 0!xz4!) else (goto !xz4!)
-if "!caidan!" equ "5" if !xz1! lss 10 (goto 0!xz5!) else (goto !xz5!)
-if "!caidan!" equ "6" if !xz1! lss 10 (goto 0!xz6!) else (goto !xz6!)
-if "!caidan!" equ "7" if !xz1! lss 10 (goto 0!xz7!) else (goto !xz7!)
-if "!caidan!" equ "8" if !xz1! lss 10 (goto 0!xz8!) else (goto !xz8!)
-if "!caidan!" equ "9" if !xz1! lss 10 (goto 0!xz9!) else (goto !xz9!)
+if "!caidan!" equ "2" if !xz2! lss 10 (goto 0!xz2!) else (goto !xz2!)
+if "!caidan!" equ "3" if !xz3! lss 10 (goto 0!xz3!) else (goto !xz3!)
+if "!caidan!" equ "4" if !xz4! lss 10 (goto 0!xz4!) else (goto !xz4!)
+if "!caidan!" equ "5" if !xz5! lss 10 (goto 0!xz5!) else (goto !xz5!)
+if "!caidan!" equ "6" if !xz6! lss 10 (goto 0!xz6!) else (goto !xz6!)
+if "!caidan!" equ "7" if !xz7! lss 10 (goto 0!xz7!) else (goto !xz7!)
+if "!caidan!" equ "8" if !xz8! lss 10 (goto 0!xz8!) else (goto !xz8!)
+if "!caidan!" equ "9" if !xz9! lss 10 (goto 0!xz9!) else (goto !xz9!)
 if "!caidan!" equ "0" exit
-if "!caidan!" equ "-" set /a start=!start!-9&goto memuv2
-if "!caidan!" equ "+" set /a start=!start!+9&goto memuv2
-if /i "!caidan!" equ "a" set /a start=!start!-9&goto memuv2
-if /i "!caidan!" equ "s" set /a start=!start!+9&goto memuv2
+if "!caidan!" equ "-" (set /a pd=!start!-1&if not !pd! lss 1 set /a start=!start!-9&goto memuv2)
+if "!caidan!" equ "+" (set /a pd=!end!+1&if defined a!pd! set /a start=!start!+9&goto memuv2)
+if /i "!caidan!" equ "a" (set /a pd=!start!-1&if not !pd! lss 1 set /a start=!start!-9&goto memuv2)
+if /i "!caidan!" equ "s" (set /a pd=!end!+1&if defined a!pd! set /a start=!start!+9&goto memuv2)
 if /i "!caidan!" equ "vbsjsq" set tzwz=!start!&goto vbsjsq
 if /i "!caidan!" equ "guanji" set tzwz=!start!&goto guanji
 if "!caidan!" equ "BATJIAMI" set tzwz=!start!&goto batjiami
@@ -2313,6 +2312,7 @@ echo !mrwg!)
 :mrwgtc
 echo;
 echo IP:
+::for /f "skip=12 tokens=4 delims=: " %%a in ('"netsh interface Teredo show state"') do (echo %%a)
 if exist %systemroot%\system32\curl.exe (ping /n 1 www.baidu.com>nul&&curl 4.ipw.cn)
 echo;
 for /f "delims== tokens=2" %%a in ('"Wmic Path Win32_NetworkAdapterConfiguration WHERE "IPEnabled^='TRUE'" get ipaddress /value"') do (set ipdz=%%a
@@ -4223,7 +4223,7 @@ cls
 for /f "delims=: tokens=2" %%a in (%temp%\dostoolupdate) do (set doshash="%%a")
 for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
 set /a gxjg=%%a-!ver!
-if !gxjg! gtr 0 (echo 检查到更新版本: %%a&goto startupdate) else (echo 没有检查到更新版本))
+if !gxjg! gtr 0 (echo 检查到更新版本: !cswz!!ysbak:~0,3!92m%%a!cswz!!ysbak!&goto startupdate) else (echo 没有检查到更新版本))
 del /f /q %temp%\dostoolupdate>nul 2>nul
 echo _______________________________________________________________________________
 echo 按任意键返回菜单&pause>nul
@@ -4244,7 +4244,7 @@ if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag1%certutil -urlcache -split -f https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js %temp%\dostool
 %xzflag1%call :hash %temp%\dostool sha1
 %xzflag1%if /i "%hash%" equ %doshash% copy /z /y %temp%\dostool %weizhi%&start cmd /c %0&exit
-echo 文件无效&timeout /t 2 /nobreak>nul
+echo !cswz!!ysbak:~0,3!91m文件无效!cswz!!ysbak!&timeout /t 2 /nobreak>nul
 if "!tzwz!" equ "!start!" (goto memuv2) else (goto !tzwz!)
 ::bitsadmin /transfer 下载更新中... /priority FOREGROUND https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js %weizhi%&start cmd /c %0&exit
 :sjc
@@ -4325,7 +4325,6 @@ if "%size%" equ "0" set size=
 goto :eof
 :list
 set start=1
-set fy=_______________________________________________________________________________
 set a1=清除U盘里的lpk.dll病毒
 set a2=清除U盘里的jwgkvsq.vmx病毒，并免疫该病毒
 set a3=清理系统垃圾
