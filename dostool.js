@@ -68,7 +68,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=202202227
-set versize=185704
+set versize=186270
 set gxflag=
 for /f "tokens=3 delims=." %%a in ('"ver"') do set build=%%a
 set build|findstr "\<[0-9]*\>">nul
@@ -4009,10 +4009,10 @@ set xmrtousd=%xmrtousd:"=%
 set xmr24h=%xmr24h:"=%
 for /f "delims=. tokens=1,2" %%a in ('"echo %xmr24h%"') do (set xmr24h1=%%a&&set xmr24h2=%%b)
 set xmr24h=%xmr24h1%.%xmr24h2:~0,3%
-if "!eth24h:~0,1!" equ "-" (set eth24h=%cswz%%ysbak:~0,3%92m!eth24h!%cswz%%ysbak%) else (set eth24h=%cswz%%ysbak:~0,3%91m!eth24h!%cswz%%ysbak%)
-if "!btc24h:~0,1!" equ "-" (set btc24h=%cswz%%ysbak:~0,3%92m!btc24h!%cswz%%ysbak%) else (set btc24h=%cswz%%ysbak:~0,3%91m!btc24h!%cswz%%ysbak%)
-if "!xmr24h:~0,1!" equ "-" (set xmr24h=%cswz%%ysbak:~0,3%92m!xmr24h!%cswz%%ysbak%) else (set xmr24h=%cswz%%ysbak:~0,3%91m!xmr24h!%cswz%%ysbak%)
-if "!doge24h:~0,1!" equ "-" (set doge24h=%cswz%%ysbak:~0,3%92m!doge24h!%cswz%%ysbak%) else (set doge24h=%cswz%ysbak:~0,3%91m!doge24h!%cswz%%ysbak%)
+::if "!eth24h:~0,1!" equ "-" (set eth24h=%cswz%%ysbak:~0,3%92m!eth24h!%cswz%%ysbak%) else (set eth24h=%cswz%%ysbak:~0,3%91m!eth24h!%cswz%%ysbak%)
+::if "!btc24h:~0,1!" equ "-" (set btc24h=%cswz%%ysbak:~0,3%92m!btc24h!%cswz%%ysbak%) else (set btc24h=%cswz%%ysbak:~0,3%91m!btc24h!%cswz%%ysbak%)
+::if "!xmr24h:~0,1!" equ "-" (set xmr24h=%cswz%%ysbak:~0,3%92m!xmr24h!%cswz%%ysbak%) else (set xmr24h=%cswz%%ysbak:~0,3%91m!xmr24h!%cswz%%ysbak%)
+::if "!doge24h:~0,1!" equ "-" (set doge24h=%cswz%%ysbak:~0,3%92m!doge24h!%cswz%%ysbak%) else (set doge24h=%cswz%ysbak:~0,3%91m!doge24h!%cswz%%ysbak%)
 for /f "delims=" %%a in ('"powershell %dogetousd%/%cnytousd%"') do (set dogetocny=%%a)
 for /f "delims=" %%a in ('"powershell %btctousd%/%cnytousd%"') do (set btctocny=%%a)
 for /f "delims=" %%a in ('"powershell %ethtousd%/%cnytousd%"') do (set ethtocny=%%a)
@@ -4033,16 +4033,32 @@ echo 白银XAG    → 人民币CNY
 echo 	1  → !agtocny!
 echo;
 echo 以太坊ETH  → 人民币CNY
-echo 	1  → !ethtocny!		24小时涨跌幅: %eth24h%%%
+set /p =.!cswz1!        <nul
+set /p =1  → !ethtocny!		24小时涨跌幅: <nul
+if "%eth24h:~0,1%" equ "-" (call :colortxt a !eth24h!) else (call :colortxt c !eth24h!)
+set /p =%% <nul
+echo;
 echo;
 echo 比特币BTC  → 人民币CNY
-echo 	1  → !btctocny!		24小时涨跌幅: %btc24h%%%
+set /p =.!cswz1!        <nul
+set /p =1  → !btctocny!		24小时涨跌幅: <nul
+if "%btc24h:~0,1%" equ "-" (call :colortxt a !btc24h!) else (call :colortxt c !btc24h!)
+set /p =%% <nul
+echo;
 echo;
 echo 门罗币XMR  → 人民币CNY
-echo 	1  → !xmrtocny!		24小时涨跌幅: %xmr24h%%%
+set /p =.!cswz1!        <nul
+set /p =1  → !xmrtocny!		24小时涨跌幅: <nul
+if "%xmr24h:~0,1%" equ "-" (call :colortxt a !xmr24h!) else (call :colortxt c !xmr24h!)
+set /p =%% <nul
+echo;
 echo;
 echo 狗狗币DOGE → 人民币CNY
-echo 	1  → !dogetocny!		24小时涨跌幅: %doge24h%%%
+set /p =.!cswz1!        <nul
+set /p =1  → !dogetocny!		24小时涨跌幅: <nul
+if "%doge24h:~0,1%" equ "-" (call :colortxt a !doge24h!) else (call :colortxt c !doge24h!)
+set /p =%% <nul
+echo;
 echo;
 echo 美元USD    → 人民币CNY
 echo 	1  → !usdtocny!
