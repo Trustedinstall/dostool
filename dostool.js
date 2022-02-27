@@ -67,8 +67,8 @@ for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
-set ver=202202227
-set versize=186270
+set ver=20220227
+set versize=186253
 set gxflag=
 for /f "tokens=3 delims=." %%a in ('"ver"') do set build=%%a
 set build|findstr "\<[0-9]*\>">nul
@@ -4290,7 +4290,7 @@ if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag1%certutil -urlcache -split -f https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js %temp%\dostool
 %xzflag1%call :hash %temp%\dostool sha1
 %xzflag1%if /i "%hash%" equ %doshash% copy /z /y %temp%\dostool %weizhi%&start cmd /c %0&exit
-echo !cswz!!ysbak:~0,3!91m文件无效!cswz!!ysbak!&timeout /t 2 /nobreak>nul
+call :colortxt c 文件无效&echo;&timeout /t 2 /nobreak>nul
 if "!tzwz!" equ "!start!" (goto memuv2) else (goto !tzwz!)
 ::bitsadmin /transfer 下载更新中... /priority FOREGROUND https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js %weizhi%&start cmd /c %0&exit
 :sjc
