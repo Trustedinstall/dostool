@@ -67,9 +67,12 @@ for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
-set ver=202202225
-set versize=183362
+set ver=202202227
+set versize=185704
 set gxflag=
+for /f "tokens=3 delims=." %%a in ('"ver"') do set build=%%a
+set build|findstr "\<[0-9]*\>">nul
+if !errorlevel! equ 0 (if !build! lss 10586 (set winv=1) else (set winv=0)) else (set winv=0)
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
 for /f "delims=" %%a in ('"wmic os get caption"') do cls&echo %%a|find /i "Microsoft"&&Set system=%%a
@@ -112,7 +115,7 @@ if %%a==10 set nx1=[S]下一页&set nx=[A]上一页   [S]下一页&set nx7=[A]上一页)
 set sc=delasd123
 set scw=rdasd123
 set ad=
-for /f "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1) do rem"') do set cswz=%%b[
+for /f "tokens=1,2 delims=#" %%a in ('"prompt #$h#$e# & echo on & for %%b in (1) do rem"') do (set cswz=%%b[&set cswz1=%%a)
 call :list
 if /i "%processor_architecture%"=="x86" (set bit=32) else (set bit=64)
 if "!system:~8,2!"=="XP" (set zmlj=%zmlj:~19%\) else (set zmlj=%zmlj:~25%\)
@@ -210,6 +213,7 @@ if %color%==3 set ysbak=46;97m
 if %color%==4 set color=7&set color1=8&set ysbak=47;90m
 color %color%%color1%
 set fy=!cswz!!ysbak:~0,3!91m_!cswz!!ysbak!!cswz!!ysbak:~0,3!92m_!cswz!!ysbak!!cswz!!ysbak:~0,3!93m_!cswz!!ysbak!
+set fy1=___
 if exist %temp%\dostoolupdate (
 for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
 set /a gxjg=%%a-!ver!
@@ -218,19 +222,41 @@ for /f "delims=: tokens=2" %%b in (%temp%\dostoolupdate) do (set doshash="%%b"))
 del /f /q %temp%\dostoolupdate)
 title DOS工具箱 - %system%%gxflag%
 cls
-echo                                     菜单 - 第!cswz!!ysbak:~0,3!92m!memuys!!cswz!!ysbak!页
+if !winv! equ 0 (echo                                     菜单 - 第!cswz!!ysbak:~0,3!92m!memuys!!cswz!!ysbak!页) else (
+set /p =!cswz1!　　　　　　　　　　　　　　　　　　菜单 - 第<nul
+call :colortxt a !memuys!
+set /p =页<nul
+echo;)
 echo 现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
-for /l %%a in (1,1,26) do (if %%a lss 26 (set /p =!fy!<nul) else (echo !fy!))
+if !winv! equ 0 (for /l %%a in (1,1,26) do (if %%a lss 26 (set /p =!fy!<nul) else (echo !fy!))) else (for /l %%a in (1,1,26) do (if %%a lss 26 (set /p =!fy1!<nul) else (echo !fy1!)))
 set /a end=!start!+8
 set xx=0
 for /l %%a in (!start!,1,!end!) do (if defined a%%a (set /a xx=!xx!+1&echo [!xx!]!a%%a!&set xz!xx!=%%a))
 set /a pd=!end!+1
-if not defined a!pd! (echo [0]退出                                             !cswz!42;97m%nx7%!cswz!!ysbak!)
+if !winv! equ 0 (if not defined a!pd! (echo [0]退出                                             !cswz!42;97m%nx7%!cswz!!ysbak!)) else (
+if not defined a!pd! (
+set /p =[0]退出<nul
+set /p =!cswz1!　　　　　　　　　　　　　　　　　　　　<nul
+call :colortxt 2f %nx7%
+echo;))
 set /a pd1=!start!-1
-if !pd1! lss 1 (echo [0]退出                                                         !cswz!42;97m%nx1%!cswz!!ysbak!)
-if defined a!pd! (if not !pd1! lss 1 echo [0]退出                                             !cswz!42;97m%nx%!cswz!!ysbak!)
+if !winv! equ 0 (if !pd1! lss 1 (echo [0]退出                                                         !cswz!42;97m%nx1%!cswz!!ysbak!)) else (
+if !pd1! lss 1 (
+set /p =[0]退出<nul
+set /p =!cswz1!　　　　　　　　　　　　　　　　　　　　<nul
+call :colortxt 2f %nx1%
+echo;))
+if !winv! equ 0 (if defined a!pd! (if not !pd1! lss 1 echo [0]退出                                             !cswz!42;97m%nx1%   %nx7%!cswz!!ysbak!)) else (
+if defined a!pd! (
+if not !pd1! lss 1 (
+set /p =[0]退出<nul
+set /p =!cswz1!　　　　　　　　　　　　　　　　　　　　<nul
+call :colortxt 2f %nx1%
+set /p =!cswz1!　　　<nul
+call :colortxt 2f %nx7%
+echo;)))
 ::if !start! equ 1 (echo [0]退出                                                         !cswz!42;97m%nx1%!cswz!!ysbak!) else (if !start! equ 64 (echo [0]退出                                                      !cswz!42;97m%nx7%!cswz!!ysbak!) else (echo [0]退出                                             !cswz!42;97m%nx%!cswz!!ysbak!))
-for /l %%a in (1,1,26) do (if %%a lss 26 (set /p =!fy!<nul) else (echo !fy!))
+if !winv! equ 0 (for /l %%a in (1,1,26) do (if %%a lss 26 (set /p =!fy!<nul) else (echo !fy!))) else (for /l %%a in (1,1,26) do (if %%a lss 26 (set /p =!fy1!<nul) else (echo !fy1!)))
 set caidan=
 set/p caidan=请输入你的选择:
 if "!caidan!" equ "1" if !xz1! lss 10 (goto 0!xz1!) else (goto !xz1!)
@@ -1040,7 +1066,7 @@ goto 08
 title 命令提示符 - %system%
 cls
 ver
-cmd /k prompt !cswz!!ysbak:~0,3!92m%username%!cswz!!ysbak!@%hostname%:$p#$s
+if !winv! equ 0 (cmd /k prompt !cswz!!ysbak:~0,3!92m%username%!cswz!!ysbak!@%hostname%:$p#$s) else (cmd /k prompt %username%@%hostname%:$p#$s)
 goto a
 :10
 title 将磁盘格式转换为NTFS - %system%
@@ -4167,12 +4193,12 @@ set EnterpriseS=WNMTR-4C88C-JK8YV-HQ7T2-76DF9
 set EnterpriseSN=2F77B-TNFGY-69QQF-B8YKP-D69TJ
 for /f "tokens=3 delims= " %%a in ('reg QUERY "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v "EditionID"') do set sysid=%%a
 set server=
-if defined !sysid! (echo 系统名称: !cswz!!ysbak:~0,3!94m%system%!sysid!!cswz!!ysbak!) else (echo !cswz!!ysbak:~0,3!91m没有当前系统的激活密钥!cswz!!ysbak!)
-ping /n 1 www.baidu.com>nul||echo !cswz!!ysbak:~0,3!91m没有网络连接!cswz!!ysbak!
+if defined !sysid! (echo 系统名称: %system%) else (call :colortxt c 没有当前系统的激活密钥&echo;)
+ping /n 1 www.baidu.com>nul||call :colortxt c 没有网络连接&echo;
 echo 请选择KMS服务器
 echo _______________________________________________________________________________
-echo [1]!cswz!!ysbak:~0,3!94mxykz.f3322.org!cswz!!ysbak!
-echo [2]!cswz!!ysbak:~0,3!94mkms.03k.org!cswz!!ysbak!
+echo [1]xykz.f3322.org
+echo [2]kms.03k.org
 echo [0]返回菜单
 echo _______________________________________________________________________________
 choice /c 120 /n /m 请输入你的选择:
@@ -4182,8 +4208,11 @@ if "%errorlevel%" equ "3" goto h
 goto 71
 :71.1
 cls
-echo KMS服务器: !cswz!!ysbak:~0,3!94m!server!!cswz!!ysbak!
-echo 系统名称: !cswz!!ysbak:~0,3!94m%system%!cswz!!ysbak!
+set /p =KMS服务器: <nul
+call :colortxt a !server!
+echo;
+set/p =系统名称: <nul
+call :colortxt a %system%
 echo;
 cscript //Nologo %windir%\system32\slmgr.vbs /ipk !%sysid%!
 cscript //Nologo %windir%\system32\slmgr.vbs /skms !server!
@@ -4223,7 +4252,8 @@ cls
 for /f "delims=: tokens=2" %%a in (%temp%\dostoolupdate) do (set doshash="%%a")
 for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
 set /a gxjg=%%a-!ver!
-if !gxjg! gtr 0 (echo 检查到更新版本: !cswz!!ysbak:~0,3!92m%%a!cswz!!ysbak!&goto startupdate) else (echo 没有检查到更新版本))
+if !gxjg! gtr 0 (set /p =检查到更新版本: <nul
+call :colortxt a %%a&echo;&goto startupdate) else (echo 没有检查到更新版本))
 del /f /q %temp%\dostoolupdate>nul 2>nul
 echo _______________________________________________________________________________
 echo 按任意键返回菜单&pause>nul
@@ -4396,6 +4426,47 @@ set a68=创建虚拟盘符
 set a69=解压msi安装文件
 set a70=生成CMD控制台色彩表
 set a71=KMS激活Windows 10
+goto :eof
+:colortxt
+if !winv! equ 0 goto colortxt2
+set bj=%1
+if "!bj:~1,1!" equ "" (set bj1=!color!&set bj2=!bj!) else (set bj1=!bj:~0,1!&set bj2=!bj:~1,1!)
+verify on
+pushd %temp%
+set /p =%cswz1%<nul>"%2"
+findstr /v /a:!bj1!!bj2! /r "^$" "%2" nul
+del /f "%2">nul 2>nul
+popd
+goto :eof
+:colortxt2
+set bj=%1
+set zt=%2
+if "!bj:~0,1!" equ "0" set bj1=40;
+if "!bj:~0,1!" equ "4" set bj1=41;
+if "!bj:~0,1!" equ "2" set bj1=42;
+if "!bj:~0,1!" equ "6" set bj1=43;
+if "!bj:~0,1!" equ "1" set bj1=44;
+if "!bj:~0,1!" equ "5" set bj1=45;
+if "!bj:~0,1!" equ "3" set bj1=46;
+if "!bj:~0,1!" equ "7" set bj1=47;
+if "!bj:~0,1!" equ "8" set bj2=90m
+if "!bj:~0,1!" equ "c" set bj2=91m
+if "!bj:~0,1!" equ "a" set bj2=92m
+if "!bj:~0,1!" equ "e" set bj2=93m
+if "!bj:~0,1!" equ "9" set bj2=94m
+if "!bj:~0,1!" equ "d" set bj2=95m
+if "!bj:~0,1!" equ "b" set bj2=96m
+if "!bj:~0,1!" equ "f" set bj2=97m
+if "!bj:~1,1!" equ "8" set bj2=90m
+if "!bj:~1,1!" equ "c" set bj2=91m
+if "!bj:~1,1!" equ "a" set bj2=92m
+if "!bj:~1,1!" equ "e" set bj2=93m
+if "!bj:~1,1!" equ "9" set bj2=94m
+if "!bj:~1,1!" equ "d" set bj2=95m
+if "!bj:~1,1!" equ "b" set bj2=96m
+if "!bj:~1,1!" equ "f" set bj2=97m
+if "!bj:~1,1!" equ "" set bj1=!ysbak:~0,3!
+set /p =!cswz!!bj1!!bj2!!zt!!cswz!!ysbak!<nul
 goto :eof
 :00
 exit
