@@ -67,7 +67,7 @@ for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
-set ver=20220227
+set ver=20220228
 set versize=186253
 set gxflag=
 for /f "tokens=3 delims=." %%a in ('"ver"') do set build=%%a
