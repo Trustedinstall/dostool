@@ -67,10 +67,10 @@ for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
-set ver=20220228
-set versize=186253
+set ver=20220301
+set versize=187394
 set gxflag=
-for /f "tokens=3 delims=." %%a in ('"ver"') do set build=%%a
+for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 set build|findstr "\<[0-9]*\>">nul
 if !errorlevel! equ 0 (if !build! lss 10586 (set winv=1) else (set winv=0)) else (set winv=0)
 set baidu=start https://www.baidu.com/s?wd=
@@ -146,7 +146,7 @@ for /f "delims=" %%a in ('"reg query HKEY_CURRENT_USER\System\DOS¹¤¾ßÏä /v »úÆ÷Â
 set sfzc=%sfzc:~21%
 for /f "delims=" %%a in ('"reg query HKEY_CURRENT_USER\System\DOS¹¤¾ßÏä /v ×¢²áÂë 2>nul|find "×¢²áÂë""') do (set sfzcm=%%a)
 set sfzcm=%sfzcm:~21%
-if /i %sfzc%==%jqm% if /i %sfzcm%==%zh% goto a
+if /i %sfzc%==%jqm% if /i %sfzcm%==%zh% goto memuv2
 :ks
 color f1
 title ×¢²áÂëÑéÖ¤ - %system%
@@ -170,7 +170,7 @@ reg add HKEY_CURRENT_USER\System\DOS¹¤¾ßÏä /v »úÆ÷Âë /d %jqm% /f>nul 2>nul
 reg add HKEY_CURRENT_USER\System\DOS¹¤¾ßÏä /v ×¢²áÂë /d %mima% /f>nul 2>nul
 echo ×¢²á³É¹¦
 ping/n 2 0.0>nul
-goto a
+goto memuv2
 :mima
 color f1
 title ÃÜÂëÑéÖ¤ - %system%
@@ -196,7 +196,7 @@ echo ÏÖÔÚÊÇ%date:~0,4%Äê%date:~5,2%ÔÂ%date:~8,2%ÈÕ %xingqi% %time:~0,8%
 echo _______________________________________________________________________________
 echo ÃÜÂëÕıÈ·£¡
 ping/n 2 0.0>nul
-goto a
+goto memuv2
 :chanshu2
 if /i "%2" neq "" goto %2
 :memuv2
@@ -236,23 +236,23 @@ set /a pd=!end!+1
 if !winv! equ 0 (if not defined a!pd! (echo [0]ÍË³ö                                             !cswz!42;97m%nx7%!cswz!!ysbak!)) else (
 if not defined a!pd! (
 set /p =[0]ÍË³ö<nul
-set /p =!cswz1!¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡<nul
+set /p =.!cswz1!¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡<nul
 call :colortxt 2f %nx7%
 echo;))
 set /a pd1=!start!-1
 if !winv! equ 0 (if !pd1! lss 1 (echo [0]ÍË³ö                                                         !cswz!42;97m%nx1%!cswz!!ysbak!)) else (
 if !pd1! lss 1 (
 set /p =[0]ÍË³ö<nul
-set /p =!cswz1!¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡<nul
+set /p =.!cswz1!¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡<nul
 call :colortxt 2f %nx1%
 echo;))
 if !winv! equ 0 (if defined a!pd! (if not !pd1! lss 1 echo [0]ÍË³ö                                             !cswz!42;97m%nx1%   %nx7%!cswz!!ysbak!)) else (
 if defined a!pd! (
 if not !pd1! lss 1 (
 set /p =[0]ÍË³ö<nul
-set /p =!cswz1!¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡<nul
+set /p =.!cswz1!¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡<nul
 call :colortxt 2f %nx1%
-set /p =!cswz1!¡¡¡¡¡¡<nul
+set /p =.!cswz1!¡¡¡¡¡¡<nul
 call :colortxt 2f %nx7%
 echo;)))
 ::if !start! equ 1 (echo [0]ÍË³ö                                                         !cswz!42;97m%nx1%!cswz!!ysbak!) else (if !start! equ 64 (echo [0]ÍË³ö                                                      !cswz!42;97m%nx7%!cswz!!ysbak!) else (echo [0]ÍË³ö                                             !cswz!42;97m%nx%!cswz!!ysbak!))
@@ -338,8 +338,8 @@ if "!caidan!"=="7" goto 07
 if "!caidan!"=="8" goto 08
 if "!caidan!"=="9" goto 09
 if "!caidan!"=="0" goto 00
-if "!caidan!"=="+" goto b
-if /i "!caidan!"=="s" goto b
+if "!caidan!"=="+" goto memuv2
+if /i "!caidan!"=="s" goto memuv2
 if /i "!caidan!"=="vbsjsq" set tzwz=a&goto vbsjsq
 if /i "!caidan!"=="guanji" set tzwz=a&goto guanji
 if "!caidan!"=="BATJIAMI" set tzwz=a&goto batjiami
@@ -350,17 +350,17 @@ if /i "!caidan!"=="gcd" set tzwz=a&goto gcd
 if /i "!caidan!"=="xz" set tzwz=a&goto xz
 if /i "!caidan!"=="js" set tzwz=a&goto 49
 if /i "!caidan!"=="gx" set tzwz=a&goto update
-if /i "!caidan!"=="go1" goto a
-if /i "!caidan!"=="go2" goto b
-if /i "!caidan!"=="go3" goto c
-if /i "!caidan!"=="go4" goto d
-if /i "!caidan!"=="go5" goto e
-if /i "!caidan!"=="go6" goto f
-if /i "!caidan!"=="go7" goto g
-if /i "!caidan!"=="go8" goto h
+if /i "!caidan!"=="go1" goto memuv2
+if /i "!caidan!"=="go2" goto memuv2
+if /i "!caidan!"=="go3" goto memuv2
+if /i "!caidan!"=="go4" goto memuv2
+if /i "!caidan!"=="go5" goto memuv2
+if /i "!caidan!"=="go6" goto memuv2
+if /i "!caidan!"=="go7" goto memuv2
+if /i "!caidan!"=="go8" goto memuv2
 echo ÇëÊäÈëÕıÈ·µÄÑ¡Ïî£¡
 ping/n 2 0.0>nul
-goto a
+goto memuv2
 :b
 set color=
 set color1=f
@@ -405,10 +405,10 @@ if "!caidan!"=="7" goto 16
 if "!caidan!"=="8" goto 17
 if "!caidan!"=="9" goto 18
 if "!caidan!"=="0" goto 00
-if "!caidan!"=="-" goto a
-if "!caidan!"=="+" goto c
-if /i "!caidan!"=="a" goto a
-if /i "!caidan!"=="s" goto c
+if "!caidan!"=="-" goto memuv2
+if "!caidan!"=="+" goto memuv2
+if /i "!caidan!"=="a" goto memuv2
+if /i "!caidan!"=="s" goto memuv2
 if /i "!caidan!"=="vbsjsq" set tzwz=b&goto vbsjsq
 if /i "!caidan!"=="guanji" set tzwz=b&goto guanji
 if "!caidan!"=="BATJIAMI" set tzwz=b&goto batjiami
@@ -419,17 +419,17 @@ if /i "!caidan!"=="gcd" set tzwz=b&goto gcd
 if /i "!caidan!"=="xz" set tzwz=b&goto xz
 if /i "!caidan!"=="js" set tzwz=b&goto 49
 if /i "!caidan!"=="gx" set tzwz=a&goto update
-if /i "!caidan!"=="go1" goto a
-if /i "!caidan!"=="go2" goto b
-if /i "!caidan!"=="go3" goto c
-if /i "!caidan!"=="go4" goto d
-if /i "!caidan!"=="go5" goto e
-if /i "!caidan!"=="go6" goto f
-if /i "!caidan!"=="go7" goto g
-if /i "!caidan!"=="go8" goto h
+if /i "!caidan!"=="go1" goto memuv2
+if /i "!caidan!"=="go2" goto memuv2
+if /i "!caidan!"=="go3" goto memuv2
+if /i "!caidan!"=="go4" goto memuv2
+if /i "!caidan!"=="go5" goto memuv2
+if /i "!caidan!"=="go6" goto memuv2
+if /i "!caidan!"=="go7" goto memuv2
+if /i "!caidan!"=="go8" goto memuv2
 echo ÇëÊäÈëÕıÈ·µÄÑ¡Ïî£¡
 ping/n 2 0.0>nul
-goto b
+goto memuv2
 :c
 set color=
 set color1=f
@@ -474,10 +474,10 @@ if "!caidan!"=="7" goto 25
 if "!caidan!"=="8" goto 26
 if "!caidan!"=="9" goto 27
 if "!caidan!"=="0" goto 00
-if "!caidan!"=="-" goto b
-if "!caidan!"=="+" goto d
-if /i "!caidan!"=="a" goto b
-if /i "!caidan!"=="s" goto d
+if "!caidan!"=="-" goto memuv2
+if "!caidan!"=="+" goto memuv2
+if /i "!caidan!"=="a" goto memuv2
+if /i "!caidan!"=="s" goto memuv2
 if /i "!caidan!"=="vbsjsq" set tzwz=c&goto vbsjsq
 if /i "!caidan!"=="guanji" set tzwz=c&goto guanji
 if "!caidan!"=="BATJIAMI" set tzwz=c&goto batjiami
@@ -488,17 +488,17 @@ if /i "!caidan!"=="gcd" set tzwz=c&goto gcd
 if /i "!caidan!"=="xz" set tzwz=c&goto xz
 if /i "!caidan!"=="js" set tzwz=c&goto 49
 if /i "!caidan!"=="gx" set tzwz=c&goto update
-if /i "!caidan!"=="go1" goto a
-if /i "!caidan!"=="go2" goto b
-if /i "!caidan!"=="go3" goto c
-if /i "!caidan!"=="go4" goto d
-if /i "!caidan!"=="go5" goto e
-if /i "!caidan!"=="go6" goto f
-if /i "!caidan!"=="go7" goto g
-if /i "!caidan!"=="go8" goto h
+if /i "!caidan!"=="go1" goto memuv2
+if /i "!caidan!"=="go2" goto memuv2
+if /i "!caidan!"=="go3" goto memuv2
+if /i "!caidan!"=="go4" goto memuv2
+if /i "!caidan!"=="go5" goto memuv2
+if /i "!caidan!"=="go6" goto memuv2
+if /i "!caidan!"=="go7" goto memuv2
+if /i "!caidan!"=="go8" goto memuv2
 echo ÇëÊäÈëÕıÈ·µÄÑ¡Ïî£¡
 ping/n 2 0.0>nul
-goto c
+goto memuv2
 :d
 set color=
 set color1=f
@@ -543,10 +543,10 @@ if "!caidan!"=="7" goto 34
 if "!caidan!"=="8" goto 35
 if "!caidan!"=="9" goto 36
 if "!caidan!"=="0" goto 00
-if "!caidan!"=="-" goto c
-if "!caidan!"=="+" goto e
-if /i "!caidan!"=="a" goto c
-if /i "!caidan!"=="s" goto e
+if "!caidan!"=="-" goto memuv2
+if "!caidan!"=="+" goto memuv2
+if /i "!caidan!"=="a" goto memuv2
+if /i "!caidan!"=="s" goto memuv2
 if /i "!caidan!"=="vbsjsq" set tzwz=d&goto vbsjsq
 if /i "!caidan!"=="guanji" set tzwz=d&goto guanji
 if "!caidan!"=="BATJIAMI" set tzwz=d&goto batjiami
@@ -557,17 +557,17 @@ if /i "!caidan!"=="gcd" set tzwz=d&goto gcd
 if /i "!caidan!"=="xz" set tzwz=d&goto xz
 if /i "!caidan!"=="js" set tzwz=d&goto 49
 if /i "!caidan!"=="gx" set tzwz=d&goto update
-if /i "!caidan!"=="go1" goto a
-if /i "!caidan!"=="go2" goto b
-if /i "!caidan!"=="go3" goto c
-if /i "!caidan!"=="go4" goto d
-if /i "!caidan!"=="go5" goto e
-if /i "!caidan!"=="go6" goto f
-if /i "!caidan!"=="go7" goto g
-if /i "!caidan!"=="go8" goto h
+if /i "!caidan!"=="go1" goto memuv2
+if /i "!caidan!"=="go2" goto memuv2
+if /i "!caidan!"=="go3" goto memuv2
+if /i "!caidan!"=="go4" goto memuv2
+if /i "!caidan!"=="go5" goto memuv2
+if /i "!caidan!"=="go6" goto memuv2
+if /i "!caidan!"=="go7" goto memuv2
+if /i "!caidan!"=="go8" goto memuv2
 echo ÇëÊäÈëÕıÈ·µÄÑ¡Ïî£¡
 ping/n 2 0.0>nul
-goto d
+goto memuv2
 :e
 set color=
 set color1=f
@@ -612,10 +612,10 @@ if "!caidan!"=="7" goto 43
 if "!caidan!"=="8" goto 44
 if "!caidan!"=="9" goto 45
 if "!caidan!"=="0" goto 00
-if "!caidan!"=="-" goto d
-if "!caidan!"=="+" goto f
-if /i "!caidan!"=="a" goto d
-if /i "!caidan!"=="s" goto f
+if "!caidan!"=="-" goto memuv2
+if "!caidan!"=="+" goto memuv2
+if /i "!caidan!"=="a" goto memuv2
+if /i "!caidan!"=="s" goto memuv2
 if /i "!caidan!"=="vbsjsq" set tzwz=e&goto vbsjsq
 if /i "!caidan!"=="guanji" set tzwz=e&goto guanji
 if "!caidan!"=="BATJIAMI" set tzwz=e&goto batjiami
@@ -626,17 +626,17 @@ if /i "!caidan!"=="gcd" set tzwz=e&goto gcd
 if /i "!caidan!"=="xz" set tzwz=e&goto xz
 if /i "!caidan!"=="js" set tzwz=e&goto 49
 if /i "!caidan!"=="gx" set tzwz=e&goto update
-if /i "!caidan!"=="go1" goto a
-if /i "!caidan!"=="go2" goto b
-if /i "!caidan!"=="go3" goto c
-if /i "!caidan!"=="go4" goto d
-if /i "!caidan!"=="go5" goto e
-if /i "!caidan!"=="go6" goto f
-if /i "!caidan!"=="go7" goto g
-if /i "!caidan!"=="go8" goto h
+if /i "!caidan!"=="go1" goto memuv2
+if /i "!caidan!"=="go2" goto memuv2
+if /i "!caidan!"=="go3" goto memuv2
+if /i "!caidan!"=="go4" goto memuv2
+if /i "!caidan!"=="go5" goto memuv2
+if /i "!caidan!"=="go6" goto memuv2
+if /i "!caidan!"=="go7" goto memuv2
+if /i "!caidan!"=="go8" goto memuv2
 echo ÇëÊäÈëÕıÈ·µÄÑ¡Ïî£¡
 ping/n 2 0.0>nul
-goto e
+goto memuv2
 :f
 set color=
 set color1=f
@@ -681,10 +681,10 @@ if "!caidan!"=="7" goto 52
 if "!caidan!"=="8" goto 53
 if "!caidan!"=="9" goto 54
 if "!caidan!"=="0" goto 00
-if "!caidan!"=="-" goto e
-if "!caidan!"=="+" goto g
-if /i "!caidan!"=="a" goto e
-if /i "!caidan!"=="s" goto g
+if "!caidan!"=="-" goto memuv2
+if "!caidan!"=="+" goto memuv2
+if /i "!caidan!"=="a" goto memuv2
+if /i "!caidan!"=="s" goto memuv2
 if /i "!caidan!"=="vbsjsq" set tzwz=f&goto vbsjsq
 if /i "!caidan!"=="guanji" set tzwz=f&goto guanji
 if "!caidan!"=="BATJIAMI" set tzwz=f&goto batjiami
@@ -695,17 +695,17 @@ if /i "!caidan!"=="gcd" set tzwz=f&goto gcd
 if /i "!caidan!"=="xz" set tzwz=f&goto xz
 if /i "!caidan!"=="js" set tzwz=f&goto 49
 if /i "!caidan!"=="gx" set tzwz=f&goto update
-if /i "!caidan!"=="go1" goto a
-if /i "!caidan!"=="go2" goto b
-if /i "!caidan!"=="go3" goto c
-if /i "!caidan!"=="go4" goto d
-if /i "!caidan!"=="go5" goto e
-if /i "!caidan!"=="go6" goto f
-if /i !caidna!=="go7" goto g
-if /i "!caidan!"=="go8" goto h
+if /i "!caidan!"=="go1" goto memuv2
+if /i "!caidan!"=="go2" goto memuv2
+if /i "!caidan!"=="go3" goto memuv2
+if /i "!caidan!"=="go4" goto memuv2
+if /i "!caidan!"=="go5" goto memuv2
+if /i "!caidan!"=="go6" goto memuv2
+if /i !caidna!=="go7" goto memuv2
+if /i "!caidan!"=="go8" goto memuv2
 echo ÇëÊäÈëÕıÈ·µÄÑ¡Ïî£¡
 ping/n 2 0.0>nul
-goto f
+goto memuv2
 :g
 set color=
 set color1=f
@@ -750,10 +750,10 @@ if "!caidan!"=="7" goto 61
 if "!caidan!"=="8" goto 62
 if "!caidan!"=="9" goto 63
 if "!caidan!"=="0" goto 00
-if "!caidan!"=="-" goto f
-if "!caidan!"=="+" goto h
-if /i "!caidan!"=="a" goto f
-if /i "!caidan!"=="s" goto h
+if "!caidan!"=="-" goto memuv2
+if "!caidan!"=="+" goto memuv2
+if /i "!caidan!"=="a" goto memuv2
+if /i "!caidan!"=="s" goto memuv2
 if /i "!caidan!"=="vbsjsq" set tzwz=g&goto vbsjsq
 if /i "!caidan!"=="guanji" set tzwz=g&goto guanji
 if "!caidan!"=="BATJIAMI" set tzwz=g&goto batjiami
@@ -764,17 +764,17 @@ if /i "!caidan!"=="gcd" set tzwz=g&goto gcd
 if /i "!caidan!"=="xz" set tzwz=g&goto xz
 if /i "!caidan!"=="js" set tzwz=g&goto 49
 if /i "!caidan!"=="gx" set tzwz=g&goto update
-if /i "!caidan!"=="go1" goto a
-if /i "!caidan!"=="go2" goto b
-if /i "!caidan!"=="go3" goto c
-if /i "!caidan!"=="go4" goto d
-if /i "!caidan!"=="go5" goto e
-if /i "!caidan!"=="go6" goto f
-if /i "!caidan!"=="go7" goto g
-if /i "!caidan!"=="go8" goto h
+if /i "!caidan!"=="go1" goto memuv2
+if /i "!caidan!"=="go2" goto memuv2
+if /i "!caidan!"=="go3" goto memuv2
+if /i "!caidan!"=="go4" goto memuv2
+if /i "!caidan!"=="go5" goto memuv2
+if /i "!caidan!"=="go6" goto memuv2
+if /i "!caidan!"=="go7" goto memuv2
+if /i "!caidan!"=="go8" goto memuv2
 echo ÇëÊäÈëÕıÈ·µÄÑ¡Ïî£¡
 ping/n 2 0.0>nul
-goto g
+goto memuv2
 :h
 set color=
 set color1=f
@@ -817,8 +817,8 @@ if "!caidan!"=="6" goto 69
 if "!caidan!"=="7" goto 70
 if "!caidan!"=="8" goto 71
 if "!caidan!"=="0" goto 00
-if "!caidan!"=="-" goto g
-if /i "!caidan!"=="a" goto g
+if "!caidan!"=="-" goto memuv2
+if /i "!caidan!"=="a" goto memuv2
 if /i "!caidan!"=="vbsjsq" set tzwz=h&goto vbsjsq
 if /i "!caidan!"=="guanji" set tzwz=h&goto guanji
 if "!caidan!"=="BATJIAMI" set tzwz=h&goto batjiami
@@ -829,17 +829,17 @@ if /i "!caidan!"=="gcd" set tzwz=h&goto gcd
 if /i "!caidan!"=="xz" set tzwz=h&goto xz
 if /i "!caidan!"=="js" set tzwz=h&goto 49
 if /i "!caidan!"=="gx" set tzwz=a&goto update
-if /i "!caidan!"=="go1" goto a
-if /i "!caidan!"=="go2" goto b
-if /i "!caidan!"=="go3" goto c
-if /i "!caidan!"=="go4" goto d
-if /i "!caidan!"=="go5" goto e
-if /i "!caidan!"=="go6" goto f
-if /i "!caidan!"=="go7" goto g
-if /i !caidna!=="go8" goto h
+if /i "!caidan!"=="go1" goto memuv2
+if /i "!caidan!"=="go2" goto memuv2
+if /i "!caidan!"=="go3" goto memuv2
+if /i "!caidan!"=="go4" goto memuv2
+if /i "!caidan!"=="go5" goto memuv2
+if /i "!caidan!"=="go6" goto memuv2
+if /i "!caidan!"=="go7" goto memuv2
+if /i !caidna!=="go8" goto memuv2
 echo ÇëÊäÈëÕıÈ·µÄÑ¡Ïî£¡
 ping/n 2 0.0>nul
-goto h
+goto memuv2
 :01
 title Çå³ıUÅÌÀïµÄlpk.dll²¡¶¾ - %system%
 cls
@@ -854,7 +854,7 @@ cls
 echo Ã»ÓĞÕÒµ½¿ÉÒÆ¶¯´ÅÅÌ
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto a
+goto memuv2
 :01-1
 cls
 echo ÕıÔÚÇå³ılpk.dll²¡¶¾...
@@ -864,7 +864,7 @@ for %%h in (%sypf%) do fsutil fsinfo drivetype %%h|find /i "¿ÉÒÆ¶¯Çı¶¯Æ÷"&&for /
 echo _______________________________________________________________________________
 echo Çå³ıÍê³É
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto a
+goto memuv2
 :02
 title Çå³ıUÅÌÀïµÄjwgkvsq.vmx²¡¶¾£¬²¢ÃâÒß¸Ã²¡¶¾ - %system%
 cls
@@ -879,7 +879,7 @@ cls
 echo Ã»ÓĞÕÒµ½¿ÉÒÆ¶¯´ÅÅÌ
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto a
+goto memuv2
 :02-1
 cls
 echo ÕıÔÚÇå³ıjwgkvsq.vmx²¡¶¾...
@@ -898,7 +898,7 @@ fsutil fsinfo drivetype %%j|find /i "¿ÉÒÆ¶¯Çı¶¯Æ÷"&&echo jwgkvsq.vmx²¡¶¾ÃâÒßÎÄ¼ş
 echo _______________________________________________________________________________
 echo Çå³ıÍê³É
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto a
+goto memuv2
 :03
 title ÇåÀíÏµÍ³À¬»ø - %system%
 cls
@@ -944,7 +944,7 @@ goto 03(1)
 echo _______________________________________________________________________________
 echo ÇåÀíÍê³É
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto a
+goto memuv2
 :04
 title ÏÔÊ¾ÏµÍ³ĞÅÏ¢ - %system%
 cls
@@ -952,21 +952,21 @@ systeminfo
 mode
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto a
+goto memuv2
 :05
 title ½â³ıÈÎÎñ¹ÜÀíÆ÷±»½ûÓÃ - %system%
 cls
 reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v DisableTaskmgr /t reg_dword /d 00000000 /f
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto a
+goto memuv2
 :06
 title ÏÔÊ¾±»Òş²ØÎÄ¼ş(ÖĞÁË¸ÃÀà²¡¶¾ºó) - %system%
 cls
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\Hidden\SHOWALL" /v CheckedValue /t reg_dword /d 00000001 /f
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto a
+goto memuv2
 :07
 title ½â³ı×¢²á±í±»½ûÓÃ - %system%
 cls
@@ -981,7 +981,7 @@ reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Sy
 del/f/q %systemdrive%\windows\temp\reg.inf
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto a
+goto memuv2
 :08
 title ¼ÆËã¿ªÆ½·½ - %system%
 cls
@@ -1053,7 +1053,7 @@ echo %sbak%µÄ¿ªÆ½·½½á¹ûÊÇ(¾«È·µ½Ğ¡Êıµãºó%wbak%Î»):
 echo %sqrt%
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto a
+goto memuv2
 :kpfcw
 echo ²»ÊÇÓĞĞ§Êı×Ö!
 ping/n 2 0.0>nul
@@ -1067,7 +1067,7 @@ title ÃüÁîÌáÊ¾·û - %system%
 cls
 ver
 if !winv! equ 0 (cmd /k prompt !cswz!!ysbak:~0,3!92m%username%!cswz!!ysbak!@%hostname%:$p#$s) else (cmd /k prompt %username%@%hostname%:$p#$s)
-goto a
+goto memuv2
 :10
 title ½«´ÅÅÌ¸ñÊ½×ª»»ÎªNTFS - %system%
 cls
@@ -1081,7 +1081,7 @@ cls
 convert %zhuanhuancipan%:/fs:ntfs
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto b
+goto memuv2
 :11
 title ´ÅÅÌĞŞ¸´ - %system%
 cls
@@ -1096,7 +1096,7 @@ if "%errorlevel%"=="0" (chkdsk /x /f /sdcleanup %cipanxioufu%:) else (chkdsk /f 
 echo _______________________________________________________________________________
 echo ĞŞ¸´Íê³É
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto b
+goto memuv2
 :12
 color cf
 title ¸ñÊ½»¯ - %system%
@@ -1106,7 +1106,7 @@ set geshihuaxuanxiang=
 set/p geshihuaxuanxiang=¸ñÊ½»¯ÓĞÒ»¶¨µÄÎ£ÏÕĞÔ£¬ÊÇ·ñ¼ÌĞø(y/n):
 set geshihuaxuanxiang="%geshihuaxuanxiang:|=%"
 if /i !geshihuaxuanxiang!=="y" goto 12(1)
-if /i !geshihuaxuanxiang!=="n" goto b
+if /i !geshihuaxuanxiang!=="n" goto memuv2
 echo ÇëÊäÈëÕıÈ·µÄÑ¡Ïî£¡
 ping/n 2 0.0>nul
 goto 12
@@ -1122,7 +1122,7 @@ label %geshihua%: format
 format %geshihua%:/x/q/v:format/y
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto b
+goto memuv2
 :batjiami
 color 0a
 title bat¼ÓÃÜ - %system%
@@ -1295,7 +1295,7 @@ set biaodashi=
 set/p biaodashi=ÇëÊäÈë±í´ïÊ½:
 set biaodashi="%biaodashi:|=%"
 if /i !biaodashi!=="c" goto 13
-if /i !biaodashi!=="e" goto b
+if /i !biaodashi!=="e" goto memuv2
 :13(2)
 set/a jieguo=%biaodashi%
 echo ¼ÆËã½á¹û:%biaodashi%=%jieguo%
@@ -1307,7 +1307,7 @@ cls
 reg add "HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\System" /v DisableCMD /t reg_dword /d 00000000 /f
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto b
+goto memuv2
 :15
 title Ëæ»úÊıÉú³ÉÆ÷ - %system%
 set/a cs=0
@@ -1328,7 +1328,7 @@ echo µÚ%cs%´Î²úÉúµÄËæ»úÊı:%suijishu%
 set tuichusuijishu=
 set/p tuichusuijishu=
 set tuichusuijishu="%tuichusuijishu:|=%"
-if /i !tuichusuijishu!=="e" goto b
+if /i !tuichusuijishu!=="e" goto memuv2
 if /i !tuichusuijishu!=="|=" goto 15(1)
 goto 15(3)
 :16
@@ -1421,7 +1421,7 @@ regedit
 cls
 echo KHATRA²¡¶¾Çå³ıÍê³É
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto b
+goto memuv2
 :shoudong
 for /f "delims=" %%a in ('"fsutil fsinfo drives"') do (set sypf=%%a)
 set sypf=%sypf:~5%
@@ -1432,19 +1432,19 @@ goto 16(1)
 :17
 cls
 start regedit
-goto b
+goto memuv2
 :18
 cls
 start control
-goto b
+goto memuv2
 :19
 cls
 start dxdiag
-goto c
+goto memuv2
 :20
 cls
 start compmgmt.msc
-goto c
+goto memuv2
 :21
 title ÓÃ»§¹ÜÀí - %system%
 cls
@@ -1468,7 +1468,7 @@ if "%errorlevel%" equ "5" goto 21(5)
 if "%errorlevel%" equ "6" goto 21(6)
 if "%errorlevel%" equ "7" goto 21(7)
 if "%errorlevel%" equ "8" goto 21(8)
-if "%errorlevel%" equ "9" goto c
+if "%errorlevel%" equ "9" goto memuv2
 goto 21
 set yonghu=
 set/p yonghu=ÇëÊäÈëÄãµÄÑ¡Ôñ:
@@ -1481,7 +1481,7 @@ if !yonghu!=="5" goto 21(5)
 if !yonghu!=="6" goto 21(6)
 if !yonghu!=="7" goto 21(7)
 if !yonghu!=="8" goto 21(8)
-if !yonghu!=="0" goto c
+if !yonghu!=="0" goto memuv2
 echo ÇëÊäÈëÕıÈ·µÄÑ¡Ïî£¡
 ping/n 2 0.0>nul
 goto 21
@@ -1606,7 +1606,7 @@ goto 21
 :22
 cls
 start gpedit.msc
-goto c
+goto memuv2
 :guanji
 title ¹Ø»úÑ¡Ïî - %system%
 color 0a
@@ -1761,7 +1761,7 @@ if "%errorlevel%" equ "1" goto 23(1)
 if "%errorlevel%" equ "2" goto 23(2)
 if "%errorlevel%" equ "3" goto 23(6)
 if "%errorlevel%" equ "4" goto 23(10)
-if "%errorlevel%" equ "5" goto c
+if "%errorlevel%" equ "5" goto memuv2
 goto 23
 set dosjc=
 set/p dosjc=ÇëÊäÈëÄãµÄÑ¡Ôñ:
@@ -1770,7 +1770,7 @@ if !dosjc!=="1" goto 23(1)
 if !dosjc!=="2" goto 23(2)
 if !dosjc!=="3" goto 23(6)
 if !dosjc!=="4" goto 23(10)
-if !dosjc!=="0" goto c
+if !dosjc!=="0" goto memuv2
 echo ÇëÊäÈëÕıÈ·µÄÑ¡Ïî£¡
 ping/n 2 0.0>nul
 goto 23
@@ -1921,7 +1921,7 @@ if "%errorlevel%" equ "3" goto 24(3)
 if "%errorlevel%" equ "4" goto 24(4)
 if "%errorlevel%" equ "5" goto 24(5)
 if "%errorlevel%" equ "6" goto 24(6)
-if "%errorlevel%" equ "7" goto c
+if "%errorlevel%" equ "7" goto memuv2
 goto 24
 set wjsystem=
 set/p wjsystem=ÇëÊäÈëÄãµÄÑ¡Ôñ:
@@ -1932,7 +1932,7 @@ if !wjsystem!=="3" goto 24(3)
 if !wjsystem!=="4" goto 24(4)
 if !wjsystem!=="5" goto 24(5)
 if !wjsystem!=="6" goto 24(6)
-if !wjsystem!=="0" goto c
+if !wjsystem!=="0" goto memuv2
 echo ÇëÊäÈëÕıÈ·µÄÑ¡Ïî£¡
 ping/n 2 0.0>nul
 goto 24
@@ -2016,11 +2016,11 @@ echo ___________________________________________________________________________
 set cjlj=
 set/p cjlj=ÇëÊäÈëÎÄ¼şÂ·¾¶:
 set cjlj="%cjlj:|=%"
-if /i !cjlj!=="e" goto c
+if /i !cjlj!=="e" goto memuv2
 set cjdx=
 set/p cjdx=ÇëÊäÈëÎÄ¼ş´óĞ¡(µ¥Î»:×Ö½Ú):
 set cjdx="%cjdx:|=%"
-if /i !cjdx!=="e" goto c
+if /i !cjdx!=="e" goto memuv2
 :24(6)
 fsutil file createnew %cjlj% %cjdx%
 echo _______________________________________________________________________________
@@ -2038,14 +2038,14 @@ echo ___________________________________________________________________________
 choice /c 120 /n /m ÇëÊäÈëÄãµÄÑ¡Ôñ:
 if "%errorlevel%" equ "1" goto 26(1)
 if "%errorlevel%" equ "2" goto 26(2)
-if "%errorlevel%" equ "3" goto c
+if "%errorlevel%" equ "3" goto memuv2
 goto 26
 set upanmy=
 set/p upanmy=ÇëÊäÈëÄãµÄÑ¡Ôñ:
 set upanmy="%upanmy:|=%"
 if !upanmy!=="1" goto 26(1)
 if !upanmy!=="2" goto 26(2)
-if !upanmy!=="0" goto c
+if !upanmy!=="0" goto memuv2
 echo ÇëÊäÈëÕıÈ·µÄÑ¡Ïî£¡
 ping/n 2 0.0>nul
 goto 26
@@ -2121,7 +2121,7 @@ set fenxi=
 set/p fenxi=ÇëÊäÈëĞèÒª·ÖÎöµÄÅÌ·û:
 set fenxi="%fenxi:|=%"
 if !fenxi!=="1" goto 27(1)
-if !fenxi!=="0" goto c
+if !fenxi!=="0" goto memuv2
 :27(4)
 cls
 defrag/a %fenxi%:
@@ -2194,25 +2194,33 @@ timeout /t 2 /nobreak>nul
 echo _______________________________________________________________________________
 echo ¿ÕÎÄ¼ş¼ĞÉ¾³ıÍê³É
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto d
+goto memuv2
 :29
 title ping²âÊÔÍøÂçÑÓ³Ù - %system%
 cls
 set ping=
 set pingcishu=
-if exist %systemroot%\system32\curl.exe (ping /n 1 www.baidu.com>nul&&set /p =±¾»úIPV4µØÖ·: <nul&curl 4.ipw.cn&echo;)
-if exist %systemroot%\system32\curl.exe (ping /n 1 240c::6666>nul&&set /p =±¾»úIPV6µØÖ·: <nul&curl 6.ipw.cn&echo;)
+if exist %systemroot%\system32\curl.exe (ping /n 1 www.baidu.com>nul&if !errorlevel! equ 0 (set /p =±¾»úIPV4µØÖ·: <nul
+curl 4.ipw.cn
+echo;))
+if exist %systemroot%\system32\curl.exe (ping /n 1 240c::6666>nul&if !errorlevel! equ 0 (set /p =±¾»úIPV6µØÖ·: <nul
+curl 6.ipw.cn
+echo;))
 set/p ping=ÇëÊäÈëÄ¿±êIP»òÕßÍøÖ·:
 set/p pingcishu=ÇëÊäÈëping´ÎÊı:
 cls
-if exist %systemroot%\system32\curl.exe (ping /n 1 www.baidu.com>nul&&set /p =±¾»úIPV4µØÖ·: <nul&curl 4.ipw.cn&echo;)
-if exist %systemroot%\system32\curl.exe (ping /n 1 240c::6666>nul&&set /p =±¾»úIPV6µØÖ·: <nul&curl 6.ipw.cn&echo;)
+if exist %systemroot%\system32\curl.exe (ping /n 1 www.baidu.com>nul&if !errorlevel! equ 0 (set /p =±¾»úIPV4µØÖ·: <nul
+curl 4.ipw.cn
+echo;))
+if exist %systemroot%\system32\curl.exe (ping /n 1 240c::6666>nul&if !errorlevel! equ 0 (set /p =±¾»úIPV6µØÖ·: <nul
+curl 6.ipw.cn
+echo;))
 echo;
 echo ÕıÔÚ²âÊÔ%ping%µÄÍøÂçÑÓ³Ù...
 ping/n %pingcishu% %ping% /a
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto d
+goto memuv2
 :30
 title Ó²¼ş¼ì²â - %system%
 cls
@@ -2366,7 +2374,7 @@ echo ___________________________________________________________________________
 mode
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto d
+goto memuv2
 :31
 title ¶ÁĞÄÊõ - %system%
 cls
@@ -2456,7 +2464,7 @@ cls
 echo ¾­¹ıµçÄÔ¸´ÔÓµÄ¼ÆËãºó,µÃ³öÄã´óÄÔÀïÏëµÄÄÇ¸öÊıÊÇ:!cswz!41;92m %num% !cswz!!ysbak!
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto d
+goto memuv2
 :32
 title DOSÄÖÖÓ - %system%
 cls
@@ -2474,7 +2482,7 @@ if !nzxx!=="1" goto 32(1)
 if !nzxx!=="2" goto 32(2)
 if !nzxx!=="3" goto 32(3)
 if !nzxx!=="4" goto 32(4)
-if !nzxx!=="0" goto d
+if !nzxx!=="0" goto memuv2
 echo ÇëÊäÈëÕıÈ·µÄÑ¡Ïî£¡
 ping/n 2 0.0>nul
 goto 32
@@ -2574,7 +2582,7 @@ echo ¼ÆÊ±½áÊøÊ±¼ä:%jssjbk%
 echo _______________________________________________________________________________
 echo ÓÃÊ±:%sjc:~0,2%Ê±%sjc:~2,2%·Ö%sjc:~4,2%.%sjc:~6,2%Ãë
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto d
+goto memuv2
 :34
 title Ëæ»úÃÜÂëÉú³ÉÆ÷ - %system%
 cls
@@ -2592,7 +2600,7 @@ echo ÒÑÉú³ÉµÄËæ»úÃÜÂë:
 echo %mmjg%
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto d
+goto memuv2
 :35
 title É¾³ıÃ¿¸öÅÌ·ûÏÂµÄSystem Volume InformationÎÄ¼ş¼Ğ - %system%
 cls
@@ -2608,7 +2616,7 @@ echo;
 echo _______________________________________________________________________________
 echo É¾³ıÍê³É
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto d
+goto memuv2
 :36
 title ¶ş½øÖÆ×ª»»Æ÷ - %system%
 set shijinzhi=
@@ -2628,14 +2636,14 @@ echo ___________________________________________________________________________
 choice /c 120 /n /m ÇëÊäÈëÄãµÄÑ¡Ôñ:
 if "%errorlevel%" equ "1" goto 10z
 if "%errorlevel%" equ "2" goto 2z
-if "%errorlevel%" equ "3" goto d
+if "%errorlevel%" equ "3" goto memuv2
 goto 36
 set zhxz=
 set/p zhxz=ÇëÊäÈëÄãµÄÑ¡Ôñ:
 set zhxz="%zhxz:|=%"
 if !zhxz!=="1" goto 10z
 if !zhxz!=="2" goto 2z
-if !zhxz!=="0" goto d
+if !zhxz!=="0" goto memuv2
 echo ÇëÊäÈëÕıÈ·µÄÑ¡Ôñ!
 ping/n 2 0.0>nul
 goto 36
@@ -2779,7 +2787,7 @@ echo ___________________________________________________________________________
 more/e/p "%wenben%"
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto e
+goto memuv2
 :38
 title ÏÔÊ¾¼ÆËã»úÓëÓÃ»§µÄÉèÖÃ - %system%
 cls
@@ -2787,7 +2795,7 @@ echo ___________________________________________________________________________
 gpresult/z
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto e
+goto memuv2
 :39
 title NTFSÑ¹Ëõ - %system%
 cls
@@ -2804,7 +2812,7 @@ if "%errorlevel%" equ "1" goto yasuo
 if "%errorlevel%" equ "2" goto jieya
 if "%errorlevel%" equ "3" goto yasuowjj
 if "%errorlevel%" equ "4" goto jieyawjj
-if "%errorlevel%" equ "5" goto e
+if "%errorlevel%" equ "5" goto memuv2
 goto 39
 set ntfsys=
 set/p ntfsys=ÇëÊäÈëÄãµÄÑ¡Ôñ:
@@ -2813,7 +2821,7 @@ if !ntfsys!=="1" goto yasuo
 if !ntfsys!=="2" goto jieya
 if !ntfsys!=="3" goto yasuowjj
 if !ntfsys!=="4" goto jieyawjj
-if !ntfsys!=="0" goto e
+if !ntfsys!=="0" goto memuv2
 echo ÇëÊäÈëÕıÈ·µÄÑ¡Ôñ£¡
 ping/n 2 0.0>nul
 goto 39
@@ -2878,7 +2886,7 @@ echo y|cacls "%ntfswjqx%" /t /c /g %username%:f 2>nul
 attrib -s -h -r "%ntfswjqx%" 2>nul
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto e
+goto memuv2
 :41
 title ÏÔÊ¾¿ª»úÆô¶¯Ïî - %system%
 cls
@@ -2907,7 +2915,7 @@ for /f "delims=" %%a in ('"reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Wind
 for /f "delims=" %%a in ('"reg query HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run 2>nul"') do if not "%%a"=="" echo %%a&echo;
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto e
+goto memuv2
 :kcd
 start mshta "javascript:new ActiveXObject('WMPlayer.OCX').cdromCollection.Item(0).Eject();window.close();"
 if "!tzwz!" equ "!start!" (goto memuv2) else (goto !tzwz!)
@@ -2924,7 +2932,7 @@ set/p ydnr=
 start mshta vbscript:createobject("sapi.spvoice").speak("%ydnr%")(window.close)
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto e
+goto memuv2
 :43
 title Åú´¦ÀíÎÄ¼ş·çÏÕ·ÖÎö - %system%
 set dx=0
@@ -2954,7 +2962,7 @@ echo Åú´¦ÀíÎÄ¼ş: %batfx%
 echo Î£ÏÕµÈ¼¶: %dx%
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto e
+goto memuv2
 :44
 title ÎÄ¼şËÑË÷ - %system%
 cls
@@ -2964,7 +2972,7 @@ echo ___________________________________________________________________________
 dir/a/s %sswjm%
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto e
+goto memuv2
 :45
 title ĞŞ¸´ÒÑËğ»µµÄÎÄ¼ş - %system%
 cls
@@ -2975,7 +2983,7 @@ echo ___________________________________________________________________________
 recover %xfwj%
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto e
+goto memuv2
 :46
 title ±©Á¦ÆÆ½âÑ¹Ëõ°üÃÜÂë - %system%
 cls
@@ -2986,7 +2994,7 @@ set ppjm=
 for /f "delims=" %%a in ('"reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\WinRAR.exe" /v path|find "path""') do (set rarazlj=%%a)
 if "%system:~8,2%"=="XP" (set rarpd=%rarazlj:~16%\Rar.exe&set rarpd7z=%rarazlj:~16%\winrar.exe) else (set rarpd=%rarazlj:~22%\Rar.exe&set rarpd7z=%rarazlj:~22%\winrar.exe)
 cls
-if exist "%rarpd%" (goto rarjs) else (echo Ã»ÓĞ°²×°WinRAR.°´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul&goto f)
+if exist "%rarpd%" (goto rarjs) else (echo Ã»ÓĞ°²×°WinRAR.°´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul&goto memuv2)
 :rarjs
 cls
 set/p yswjlj=ÍÏ¶¯ÒªÆÆ½âµÄÑ¹Ëõ°üµ½´Ë´°¿Ú(e=·µ»Ø²Ëµ¥):
@@ -2994,21 +3002,21 @@ if "%yswjlj:~0,1%%yswjlj:~-1%" neq """" for /f "delims=" %%a in ('"echo %yswjlj%
 for /f "delims=" %%a in ("%yswjlj%") do if %%~xa==.7z goto rarwjok1
 for /f "delims=" %%a in ("%yswjlj%") do if %%~xa==.rar goto rarwjok
 for /f "delims=" %%a in ("%yswjlj%") do if %%~xa==.zip goto rarwjok1
-if /i "%yswjlj%"=="e" goto f
+if /i "%yswjlj%"=="e" goto memuv2
 echo ÎŞĞ§µÄÎÄ¼ş¸ñÊ½£¡&ping/n 2 0.0>nul
 goto 46
 :rarwjok
 set/p pjzd=ÍÏ¶¯×ÖµäÎÄ¼şµ½´Ë´°¿Ú(e=·µ»Ø²Ëµ¥):
 if "%pjzd:~0,1%%pjzd:~-1%" neq """" for /f "delims=" %%a in ('"echo %pjzd%"') do (set %pjzd%="%%~a")
 for /f "delims=" %%a in ("%pjzd%") do if %%~xa==.txt goto kspj
-if /i "%pjzd%"=="e" goto f
+if /i "%pjzd%"=="e" goto memuv2
 echo ²»ÊÇtxtÎÄ¼ş£¡&ping/n 2 0.0>nul
 goto 46
 :rarwjok1
 set/p pjzd=ÍÏ¶¯×ÖµäÎÄ¼şµ½´Ë´°¿Ú(e=·µ»Ø²Ëµ¥):
 if "%pjzd:~0,1%%pjzd:~-1%" neq """" for /f "delims=" %%a in ('"echo %pjzd%"') do (set %pjzd%="%%~a")
 for /f "delims=" %%a in ("%pjzd%") do if %%~xa==.txt goto kspj1
-if /i "%pjzd%"=="e" goto f
+if /i "%pjzd%"=="e" goto memuv2
 echo ²»ÊÇtxtÎÄ¼ş£¡&ping/n 2 0.0>nul
 goto 46
 :kspj
@@ -3031,7 +3039,7 @@ echo;
 echo ×ÖµäÀïÃ»ÓĞÕıÈ·µÄÃÜÂë.
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto f
+goto memuv2
 :pjcg
 echo _______________________________________________________________________________
 echo ÆÆ½â³É¹¦£¡
@@ -3040,7 +3048,7 @@ echo Ñ¹Ëõ°ü%yswjlj%
 echo ½âÑ¹ÃÜÂëÊÇ:%pjmm%
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto f
+goto memuv2
 :kspj1
 echo _______________________________________________________________________________
 rd/s/q %systemdrive%windows\temp\DOS¹¤¾ßÏäÁÙÊ±½âÑ¹Â·¾¶>nul 2>nul
@@ -3061,7 +3069,7 @@ echo;
 echo ×ÖµäÀïÃ»ÓĞÕıÈ·µÄÃÜÂë.
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto f
+goto memuv2
 :pjcg1
 echo _______________________________________________________________________________
 echo ÆÆ½â³É¹¦£¡
@@ -3070,7 +3078,7 @@ echo Ñ¹Ëõ°ü%yswjlj%
 echo ½âÑ¹ÃÜÂëÊÇ:%pjmm%
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto f
+goto memuv2
 :47
 title WifiÈÈµã - %system%
 cls
@@ -3084,7 +3092,7 @@ choice /c 1230 /n /m ÇëÊäÈëÄãµÄÑ¡Ôñ:
 if "%errorlevel%" equ "1" goto kqwifi
 if "%errorlevel%" equ "2" goto gbwifi
 if "%errorlevel%" equ "3" goto wlpz
-if "%errorlevel%" equ "4" goto f
+if "%errorlevel%" equ "4" goto memuv2
 goto 47
 set wifixz=
 set/p wifixz=ÇëÊäÈëÄãµÄÑ¡Ôñ:
@@ -3092,7 +3100,7 @@ set wifixz="%wifixz:|=%"
 if !wifixz!=="1" goto kqwifi
 if !wifixz!=="2" goto gbwifi
 if !wifixz!=="3" goto wlpz
-if !wifixz!=="0" goto f
+if !wifixz!=="0" goto memuv2
 echo ÇëÊäÈëÕıÈ·µÄÑ¡Ïî£¡
 ping/n 2 0.0>nul
 goto 47
@@ -3136,7 +3144,7 @@ set chmlj=
 echo ÍÏ¶¯Òª·´±àÒëµÄchmÎÄ¼şµ½´Ë´°¿Ú
 set/p chmlj=·´±àÒëºóµÄÎÄ¼ş±£´æÔÚ×ÀÃæ(e=·µ»Ø):
 set chmlj="%chmlj:|=%"
-if /i !chmlj!=="e" goto f
+if /i !chmlj!=="e" goto memuv2
 if "%chmlj:~0,1%%chmlj:~-1%" neq """" for /f "delims=" %%a in ('"echo %chmlj%"') do (set %chmlj%="%%~a")
 for /f "delims=" %%a in ("%chmlj%") do (
 if /i not %%~xa==.chm goto nochm
@@ -3154,7 +3162,7 @@ echo ·´±àÒë³É¹¦£¡
 echo ÒÔ±£´æµ½%zmlj%%chmcglj%
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto f
+goto memuv2
 :nochm
 echo _______________________________________________________________________________
 echo ²»ÊÇchmÎÄ¼ş£¡
@@ -3196,7 +3204,7 @@ echo ___________________________________________________________________________
 fc/b %wj1% %wj2%
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto f
+goto memuv2
 :51
 title ½«ÎÄ×ÖĞ´Èë¼ôÇĞ°å - %system%
 set nz=
@@ -3207,11 +3215,11 @@ if %errorlevel%==0 (set nz=0) else (set nz=1)
 echo _______________________________________________________________________________
 if %nz%==0 (echo Ğ´Èë³É¹¦) else (echo Ğ´ÈëÊ§°Ü)
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto f
+goto memuv2
 :52
 cls
 start services.msc
-goto f
+goto memuv2
 :53
 cls
 title ÒÑÖªÄêÔÂÈÕ¼ÆËãĞÇÆÚ - %system%
@@ -3254,7 +3262,7 @@ echo;
 echo %rn% %jsxq:~0,4%Äê%jsxq:~4,2%ÔÂ%jsxq:~6,2%ÈÕÊÇĞÇÆÚ%w%
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto f
+goto memuv2
 :54
 cls
 title ²éÑ¯ÏµÍ³¼¤»î×´Ì¬ - %system%
@@ -3270,7 +3278,7 @@ choice /c 1230 /n /m ÇëÊäÈëÄãµÄÑ¡Ôñ:
 if "%errorlevel%" equ "1" start slmgr.vbs -dli&goto 54
 if "%errorlevel%" equ "2" start slmgr.vbs -dlv&goto 54
 if "%errorlevel%" equ "3" start slmgr.vbs -xpr&goto 54
-if "%errorlevel%" equ "4" goto f
+if "%errorlevel%" equ "4" goto memuv2
 goto 54
 set cxxz=
 set/p cxxz=ÇëÊäÈëÄãµÄÑ¡Ôñ:
@@ -3278,7 +3286,7 @@ set cxxz="%cxxz:|=%"
 if !cxxz!=="1" start slmgr.vbs -dli&goto 54
 if !cxxz!=="2" start slmgr.vbs -dlv&goto 54
 if !cxxz!=="3" start slmgr.vbs -xpr&goto 54
-if !cxxz!=="0" goto f
+if !cxxz!=="0" goto memuv2
 echo ÇëÊäÈëÕıÈ·µÄÑ¡Ïî£¡
 ping/n 2 0.0>nul
 goto 54
@@ -3294,11 +3302,11 @@ mshta VBScript:Execute("Set a=CreateObject(""WScript.Shell""):Set b=a.CreateShor
 :55(1)
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto g
+goto memuv2
 :56
 cls
 start msconfig.exe
-goto g
+goto memuv2
 :57
 cls
 title ×ÖÊıÍ³¼Æ - %system%
@@ -3308,7 +3316,7 @@ call :zfccd "%zstj%"
 echo ×Ü¼Æ%zfcgs%¸ö×Ö(°üº¬±êµã·ûºÅ)
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto g
+goto memuv2
 :58
 cls
 title ´´½¨·ûºÅÁ´½Ó - %system%
@@ -3321,12 +3329,12 @@ if "%cwjj:~0,1%%cwjj:~-1%" neq """" for /f "delims=" %%a in ('"echo %cwjj%"') do
 mklink /j %cwjj% %swjj%
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto g
+goto memuv2
 :59
 title ´ò¿ª¹ÜÀí¿ØÖÆÌ¨ - %system%
 cls
 start mmc
-goto g
+goto memuv2
 :60
 cls
 title ½â³ıStreamsÎÄ¼şËø¶¨ - %system%
@@ -3337,7 +3345,7 @@ echo>"%jcwjsd%:Zone.Identifier"
 echo ²Ù×÷Íê³É
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto g
+goto memuv2
 :61
 setlocal enabledelayedexpansion
 title ´´½¨¡¢É¾³ı»òÁĞ³ö¾í×°Èëµã - %system%
@@ -3356,7 +3364,7 @@ if "%errorlevel%" equ "2" goto 61(2)
 if "%errorlevel%" equ "3" goto 61(3)
 if "%errorlevel%" equ "4" goto 61(4)
 if "%errorlevel%" equ "5" goto 61(5)
-if "%errorlevel%" equ "6" goto g
+if "%errorlevel%" equ "6" goto memuv2
 goto 61
 set gzxz=
 set/p gzxz=ÇëÊäÈëÄãµÄÑ¡Ôñ:
@@ -3366,7 +3374,7 @@ if !gzxz!=="2" goto 61(2)
 if !gzxz!=="3" goto 61(3)
 if !gzxz!=="4" goto 61(4)
 if !gzxz!=="5" goto 61(5)
-if !gzxz!=="0" goto g
+if !gzxz!=="0" goto memuv2
 echo ÇëÊäÈëÕıÈ·µÄÑ¡Ïî£¡
 ping/n 2 0.0>nul
 goto 61
@@ -3452,7 +3460,7 @@ echo (5/5)ÔÚHKEY_CURRENT_CONFIGÖĞËÑË÷...
 reg query hkcc /f !zcbss! /s
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto g
+goto memuv2
 :63
 title Base±à½âÂë - %system%
 cls
@@ -3461,7 +3469,7 @@ echo Ã»ÓĞÕÒµ½certutil.exe
 echo ²»ÄÜ¼ÌĞøBase±à½âÂë
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto g
+goto memuv2
 :63-0
 echo _______________________________________________________________________________
 echo [1]Base½âÂë
@@ -3471,14 +3479,14 @@ echo ___________________________________________________________________________
 choice /c 120 /n /m ÇëÊäÈëÄãµÄÑ¡Ôñ:
 if "%errorlevel%" equ "1" goto 63-1
 if "%errorlevel%" equ "2" goto 63-2
-if "%errorlevel%" equ "3" goto g
+if "%errorlevel%" equ "3" goto memuv2
 goto 63
 set basexx=
 set/p basexx=ÇëÊäÈëÄãµÄÑ¡Ôñ:
 set basexx="%basexx:|=%"
 if !basexx!=="1" goto 63-1
 if !basexx!=="2" goto 63-2
-if !basexx!=="0" goto g
+if !basexx!=="0" goto memuv2
 echo ÇëÊäÈëÕıÈ·µÄÑ¡Ïî£¡
 ping/n 2 0.0>nul
 goto 63
@@ -3565,14 +3573,14 @@ echo ___________________________________________________________________________
 choice /c 120 /n /m ÇëÊäÈëÄãµÄÑ¡Ôñ:
 if "%errorlevel%" equ "1" goto 64-1
 if "%errorlevel%" equ "2" goto 64-2
-if "%errorlevel%" equ "3" goto h
+if "%errorlevel%" equ "3" goto memuv2
 goto 64
 set name83=
 set/p name83=ÇëÊäÈëÄãµÄÑ¡Ôñ:
 set name83="%name83:|=%"
 if !name83!=="1" goto 64-1
 if !name83!=="2" goto 64-2
-if !name83!=="0" goto h
+if !name83!=="0" goto memuv2
 echo ÇëÊäÈëÕıÈ·µÄÑ¡Ïî£¡
 ping/n 2 0.0>nul
 goto 64
@@ -3891,7 +3899,7 @@ del/f/q %temp%\loadtime.log
 del/f/q %temp%\uncompact.log
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto h
+goto memuv2
 :ifloadfile
 set file=%1
 set loadtime=%2
@@ -3943,7 +3951,7 @@ set url=
 set /p url=ÊäÈëÎÄ¼şÂ·¾¶(e=·µ»Ø²Ëµ¥):
 if not defined url goto 66
 if "%url:~0,1%%url:~-1%" neq """" for /f "delims=" %%a in ('"echo %url%"') do (set url="%%~a")
-if /i !url! equ "e" goto h 
+if /i !url! equ "e" goto memuv2 
 if not exist "!url!" echo ÎÄ¼ş²»´æÔÚ&timeout /t 2 /nobreak>nul&goto 66
 dir /ad !url!>nul 2>nul&&echo Â·¾¶ !url! ²»ÊÇÒ»¸öÎÄ¼ş&&timeout /t 2 /nobreak>nul&&goto 66
 cls
@@ -3957,7 +3965,7 @@ call :hash %url% sha256
 echo SHA-256: %hash%
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto h
+goto memuv2
 :67
 cls
 title ÏÔÊ¾»õ±Ò»ãÂÊ - %system%
@@ -4079,7 +4087,7 @@ echo ĞÂÌ¨±ÒTWD  ¡ú ÈËÃñ±ÒCNY
 echo 	1  ¡ú !twdtocny!
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto h
+goto memuv2
 :68
 cls
 title ´´½¨ĞéÄâÅÌ·û - %system%
@@ -4090,8 +4098,8 @@ echo ___________________________________________________________________________
 choice /c 120 /n /m ÇëÊäÈëÄãµÄÑ¡Ôñ:
 if "%errorlevel%" equ "1" goto 68(1)
 if "%errorlevel%" equ "2" goto 68(2)
-if "%errorlevel%" equ "3" goto h
-goto h
+if "%errorlevel%" equ "3" goto memuv2
+goto memuv2
 :68(1)
 title ½«Â·¾¶ÓëÅÌ·û¹ØÁª - %system%
 cls
@@ -4111,7 +4119,7 @@ set /p gllj=ÊäÈëÒª¹ØÁªµÄÂ·¾¶:
 if not defined gllj goto 68
 set gllj="%gllj:|=%"
 if "%gllj:~0,1%%gllj:~-1%" neq """" for /f "delims=" %%a in ('"echo %gllj%"') do (set %gllj%="%%~a")
-if /i !gglj! equ "" goto h 
+if /i !gglj! equ "" goto memuv2 
 if not exist "!gllj!" echo Â·¾¶²»´æÔÚ&timeout /t 2 /nobreak>nul&goto 68(1)
 dir /ad !gllj!>nul 2>nul||echo Â·¾¶ !gllj! ²»ÊÇÒ»¸öÎÄ¼ş¼Ğ&&timeout /t 2 /nobreak>nul&&goto 68(1)
 subst %newpf%: %gllj%
@@ -4134,23 +4142,23 @@ title ½âÑ¹msi°²×°ÎÄ¼ş - %system%
 cls
 set msiurl=
 set /p msiurl=ÊäÈëmsiÎÄ¼şÂ·¾¶(e=·µ»Ø²Ëµ¥):
-if not defined msiurl goto h
+if not defined msiurl goto memuv2
 if "%msiurl:~0,1%%msiurl:~-1%" neq """" for /f "delims=" %%a in ('"echo %msiurl%"') do (set msiurl="%%~a")
-if /i !msiurl! equ "e" goto h
-if not exist "!msiurl!" echo ÎÄ¼ş²»´æÔÚ&timeout /t 2 /nobreak>nul&goto h
-dir /ad !msiurl!>nul 2>nul&&echo Â·¾¶ !msiurl! ²»ÊÇÒ»¸öÎÄ¼ş&&timeout /t 2 /nobreak>nul&&goto h
-for /f "delims=" %%a in ('"echo !msiurl!"') do (if /i "%%~xa" neq ".msi" echo ²»ÊÇmsiÎÄ¼ş&&timeout /t 2 /nobreak>nul&&goto h)
+if /i !msiurl! equ "e" goto memuv2
+if not exist "!msiurl!" echo ÎÄ¼ş²»´æÔÚ&timeout /t 2 /nobreak>nul&goto memuv2
+dir /ad !msiurl!>nul 2>nul&&echo Â·¾¶ !msiurl! ²»ÊÇÒ»¸öÎÄ¼ş&&timeout /t 2 /nobreak>nul&&goto memuv2
+for /f "delims=" %%a in ('"echo !msiurl!"') do (if /i "%%~xa" neq ".msi" echo ²»ÊÇmsiÎÄ¼ş&&timeout /t 2 /nobreak>nul&&goto memuv2)
 set msidir=
 set /p msidir=ÊäÈëmsiÎÄ¼ş½âÑ¹Â·¾¶(Ä¬ÈÏÂ·¾¶ÎªmsiÎÄ¼şËùÔÚÂ·¾¶)(e=·µ»Ø²Ëµ¥):
 if not defined msidir for /f "delims=" %%a in ('"echo !msiurl!"') do (set msidir="%%~dpna")
 if "%msidir:~0,1%%msidir:~-1%" neq """" for /f "delims=" %%a in ('"echo %msidir%"') do (set msidir="%%~a")
-if /i !msidir! equ "e" goto h
+if /i !msidir! equ "e" goto memuv2
 echo ¿ªÊ¼½âÑ¹...
 if not exist "!msidir!" (msiexec /a !msiurl! /quiet /passive /qn targetdir=!msidir!) else (echo ²»ÄÜ½âÑ¹µ½ÒÑ´æÔÚµÄÎÄ¼ş¼Ğ&&timeout /t 2 /nobreak>nul)
 rd /s /q %systemdriver%\config.msi>nul 2>nul
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto h
+goto memuv2
 :70
 title Éú³ÉCMD¿ØÖÆÌ¨É«²Ê±í - %system%
 cls
@@ -4187,7 +4195,7 @@ if %%b lss 10 (set xh2=0%%b) else (set xh2=%%b)
 if !cs! lss 7 (set /p =!cswz!!xh2!;!xh1!m !xh2!;!xh1!!cswz!0m<nul&set /a cs=!cs!+1) else (echo !cswz!!xh2!;!xh1!m !xh2!;!xh1!!cswz!0m&set cs=0)))
 echo _______________________________________________________________________________
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto h
+goto memuv2
 :71
 title KMS¼¤»îWindows 10 - %system%
 cls
@@ -4220,7 +4228,7 @@ echo ___________________________________________________________________________
 choice /c 120 /n /m ÇëÊäÈëÄãµÄÑ¡Ôñ:
 if "%errorlevel%" equ "1" set server=xykz.f3322.org&goto 71.1
 if "%errorlevel%" equ "2" set server=kms.03k.org&goto 71.1
-if "%errorlevel%" equ "3" goto h
+if "%errorlevel%" equ "3" goto memuv2
 goto 71
 :71.1
 cls
@@ -4237,7 +4245,7 @@ start slmgr.vbs -xpr
 echo _______________________________________________________________________________
 echo Èç¹ûÏÔÊ¾¼¤»îÊ§°Ü[´íÎó: 0xC004F074]£¬Ó¦¸ü»»KMS·şÎñÆ÷.
 echo °´ÈÎÒâ¼ü·µ»Ø²Ëµ¥&pause>nul
-goto h
+goto memuv2
 :hash
 set url=%1
 set shuanfa=%2
