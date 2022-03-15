@@ -68,8 +68,8 @@ for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
-set ver=20220310
-set versize=188680
+set ver=20220315
+set versize=188802
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 set build|findstr "\<[0-9]*\>">nul
@@ -2201,17 +2201,22 @@ title ping测试网络延迟 - %system%
 cls
 set ping=
 set pingcishu=
-if exist %systemroot%\system32\curl.exe (ping /n 1 www.baidu.com>nul&if !errorlevel! equ 0 (set /p =本机IPV4地址: <nul
-curl 4.ipw.cn
+if exist %systemroot%\system32\curl.exe (ping /n 1 www.baidu.com>nul&if !errorlevel! equ 0 (rem set /p =本机IPV4地址: <nul
+::curl 4.ipw.cn
+curl https://myip.ipip.net
+set /p =<nul
 echo;))
 if exist %systemroot%\system32\curl.exe (ping /n 1 240c::6666>nul&if !errorlevel! equ 0 (set /p =本机IPV6地址: <nul
 curl 6.ipw.cn
 echo;))
+echo;
 set/p ping=请输入目标IP或者网址:
 set/p pingcishu=请输入ping次数:
 cls
-if exist %systemroot%\system32\curl.exe (ping /n 1 www.baidu.com>nul&if !errorlevel! equ 0 (set /p =本机IPV4地址: <nul
-curl 4.ipw.cn
+if exist %systemroot%\system32\curl.exe (ping /n 1 www.baidu.com>nul&if !errorlevel! equ 0 (rem set /p =本机IPV4地址: <nul
+::curl 4.ipw.cn
+curl https://myip.ipip.net
+set /p =<nul
 echo;))
 if exist %systemroot%\system32\curl.exe (ping /n 1 240c::6666>nul&if !errorlevel! equ 0 (set /p =本机IPV6地址: <nul
 curl 6.ipw.cn
@@ -4260,7 +4265,7 @@ echo;
 set/p =系统名称: <nul
 call :colortxt a %system%
 echo;
-cscript //Nologo %windir%\system32\slmgr.vbs /ipk !%sysid%!
+if defined sysid cscript //Nologo %windir%\system32\slmgr.vbs /ipk !%sysid%!
 cscript //Nologo %windir%\system32\slmgr.vbs /skms !server!
 cscript //Nologo %windir%\system32\slmgr.vbs /ato
 start slmgr.vbs -xpr
