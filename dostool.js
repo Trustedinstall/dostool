@@ -72,8 +72,8 @@ for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
-set ver=20220408
-set versize=195234
+set ver=20220703
+set versize=195239
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 set build|findstr "\<[0-9]*\>">nul
@@ -3410,10 +3410,10 @@ goto 61
 :61(4)
 title 创建盘符(创建卷装入点) - %system%
 cls
-set xx=0
-for /f "delims=" %%a in ('"mountvol|find "\\?\Volume""') do (set/a xx=!xx!+1
-set a!xx!=%%a
-echo [!xx!]%%a)
+set xx1=0
+for /f "delims=" %%a in ('"mountvol|find "\\?\Volume""') do (set/a xx1=!xx1!+1
+set b!xx1!=%%a
+echo [!xx1!]%%a)
 echo [0]返回上级菜单
 echo _______________________________________________________________________________
 set cjpf=
@@ -3422,7 +3422,7 @@ if "%cjpf%"=="" goto 61(4)
 if !cjpf!==0 goto 61
 set xzpf=
 set/p xzpf=输入盘符:
-mountvol %xzpf%: !a%cjpf%!
+mountvol %xzpf%: !b%cjpf%!
 echo 操作完成
 echo _______________________________________________________________________________
 echo 按任意键返回&pause>nul
