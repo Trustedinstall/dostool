@@ -72,8 +72,8 @@ for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
-set ver=20220703
-set versize=195239
+set ver=20220829
+set versize=195281
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 set build|findstr "\<[0-9]*\>">nul
@@ -2208,12 +2208,14 @@ cls
 set ping=
 set pingcishu=
 if exist %systemroot%\system32\curl.exe (ping /n 1 www.baidu.com>nul&if !errorlevel! equ 0 (rem set /p =本机IPV4地址: <nul
-::curl 4.ipw.cn
+rem curl 4.ipw.cn
+rem curl ipv4.ip.sb
 curl https://myip.ipip.net
 set /p =<nul
 echo;))
 if exist %systemroot%\system32\curl.exe (ping /n 1 240c::6666>nul&if !errorlevel! equ 0 (set /p =本机IPV6地址: <nul
 curl 6.ipw.cn
+::curl ipv6.ip.sb
 echo;))
 echo;
 set/p ping=请输入目标IP或者网址:
