@@ -32,7 +32,7 @@ set xzflag1=
 set xzflag=::
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag%cd /d %temp%
-%xzflag%start /min cmd /c curl -# -o dostoolupdate https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js
+%xzflag%start /min cmd /c curl -L -# --resolv cdn.jsdelivr.net:443:199.232.45.229,2a04:4e42:48::485 -o dostoolupdate https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js
 %xzflag1%powershell -w hidden -c (new-object System.Net.WebClient).DownloadFile( 'https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js','%temp%\dostoolupdate')
 exit
 ::if %errorlevel% neq 0 (echo Set UAC = CreateObject^("Shell.Application"^)>"%temp%\tmp.vbs"
@@ -72,8 +72,8 @@ for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
-set ver=20220829
-set versize=195281
+set ver=20220921
+set versize=195482
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 set build|findstr "\<[0-9]*\>">nul
@@ -3980,7 +3980,7 @@ set xzflag=::
 set xzflag1=
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag%pushd %temp%
-%xzflag%curl -# -o cny.json %mainurl1%chinese-yuan-renminbi -o doge.json %mainurl%dogecoin -o btc.json %mainurl%bitcoin -o eth.json %mainurl%ethereum -o au.json %mainurl1%gold-ounce -o ag.json %mainurl1%silver-ounce -o eur.json %mainurl1%euro -o gbp.json %mainurl1%british-pound-sterling -o jpy.json %mainurl1%japanese-yen -o hkd.json %mainurl1%hong-kong-dollar -o twd.json %mainurl1%new-taiwan-dollar -o xmr.json %mainurl%monero
+%xzflag%curl -# -Z -o cny.json %mainurl1%chinese-yuan-renminbi -o doge.json %mainurl%dogecoin -o btc.json %mainurl%bitcoin -o eth.json %mainurl%ethereum -o au.json %mainurl1%gold-ounce -o ag.json %mainurl1%silver-ounce -o eur.json %mainurl1%euro -o gbp.json %mainurl1%british-pound-sterling -o jpy.json %mainurl1%japanese-yen -o hkd.json %mainurl1%hong-kong-dollar -o twd.json %mainurl1%new-taiwan-dollar -o xmr.json %mainurl%monero
 %xzflag%popd
 %xzflag1%bitsadmin /transfer 下载汇率文件... /priority FOREGROUND %mainurl1%chinese-yuan-renminbi %temp%\cny.json %mainurl%dogecoin %temp%\doge.json %mainurl%bitcoin %temp%\btc.json %mainurl%ethereum %temp%\eth.json %mainurl1%gold-ounce %temp%\au.json %mainurl1%silver-ounce %temp%\ag.json %mainurl1%euro %temp%\eur.json %mainurl1%british-pound-sterling %temp%\gbp.json %mainurl1%japanese-yen %temp%\jpy.json %mainurl1%hong-kong-dollar %temp%\hkd.json %mainurl1%new-taiwan-dollar %temp%\twd.json %mainurl%monero %temp%\xmr.json
 cls
@@ -4293,7 +4293,7 @@ set xzflag=::
 set xzflag1=
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag%pushd %temp%
-%xzflag%curl -# -o dostoolupdate https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js
+%xzflag%curl -L -# --resolv cdn.jsdelivr.net:443:199.232.45.229,2a04:4e42:48::485 -o dostoolupdate https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js
 %xzflag%popd
 %xzflag1%certutil -urlcache -split -f https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js %temp%\dostoolupdate
 ::bitsadmin /transfer 检查最新版本... /priority FOREGROUND https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js %temp%\dostoolupdate
@@ -4316,7 +4316,7 @@ set xzflag=::
 set xzflag1=
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag%pushd %temp%
-%xzflag%curl -# -o dostool https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js
+%xzflag%curl -L -# --resolv cdn.jsdelivr.net:443:199.232.45.229,2a04:4e42:48::485 -o dostool https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js
 %xzflag%popd
 %xzflag%call :hash %temp%\dostool sha1
 %xzflag%if /i "%hash%" equ %doshash% copy /z /y %temp%\dostool %weizhi%&start cmd /c %0&exit
