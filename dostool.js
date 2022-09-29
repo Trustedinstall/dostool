@@ -72,8 +72,8 @@ for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
-set ver=20220922
-set versize=195606
+set ver=20220929
+set versize=199895
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 set build|findstr "\<[0-9]*\>">nul
@@ -2767,7 +2767,7 @@ call :sjc "%dosqssj%" "%dosjssj%"
 cls
 echo 关于DOS工具箱
 echo _______________________________________________________________________________
-echo 版本: 1.8.8 (%ver%.%versize%)
+echo 版本: 1.8.9 (%ver%.%versize%)
 echo 操作系统: %system% %bit%位
 echo 版权所有 2012-2022 Administrator 保留所有权利
 echo _______________________________________________________________________________
@@ -4271,6 +4271,120 @@ echo ___________________________________________________________________________
 echo 如果显示激活失败[错误: 0xC004F074]，应更换KMS服务器.
 echo 按任意键返回菜单&pause>nul
 goto memuv2
+:72
+title curl多进程下载 - %system%
+cls
+if not exist %systemroot%\system32\curl.exe (
+if not exist .\curl.exe (echo 没有找到curl.exe&timeout /t 2 /nobreak>nul&&goto memuv2))
+:72.1
+cls
+set url=
+set /p url=输入下载链接(e=返回): 
+if not defined url echo 链接不能为空!&timeout /t 2 /nobreak>nul&&goto 72.1
+if "!url!" equ "e" goto memuv2
+set tr=
+set /p tr=输入下载进程数(默认16): 
+if not defined tr set tr=16
+set tr|findstr "\<[0-9]*\>">nul
+if !errorlevel! neq 0 (echo 只能输入数字!&timeout /t 2 /nobreak>nul&&goto 72.1)
+set dir=
+set /p dir=输入保存路径(默认当前DOS工具箱所在路径): 
+if not defined dir (for /f "delims=" %%a in ("!weizhi!") do (set dir=%%~dpa))
+if not exist "!dir!" (echo 路径 !dir! 不存在&timeout /t 2 /nobreak>nul&goto 72.1)
+dir /ad !dir!>nul 2>nul||echo 路径 !dir! 不是一个文件夹&&timeout /t 2 /nobreak>nul&&goto 72.1
+cls
+echo 开始获取文件信息...
+if exist %temp%\tag (del /f /q tag)
+curl -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36" -I -# -L -o tag --output-dir %temp% "!url!"
+for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Accept-Ranges:"') do (set trflag=%%a)
+for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Content-Length:"') do (set filesize=%%a)
+for /f "tokens=2 delims==" %%a in ('type %temp%\tag^|findstr /c:"filename="') do (set filename=%%a)
+del /f /q %temp%\tag
+call :dwjs !filesize!
+set /a fd=!filesize!/!tr!
+set /a ys=%filesize%%%tr%
+set oldfd=0
+set /a newfd=!fd!-1
+set file=
+for /l %%a in (1,1,!tr!) do (set file=!file!%%a+)
+set newtr=
+set /a newtr=!tr!+1
+set file=!file:~0,-1!
+if !ys! gtr 0 (set file=!file!+!newtr!)
+cls
+echo 文件名:    !filename!
+echo 文件大小:  !size! !dw!
+if "!trflag!" neq "bytes" (echo 该链接不支持多线程传输&timeout /t 2 /nobreak>nul&&goto 72.1)
+echo 进程数:    !tr!
+echo 传输片段大小:  !fd!+!ys!
+echo 保存路径: 	!dir!
+echo 按任意键开始下载&pause>nul
+cls
+echo 开始下载文件...
+title curl多进程下载 - 等待文件下载完成(按e返回菜单) - %system%
+if exist %temp%\down (rd /s /q %temp%\down)
+md %temp%\down
+set kssj=%time%
+if !ys! gtr 0 (
+set /a newtmp=!tr!+1
+set /a zoldfd=!fd!*!tr!
+start /b curl -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36" -# -L -C - --retry 3 --retry-delay 1 -r !zoldfd!- -o !newtmp! --output-dir %temp%\down "!url!"
+)
+for /l %%a in (1,1,!tr!) do (
+start /b curl -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36" -# -L -C - --retry 3 --retry-delay 1 -r !oldfd!-!newfd! -o %%a --output-dir %temp%\down "!url!"
+set /a oldfd=!newfd!+1
+set /a newfd=!oldfd!+!fd!-1
+)
+pushd %temp%\down
+:72.2
+cls
+set /p =!cswz!s!cswz!15;40H<nul
+call :colortxt a 等待文件下载完成(按e返回菜单)...
+set /p =!cswz!u<nul
+set jccs=
+for /l %%a in (1,1,!tr!) do (for /f %%b in ("%%a") do (if %%~zb equ !fd! echo 进程%%b完成&set /a jccs=!jccs!+1))
+choice /c 1e /t 1 /d 1 >nul
+if "!errorlevel!" equ ="2" goto memuv2
+if !jccs! neq !tr! goto 72.2
+:72.3
+cls
+set /p =!cswz!s!cswz!15;40H<nul
+call :colortxt a 等待文件下载完成(按e返回菜单)...
+set /p =!cswz!u<nul
+set jccs=
+if !ys! gtr 0 (for /f %%a in ("!newtmp!") do (if %%~za equ !ys! echo 进程%%a完成&set /a jccs=!jccs!+1)) else (goto filehb)
+choice /c 1e /t 1 /d 1 >nul
+if "!errorlevel!" equ ="2" goto memuv2
+if !jccs! neq 1 goto 72.3
+:filehb
+set jssj=%time%
+cls
+echo 合并文件中...
+if "!dir:~-1!" neq "\" (set dir=!dir!\)
+copy /b /z !file! "!dir!!filename!"
+rd /s /q .\down
+popd
+cls
+title curl多进程下载 - %system%
+if exist "!dir!!filename!" (
+for /f "delims=" %%a in ("!dir!!filename!") do (
+call :sjc %kssj% %jssj%
+forfiles /p %~dp0 /m %~nx0 /c "cmd /c echo 0x07"
+echo 下载完成
+echo 链接:  !url!
+echo 用时:  !jgxs!小时!jgfen!分钟!jgm!.!jghm!秒
+echo 文件:  %%~nxa
+echo 大小:  %%~za字节 约!size! !dw!
+echo 保存路径:  %%~dpa
+)) else (
+forfiles /p %~dp0 /m %~nx0 /c "cmd /c echo 0x07"
+timeout /t 1 /nobreak>nul
+forfiles /p %~dp0 /m %~nx0 /c "cmd /c echo 0x07"
+echo 链接:  !url!
+echo 下载失败)
+echo _______________________________________________________________________________
+set /p =按任意键返回菜单<nul&pause>nul
+goto memuv2
 :hash
 set url=%1
 set shuanfa=%2
@@ -4475,6 +4589,7 @@ set a68=创建虚拟盘符
 set a69=解压msi安装文件
 set a70=生成CMD控制台色彩表
 set a71=KMS激活Windows 10
+set a72=curl多进程下载
 goto :eof
 :colortxt
 if !winv! equ 0 goto colortxt2
