@@ -72,8 +72,8 @@ for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
-set ver=20220929
-set versize=199895
+set ver=20220930
+set versize=200460
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 set build|findstr "\<[0-9]*\>">nul
@@ -1761,14 +1761,16 @@ echo [1]显示所有进程
 echo [2]显示每个进程的服务
 echo [3]显示进程路径
 echo [4]显示进程详细信息
+echo [5]显示进程的TCP/UDP连接
 echo [0]返回菜单
 echo _______________________________________________________________________________
-choice /c 12340 /n /m 请输入你的选择:
+choice /c 123450 /n /m 请输入你的选择:
 if "%errorlevel%" equ "1" goto 23(1)
 if "%errorlevel%" equ "2" goto 23(2)
 if "%errorlevel%" equ "3" goto 23(6)
 if "%errorlevel%" equ "4" goto 23(10)
-if "%errorlevel%" equ "5" goto memuv2
+if "%errorlevel%" equ "5" goto 23.1
+if "%errorlevel%" equ "6" goto memuv2
 goto 23
 set dosjc=
 set/p dosjc=请输入你的选择:
@@ -1908,6 +1910,22 @@ tasklist /fi "pid eq %jcxq%" /m
 ver
 echo _______________________________________________________________________________
 echo 按任意键返回&pause>nul
+goto 23
+:23.1
+title 显示TCP/UDP连接 - %system%
+cls
+netstat -aon
+echo _______________________________________________________________________________
+echo (e=返回)(f=刷新)
+set 字符串=
+set /p 字符串=输入要查找的字符串: 
+if not defined 字符串 (goto 23.1)
+if "!字符串!" equ "e" (goto 23)
+if "!字符串!" equ "f" (goto 23.1)
+cls
+netstat -aon|findstr /i /c:"!字符串!"
+echo _______________________________________________________________________________
+set /p =按任意键返回<nul&pause>nul
 goto 23
 :24
 title 文件系统信息查询 - %system%
