@@ -73,7 +73,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20221001
-set versize=200848
+set versize=200493
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 set build|findstr "\<[0-9]*\>">nul
@@ -4315,6 +4315,11 @@ echo 开始获取文件信息...
 set filename=
 if exist %temp%\tag (del /f /q tag)
 curl -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36" -I -# -L -o tag --output-dir %temp% "!url!"
+if not exist %temp%\tag (
+echo _______________________________________________________________________________
+set /p =按任意键返回菜单<nul&pause>nul
+goto memuv2
+)
 for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Accept-Ranges:"') do (set trflag=%%a)
 for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Content-Length:"') do (set filesize=%%a)
 for /f "tokens=2 delims==" %%a in ('type %temp%\tag^|findstr /c:"filename="') do (set filename=%%a)
@@ -4324,13 +4329,14 @@ if not defined filename (set /p filename=输入文件名: )
 set /a fd=!filesize!/!tr!
 set /a ys=%filesize%%%tr%
 set oldfd=0
+set /a pdtr=!tr!-1
 set /a newfd=!fd!-1
+set /a pdfd=!fd!+!ys!
 set file=
 for /l %%a in (1,1,!tr!) do (set file=!file!%%a+)
 set newtr=
 set /a newtr=!tr!+1
 set file=!file:~0,-1!
-if !ys! gtr 0 (set file=!file!+!newtr!)
 cls
 echo 文件名:    !filename!
 echo 文件大小:  !size!!dw!
@@ -4345,15 +4351,10 @@ title curl多进程下载 - 等待文件下载完成(按e返回菜单) - %system%
 if exist %temp%\down (rd /s /q %temp%\down)
 md %temp%\down
 set kssj=%time%
-if !ys! gtr 0 (
-set /a newtmp=!tr!+1
-set /a zoldfd=!fd!*!tr!
-start /b curl -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36" -# -L -C - --retry 3 --retry-delay 1 -r !zoldfd!- -o !newtmp! --output-dir %temp%\down "!url!"
-)
 for /l %%a in (1,1,!tr!) do (
 start /b curl -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36" -# -L -C - --retry 3 --retry-delay 1 -r !oldfd!-!newfd! -o %%a --output-dir %temp%\down "!url!"
 set /a oldfd=!newfd!+1
-set /a newfd=!oldfd!+!fd!-1
+if %%a equ !pdtr! (set newfd=) else (set /a newfd=!oldfd!+!fd!-1)
 )
 pushd %temp%\down
 :72.2
@@ -4362,21 +4363,11 @@ set /p =!cswz!s!cswz!15;40H<nul
 call :colortxt a 等待文件下载完成(按e返回菜单)...
 set /p =!cswz!u<nul
 set jccs=
-for /l %%a in (1,1,!tr!) do (for /f %%b in ("%%a") do (if %%~zb equ !fd! echo 进程%%b完成&set /a jccs=!jccs!+1))
+for /l %%a in (1,1,!tr!) do (for /f %%b in ("%%a") do (
+if %%a equ !tr! (if %%~zb equ !pdfd! (echo 进程%%b完成&set /a jccs=!jccs!+1)) else (if %%~zb equ !fd! echo 进程%%b完成&set /a jccs=!jccs!+1)))
 choice /c 1e /t 1 /d 1 >nul
 if "!errorlevel!" equ ="2" goto memuv2
 if !jccs! neq !tr! goto 72.2
-:72.3
-cls
-set /p =!cswz!s!cswz!15;40H<nul
-call :colortxt a 等待文件下载完成(按e返回菜单)...
-set /p =!cswz!u<nul
-set jccs=
-if !ys! gtr 0 (for /f %%a in ("!newtmp!") do (if %%~za equ !ys! echo 进程%%a完成&set /a jccs=!jccs!+1)) else (goto filehb)
-choice /c 1e /t 1 /d 1 >nul
-if "!errorlevel!" equ ="2" goto memuv2
-if !jccs! neq 1 goto 72.3
-:filehb
 set jssj=%time%
 cls
 echo 合并文件中...
