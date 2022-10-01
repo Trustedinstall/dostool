@@ -72,8 +72,8 @@ for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
-set ver=20220930
-set versize=200460
+set ver=20221001
+set versize=200707
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 set build|findstr "\<[0-9]*\>">nul
@@ -4511,6 +4511,8 @@ call :sjc "%ysks%" "%time%"
 if not 0x%sjc% geq 0x%ys% goto jxjc
 goto :eof
 :dwjs
+set blxsws=%3
+if not defined blxsws set blxsws=2
 set dw=%2
 if not defined dw set dw=0
 set size=%1
@@ -4533,6 +4535,10 @@ if "%dw%" equ "3" set dw=GB
 if "%dw%" equ "4" set dw=TB
 if "%dw%" equ "5" set dw=EB
 if "%size%" equ "0" set size=
+echo !size!|findstr /c:".">nul
+if !errorlevel! equ 0 (for /f "tokens=1,2 delims=." %%a in ("!size!") do (
+for /f "delims=" %%b in ('powershell '{0:f!blxsws!}' -f !size!') do (set size=%%b)
+))
 goto :eof
 :list
 set start=1
