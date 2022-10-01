@@ -73,7 +73,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20221001
-set versize=200707
+set versize=200848
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 set build|findstr "\<[0-9]*\>">nul
@@ -1888,18 +1888,18 @@ echo 进程页面错误: %jcymcw:~12%
 set jctj=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "pagefileusage""') do set jctj=%%a
 call :dwjs %jctj:~18% 1
-echo 进程提交大小: %size% %dw%
+echo 进程提交大小: %size%%dw%
 set jcfid=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "parentprocessid""') do set jcfid=%%a
 echo 进程父系PID: %jcfid:~16%
 set jcfzysy=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "peakpagefileusage""') do set jcfzysy=%%a
 call :dwjs %jcfzysy:~18% 1
-echo 进程峰值页面文件使用: %size% %dw%
+echo 进程峰值页面文件使用: %size%%dw%
 set jcfzgz=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "peakworking""') do set jcfzgz=%%a
 call :dwjs %jcfzgz:~19% 1
-echo 进程峰值工作: %size% %dw%
+echo 进程峰值工作: %size%%dw%
 set jcyxj=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "priority""') do set jcyxj=%%a
 echo 进程优先级: %jcyxj:~9%
@@ -2277,12 +2277,12 @@ echo;
 for /f "delims== tokens=2" %%a in ('"wmic cpu get l2cachesize/value"') do set cpul2=%%a
 set cpul2|findstr "\<[0-9]*\>">nul
 if "%errorlevel%" equ "0" call :dwjs %cpul2% 1
-echo 二级缓存: %size% %dw%
+echo 二级缓存: %size%%dw%
 echo;
 for /f "delims== tokens=2" %%a in ('"wmic cpu get l3cachesize/value"') do set cpul3=%%a
 set cpul3|findstr "\<[0-9]*\>">nul
 if "%errorlevel%" equ "0" call :dwjs %cpul3% 1
-echo 三级缓存: %size% %dw%
+echo 三级缓存: %size%%dw%
 echo _______________________________________________________________________________
 set zhuban=,zhubanxh=
 for /f "delims== tokens=2" %%a in ('"wmic baseboard get manufacturer/value"') do set zhuban=%%a
@@ -2317,7 +2317,7 @@ set /p =显卡: <nul&for /f "delims=" %%a in ('"wmic path win32_videocontroller ge
 for /f "delims== tokens=2" %%a in ('"wmic path win32_videocontroller get adapterram/value"') do set xkxc=%%a
 call :dwjs %xkxc%
 echo;
-echo 显存容量: %size% %dw%
+echo 显存容量: %size%%dw%
 echo;
 for /f "delims== tokens=2" %%a in ('"wmic path win32_videocontroller get videomodedescription/value"') do set xsms=%%a
 echo 当前显示模式: %xsms%
@@ -2337,7 +2337,7 @@ echo 接口类型:
 for /f "delims=" %%a in ('"wmic diskdrive get interfacetype|find /i /v "interfacetype""') do echo %%a|find /i /v "echo"
 echo 硬盘容量:
 for /f "delims=" %%a in ('"wmic diskdrive get size|find /i /v "size""') do (call :dwjs %%a
-if "!dw!" neq "0" echo !size! !dw!)
+if "!dw!" neq "0" echo !size!!dw!)
 echo 总扇区数:
 for /f "delims=" %%a in ('"wmic diskdrive get totalsectors|find /i /v "totalsectors""') do echo %%a|find /i /v "echo"
 echo 分区数:
@@ -2387,7 +2387,7 @@ echo !macdz!)
 echo _______________________________________________________________________________
 echo 内存容量:
 for /f "delims== tokens=2" %%a in ('"wmic memorychip get capacity /value"') do (call :dwjs %%a
-if "!dw!" neq "0" echo !size! !dw!)
+if "!dw!" neq "0" echo !size!!dw!)
 echo 内存频率:
 for /f "delims== tokens=2" %%a in ('"wmic memorychip get speed /value"') do (set ncpl=%%a
 echo !ncpl:~0,-1! MHz)
@@ -4312,6 +4312,7 @@ if not exist "!dir!" (echo 路径 !dir! 不存在&timeout /t 2 /nobreak>nul&goto 72.1
 dir /ad !dir!>nul 2>nul||echo 路径 !dir! 不是一个文件夹&&timeout /t 2 /nobreak>nul&&goto 72.1
 cls
 echo 开始获取文件信息...
+set filename=
 if exist %temp%\tag (del /f /q tag)
 curl -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36" -I -# -L -o tag --output-dir %temp% "!url!"
 for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Accept-Ranges:"') do (set trflag=%%a)
@@ -4319,6 +4320,7 @@ for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Content-Length:
 for /f "tokens=2 delims==" %%a in ('type %temp%\tag^|findstr /c:"filename="') do (set filename=%%a)
 del /f /q %temp%\tag
 call :dwjs !filesize!
+if not defined filename (set /p filename=输入文件名: )
 set /a fd=!filesize!/!tr!
 set /a ys=%filesize%%%tr%
 set oldfd=0
@@ -4331,7 +4333,7 @@ set file=!file:~0,-1!
 if !ys! gtr 0 (set file=!file!+!newtr!)
 cls
 echo 文件名:    !filename!
-echo 文件大小:  !size! !dw!
+echo 文件大小:  !size!!dw!
 if "!trflag!" neq "bytes" (echo 该链接不支持多线程传输&timeout /t 2 /nobreak>nul&&goto 72.1)
 echo 进程数:    !tr!
 echo 传输片段大小:  !fd!+!ys!
@@ -4380,24 +4382,24 @@ cls
 echo 合并文件中...
 if "!dir:~-1!" neq "\" (set dir=!dir!\)
 copy /b /z !file! "!dir!!filename!"
-rd /s /q .\down
+rd /s /q down
 popd
 cls
 title curl多进程下载 - %system%
 if exist "!dir!!filename!" (
 for /f "delims=" %%a in ("!dir!!filename!") do (
 call :sjc %kssj% %jssj%
-forfiles /p %~dp0 /m %~nx0 /c "cmd /c echo 0x07"
+forfiles /p %~dp0 /m %~nx0 /c "cmd /c set /p =0x07<nul"
 echo 下载完成
 echo 链接:  !url!
 echo 用时:  !jgxs!小时!jgfen!分钟!jgm!.!jghm!秒
 echo 文件:  %%~nxa
-echo 大小:  %%~za字节 约!size! !dw!
+if %%~za geq 1024 (echo 文件大小: 	%%~za字节 约!size!!dw!) else (echo 文件大小: 	%%~za字节)
 echo 保存路径:  %%~dpa
 )) else (
-forfiles /p %~dp0 /m %~nx0 /c "cmd /c echo 0x07"
+forfiles /p %~dp0 /m %~nx0 /c "cmd /c set /p =0x07<nul"
 timeout /t 1 /nobreak>nul
-forfiles /p %~dp0 /m %~nx0 /c "cmd /c echo 0x07"
+forfiles /p %~dp0 /m %~nx0 /c "cmd /c set /p =0x07<nul"
 echo 链接:  !url!
 echo 下载失败)
 echo _______________________________________________________________________________
@@ -4528,7 +4530,7 @@ goto next
 )
 if "%size%" geq "1024" goto renjs
 :next
-if "%dw%" equ "0" set dw=
+if "%dw%" equ "0" set dw=字节
 if "%dw%" equ "1" set dw=KB
 if "%dw%" equ "2" set dw=MB
 if "%dw%" equ "3" set dw=GB
