@@ -72,8 +72,8 @@ for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
-set ver=20221001
-set versize=200493
+set ver=20221002
+set versize=200702
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 set build|findstr "\<[0-9]*\>">nul
@@ -4380,12 +4380,19 @@ title curl多进程下载 - %system%
 if exist "!dir!!filename!" (
 for /f "delims=" %%a in ("!dir!!filename!") do (
 call :sjc %kssj% %jssj%
+set xzsd=
+set /a xzsd=!jgxs!*3600+!jgfen!*60+!jgm!
+set xzsd=!xzsd!.!jghm!
+for /f "delims=" %%a in ('powershell !filesize!/!xzsd!') do (call :dwjs %%a)
 forfiles /p %~dp0 /m %~nx0 /c "cmd /c set /p =0x07<nul"
 echo 下载完成
 echo 链接:  !url!
 echo 用时:  !jgxs!小时!jgfen!分钟!jgm!.!jghm!秒
+echo 平均下载速度:  !size!!dw!/s
 echo 文件:  %%~nxa
-if %%~za geq 1024 (echo 文件大小: 	%%~za字节 约!size!!dw!) else (echo 文件大小: 	%%~za字节)
+if %%~za geq 1024 (
+call :dwjs %%~za
+echo 文件大小: 	%%~za字节 约!size!!dw!) else (echo 文件大小: 	%%~za字节)
 echo 保存路径:  %%~dpa
 )) else (
 forfiles /p %~dp0 /m %~nx0 /c "cmd /c set /p =0x07<nul"
