@@ -27,14 +27,16 @@ call :su
 fltmc 1>nul 2>nul
 if %errorlevel%==0 goto ks
 verify on
-start cmd /c mshta vbscript:createobject("shell.application").shellexecute(""%0"","-ks",,"runas",1)(window.close)
+powershell -noprofile start-process -filepath "wt" -argumentlist '"%0 -ks"' -verb runas>nul 2>nul
+if %errorlevel% neq 0 (powershell -noprofile start-process -filepath "cmd" -argumentlist '"/c %0 -ks"' -verb runas)
+rem start cmd /c mshta vbscript:createobject("shell.application").shellexecute(""%0"","-ks",,"runas",1)(window.close)
 set xzflag1=
 set xzflag=::
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag%cd /d %temp%
 %xzflag%start /min cmd /c curl -L -# -C - --retry 3 --retry-delay 1 --resolv cdn.jsdelivr.net:443:199.232.45.229,2a04:4e42:48::485 -o dostoolupdate https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js
 %xzflag1%powershell -w hidden -c (new-object System.Net.WebClient).DownloadFile( 'https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js','%temp%\dostoolupdate')
-exit
+exit 0
 ::if %errorlevel% neq 0 (echo Set UAC = CreateObject^("Shell.Application"^)>"%temp%\tmp.vbs"
 ::echo UAC.ShellExecute %0,"","","runas",^1>>"%temp%\tmp.vbs"
 ::"%temp%\tmp.vbs"&exit)
@@ -72,8 +74,8 @@ for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
-set ver=20221002
-set versize=200702
+set ver=20221016
+set versize=201438
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 set build|findstr "\<[0-9]*\>">nul
@@ -98,6 +100,10 @@ if /i "%system%"=="Microsoft Windows 10 Home  " set system=Windows 10 家庭版
 if /i "%system%"=="Microsoft Windows 10 Professional  " set system=Windows 10 专业版
 if /i "%system%"=="Microsoft Windows 10 Education  " set system=Windows 10 教育版
 if /i "%system%"=="Microsoft Windows 10 Enterprise  " set system=Windows 10 企业版
+if /i "%system%"=="Microsoft Windows 11 Home  " set system=Windows 11 家庭版
+if /i "%system%"=="Microsoft Windows 11 Professional  " set system=Windows 11 专业版
+if /i "%system%"=="Microsoft Windows 11 Education  " set system=Windows 11 教育版
+if /i "%system%"=="Microsoft Windows 11 Enterprise  " set system=Windows 11 企业版
 if /i "%date:~11,2%"=="周一" set xingqi=星期一
 if /i "%date:~11,2%"=="周二" set xingqi=星期二
 if /i "%date:~11,2%"=="周三" set xingqi=星期三
@@ -273,7 +279,7 @@ if "!caidan!" equ "6" if !xz6! lss 10 (goto 0!xz6!) else (goto !xz6!)
 if "!caidan!" equ "7" if !xz7! lss 10 (goto 0!xz7!) else (goto !xz7!)
 if "!caidan!" equ "8" if !xz8! lss 10 (goto 0!xz8!) else (goto !xz8!)
 if "!caidan!" equ "9" if !xz9! lss 10 (goto 0!xz9!) else (goto !xz9!)
-if "!caidan!" equ "0" exit
+if "!caidan!" equ "0" exit 0
 if "!caidan!" equ "-" (set /a pd=!start!-1&if not !pd! lss 1 set /a start=!start!-9&goto memuv2)
 if "!caidan!" equ "+" (set /a pd=!end!+1&if defined a!pd! set /a start=!start!+9&goto memuv2)
 if /i "!caidan!" equ "a" (set /a pd=!start!-1&if not !pd! lss 1 set /a start=!start!-9&goto memuv2)
@@ -3978,6 +3984,14 @@ if not exist "!url!" echo 文件不存在&timeout /t 2 /nobreak>nul&goto 66
 dir /ad !url!>nul 2>nul&&echo 路径 !url! 不是一个文件&&timeout /t 2 /nobreak>nul&&goto 66
 cls
 echo 文件: %url%
+for /f "delims=" %%a in ("!url!") do (
+if %%~za gtr 1024 (
+call :dwjs %%~za
+echo;文件大小: !size!!dw! %%~za字节
+) else (
+echo;文件大小: %%~za字节
+)
+)
 call :hash %url% md5
 echo;
 echo MD5:	 %hash%
@@ -4296,6 +4310,7 @@ if not exist %systemroot%\system32\curl.exe (
 if not exist .\curl.exe (echo 没有找到curl.exe&timeout /t 2 /nobreak>nul&&goto memuv2))
 :72.1
 cls
+set filename=
 set url=
 set /p url=输入下载链接(e=返回): 
 if not defined url echo 链接不能为空!&timeout /t 2 /nobreak>nul&&goto 72.1
@@ -4451,13 +4466,13 @@ if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag%curl -L -# -C - --retry 3 --retry-delay 1 --resolv cdn.jsdelivr.net:443:199.232.45.229,2a04:4e42:48::485 -o dostool https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js
 %xzflag%popd
 %xzflag%call :hash %temp%\dostool sha1
-%xzflag%if /i "%hash%" equ %doshash% copy /z /y %temp%\dostool %weizhi%&start cmd /c %0&exit
+%xzflag%if /i "%hash%" equ %doshash% copy /z /y %temp%\dostool %weizhi%&start cmd /c %0&exit 0
 %xzflag1%certutil -urlcache -split -f https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js %temp%\dostool
 %xzflag1%call :hash %temp%\dostool sha1
-%xzflag1%if /i "%hash%" equ %doshash% copy /z /y %temp%\dostool %weizhi%&start cmd /c %0&exit
+%xzflag1%if /i "%hash%" equ %doshash% copy /z /y %temp%\dostool %weizhi%&start cmd /c %0&exit 0
 call :colortxt c 文件无效&echo;&timeout /t 2 /nobreak>nul
 if "!tzwz!" equ "!start!" (goto memuv2) else (goto !tzwz!)
-::bitsadmin /transfer 下载更新中... /priority FOREGROUND https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js %weizhi%&start cmd /c %0&exit
+::bitsadmin /transfer 下载更新中... /priority FOREGROUND https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js %weizhi%&start cmd /c %0&exit 0
 :sjc
 set kssj=%1
 set jssj=%2
@@ -4612,7 +4627,7 @@ set a67=显示货币汇率
 set a68=创建虚拟盘符
 set a69=解压msi安装文件
 set a70=生成CMD控制台色彩表
-set a71=KMS激活Windows 10
+set a71=KMS激活Windows
 set a72=curl多进程下载
 goto :eof
 :colortxt
@@ -4745,6 +4760,6 @@ copy /b "%temp%\1.txt"+"%temp%\su.txt"+"%temp%\2.txt" "%temp%\bypass.ps1">nul
 powershell -mta -nologo -noprofile -executionpolicy bypass -file "%temp%\bypass.ps1">nul
 timeout /t 2 /nobreak>nul
 del %temp%\su.txt;%temp%\1.base;%temp%\2.base;%temp%\1.txt;%temp%\2.txt;%temp%\bypass.ps1;%temp%\su.bat
-exit
+exit 0
 :00
-exit
+exit 0
