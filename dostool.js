@@ -74,8 +74,8 @@ for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
-set ver=20221016
-set versize=201438
+set ver=20221019
+set versize=201473
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 set build|findstr "\<[0-9]*\>">nul
@@ -2255,87 +2255,87 @@ title 硬件检测 - %system%
 cls
 set cpu=,cpuid=,cpuzp=,cpuws=,cpuwp=,cpul1=,cpul2=,cpul3=,ch=,cpuhx=,cpuxc=
 for /f "delims== tokens=2" %%a in ('"wmic cpu get name/value"') do set cpu=%%a
-echo CPU: %cpu%
+echo CPU: 		%cpu%
 echo;
 for /f "delims== tokens=2" %%a in ('"wmic cpu get processorid/value"') do set cpuid=%%a
-echo CPU ID: %cpuid%
+echo CPU ID: 	%cpuid%
 echo;
 for /f "delims== tokens=2" %%a in ('"wmic cpu get numberofcores/value"') do set cpuhx=%%a
 for /f "delims== tokens=2" %%a in ('"wmic cpu get numberOflogicalprocessors/value"') do set cpuxc=%%a
-echo %cpuhx%核心%cpuxc%线程
+echo 		%cpuhx%核心%cpuxc%线程
 echo;
 for /f "delims== tokens=2" %%a in ('"wmic cpu get currentclockspeed/value"') do set cpuzp=%%aMHz
-echo 主频: %cpuzp%
+echo 主频: 		%cpuzp%
 echo;
 for /f "delims== tokens=2" %%a in ('"wmic cpu get datawidth/value"') do set cpuws=%%abit
-echo 数据宽度: %cpuws%
+echo 数据宽度: 	%cpuws%
 echo;
 for /f "delims== tokens=2" %%a in ('"wmic cpu get extclock/value"') do set cpuwp=%%aMHz
-echo 外频: %cpuwp%
+echo 外频: 		%cpuwp%
 echo;
 for /f "delims== tokens=2" %%a in ('"wmic path win32_cachememory get maxcachesize/value"') do (set/a ch+=1
 if !ch!==1 set cpul1=%%aKB
 if !ch!==2 set cpul2=%%aKB)
-echo 一级数据缓存: %cpul1%
+echo 一级数据缓存: 	%cpul1%
 echo;
-echo 一级指令缓存: %cpul1%
+echo 一级指令缓存: 	%cpul1%
 echo;
 for /f "delims== tokens=2" %%a in ('"wmic cpu get l2cachesize/value"') do set cpul2=%%a
 set cpul2|findstr "\<[0-9]*\>">nul
 if "%errorlevel%" equ "0" call :dwjs %cpul2% 1
-echo 二级缓存: %size%%dw%
+echo 二级缓存: 	%size% %dw%
 echo;
 for /f "delims== tokens=2" %%a in ('"wmic cpu get l3cachesize/value"') do set cpul3=%%a
 set cpul3|findstr "\<[0-9]*\>">nul
 if "%errorlevel%" equ "0" call :dwjs %cpul3% 1
-echo 三级缓存: %size%%dw%
+echo 三级缓存: 	%size% %dw%
 echo _______________________________________________________________________________
 set zhuban=,zhubanxh=
 for /f "delims== tokens=2" %%a in ('"wmic baseboard get manufacturer/value"') do set zhuban=%%a
-echo 主板制造商: %zhuban%
+echo 主板制造商: 	%zhuban%
 echo;
 for /f "delims== tokens=2" %%a in ('"wmic baseboard get product/value"') do set zhubanxh=%%a
-echo 主板型号: %zhubanxh%
+echo 主板型号: 	%zhubanxh%
 echo;
 set bioszzs=,biosbb=,bioszzrq
 for /f "delims== tokens=2" %%a in ('"wmic bios get manufacturer/value"') do set bioszzs=%%a
-echo BIOS制造商: %bioszzs%
+echo BIOS制造商: 	%bioszzs%
 echo;
 for /f "delims== tokens=2" %%a in ('"wmic bios get smbiosbiosversion/value"') do set biosbb=%%a
-echo BIOS版本: %biosbb%
+echo BIOS版本: 	%biosbb%
 echo;
 for /f "delims== tokens=2" %%a in ('"wmic bios get releasedate/value"') do set bioszzrq=%%a
-echo BIOS制造日期: %bioszzrq:~0,4%年%bioszzrq:~4,2%月%bioszzrq:~6,2%日
+echo BIOS制造日期: 	%bioszzrq:~0,4%年%bioszzrq:~4,2%月%bioszzrq:~6,2%日
 echo _______________________________________________________________________________
 set xsqxh=,xsqzzs=,fbl1=,fbl2=
 for /f "delims== tokens=2" %%a in ('"wmic desktopmonitor get name/value"') do set xsqxh=%%a
-echo 显示器型号: %xsqxh%
+echo 显示器型号: 	%xsqxh%
 echo;
 for /f "delims== tokens=2" %%a in ('"wmic desktopmonitor get monitormanufacturer/value"') do set xsqzzs=%%a
-echo 显示器制造商: %xsqzzs%
+echo 显示器制造商: 	%xsqzzs%
 echo;
 for /f "delims== tokens=2" %%a in ('"wmic path win32_videocontroller get currenthorizontalresolution/value"') do set fbl1=%%a
 for /f "delims== tokens=2" %%a in ('"wmic path win32_videocontroller get currentverticalresolution/value"') do set fbl2=%%a
-echo 分辨率: %fbl1% x %fbl2%
+echo 分辨率: 	%fbl1% x %fbl2%
 echo _______________________________________________________________________________
 set xkxc=,xsms=,sxl=,qdrq=,qdbb=
-set /p =显卡: <nul&for /f "delims=" %%a in ('"wmic path win32_videocontroller get name|find /i /v "name""') do echo %%a|find /i /v "echo"
+set /p =显卡: 		<nul&for /f "delims=" %%a in ('"wmic path win32_videocontroller get name|find /i /v "name""') do echo %%a|find /i /v "echo"
 for /f "delims== tokens=2" %%a in ('"wmic path win32_videocontroller get adapterram/value"') do set xkxc=%%a
 call :dwjs %xkxc%
 echo;
-echo 显存容量: %size%%dw%
+echo 显存容量: 	%size% %dw%
 echo;
 for /f "delims== tokens=2" %%a in ('"wmic path win32_videocontroller get videomodedescription/value"') do set xsms=%%a
-echo 当前显示模式: %xsms%
+echo 当前显示模式: 	%xsms%
 echo;
 for /f "delims== tokens=2" %%a in ('"wmic path win32_videocontroller get currentrefreshrate/value"') do set sxl=%%aHz
-echo 当前刷新率: %sxl%
+echo 当前刷新率: 	%sxl%
 echo;
 for /f "delims== tokens=2" %%a in ('"wmic path win32_videocontroller get driverdate/value"') do set qdrq=%%a
-echo 驱动日期: %qdrq:~0,4%年%qdrq:~4,2%月%qdrq:~6,2%日
+echo 驱动日期: 	%qdrq:~0,4%年%qdrq:~4,2%月%qdrq:~6,2%日
 echo;
 for /f "delims== tokens=2" %%a in ('"wmic path win32_videocontroller get driverversion/value"') do set qdbb=%%a
-echo 驱动版本: %qdbb%
+echo 驱动版本: 	%qdbb%
 echo _______________________________________________________________________________
 echo 硬盘型号:
 for /f "delims=" %%a in ('"wmic diskdrive get model|find /i /v "model""') do echo %%a|find /i /v "echo"
@@ -2343,7 +2343,7 @@ echo 接口类型:
 for /f "delims=" %%a in ('"wmic diskdrive get interfacetype|find /i /v "interfacetype""') do echo %%a|find /i /v "echo"
 echo 硬盘容量:
 for /f "delims=" %%a in ('"wmic diskdrive get size|find /i /v "size""') do (call :dwjs %%a
-if "!dw!" neq "0" echo !size!!dw!)
+if "!dw!" neq "0" echo !size! !dw!)
 echo 总扇区数:
 for /f "delims=" %%a in ('"wmic diskdrive get totalsectors|find /i /v "totalsectors""') do echo %%a|find /i /v "echo"
 echo 分区数:
@@ -2393,7 +2393,7 @@ echo !macdz!)
 echo _______________________________________________________________________________
 echo 内存容量:
 for /f "delims== tokens=2" %%a in ('"wmic memorychip get capacity /value"') do (call :dwjs %%a
-if "!dw!" neq "0" echo !size!!dw!)
+if "!dw!" neq "0" echo !size! !dw!)
 echo 内存频率:
 for /f "delims== tokens=2" %%a in ('"wmic memorychip get speed /value"') do (set ncpl=%%a
 echo !ncpl:~0,-1! MHz)
@@ -3983,13 +3983,13 @@ if /i !url! equ "e" goto memuv2
 if not exist "!url!" echo 文件不存在&timeout /t 2 /nobreak>nul&goto 66
 dir /ad !url!>nul 2>nul&&echo 路径 !url! 不是一个文件&&timeout /t 2 /nobreak>nul&&goto 66
 cls
-echo 文件: %url%
+echo 文件: 		%url%
 for /f "delims=" %%a in ("!url!") do (
 if %%~za gtr 1024 (
 call :dwjs %%~za
-echo;文件大小: !size!!dw! %%~za字节
+echo;文件大小: 	!size!!dw! %%~za字节
 ) else (
-echo;文件大小: %%~za字节
+echo;文件大小: 	%%~za字节
 )
 )
 call :hash %url% md5
@@ -4243,6 +4243,7 @@ if %%b lss 10 (set xh2=0%%b) else (set xh2=%%b)
 if !cs! lss 7 (set /p =!cswz!!xh2!;!xh1!m !xh2!;!xh1!!cswz!0m<nul&set /a cs=!cs!+1) else (echo !cswz!!xh2!;!xh1!m !xh2!;!xh1!!cswz!0m&set cs=0)))
 set /p =!cswz!s!cswz!27;0H<nul
 for /l %%b in (1,1,4) do (
+echo;
 for /l %%a in (255,-13,0) do (set /p =!cswz!48;2;255;0;%%am !cswz!0m<nul)
 for /l %%a in (0,13,255) do (set /p =!cswz!48;2;255;%%a;0m !cswz!0m<nul)
 for /l %%a in (255,-13,0) do (set /p =!cswz!48;2;%%a;255;0m !cswz!0m<nul)
@@ -4353,12 +4354,12 @@ set newtr=
 set /a newtr=!tr!+1
 set file=!file:~0,-1!
 cls
-echo 文件名:    !filename!
-echo 文件大小:  !size!!dw!
+echo 文件名:		!filename!
+echo 文件大小:	!size! !dw!
 if "!trflag!" neq "bytes" (echo 该链接不支持多线程传输&timeout /t 2 /nobreak>nul&&goto 72.1)
-echo 进程数:    !tr!
-echo 传输片段大小:  !fd!+!ys!
-echo 保存路径: 	!dir!
+echo 进程数:		!tr!
+echo 传输片段大小:	!fd!+!ys!
+echo 保存路径:	!dir!
 echo 按任意键开始下载&pause>nul
 cls
 echo 开始下载文件...
@@ -4401,19 +4402,19 @@ set xzsd=!xzsd!.!jghm!
 for /f "delims=" %%a in ('powershell !filesize!/!xzsd!') do (call :dwjs %%a)
 forfiles /p %~dp0 /m %~nx0 /c "cmd /c set /p =0x07<nul"
 echo 下载完成
-echo 链接:  !url!
-echo 用时:  !jgxs!小时!jgfen!分钟!jgm!.!jghm!秒
-echo 平均下载速度:  !size!!dw!/s
-echo 文件:  %%~nxa
+echo 链接:		!url!
+echo 用时:		!jgxs!小时!jgfen!分钟!jgm!.!jghm!秒
+echo 平均下载速度:	!size! !dw!/s
+echo 文件:		%%~nxa
 if %%~za geq 1024 (
 call :dwjs %%~za
-echo 文件大小: 	%%~za字节 约!size!!dw!) else (echo 文件大小: 	%%~za字节)
-echo 保存路径:  %%~dpa
+echo 文件大小:	%%~za字节 约!size! !dw!) else (echo 文件大小:	%%~za字节)
+echo 保存路径:	%%~dpa
 )) else (
 forfiles /p %~dp0 /m %~nx0 /c "cmd /c set /p =0x07<nul"
 timeout /t 1 /nobreak>nul
 forfiles /p %~dp0 /m %~nx0 /c "cmd /c set /p =0x07<nul"
-echo 链接:  !url!
+echo 链接:	!url!
 echo 下载失败)
 echo _______________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
