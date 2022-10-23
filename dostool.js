@@ -27,7 +27,7 @@ call :su
 fltmc 1>nul 2>nul
 if %errorlevel%==0 goto ks
 verify on
-if exist %localappdata%\Microsoft\WindowsApps\wt.exe (powershell -noprofile start-process -filepath "wt" -argumentlist '"%0 -ks"' -verb runas>nul 2>nul) else (powershell -noprofile start-process -filepath "%comspec%" -argumentlist '"/c %0 -ks"' -verb runas)
+if exist %localappdata%\Microsoft\WindowsApps\wt.exe (start /b powershell -noprofile start-process -filepath "wt" -argumentlist '"%0 -ks"' -verb runas>nul 2>nul) else (start /b powershell -noprofile start-process -filepath "%comspec%" -argumentlist '"/c %0 -ks"' -verb runas)
 rem start %comspec% /c mshta vbscript:createobject("shell.application").shellexecute(""%0"","-ks",,"runas",1)(window.close)
 (
 set xzflag1=
@@ -82,7 +82,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20221023
-set versize=209535
+set versize=209553
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 )
