@@ -82,7 +82,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20221023
-set versize=201473
+set versize=209535
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 )
