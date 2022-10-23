@@ -27,14 +27,18 @@ call :su
 fltmc 1>nul 2>nul
 if %errorlevel%==0 goto ks
 verify on
-powershell -noprofile start-process -filepath "wt" -argumentlist '"%0 -ks"' -verb runas>nul 2>nul
-if %errorlevel% neq 0 (powershell -noprofile start-process -filepath "cmd" -argumentlist '"/c %0 -ks"' -verb runas)
-rem start cmd /c mshta vbscript:createobject("shell.application").shellexecute(""%0"","-ks",,"runas",1)(window.close)
+if exist %localappdata%\Microsoft\WindowsApps\wt.exe (powershell -noprofile start-process -filepath "wt" -argumentlist '"%0 -ks"' -verb runas>nul 2>nul) else (powershell -noprofile start-process -filepath "%comspec%" -argumentlist '"/c %0 -ks"' -verb runas)
+rem start %comspec% /c mshta vbscript:createobject("shell.application").shellexecute(""%0"","-ks",,"runas",1)(window.close)
+(
 set xzflag1=
-set xzflag=::
-if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
+set xzflag=rem 
+)
+if exist %systemroot%\system32\curl.exe (
+    set xzflag1=rem 
+    set xzflag=
+)
 %xzflag%cd /d %temp%
-%xzflag%start /min cmd /c curl -L -# -C - --retry 3 --retry-delay 1 --resolv cdn.jsdelivr.net:443:199.232.45.229,2a04:4e42:48::485 -o dostoolupdate https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js
+%xzflag%start /min %comspec% /c curl -L -# -C - --retry 3 --retry-delay 1 --resolv cdn.jsdelivr.net:443:199.232.45.229,2a04:4e42:48::485 -o dostoolupdate https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js
 %xzflag1%powershell -w hidden -c (new-object System.Net.WebClient).DownloadFile( 'https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js','%temp%\dostoolupdate')
 exit 0
 ::if %errorlevel% neq 0 (echo Set UAC = CreateObject^("Shell.Application"^)>"%temp%\tmp.vbs"
@@ -45,12 +49,14 @@ exit 0
 ::echo UAC.ShellExecute %0,"","","runas",^1>>"%temp%\tmp.vbs"
 ::"%temp%\tmp.vbs"&exit) else (del/f/q %systemdrive%\windows\system32\dos.tmp)
 :ks
+(
 set dosqssj=%time%
 title 　
 color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 goto qidongjs
+)
 set qidongjd=0
 set qidongbz=█████████████████
 :qidong
@@ -72,38 +78,41 @@ set weizhi=%0
 for /f "delims=" %%a in ("%weizhi%") do set daxiao=%%~za
 for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
 for /f "delims=" %%a in ('hostname') do set hostname=%%a
+(
 cd/d "%disk%\"
 set cishu=3
-set ver=20221019
+set ver=20221023
 set versize=201473
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
+)
 set build|findstr "\<[0-9]*\>">nul
 if !errorlevel! equ 0 (if !build! lss 10586 (set winv=1) else (set winv=0)) else (set winv=0)
+(
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
 for /f "delims=" %%a in ('"wmic os get caption"') do cls&echo %%a|find /i "Microsoft"&&Set system=%%a
-if /i "%system%"=="Microsoft Windows XP Home  " set system=Windows XP 家庭版
-if /i "%system%"=="Microsoft Windows XP Professional  " set system=Windows XP 专业版
-if /i "%system%"=="Microsoft Windows 7 Ultimate  " set system=Windows 7 旗舰版
-if /i "%system%"=="Microsoft Windows 7 Home Basic  " set system=Windows 7 家庭普通版
-if /i "%system%"=="Microsoft Windows 7 Home Premium  " set system=Windows 7 家庭高级版
-if /i "%system%"=="Microsoft Windows 7 Professional  " set system=Windows 7 专业版
-if /i "%system%"=="Microsoft Windows 7 Enterprise  " set system=Windows 7 企业版
-if /i "%system%"=="Microsoft Windows 8 Pro  " set system=Windows 8 专业版
-if /i "%system%"=="Microsoft Windows 8 China  " set system=Windows 8 中国版
-if /i "%system%"=="Microsoft Windows 8 Enterprise  " set system=Windows 8 企业版
-if /i "%system%"=="Microsoft Windows 8.1 Pro  " set system=Windows 8.1 专业版
-if /i "%system%"=="Microsoft Windows 8.1 China  " set system=Windows 8.1 中国版
-if /i "%system%"=="Microsoft Windows 8.1 Enterprise  " set system=Windows 8.1 企业版
-if /i "%system%"=="Microsoft Windows 10 Home  " set system=Windows 10 家庭版
-if /i "%system%"=="Microsoft Windows 10 Professional  " set system=Windows 10 专业版
-if /i "%system%"=="Microsoft Windows 10 Education  " set system=Windows 10 教育版
-if /i "%system%"=="Microsoft Windows 10 Enterprise  " set system=Windows 10 企业版
-if /i "%system%"=="Microsoft Windows 11 Home  " set system=Windows 11 家庭版
-if /i "%system%"=="Microsoft Windows 11 Professional  " set system=Windows 11 专业版
-if /i "%system%"=="Microsoft Windows 11 Education  " set system=Windows 11 教育版
-if /i "%system%"=="Microsoft Windows 11 Enterprise  " set system=Windows 11 企业版
+if /i "!system!"=="Microsoft Windows XP Home  " set system=Windows XP 家庭版
+if /i "!system!"=="Microsoft Windows XP Professional  " set system=Windows XP 专业版
+if /i "!system!"=="Microsoft Windows 7 Ultimate  " set system=Windows 7 旗舰版
+if /i "!system!"=="Microsoft Windows 7 Home Basic  " set system=Windows 7 家庭普通版
+if /i "!system!"=="Microsoft Windows 7 Home Premium  " set system=Windows 7 家庭高级版
+if /i "!system!"=="Microsoft Windows 7 Professional  " set system=Windows 7 专业版
+if /i "!system!"=="Microsoft Windows 7 Enterprise  " set system=Windows 7 企业版
+if /i "!system!"=="Microsoft Windows 8 Pro  " set system=Windows 8 专业版
+if /i "!system!"=="Microsoft Windows 8 China  " set system=Windows 8 中国版
+if /i "!system!"=="Microsoft Windows 8 Enterprise  " set system=Windows 8 企业版
+if /i "!system!"=="Microsoft Windows 8.1 Pro  " set system=Windows 8.1 专业版
+if /i "!system!"=="Microsoft Windows 8.1 China  " set system=Windows 8.1 中国版
+if /i "!system!"=="Microsoft Windows 8.1 Enterprise  " set system=Windows 8.1 企业版
+if /i "!system!"=="Microsoft Windows 10 Home  " set system=Windows 10 家庭版
+if /i "!system!"=="Microsoft Windows 10 Professional  " set system=Windows 10 专业版
+if /i "!system!"=="Microsoft Windows 10 Education  " set system=Windows 10 教育版
+if /i "!system!"=="Microsoft Windows 10 Enterprise  " set system=Windows 10 企业版
+if /i "!system!"=="Microsoft Windows 11 Home  " set system=Windows 11 家庭版
+if /i "!system!"=="Microsoft Windows 11 Professional  " set system=Windows 11 专业版
+if /i "!system!"=="Microsoft Windows 11 Education  " set system=Windows 11 教育版
+if /i "!system!"=="Microsoft Windows 11 Enterprise  " set system=Windows 11 企业版
 if /i "%date:~11,2%"=="周一" set xingqi=星期一
 if /i "%date:~11,2%"=="周二" set xingqi=星期二
 if /i "%date:~11,2%"=="周三" set xingqi=星期三
@@ -119,13 +128,16 @@ if /i "%date:~11,3%"=="星期五" set xingqi=星期五
 if /i "%date:~11,3%"=="星期六" set xingqi=星期六
 if /i "%date:~11,3%"=="星期日" set xingqi=星期天
 set nx1=[+]下一页&set nx=[-]上一页   [+]下一页&set nx7=[-]上一页
+)
 for /f "tokens=2 delims=={}" %%a in ('wmic PATH Win32_SystemEnclosure get ChassisTypes/value') do (
 if %%a==8 set nx1=[S]下一页&set nx=[A]上一页   [S]下一页&set nx7=[A]上一页
 if %%a==9 set nx1=[S]下一页&set nx=[A]上一页   [S]下一页&set nx7=[A]上一页
 if %%a==10 set nx1=[S]下一页&set nx=[A]上一页   [S]下一页&set nx7=[A]上一页)
+(
 set sc=delasd123
 set scw=rdasd123
 set ad=
+)
 for /f "tokens=1,2 delims=#" %%a in ('"prompt #$h#$e# & echo on & for %%b in (1) do rem"') do (set cswz=%%b[&set cswz1=%%a)
 call :list
 if /i "%processor_architecture%"=="x86" (set bit=32) else (set bit=64)
@@ -136,7 +148,7 @@ fltmc 1>nul 2>nul
 if %errorlevel% neq 0 (echo 部分功能无法正常使用，请以管理员身份运行
 echo _______________________________________________________________________________
 echo 按任意键继续运行&pause>nul)
-forfiles /p %~dp0 /m %~nx0 /c "cmd /c echo 0x070x07"
+forfiles /p %~dp0 /m %~nx0 /c "%comspec% /c echo 0x070x07"
 cls
 goto memuv2
 for /f "delims=" %%a in ('"wmic cpu get processorid|find /i /v "processorid""') do (for /f "delims=" %%b in ('"echo %%a|find /i /v "echo""') do (set a=%%b))
@@ -1286,7 +1298,7 @@ verify on
 copy/y "!jiami2!" %systemdrive%temp.0
 set /p =//4NCg==<nul>%temp%\tmpcode
 certutil -decode -f %temp%\tmpcode %systemdrive%temp>nul
-copy/b %systemdrive%temp+%systendrive%temp.0 "%zmlj%已加密的%wjm%.%geshi%"
+copy/b %systemdrive%temp+%systemdrive%temp.0 "%zmlj%已加密的%wjm%.%geshi%"
 del/f/q %systemdrive%temp
 del/f/q %systemdrive%temp.0
 cls
@@ -1768,15 +1780,17 @@ echo [2]显示每个进程的服务
 echo [3]显示进程路径
 echo [4]显示进程详细信息
 echo [5]显示进程的TCP/UDP连接
+echo;[6]循环显示CPU占用率与网络速度
 echo [0]返回菜单
 echo _______________________________________________________________________________
-choice /c 123450 /n /m 请输入你的选择:
+choice /c 1234560 /n /m 请输入你的选择:
 if "%errorlevel%" equ "1" goto 23(1)
 if "%errorlevel%" equ "2" goto 23(2)
 if "%errorlevel%" equ "3" goto 23(6)
 if "%errorlevel%" equ "4" goto 23(10)
 if "%errorlevel%" equ "5" goto 23.1
-if "%errorlevel%" equ "6" goto memuv2
+if "!errorlevel!" equ "6" goto 23-1
+if "%errorlevel%" equ "7" goto memuv2
 goto 23
 set dosjc=
 set/p dosjc=请输入你的选择:
@@ -1893,19 +1907,19 @@ for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value
 echo 进程页面错误: %jcymcw:~12%
 set jctj=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "pagefileusage""') do set jctj=%%a
-call :dwjs %jctj:~18% 1
-echo 进程提交大小: %size%%dw%
+call :xdwjs %jctj:~18% kb dw
+echo 进程提交大小: %dw%
 set jcfid=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "parentprocessid""') do set jcfid=%%a
 echo 进程父系PID: %jcfid:~16%
 set jcfzysy=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "peakpagefileusage""') do set jcfzysy=%%a
-call :dwjs %jcfzysy:~18% 1
-echo 进程峰值页面文件使用: %size%%dw%
+call :xdwjs %jcfzysy:~18% kb dw
+echo 进程峰值页面文件使用: %dw%
 set jcfzgz=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "peakworking""') do set jcfzgz=%%a
-call :dwjs %jcfzgz:~19% 1
-echo 进程峰值工作: %size%%dw%
+call :xdwjs %jcfzgz:~19% kb dw
+echo 进程峰值工作: %dw%
 set jcyxj=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "priority""') do set jcyxj=%%a
 echo 进程优先级: %jcyxj:~9%
@@ -1933,6 +1947,67 @@ netstat -aon|findstr /i /c:"!字符串!"
 echo _______________________________________________________________________________
 set /p =按任意键返回<nul&pause>nul
 goto 23
+:23-1
+color 0f
+set ysbak=97;40m
+title 循环显示CPU占用率与网络速度 - %system%
+cls
+for /f "skip=2 tokens=2 delims==" %%a in ('Wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get name /value') do (
+    set netcard=%%a
+)
+for /f "skip=2 tokens=2 delims==" %%a in ('wmic cpu get numberOflogicalprocessors /value') do (
+    set corenum=%%a
+    set /a tghs=corenum*2+4+2
+)
+for /f "skip=2 tokens=2 delims==" %%a in ('wmic cpu get name /value') do (
+    set cpu=%%a
+)
+:23-1-1
+(
+set xh=
+for /f "skip=2 tokens=2 delims==" %%a in ('Wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get BytesReceivedPersec^,BytesSentPersec /value') do (
+    set /a "xh+=1"
+    if !xh! equ 1 (
+        set downspeed=%%a
+    )
+    if !xh! equ 2 (
+        set upspeed=%%a
+        for /f "skip=%tghs% tokens=2 delims==" %%a in ('Wmic Path Win32_PerfFormattedData_PerfOS_Processor Get PercentIdleTime /value') do (
+            set /a lyl=100-%%a
+        )
+    )
+)
+call :xdwjs !upspeed! b upspeed
+call :xdwjs !downspeed! b downspeed
+echo;!netcard!
+echo;
+(echo;上传速度:  !upspeed!/s 下载速度:   !downspeed!/s   )
+echo;
+echo;!cpu!
+echo;
+set /p =CPU总体利用率:  <nul
+if !lyl! leq 25 (
+    call :rgb 12.12.12 0.255.0 !lyl!
+) else (
+    if !lyl! leq 50 (
+        call :rgb 12.12.12 255.255.0 !lyl!
+    ) else (
+        if !lyl! leq 75 (
+            call :rgb 12.12.12 255.127.0 !lyl!
+        ) else (
+            call :rgb 12.12.12 255.0.0 !lyl!
+        )
+    )
+)
+set /p =%%  <nul
+echo;
+echo;_______________________________________________________________________________
+echo;按e返回菜单
+set /p =!cswz!s!cswz!0;0H<nul
+choice /c 1e /t 1 /d 1 >nul
+if "!errorlevel!" equ ="2" goto 23
+goto 23-1-1
+)
 :24
 title 文件系统信息查询 - %system%
 cls
@@ -2253,6 +2328,18 @@ goto memuv2
 :30
 title 硬件检测 - %system%
 cls
+set systemstarttime=
+for /f "skip=2 tokens=2 delims==" %%a in ('Wmic OS Get LastBootUpTime /value') do (
+    set systemstarttime=%%a
+    echo;系统启动时间:  !systemstarttime:~0,4!年!systemstarttime:~4,2!月!systemstarttime:~6,2!日 !systemstarttime:~8,2!:!systemstarttime:~10,2!:!systemstarttime:~12,2!
+    echo;
+)
+set systeminstalltime=
+for /f "skip=2 tokens=2 delims==" %%a in ('Wmic OS Get InstallDate /value') do (
+    set systeminstalltime=%%a
+    echo;系统安装日期:  !systeminstalltime:~0,4!年!systeminstalltime:~4,2!月!systeminstalltime:~6,2!日 !systeminstalltime:~8,2!:!systeminstalltime:~10,2!:!systeminstalltime:~12,2!
+    echo;
+)
 set cpu=,cpuid=,cpuzp=,cpuws=,cpuwp=,cpul1=,cpul2=,cpul3=,ch=,cpuhx=,cpuxc=
 for /f "delims== tokens=2" %%a in ('"wmic cpu get name/value"') do set cpu=%%a
 echo CPU: 		%cpu%
@@ -2273,22 +2360,55 @@ echo;
 for /f "delims== tokens=2" %%a in ('"wmic cpu get extclock/value"') do set cpuwp=%%aMHz
 echo 外频: 		%cpuwp%
 echo;
-for /f "delims== tokens=2" %%a in ('"wmic path win32_cachememory get maxcachesize/value"') do (set/a ch+=1
-if !ch!==1 set cpul1=%%aKB
-if !ch!==2 set cpul2=%%aKB)
-echo 一级数据缓存: 	%cpul1%
+set ch=
+for /f "skip= 2 tokens=2 delims==" %%a in ('"wmic path win32_cachememory get maxcachesize/value"') do (
+    set /a "ch+=1"
+    if !ch! equ 1 (
+        set /a cpul1=%%a
+    ) else (
+        if !ch! equ 2 (
+            set /a cpul2=%%a
+        ) else (
+            if !ch! equ 3 (
+                set /a cpul3=%%a
+            ) else (
+                if !ch! equ 4 (
+                    set /a cpul4=%%a
+                )
+            )
+        )
+    )
+)
+echo;一级缓存:      !cpul1! KB
 echo;
-echo 一级指令缓存: 	%cpul1%
+call :xdwjs !cpul2! kb dw
+echo;二级缓存:      !dw!
 echo;
-for /f "delims== tokens=2" %%a in ('"wmic cpu get l2cachesize/value"') do set cpul2=%%a
-set cpul2|findstr "\<[0-9]*\>">nul
-if "%errorlevel%" equ "0" call :dwjs %cpul2% 1
-echo 二级缓存: 	%size% %dw%
-echo;
-for /f "delims== tokens=2" %%a in ('"wmic cpu get l3cachesize/value"') do set cpul3=%%a
-set cpul3|findstr "\<[0-9]*\>">nul
-if "%errorlevel%" equ "0" call :dwjs %cpul3% 1
-echo 三级缓存: 	%size% %dw%
+if "!cpul3!" neq "" (
+    call :xdwjs !cpul3! kb dw
+    echo;三级缓存:      !dw!
+    echo;
+) else (
+    echo;三级缓存:      0
+    echo;
+)
+if "!cpul4!" neq "" (
+    call :xdwjs !cpul4! kb dw
+    echo;四级缓存:      !dw!
+    echo;
+) else (
+    echo;四级缓存:      0
+    echo;
+)
+rem for /f "delims== tokens=2" %%a in ('"wmic cpu get l2cachesize/value"') do set cpul2=%%a
+rem set cpul2|findstr "\<[0-9]*\>">nul
+rem if "%errorlevel%" equ "0" call :dwjs %cpul2% 1
+rem echo 二级缓存: 	%size% %dw%
+rem echo;
+rem for /f "delims== tokens=2" %%a in ('"wmic cpu get l3cachesize/value"') do set cpul3=%%a
+rem set cpul3|findstr "\<[0-9]*\>">nul
+rem if "%errorlevel%" equ "0" call :dwjs %cpul3% 1
+rem echo 三级缓存: 	%size% %dw%)
 echo _______________________________________________________________________________
 set zhuban=,zhubanxh=
 for /f "delims== tokens=2" %%a in ('"wmic baseboard get manufacturer/value"') do set zhuban=%%a
@@ -2297,6 +2417,11 @@ echo;
 for /f "delims== tokens=2" %%a in ('"wmic baseboard get product/value"') do set zhubanxh=%%a
 echo 主板型号: 	%zhubanxh%
 echo;
+set zbuuid=
+for /f "skip=2 tokens=2 delims==" %%a in ('Wmic Csproduct Get Uuid /Value') do (
+    echo;主板UUID:      %%a
+    echo;
+)
 set bioszzs=,biosbb=,bioszzrq
 for /f "delims== tokens=2" %%a in ('"wmic bios get manufacturer/value"') do set bioszzs=%%a
 echo BIOS制造商: 	%bioszzs%
@@ -2321,9 +2446,9 @@ echo ___________________________________________________________________________
 set xkxc=,xsms=,sxl=,qdrq=,qdbb=
 set /p =显卡: 		<nul&for /f "delims=" %%a in ('"wmic path win32_videocontroller get name|find /i /v "name""') do echo %%a|find /i /v "echo"
 for /f "delims== tokens=2" %%a in ('"wmic path win32_videocontroller get adapterram/value"') do set xkxc=%%a
-call :dwjs %xkxc%
+call :xdwjs %xkxc% b dw
 echo;
-echo 显存容量: 	%size% %dw%
+echo 显存容量: 	%dw%
 echo;
 for /f "delims== tokens=2" %%a in ('"wmic path win32_videocontroller get videomodedescription/value"') do set xsms=%%a
 echo 当前显示模式: 	%xsms%
@@ -2339,13 +2464,17 @@ echo 驱动版本: 	%qdbb%
 echo _______________________________________________________________________________
 echo 硬盘型号:
 for /f "delims=" %%a in ('"wmic diskdrive get model|find /i /v "model""') do echo %%a|find /i /v "echo"
+echo;
 echo 接口类型:
 for /f "delims=" %%a in ('"wmic diskdrive get interfacetype|find /i /v "interfacetype""') do echo %%a|find /i /v "echo"
+echo;
 echo 硬盘容量:
-for /f "delims=" %%a in ('"wmic diskdrive get size|find /i /v "size""') do (call :dwjs %%a
-if "!dw!" neq "0" echo !size! !dw!)
+for /f "delims=" %%a in ('"wmic diskdrive get size|find /i /v "size""') do (call :xdwjs %%a b dw
+if "!dw!" neq "0" echo !dw!)
+echo;
 echo 总扇区数:
 for /f "delims=" %%a in ('"wmic diskdrive get totalsectors|find /i /v "totalsectors""') do echo %%a|find /i /v "echo"
+echo;
 echo 分区数:
 for /f "delims=" %%a in ('"wmic diskdrive get partitions|find /i /v "partitions""') do echo %%a|find /i /v "echo"
 fsutil fsinfo drives
@@ -2363,6 +2492,13 @@ echo;
 echo 网卡:
 for /f "delims== tokens=2" %%a in ('"Wmic Path Win32_NetworkAdapterConfiguration WHERE "IPEnabled^='TRUE'" get description /value"') do (echo %%a)
 echo;
+set netspeed=
+for /f "skip=2 tokens=2 delims==" %%a in ('Wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get CurrentBandwidth /value') do (
+    set netspeed=%%a
+    set /a "netspeed=netspeed/1000000"
+    echo;网络速度:      !netspeed! Mbps
+    echo;
+)
 echo 网关地址:
 for /f "delims== tokens=2" %%a in ('"Wmic Path Win32_NetworkAdapterConfiguration WHERE "IPEnabled^='TRUE'" get defaultipgateway /value"') do (set mrwg=%%a
 set mrwg=!mrwg:~0,-1!
@@ -2392,8 +2528,8 @@ set macdz=!macdz:"=!
 echo !macdz!)
 echo _______________________________________________________________________________
 echo 内存容量:
-for /f "delims== tokens=2" %%a in ('"wmic memorychip get capacity /value"') do (call :dwjs %%a
-if "!dw!" neq "0" echo !size! !dw!)
+for /f "delims== tokens=2" %%a in ('"wmic memorychip get capacity /value"') do (call :xdwjs %%a b dw
+if "!dw!" neq "0" echo !dw!)
 echo 内存频率:
 for /f "delims== tokens=2" %%a in ('"wmic memorychip get speed /value"') do (set ncpl=%%a
 echo !ncpl:~0,-1! MHz)
@@ -3986,8 +4122,8 @@ cls
 echo 文件: 		%url%
 for /f "delims=" %%a in ("!url!") do (
 if %%~za gtr 1024 (
-call :dwjs %%~za
-echo;文件大小: 	!size!!dw! %%~za字节
+call :xdwjs %%~za b dw
+echo;文件大小: 	!dw! %%~za字节
 ) else (
 echo;文件大小: 	%%~za字节
 )
@@ -4340,7 +4476,7 @@ for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Accept-Ranges:"
 for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Content-Length:"') do (set filesize=%%a)
 for /f "tokens=2 delims==" %%a in ('type %temp%\tag^|findstr /c:"filename="') do (set filename=%%a)
 del /f /q %temp%\tag
-call :dwjs !filesize!
+call :xdwjs !filesize! b dw
 if not defined filename (set /p filename=输入文件名: )
 set /a fd=!filesize!/!tr!
 set /a ys=%filesize%%%tr%
@@ -4355,14 +4491,14 @@ set /a newtr=!tr!+1
 set file=!file:~0,-1!
 cls
 echo 文件名:		!filename!
-echo 文件大小:	!size! !dw!
+echo 文件大小:	!dw!
 if "!trflag!" neq "bytes" (echo 该链接不支持多线程传输&timeout /t 2 /nobreak>nul&&goto 72.1)
-echo 进程数:		!tr!
-echo 传输片段大小:	!fd!+!ys!
-echo 保存路径:	!dir!
-echo 按任意键开始下载&pause>nul
+echo;进程数:		!tr!
+echo;传输片段大小:	!fd!+!ys!
+echo;保存路径:	!dir!
+set /p =按任意键开始下载<nul&pause>nul
 cls
-echo 开始下载文件...
+echo;开始下载文件...
 title curl多进程下载 - 等待文件下载完成(按e返回菜单) - %system%
 if exist %temp%\down (rd /s /q %temp%\down)
 md %temp%\down
@@ -4380,7 +4516,7 @@ call :colortxt a 等待文件下载完成(按e返回菜单)...
 set /p =!cswz!u<nul
 set jccs=
 for /l %%a in (1,1,!tr!) do (for /f %%b in ("%%a") do (
-if %%a equ !tr! (if %%~zb equ !pdfd! (echo 进程%%b完成&set /a jccs=!jccs!+1)) else (if %%~zb equ !fd! echo 进程%%b完成&set /a jccs=!jccs!+1)))
+if %%a equ !tr! (if %%~zb equ !pdfd! (echo;进程%%b完成&set /a jccs=!jccs!+1)) else (if %%~zb equ !fd! echo;进程%%b完成&set /a jccs=!jccs!+1)))
 choice /c 1e /t 1 /d 1 >nul
 if "!errorlevel!" equ ="2" goto memuv2
 if !jccs! neq !tr! goto 72.2
@@ -4399,23 +4535,23 @@ call :sjc %kssj% %jssj%
 set xzsd=
 set /a xzsd=!jgxs!*3600+!jgfen!*60+!jgm!
 set xzsd=!xzsd!.!jghm!
-for /f "delims=" %%a in ('powershell !filesize!/!xzsd!') do (call :dwjs %%a)
-forfiles /p %~dp0 /m %~nx0 /c "cmd /c set /p =0x07<nul"
-echo 下载完成
-echo 链接:		!url!
-echo 用时:		!jgxs!小时!jgfen!分钟!jgm!.!jghm!秒
-echo 平均下载速度:	!size! !dw!/s
-echo 文件:		%%~nxa
+for /f "delims=" %%a in ('powershell !filesize!/!xzsd!') do (call :xdwjs %%a d dw)
+forfiles /p %~dp0 /m %~nx0 /c "%comspec% /c set /p =0x07<nul"
+echo;下载完成
+echo;链接:		!url!
+echo;用时:		!jgxs!小时!jgfen!分钟!jgm!.!jghm!秒
+echo;平均下载速度:	!size! !dw!/s
+echo;文件:		%%~nxa
 if %%~za geq 1024 (
-call :dwjs %%~za
-echo 文件大小:	%%~za字节 约!size! !dw!) else (echo 文件大小:	%%~za字节)
-echo 保存路径:	%%~dpa
+call :xdwjs %%~za b dw
+echo;文件大小:	%%~za字节 约!dw!) else (echo 文件大小:	%%~za字节)
+echo;保存路径:	%%~dpa
 )) else (
-forfiles /p %~dp0 /m %~nx0 /c "cmd /c set /p =0x07<nul"
+forfiles /p %~dp0 /m %~nx0 /c "%comspec% /c set /p =0x07<nul"
 timeout /t 1 /nobreak>nul
-forfiles /p %~dp0 /m %~nx0 /c "cmd /c set /p =0x07<nul"
-echo 链接:	!url!
-echo 下载失败)
+forfiles /p %~dp0 /m %~nx0 /c "%comspec% /c set /p =0x07<nul"
+echo;链接:	!url!
+echo;下载失败)
 echo _______________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
 goto memuv2
@@ -4467,13 +4603,13 @@ if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag%curl -L -# -C - --retry 3 --retry-delay 1 --resolv cdn.jsdelivr.net:443:199.232.45.229,2a04:4e42:48::485 -o dostool https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js
 %xzflag%popd
 %xzflag%call :hash %temp%\dostool sha1
-%xzflag%if /i "%hash%" equ %doshash% copy /z /y %temp%\dostool %weizhi%&start cmd /c %0&exit 0
+%xzflag%if /i "%hash%" equ %doshash% copy /z /y %temp%\dostool %weizhi%&start %comspec% /c %0&exit 0
 %xzflag1%certutil -urlcache -split -f https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js %temp%\dostool
 %xzflag1%call :hash %temp%\dostool sha1
-%xzflag1%if /i "%hash%" equ %doshash% copy /z /y %temp%\dostool %weizhi%&start cmd /c %0&exit 0
+%xzflag1%if /i "%hash%" equ %doshash% copy /z /y %temp%\dostool %weizhi%&goto chushihua
 call :colortxt c 文件无效&echo;&timeout /t 2 /nobreak>nul
 if "!tzwz!" equ "!start!" (goto memuv2) else (goto !tzwz!)
-::bitsadmin /transfer 下载更新中... /priority FOREGROUND https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js %weizhi%&start cmd /c %0&exit 0
+::bitsadmin /transfer 下载更新中... /priority FOREGROUND https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js %weizhi%&start %comspec% /c %0&exit 0
 :sjc
 set kssj=%1
 set jssj=%2
@@ -4557,6 +4693,7 @@ for /f "delims=" %%b in ('powershell '{0:f!blxsws!}' -f !size!') do (set size=%%
 ))
 goto :eof
 :list
+(
 set start=1
 set a1=清除U盘里的lpk.dll病毒
 set a2=清除U盘里的jwgkvsq.vmx病毒，并免疫该病毒
@@ -4630,6 +4767,7 @@ set a69=解压msi安装文件
 set a70=生成CMD控制台色彩表
 set a71=KMS激活Windows
 set a72=curl多进程下载
+)
 goto :eof
 :colortxt
 if !winv! equ 0 goto colortxt2
@@ -4753,7 +4891,7 @@ echo d2luZG93DQp9DQp1bnRpbCAoKFNldC1XaW5kb3dBY3RpdmUgY21zdHApLkh3bmQg>>%temp%\2.
 echo LW5lIDApDQoNCg0KI0FjdGl2YXRlIHdpbmRvdw0KU2V0LVdpbmRvd0FjdGl2ZSBj>>%temp%\2.base
 echo bXN0cA0KDQojU2VuZCB0aGUgRW50ZXIga2V5DQpbU3lzdGVtLldpbmRvd3MuRm9y>>%temp%\2.base
 echo bXMuU2VuZEtleXNdOjpTZW5kV2FpdCgie0VOVEVSfSIpDQp9>>%temp%\2.base
-set /p =cmd /c %exe% -ks<nul>%temp%\su.bat
+set /p =%comspec% /c %exe% -ks<nul>%temp%\su.bat
 set /p =%temp%\su.bat<nul>%temp%\su.txt
 certutil -decode -f "%temp%\1.base" %temp%\1.txt>nul
 certutil -decode -f "%temp%\2.base" %temp%\2.txt>nul
@@ -4762,5 +4900,160 @@ powershell -mta -nologo -noprofile -executionpolicy bypass -file "%temp%\bypass.
 timeout /t 2 /nobreak>nul
 del %temp%\su.txt;%temp%\1.base;%temp%\2.base;%temp%\1.txt;%temp%\2.txt;%temp%\bypass.ps1;%temp%\su.bat
 exit 0
+:xdwjs
+set Bytes=%~1
+set danwei=%~2
+if /i "!danwei!" equ "kb" (set /a bytes=bytes*1024)
+if /i "!danwei!" equ "mb" (set /a bytes=btyes*1048576)
+if /i "!danwei!" equ "gb" (set /a bytes=bytes*1073741824)
+if "%~3" == "" Goto :eof
+call :Division !Bytes! 1152921504606846976 OK
+if not "%OK:~0,2%"=="0." (
+	set %~3=!OK! EB
+	Goto :eof
+	) else (call :Division !Bytes! 1125899906842624 OK)
+if not "%OK:~0,2%"=="0." (
+	set %~3=!OK! PB
+	Goto :eof
+	) else (call :Division !Bytes! 1099511627776 OK)
+if not "%OK:~0,2%"=="0." (
+	set %~3=!OK! TB
+	Goto :eof
+	) else (call :Division !Bytes! 1073741824 OK)
+if not "%OK:~0,2%"=="0." (
+	set %~3=!OK! GB
+	Goto :eof
+	) else (call :Division !Bytes! 1048576 OK)
+if not "%OK:~0,2%"=="0." (
+	set %~3=!OK! MB
+	Goto :eof
+	) else (call :Division !Bytes! 1024 OK)
+if not "%OK:~0,2%"=="0." (
+	set %~3=!OK! KB
+	Goto :eof
+	) else (
+	set %~3=!Bytes! Byte
+	Goto :eof)
+:Division
+if "%~3" == "" Goto :eof
+set Div.1=%~1
+set Div.2=%~2
+set Div.3=
+set Div.I=0
+set Div.D=2
+set Div.1.Len.0=
+set Div.2.Len.0=
+set Div.Z=00000000
+for /l %%i in (1 1 9) do set Div.Num.%%i=
+for /l %%i in (1 1 7) do set Div.Z=!Div.Z!!Div.Z!
+set Div.H=4096 2048 1024 512 256 128 64 32 16 8 4 2 1
+for /l %%i in (1 1 2) do (
+	set Div.N=0
+	set Div.%%i.Len.2=0
+	for %%j in (!Div.%%i:.^= !) do (
+		set /a Div.N+=1
+		set Div.M=Div.M%%j
+		set Div.%%i.Len.!Div.N!=0
+		for %%l in (!Div.H!) do (
+			if "!Div.M:~%%l!" neq "" (
+				set /a Div.%%i.Len.!Div.N!+=%%l
+				set Div.M=!Div.M:~%%l!
+			)
+		)
+		set /a Div.%%i.Len.0+=Div.%%i.Len.!Div.N!
+	)
+        set Div.%%i=!Div.%%i:.=!
+)
+if !Div.1.Len.2! gtr !Div.2.Len.2! (
+	set /a Div.2.Len.0+=Div.1.Len.2-Div.2.Len.2
+	) else (
+		set /a Div.1.Len.0+=Div.2.Len.2-Div.1.Len.2
+)
+for /l %%i in (1 1 2) do (
+	set Div.%%i=!Div.%%i!!Div.Z!
+	for %%j in (!Div.%%i.Len.0!) do set Div.%%i=!Div.%%i:~,%%j!
+)
+for /f "tokens=* delims=0" %%i in ("!Div.2!") do (
+	set Div.O=%%i
+	set Div.2=0%%i
+)
+set Div.2.Len.0=1
+for %%i in (!Div.H!) do (
+	if "!Div.O:~%%i!" neq "" (
+		set /a Div.2.Len.0+=%%i
+		set Div.O=!Div.O:~%%i!
+	)
+)
+set /a Div.Len=Div.2.Len.0+1
+if !Div.1.Len.0! lss !Div.2.Len.0! (
+	set Div.1.Len.0=!Div.2.Len.0!
+	set Div.1=!Div.Z:~-%Div.2.Len.0%,-%Div.1.Len.0%!!Div.1!
+)
+set /a Div.1.Len.0+=Div.D
+set Div.1=0!Div.1!!Div.Z:~,%Div.D%!
+set Div.P=!Div.1:~,%Div.2.Len.0%!
+set Div.T=0000000!Div.2!
+set /a Div.J+=1
+set /a Div.Tem.Len=Div.2.Len.0+7
+if !Div.J! equ 1 (for %%i in (!1:~-1!) do (
+	for /f "delims=" %%j in ("!%%i!") do (
+		if %%~Zj equ !%Div.I%! set C=!Div.D!
+		)
+	)
+)
+for /l %%i in (1 1 9) do (
+	set Div.V=0
+	for /l %%j in (8 8 !Div.Tem.Len!) do (
+		set /a Div.V=1!Div.T:~-%%j,8!*%%i+Div.V
+        	set Div.Num.%%i=!Div.V:~-8!!Div.Num.%%i!
+		set /a Div.V=!Div.V:~,-8!-%%i
+	)
+	set Div.Num.%%i=!Div.V!!Div.Num.%%i!
+	set Div.Num.%%i=0000000!Div.Num.%%i:~-%Div.Len%!
+)
+for /l %%l in (!Div.2.Len.0! 1 !Div.1.Len.0!) do (
+	set Div.P=!Div.Z!!Div.P!!Div.1:~%%l,1!
+	set Div.P=!Div.P:~-%Div.Len%!
+	if !Div.J! equ 1 (
+		set Div.I.Tem=
+		for %%i in (!%Div.I%!) do set Div.D.Tem=%%i
+		for /l %%i in (0 1 9) do set Div.D.Tem=!Div.D.Tem:%%i=%%i !
+		for %%i in (!Div.D.Tem!) do set /a Div.I.Tem=!Div.I.Tem!+%%i
+		if !Div.I.Tem! neq 24 set C=
+	)
+	if "!Div.P!" geq "!Div.2!" (
+		set Div.R=1
+		set Div.S=0000000!Div.P!
+		for /l %%i in (2 1 9) do (
+			if "!Div.S!" geq "!Div.Num.%%i!" set Div.R=%%i
+		)
+		set Div.3=!Div.3!!Div.R!
+		set Div.P=
+		set Div.V=0
+		for %%i in (!Div.R!) do (
+			for /l %%j in (8 8 !Div.Tem.Len!) do (
+				set /a Div.V=3!Div.S:~-%%j,8!-1!Div.Num.%%i:~-%%j,8!-!Div.V:~,1!%%2
+				set Div.P=!Div.V:~1!!Div.P!
+              		 )
+		)	
+	) else set Div.3=!Div.3!0
+)
+if defined Div.D if %Div.D% gtr 0 set Div.3=!Div.3:~,-%Div.D%!.!Div.3:~-%Div.D%!
+for /f "tokens=* delims=0" %%i in ("!Div.3!") do set Div.3=%%i
+if "!Div.3:~0,1!"=="." set Div.3=0!Div.3!
+if "!Div.3!"=="" set Div.3=0
+set %~3=%Div.3%
+goto :eof
+:xsjc
+set /a N=0
+for /f "tokens=1-8 delims=.:" %%I in ("%~2:%~1") do (
+	set /a N+=10%%I%%100*360000+10%%J%%100*6000+10%%K%%100*100+10%%L%%100
+	set /a N-=10%%M%%100*360000+10%%N%%100*6000+10%%O%%100*100+10%%P%%100
+)
+set Sco=!N!
+set /a S=N/360000,N=N%%360000,F=N/6000,N=N%%6000,M=N/100,N=N%%100
+if %F% equ 0 (set T=%M%秒%N%毫秒) else set T=%F%分%M%秒%N%毫秒
+set %~3=%T%
+Goto :eof
 :00
 exit 0
