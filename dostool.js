@@ -18,6 +18,7 @@ goto chushihua
 :chushihua
 cls
 @echo off
+title 　
 if /i "%1"=="-ks" goto ks
 if /i "%systemdrive%" equ "x:" goto ks
 goto :tgsu
@@ -81,8 +82,8 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 (
 cd/d "%disk%\"
 set cishu=3
-set ver=20221024
-set versize=206583
+set ver=20221025
+set versize=206792
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 )
@@ -91,28 +92,32 @@ if !errorlevel! equ 0 (if !build! lss 10586 (set winv=1) else (set winv=0)) else
 (
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
-for /f "delims=" %%a in ('"wmic os get caption"') do cls&echo %%a|find /i "Microsoft"&&Set system=%%a
-if /i "!system!"=="Microsoft Windows XP Home  " set system=Windows XP 家庭版
-if /i "!system!"=="Microsoft Windows XP Professional  " set system=Windows XP 专业版
-if /i "!system!"=="Microsoft Windows 7 Ultimate  " set system=Windows 7 旗舰版
-if /i "!system!"=="Microsoft Windows 7 Home Basic  " set system=Windows 7 家庭普通版
-if /i "!system!"=="Microsoft Windows 7 Home Premium  " set system=Windows 7 家庭高级版
-if /i "!system!"=="Microsoft Windows 7 Professional  " set system=Windows 7 专业版
-if /i "!system!"=="Microsoft Windows 7 Enterprise  " set system=Windows 7 企业版
-if /i "!system!"=="Microsoft Windows 8 Pro  " set system=Windows 8 专业版
-if /i "!system!"=="Microsoft Windows 8 China  " set system=Windows 8 中国版
-if /i "!system!"=="Microsoft Windows 8 Enterprise  " set system=Windows 8 企业版
-if /i "!system!"=="Microsoft Windows 8.1 Pro  " set system=Windows 8.1 专业版
-if /i "!system!"=="Microsoft Windows 8.1 China  " set system=Windows 8.1 中国版
-if /i "!system!"=="Microsoft Windows 8.1 Enterprise  " set system=Windows 8.1 企业版
-if /i "!system!"=="Microsoft Windows 10 Home  " set system=Windows 10 家庭版
-if /i "!system!"=="Microsoft Windows 10 Professional  " set system=Windows 10 专业版
-if /i "!system!"=="Microsoft Windows 10 Education  " set system=Windows 10 教育版
-if /i "!system!"=="Microsoft Windows 10 Enterprise  " set system=Windows 10 企业版
-if /i "!system!"=="Microsoft Windows 11 Home  " set system=Windows 11 家庭版
-if /i "!system!"=="Microsoft Windows 11 Professional  " set system=Windows 11 专业版
-if /i "!system!"=="Microsoft Windows 11 Education  " set system=Windows 11 教育版
-if /i "!system!"=="Microsoft Windows 11 Enterprise  " set system=Windows 11 企业版
+for /f "skip=2 tokens=2 delims==" %%a in ('wmic os get caption /value') do (
+Set system1=%%a
+call :zfccd "!system1!"
+set /a zfcgs-=1
+for /l %%b in (0,1,!zfcgs!) do (if "!system1:~%%b,1!" neq "" set system=!system!!system1:~%%b,1!)
+if /i "!system!" equ "Microsoft Windows XP Home" (set system=Windows XP 家庭版)
+if /i "!system!" equ "Microsoft Windows XP Professional" (set system=Windows XP 专业版)
+if /i "!system!" equ "Microsoft Windows 7 Ultimate" (set system=Windows 7 旗舰版)
+if /i "!system!" equ "Microsoft Windows 7 Home Basic" (set system=Windows 7 家庭普通版)
+if /i "!system!" equ "Microsoft Windows 7 Home Premium" (set system=Windows 7 家庭高级版)
+if /i "!system!" equ "Microsoft Windows 7 Professional" (set system=Windows 7 专业版)
+if /i "!system!" equ "Microsoft Windows 7 Enterprise" (set system=Windows 7 企业版)
+if /i "!system!" equ "Microsoft Windows 8 Pro" (set system=Windows 8 专业版)
+if /i "!system!" equ "Microsoft Windows 8 China" (set system=Windows 8 中国版)
+if /i "!system!" equ "Microsoft Windows 8 Enterprise" (set system=Windows 8 企业版)
+if /i "!system!" equ "Microsoft Windows 8.1 Pro" (set system=Windows 8.1 专业版)
+if /i "!system!" equ "Microsoft Windows 8.1 China" (set system=Windows 8.1 中国版)
+if /i "!system!" equ "Microsoft Windows 8.1 Enterprise" (set system=Windows 8.1 企业版)
+if /i "!system!" equ "Microsoft Windows 10 Home" (set system=Windows 10 家庭版)
+if /i "!system!" equ "Microsoft Windows 10 Professional" (set system=Windows 10 专业版)
+if /i "!system!" equ "Microsoft Windows 10 Education" (set system=Windows 10 教育版)
+if /i "!system!" equ "Microsoft Windows 10 Enterprise" (set system=Windows 10 企业版)
+if /i "!system!" equ "Microsoft Windows 11 Home" (set system=Windows 11 家庭版)
+if /i "!system!" equ "Microsoft Windows 11 Professional" (set system=Windows 11 专业版)
+if /i "!system!" equ "Microsoft Windows 11 Education" (set system=Windows 11 教育版)
+if /i "!system!" equ "Microsoft Windows 11 Enterprise" (set system=Windows 11 企业版)
 if /i "%date:~11,2%"=="周一" set xingqi=星期一
 if /i "%date:~11,2%"=="周二" set xingqi=星期二
 if /i "%date:~11,2%"=="周三" set xingqi=星期三
@@ -128,6 +133,7 @@ if /i "%date:~11,3%"=="星期五" set xingqi=星期五
 if /i "%date:~11,3%"=="星期六" set xingqi=星期六
 if /i "%date:~11,3%"=="星期日" set xingqi=星期天
 set nx1=[+]下一页&set nx=[-]上一页   [+]下一页&set nx7=[-]上一页
+)
 )
 for /f "tokens=2 delims=={}" %%a in ('wmic PATH Win32_SystemEnclosure get ChassisTypes/value') do (
 if %%a==8 set nx1=[S]下一页&set nx=[A]上一页   [S]下一页&set nx7=[A]上一页
