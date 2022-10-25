@@ -83,7 +83,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20221025
-set versize=206805
+set versize=206791
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 )
@@ -4649,7 +4649,7 @@ if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag%curl -L -# -C - --retry 3 --retry-delay 1 --resolv cdn.jsdelivr.net:443:199.232.45.229,2a04:4e42:48::485 -o dostool https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js
 %xzflag%popd
 %xzflag%call :hash %temp%\dostool sha1
-%xzflag%if /i "%hash%" equ %doshash% copy /z /y %temp%\dostool %weizhi%&start %comspec% /c %0&exit 0
+%xzflag%if /i "%hash%" equ %doshash% copy /z /y %temp%\dostool %weizhi%&goto chushihua
 %xzflag1%certutil -urlcache -split -f https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js %temp%\dostool
 %xzflag1%call :hash %temp%\dostool sha1
 %xzflag1%if /i "%hash%" equ %doshash% copy /z /y %temp%\dostool %weizhi%&goto chushihua
