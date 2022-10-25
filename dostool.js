@@ -83,13 +83,14 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20221025
-set versize=206792
+set versize=206805
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 )
 set build|findstr "\<[0-9]*\>">nul
 if !errorlevel! equ 0 (if !build! lss 10586 (set winv=1) else (set winv=0)) else (set winv=0)
 (
+set system=
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
 for /f "skip=2 tokens=2 delims==" %%a in ('wmic os get caption /value') do (
