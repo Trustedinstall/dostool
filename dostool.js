@@ -84,7 +84,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20221026
-set versize=206890
+set versize=206893
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 )
@@ -1990,7 +1990,7 @@ call :xdwjs !upspeed! b upspeed
 call :xdwjs !downspeed! b downspeed
 echo;!netcard!
 echo;
-(echo;上传速度:  !upspeed!/s 下载速度:   !downspeed!/s   )
+(echo;上传速度:  !upspeed!/s 下载速度:   !downspeed!/s   	)
 echo;
 echo;!cpu!
 echo;
@@ -4442,7 +4442,7 @@ set /p =KMS服务器: <nul
 call :colortxt a !server!
 echo;
 set/p =系统名称: <nul
-call :colortxt a %system%
+call :colortxt a "%system%"
 echo;
 if defined sysid cscript //Nologo %windir%\system32\slmgr.vbs /ipk !%sysid%!
 cscript //Nologo %windir%\system32\slmgr.vbs /skms !server!
