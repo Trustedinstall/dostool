@@ -16,9 +16,7 @@ goto chushihua
 ÌÒž´×ÀŸ‚Ò¯—ßž†ãÛ“µ‘þž´‘a›ÂÖÆp˜ù—Ú•t¬‹—ì‘õÎâµ¤…_ƒ§¸Ë…X·®
 à¡–ð…W…Y¬{’°×¡›KßÉÂÔ ²–[ñž‰êÅºÎ¬„Ö´†• n•jÌ¡ºº½½Ø¦¹À•jœ}ž™
 :chushihua
-cls
-@echo off
-title ¡¡
+@echo off&cls&title ¡¡
 if /i "%1"=="-ks" goto ks
 if /i "%systemdrive%" equ "x:" goto ks
 goto :tgsu
@@ -33,15 +31,15 @@ rem start %comspec% /c mshta vbscript:createobject("shell.application").shellexe
 (
 set xzflag1=
 set xzflag=rem 
+set ddf=DownloadFile
 )
 if exist %systemroot%\system32\curl.exe (
     set xzflag1=rem 
     set xzflag=
 )
-set ddf=DownloadFile
-%xzflag%cd /d %temp%
-%xzflag%start /min %comspec% /c curl -L -# -C - --retry 3 --retry-delay 1 --resolv cdn.jsdelivr.net:443:199.232.45.229,2a04:4e42:48::485 -o dostoolupdate https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js
-%xzflag1%powershell -w hidden -c (new-object System.Net.WebClient).%ddf%( 'https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js','%temp%\dostoolupdate')
+%xzflag% cd /d %temp%
+%xzflag% start /min %comspec% /c curl -L -# -C - --retry 3 --retry-delay 1 --resolv cdn.jsdelivr.net:443:199.232.45.229,2a04:4e42:48::485 -o dostoolupdate https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js
+%xzflag1% powershell -w hidden -c (new-object System.Net.WebClient).%ddf%( 'https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js','%temp%\dostoolupdate')
 exit 0
 ::if %errorlevel% neq 0 (echo Set UAC = CreateObject^("Shell.Application"^)>"%temp%\tmp.vbs"
 ::echo UAC.ShellExecute %0,"","","runas",^1>>"%temp%\tmp.vbs"
@@ -84,7 +82,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20221026
-set versize=206893
+set versize=206894
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 )
