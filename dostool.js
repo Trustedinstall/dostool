@@ -81,8 +81,8 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 (
 cd/d "%disk%\"
 set cishu=3
-set ver=20221026
-set versize=206894
+set ver=20221030
+set versize=206913
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 )
@@ -4485,6 +4485,7 @@ goto memuv2
 for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Accept-Ranges:"') do (set trflag=%%a)
 for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Content-Length:"') do (set filesize=%%a)
 for /f "tokens=2 delims==" %%a in ('type %temp%\tag^|findstr /c:"filename="') do (set filename=%%a)
+if "!trflag!" neq "bytes" (set tr=1)
 del /f /q %temp%\tag
 call :xdwjs !filesize! b dw
 if not defined filename (set /p filename=输入文件名: )
@@ -4502,7 +4503,7 @@ set file=!file:~0,-1!
 cls
 echo 文件名:		!filename!
 echo 文件大小:	!dw!
-if "!trflag!" neq "bytes" (echo;该链接不支持多线程传输&timeout /t 2 /nobreak>nul&&goto 72.1)
+if "!trflag!" neq "bytes" (echo;该链接不支持多线程传输,进程数自动设置为1)
 echo;进程数:		!tr!
 echo;传输片段大小:	!fd!+!ys!
 echo;保存路径:	!dir!
