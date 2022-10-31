@@ -82,7 +82,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20221031
-set versize=206931
+set versize=206939
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 )
@@ -2503,7 +2503,7 @@ set netspeed=
 for /f "skip=2 tokens=2 delims==" %%a in ('Wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get CurrentBandwidth /value') do (
     set netspeed=%%a
     set /a "netspeed=netspeed/1000000"
-    echo;网络速度:      !netspeed! Mbps
+    echo;当前网络连接速度:      !netspeed! Mbps
     echo;
 )
 echo 网关地址:
