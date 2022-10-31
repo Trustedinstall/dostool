@@ -30,11 +30,11 @@ if exist %localappdata%\Microsoft\WindowsApps\wt.exe (start /b powershell -nopro
 rem start %comspec% /c mshta vbscript:createobject("shell.application").shellexecute(""%0"","-ks",,"runas",1)(window.close)
 (
 set xzflag1=
-set xzflag=rem 
+set xzflag=rem
 set ddf=DownloadFile
 )
 if exist %systemroot%\system32\curl.exe (
-    set xzflag1=rem 
+    set xzflag1=rem
     set xzflag=
 )
 %xzflag% cd /d %temp%
@@ -81,8 +81,8 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 (
 cd/d "%disk%\"
 set cishu=3
-set ver=20221030
-set versize=206913
+set ver=20221031
+set versize=206931
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 )
@@ -92,7 +92,7 @@ if !errorlevel! equ 0 (if !build! lss 10586 (set winv=1) else (set winv=0)) else
 set system=
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
-for /f "skip=2 tokens=2 delims==" %%a in ('wmic os get caption /value') do (
+for /f "skip=2 tokens=2 delims==" %%a in ('start /b wmic os get caption /value') do (
 Set system1=%%a
 call :zfccd "!system1!"
 set /a zfcgs-=1
@@ -135,7 +135,7 @@ if /i "%date:~11,3%"=="星期日" set xingqi=星期天
 set nx1=[+]下一页&set nx=[-]上一页   [+]下一页&set nx7=[-]上一页
 )
 )
-for /f "tokens=2 delims=={}" %%a in ('wmic PATH Win32_SystemEnclosure get ChassisTypes/value') do (
+for /f "tokens=2 delims=={}" %%a in ('start /b wmic PATH Win32_SystemEnclosure get ChassisTypes/value') do (
 if %%a==8 set nx1=[S]下一页&set nx=[A]上一页   [S]下一页&set nx7=[A]上一页
 if %%a==9 set nx1=[S]下一页&set nx=[A]上一页   [S]下一页&set nx7=[A]上一页
 if %%a==10 set nx1=[S]下一页&set nx=[A]上一页   [S]下一页&set nx7=[A]上一页)
@@ -4747,7 +4747,7 @@ set a2=清除U盘里的jwgkvsq.vmx病毒，并免疫该病毒
 set a3=清理系统垃圾
 set a4=显示系统信息
 set a5=解除任务管理器被禁用
-set a6=显示被隐藏文件(中了该类病毒后)
+set a6=显示被隐藏文件^(中了该类病毒后^)
 set a7=解除注册表被禁用
 set a8=计算开平方
 set a9=切换到命令提示符
