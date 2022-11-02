@@ -81,8 +81,8 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 (
 cd/d "%disk%\"
 set cishu=3
-set ver=20221031
-set versize=206891
+set ver=20221102
+set versize=207364
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 )
@@ -4489,6 +4489,7 @@ if "!trflag!" neq "bytes" (set tr=1)
 del /f /q %temp%\tag
 call :xdwjs !filesize! b dw
 if not defined filename (set /p filename=输入文件名: )
+if not defined filename (set filename=curl下载文件)
 set /a fd=!filesize!/!tr!
 set /a ys=%filesize%%%tr%
 set oldfd=0
@@ -4525,14 +4526,16 @@ for /l %%a in (1,1,!tr!) do (
 	)
 )
 pushd %temp%\down
+(
 cls
+)
 :72.2
 (
 cls
 set /p =!cswz!s!cswz!0;0H<nul
 set jccs=
 set jingdu=
-set /p =!cswz!0;40H<nul
+set /p =!cswz!0;76H<nul
 call :colortxt a 等待文件下载完成^(按e返回菜单^)...
 set /p =!cswz!u<nul
 )
@@ -4546,16 +4549,36 @@ for /l %%a in (1,1,!tr!) do (
 		) else (
 			set fhz=
 			call :cf !ssdx! !pdfd! 2 fhz
-			echo;进程%%a的进度:	[!fhz!-1]
+			set jcjd=!fhz:~2,2!
+			if "!jcjd:~0,1!" equ "0" (
+				set jcjd=!jcjd:~1,1!
+			)
+			set jdt=
+			for /l %%c in (1,2,!jcjd!) do (
+				set jdt=!jdt!:
+			)
+			set /p =进程%%a的进度:	<nul
+			call :colortxt a [!jdt!]
+			echo;[!fhz!-1]
 		)
 	) else (
 		if !ssdx! equ !fd! (
-			echo;进程%%a完成		
+			echo;进程%%a完成
 			set /a jccs=!jccs!+1
 		) else (
 			set fhz=
 			call :cf !ssdx! !fd! 2 fhz
-			echo;进程%%a的进度:	[!fhz!-1]
+			set jcjd=!fhz:~2,2!
+			if "!jcjd:~0,1!" equ "0" (
+				set jcjd=!jcjd:~1,1!
+			)
+			set jdt=
+			for /l %%c in (1,2,!jcjd!) do (
+				set jdt=!jdt!:
+			)
+			set /p =进程%%a的进度:	<nul
+			call :colortxt a [!jdt!]
+			echo;[!fhz!-1]
 		)
 	)
 )
