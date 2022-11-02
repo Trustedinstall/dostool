@@ -82,7 +82,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20221102
-set versize=207364
+set versize=207372
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 )
@@ -4526,9 +4526,7 @@ for /l %%a in (1,1,!tr!) do (
 	)
 )
 pushd %temp%\down
-(
 cls
-)
 :72.2
 (
 cls
@@ -4557,9 +4555,9 @@ for /l %%a in (1,1,!tr!) do (
 			for /l %%c in (1,2,!jcjd!) do (
 				set jdt=!jdt!:
 			)
-			set /p =进程%%a的进度:	<nul
-			call :colortxt a [!jdt!]
-			echo;[!fhz!-1]
+			set /p =进程%%a的进度:	[<nul
+			call :colortxt a !jdt!
+			echo;][!fhz!-1]
 		)
 	) else (
 		if !ssdx! equ !fd! (
@@ -4576,16 +4574,16 @@ for /l %%a in (1,1,!tr!) do (
 			for /l %%c in (1,2,!jcjd!) do (
 				set jdt=!jdt!:
 			)
-			set /p =进程%%a的进度:	<nul
-			call :colortxt a [!jdt!]
-			echo;[!fhz!-1]
+			set /p =进程%%a的进度:	[<nul
+			call :colortxt a !jdt!
+			echo;][!fhz!-1]
 		)
 	)
 )
 choice /c 1e /t 1 /d 1 >nul
 if "!errorlevel!" equ "2" (
 	taskkill /im curl.exe /f
-	rd /s /q down
+	rd /s /q %temp%\down
 	popd
 	goto memuv2
 )
@@ -4595,7 +4593,7 @@ cls
 echo;合并文件中...
 if "!dir:~-1!" neq "\" (set dir=!dir!\)
 copy /b /z !file! "!dir!!filename!"
-rd /s /q down
+rd /s /q %temp%\down
 popd
 cls
 title curl多进程下载 - %system%
