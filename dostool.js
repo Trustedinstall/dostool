@@ -81,8 +81,8 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 (
 cd/d "%disk%\"
 set cishu=3
-set ver=20221102
-set versize=207372
+set ver=20221103
+set versize=207384
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 )
@@ -1892,47 +1892,47 @@ cls
 echo _______________________________________________________________________________
 set jcmz=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "caption""') do set jcmz=%%a
-echo 进程名称: %jcmz:~8%
+echo 进程名称:		%jcmz:~8%
 set jcmlh=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "commandline""') do set jcmlh=%%a
-echo 进程命令行: %jcmlh:~12%
+echo 进程命令行:		%jcmlh:~12%
 set jcrq=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "creationdate""') do set jcrq=%%a
-echo 进程启动日期: %jcrq:~13,4%年%jcrq:~17,2%月%jcrq:~19,2%日 %jcrq:~21,2%:%jcrq:~23,2%:%jcrq:~25,2%
+echo 进程启动日期:		%jcrq:~13,4%年%jcrq:~17,2%月%jcrq:~19,2%日 %jcrq:~21,2%:%jcrq:~23,2%:%jcrq:~25,2%
 set jclj=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "executablepath""') do set jclj=%%a
-echo 进程路径: "%jclj:~15%"
+echo 进程路径:		"%jclj:~15%"
 set jcpid=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "processid""') do set jcpid=%%a
-echo 进程PID: %jcpid:~10%
+echo 进程PID:		%jcpid:~10%
 set jchx=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "kernelmodetime""') do set jchx=%%a
-echo 进程核心模式时间: %jchx:~15%
-echo 系统名称: %system% %bit%位
+echo 进程核心模式时间:	%jchx:~15%
+echo 系统名称:		%system% %bit%位
 set jcymcw=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "pagefaults""') do set jcymcw=%%a
-echo 进程页面错误: %jcymcw:~12%
+echo 进程页面错误:		%jcymcw:~12%
 set jctj=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "pagefileusage""') do set jctj=%%a
 call :xdwjs %jctj:~18% kb dw
-echo 进程提交大小: %dw%
+echo 进程提交大小:		%dw%
 set jcfid=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "parentprocessid""') do set jcfid=%%a
-echo 进程父系PID: %jcfid:~16%
+echo 进程父系PID:		%jcfid:~16%
 set jcfzysy=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "peakpagefileusage""') do set jcfzysy=%%a
 call :xdwjs %jcfzysy:~18% kb dw
-echo 进程峰值页面文件使用: %dw%
+echo 进程峰值页面文件使用:	%dw%
 set jcfzgz=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "peakworking""') do set jcfzgz=%%a
 call :xdwjs %jcfzgz:~19% kb dw
-echo 进程峰值工作: %dw%
+echo 进程峰值工作:		%dw%
 set jcyxj=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "priority""') do set jcyxj=%%a
-echo 进程优先级: %jcyxj:~9%
+echo 进程优先级:		%jcyxj:~9%
 set jchhid=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "sessionid""') do set jchhid=%%a
-echo 进程回话ID: %jchhid:~10%
+echo 进程回话ID:		%jchhid:~10%
 tasklist /fi "pid eq %jcxq%" /m
 ver
 echo _______________________________________________________________________________
