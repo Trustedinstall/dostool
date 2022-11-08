@@ -82,7 +82,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20221103
-set versize=207366
+set versize=207329
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 )
@@ -2338,13 +2338,13 @@ cls
 set systemstarttime=
 for /f "skip=2 tokens=2 delims==" %%a in ('Wmic OS Get LastBootUpTime /value') do (
     set systemstarttime=%%a
-    echo;系统启动时间:  !systemstarttime:~0,4!年!systemstarttime:~4,2!月!systemstarttime:~6,2!日 !systemstarttime:~8,2!:!systemstarttime:~10,2!:!systemstarttime:~12,2!
+    echo;系统启动时间:	!systemstarttime:~0,4!年!systemstarttime:~4,2!月!systemstarttime:~6,2!日 !systemstarttime:~8,2!:!systemstarttime:~10,2!:!systemstarttime:~12,2!
     echo;
 )
 set systeminstalltime=
 for /f "skip=2 tokens=2 delims==" %%a in ('Wmic OS Get InstallDate /value') do (
     set systeminstalltime=%%a
-    echo;系统安装日期:  !systeminstalltime:~0,4!年!systeminstalltime:~4,2!月!systeminstalltime:~6,2!日 !systeminstalltime:~8,2!:!systeminstalltime:~10,2!:!systeminstalltime:~12,2!
+    echo;系统安装日期:	!systeminstalltime:~0,4!年!systeminstalltime:~4,2!月!systeminstalltime:~6,2!日 !systeminstalltime:~8,2!:!systeminstalltime:~10,2!:!systeminstalltime:~12,2!
     echo;
 )
 set cpu=,cpuid=,cpuzp=,cpuws=,cpuwp=,cpul1=,cpul2=,cpul3=,ch=,cpuhx=,cpuxc=
@@ -2386,25 +2386,25 @@ for /f "skip= 2 tokens=2 delims==" %%a in ('"wmic path win32_cachememory get max
         )
     )
 )
-echo;一级缓存:      !cpul1! KB
+echo;一级缓存:	!cpul1! KB
 echo;
 call :xdwjs !cpul2! kb dw
-echo;二级缓存:      !dw!
+echo;二级缓存:	!dw!
 echo;
 if "!cpul3!" neq "" (
     call :xdwjs !cpul3! kb dw
-    echo;三级缓存:      !dw!
+    echo;三级缓存:	!dw!
     echo;
 ) else (
-    echo;三级缓存:      0
+    echo;三级缓存:	0
     echo;
 )
 if "!cpul4!" neq "" (
     call :xdwjs !cpul4! kb dw
-    echo;四级缓存:      !dw!
+    echo;四级缓存:	!dw!
     echo;
 ) else (
-    echo;四级缓存:      0
+    echo;四级缓存:	0
     echo;
 )
 rem for /f "delims== tokens=2" %%a in ('"wmic cpu get l2cachesize/value"') do set cpul2=%%a
@@ -2426,7 +2426,7 @@ echo 主板型号: 	%zhubanxh%
 echo;
 set zbuuid=
 for /f "skip=2 tokens=2 delims==" %%a in ('Wmic Csproduct Get Uuid /Value') do (
-    echo;主板UUID:      %%a
+    echo;主板UUID:	%%a
     echo;
 )
 set bioszzs=,biosbb=,bioszzrq
