@@ -82,7 +82,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20221103
-set versize=207384
+set versize=207366
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 )
@@ -92,7 +92,7 @@ if !errorlevel! equ 0 (if !build! lss 10586 (set winv=1) else (set winv=0)) else
 set system=
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
-for /f "skip=2 tokens=2 delims==" %%a in ('start /b wmic os get caption /value') do (
+for /f "skip=2 tokens=2 delims==" %%a in ('wmic os get caption /value') do (
 Set system1=%%a
 call :zfccd "!system1!"
 set /a zfcgs-=1
@@ -135,7 +135,7 @@ if /i "%date:~11,3%"=="星期日" set xingqi=星期天
 set nx1=[+]下一页&set nx=[-]上一页   [+]下一页&set nx7=[-]上一页
 )
 )
-for /f "tokens=2 delims=={}" %%a in ('start /b wmic PATH Win32_SystemEnclosure get ChassisTypes/value') do (
+for /f "tokens=2 delims=={}" %%a in ('wmic PATH Win32_SystemEnclosure get ChassisTypes/value') do (
 if %%a==8 set nx1=[S]下一页&set nx=[A]上一页   [S]下一页&set nx7=[A]上一页
 if %%a==9 set nx1=[S]下一页&set nx=[A]上一页   [S]下一页&set nx7=[A]上一页
 if %%a==10 set nx1=[S]下一页&set nx=[A]上一页   [S]下一页&set nx7=[A]上一页)
