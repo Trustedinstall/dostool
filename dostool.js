@@ -115,7 +115,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20221120
-set versize=211462
+set versize=212180
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 )
@@ -4674,6 +4674,20 @@ if defined gxflag goto startupdate
 echo 检查最新版本...
 timeout /t 2 /nobreak>nul
 if exist %temp%\dostoolupdate del /f /q %temp%\dostoolupdate>nul 2>nul
+if exist %temp%\dwnl.exe (
+	for /f "delims=" %%a in ("%temp%\dwnl.exe") do (
+		if "%%~za" equ "6656" (
+			pushd %temp%
+			dwnl https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js dostoolupdate
+			if !errorlevel! equ 0 (
+				popd
+				goto jcgxjs
+			) else (
+				popd
+			)
+		)
+	)
+)
 set xzflag=::
 set xzflag1=
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
@@ -4682,6 +4696,7 @@ if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag%popd
 %xzflag1%certutil -urlcache -split -f https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js %temp%\dostoolupdate
 ::bitsadmin /transfer 检查最新版本... /priority FOREGROUND https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js %temp%\dostoolupdate
+:jcgxjs
 cls
 for /f "delims=: tokens=2" %%a in (%temp%\dostoolupdate) do (set doshash="%%a")
 for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
@@ -4697,6 +4712,22 @@ echo 正在下载更新...
 timeout /t 2 /nobreak>nul
 if exist %temp%\dostoolupdate del /f /q %temp%\dostoolupdate>nul 2>nul
 if exist %temp%\dostool del /f /q %temp%\dostool>nul 2>nul
+if exist %temp%\dwnl.exe (
+	for /f "delims=" %%a in ("%temp%\dwnl.exe") do (
+		if "%%~za" equ "6656" (
+			pushd %temp%
+			dwnl https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js dostool
+			if !errorlevel! equ 0 (
+				call :hash %temp%\dostool sha1
+				if /i "!hash!" equ !doshash! (
+					copy /z /y %temp%\dostool %weizhi%&goto chushihua
+				)
+			) else (
+				popd
+			)
+		)
+	)
+)
 set xzflag=::
 set xzflag1=
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
