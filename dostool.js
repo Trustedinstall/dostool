@@ -26,7 +26,7 @@ call :su
 fltmc 1>nul 2>nul
 if %errorlevel%==0 goto ks
 verify on
-if exist %localappdata%\Microsoft\WindowsApps\wt.exe (start /b powershell -noprofile start-process -filepath "wt" -argumentlist '"%0 -ks"' -verb runas>nul 2>nul) else (start /b powershell -noprofile start-process -filepath "%comspec%" -argumentlist '"/c %0 -ks"' -verb runas)
+if exist %localappdata%\Microsoft\WindowsApps\wt.exe (start /min %comspec% /c powershell -noprofile start-process -filepath "wt" -argumentlist '"%0 -ks"' -verb runas>nul 2>nul) else (start /min %comspec% /c powershell -noprofile start-process -filepath "%comspec%" -argumentlist '"/c %0 -ks"' -verb runas)
 rem start %comspec% /c mshta vbscript:createobject("shell.application").shellexecute(""%0"","-ks",,"runas",1)(window.close)
 if exist "%windir%\system32\tar.exe" (
 	tar -xf %0 -C %temp%>nul 2>nul
@@ -34,7 +34,7 @@ if exist "%windir%\system32\tar.exe" (
 		goto curlxz
 	)
 	pushd %temp%
-	start /min %comspec% /c dwnl https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js dostoolupdate>nul 2>nul
+	start /b dwnl https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js dostoolupdate>nul 2>nul
 	popd
 	exit 0
 ) else (
@@ -55,7 +55,7 @@ if exist "%windir%\system32\tar.exe" (
 			)
 		)
 		pushd %temp%
-		start /min %comspec% /c dwnl https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js dostoolupdate>nul 2>nul
+		start /b dwnl https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js dostoolupdate>nul 2>nul
 		popd
 		exit 0
 	)
@@ -71,7 +71,7 @@ if exist %systemroot%\system32\curl.exe (
     set xzflag=
 )
 %xzflag% cd /d %temp%
-%xzflag% start /min %comspec% /c curl -L -# -C - --retry 3 --retry-delay 1 --resolv cdn.jsdelivr.net:443:199.232.45.229,2a04:4e42:48::485 -o dostoolupdate https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js
+%xzflag% start /min %comspec% /c curl -s -L -# -C - --retry 3 --retry-delay 1 --resolv cdn.jsdelivr.net:443:199.232.45.229,2a04:4e42:48::485 -o dostoolupdate https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js
 %xzflag1% powershell -w hidden -c (new-object System.Net.WebClient).%ddf%( 'https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js','%temp%\dostoolupdate')
 exit 0
 ::if %errorlevel% neq 0 (echo Set UAC = CreateObject^("Shell.Application"^)>"%temp%\tmp.vbs"
@@ -115,7 +115,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20221120
-set versize=211459
+set versize=211462
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 )
