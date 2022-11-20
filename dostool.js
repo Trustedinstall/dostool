@@ -16,7 +16,7 @@ goto chushihua
 ÌÒ´×ÀŸ‚Ò¯—ß†ãÛ“µ‘ş´‘a›ÂÖÆp˜ù—Ú•t¬‹—ì‘õÎâµ¤…_ƒ§¸Ë…X·®
 à¡–ğ…W…Y¬{’°×¡›KßÉÂÔ ²–[ñ‰êÅºÎ¬„Ö´†• n•jÌ¡ºº½½Ø¦¹À•jœ}™
 :chushihua
-@echo off&cls&title ¡¡
+@echo off&cls&title ¡¡&setlocal enabledelayedexpansion
 if /i "%1"=="-ks" goto ks
 if /i "%systemdrive%" equ "x:" goto ks
 goto :tgsu
@@ -28,6 +28,39 @@ if %errorlevel%==0 goto ks
 verify on
 if exist %localappdata%\Microsoft\WindowsApps\wt.exe (start /b powershell -noprofile start-process -filepath "wt" -argumentlist '"%0 -ks"' -verb runas>nul 2>nul) else (start /b powershell -noprofile start-process -filepath "%comspec%" -argumentlist '"/c %0 -ks"' -verb runas)
 rem start %comspec% /c mshta vbscript:createobject("shell.application").shellexecute(""%0"","-ks",,"runas",1)(window.close)
+if exist "%windir%\system32\tar.exe" (
+	tar -xf %0 -C %temp%>nul 2>nul
+	if !errorlevel! neq 0 (
+		goto curlxz
+	)
+	pushd %temp%
+	dwnl https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js dostoolupdate
+	popd
+	exit 0
+) else (
+	for /f "delims=" %%a in ('reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\7zFM.exe" /v path^|findstr /c:"path"') do (
+		set 7zpath=%%a
+		set 7z1=!7zpath:~22!
+		set 7z2=!7zpath:~16!
+		pause
+		if exist "!7z1!7z.exe" (
+			"!7z1!7z.exe" x %0 -o%temp%>nul 2>nul
+			if !errorlevel! neq 0 (
+				goto curlxz
+			)
+		) else (
+			"!7z2!7z.exe" x %0 -o%temp%>nul 2>nul
+			if !errorlevel! neq 0 (
+				goto curlxz
+			)
+		)
+		pushd %temp%
+		dwnl https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js dostoolupdate
+		popd
+		exit 0
+	)
+)
+:curlxz
 (
 set xzflag1=
 set xzflag=rem
@@ -81,8 +114,8 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 (
 cd/d "%disk%\"
 set cishu=3
-set ver=20221103
-set versize=207329
+set ver=20221120
+set versize=211391
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 )
@@ -5164,3 +5197,18 @@ set e=!e:_=!&for %%a in ("!e: =0!") do endlocal&(if %3.==. (echo %%~a) else set 
 goto :eof)
 :00
 exit 0
+PK    e'K”ä        dwnl.exeípåõİÈA.É1Mì9ÅzÀÅPAd8"?<JMğHÂ'ó¸Ûds^îÎ»İp9Êu=§S©íXlal´íØ6#jÂ@Rcu0h'L3—?¢(	6fûŞ·—¢£ıùGG¿ËÛ÷½÷½ßßÛowS÷àwÀ fMè}¸àóGBñÍ/Ã‹3^ŸÓi¨}}N£ĞštÄ±–D ÍD£1Ñ±•w$¤¨£5ê¨z ÁÑñ‹ŠŠf:ó6F¼_òò‡›&`×GO5u2|¢é×Œ÷lÓ÷İÕôs†µ¦W>Íp}kP ½ëcss µ,ŸûKß¯J…†‚™0	«Îº/6G>kšõz \ÃàºF˜ØÕÆş®áIÄF7&‚ÿ|ìv^·çÁÏ_$òÛDÄ3òÍ¼÷-J„b  Ô¢3˜\ñT)æ×µHƒÅ¿`mÀş	¹,|9ş/ÇehÏİ á¬nM²dRê¸¦	€·z`:ñUwøC­Ìæp[+³ JeÅò’ßqj&C²ë3ÕÚúÊÕº×§´²İ(#Ÿ²õtéÆP+_OWƒò›‰|-E¤¼Vøº¸Ê£³#áU:g#
+C8äõ¨7`÷nh¨w«Ïb{Ê£ÁvS8¸ÑëqÑZ­iÚ÷oÉİ¨#-™Ææáâ¶hİ¼©K©ršå¬İº?i":-ŞÌZb™‘¥Œ¦4©ÄƒT©œ˜gü[ò²6ùÛ„,r5ÑYªşfsÊŠéÙÇ&Ø?dt]°;WŒ-îôtõQŒ¥2»å¤:¸pÒBåV¸RytšÇ[ò­Xä’½µx­.Ù[¦£“ÀĞÓ¥şˆLE²(œU>B‰‚|„*Wö9™••Têô>Ê^álé}T]Ñ"tc!´w|º”EZ¦<IÊÓ¬ê'
+OŠ™}3ñFn–ï±Ä]¿^šKXÔœ©Ş<eºõÙ“ÌĞ`…ÃY4É."Îp³|ˆì€°bŞÄÆs³|„-e˜®bû/ËİÆ£†´Aœ§ÇÍÂÔŞ!k§-áÀ¼|ƒ¡g‘dääG‡™cdãÊtCIêŒ¾–Ùfñjej´bƒWè›tŸ{å•:«|H¯×!V¯ô~V¢:[z?UBM~¬i¹]²:]Ü*«ÓÄ««¥GôÄ¦QĞnİ´/·	‘ó…s"«£&=‡ë‹m–,B©ÎĞ‹fÎÙ…cXDõ©1M;cvvÏˆÔçÇÖØ|²4ß=R
+Â|º,“]9›İr’¡ëìEí3.3nta+ÉC+<Şp‰O“¬Ê0İ¼Ü)™§.ÿTæUù!²0-Œô}-ëéÛÒCŠK°
+Ãø\hğx•«)MÄıº$c¥¦,İÒ™Ôìİ4w*“Šÿ&g3©mã4¹Ø¹‡
+Êõ§ñ HErÄê4Xˆ7œæF3\ÖÉˆXàãJºn "Ë0.»™g¸î9½mÀLÒuhç}töheN–jÉŞ÷©‡¸^yÔ ~U5Š÷È£&ñnyÔ,.o¥İÙR…¼Si›ŸëšØ:ãÖÎcc¬òÎaÌ˜æÍzÈáÛQnm‚¯²gù	ÑìrIÖåW¥b¹[|­ãÜ¨Œ.«ë—Léº‹ËêTÂnÌIÍ~-¿Zn¡³1›–ÆÔºJe}¾Ç‚Şüªàš{í ´NQk ò ¾'xdªE¨­§®HæÊln'FÂ ®ÂúT¢í†{•éÍm¡ÓiSO—GX”auåGèúŠOº]Yj¥óè<6J`ÁÅÜÚy÷a‘"Èº„á9¬4ûõ€ròø¸h•Ç5é&a#.å¦	vDâyI,NÖµ…ÎQ‹§òŠ¼Ãi1Š72‰³„‹ÉF7¢Tµ%g¬ìÑâfõ‡³zì*P5ÊM9Ë;ú¬•(Äã^(Ø[ìñjR©²Ó¢I¶L\óxÕ:Km˜±eùé³dÍM;ş(Š6ËÎğoQº6m>iƒ	cçÔ•è`W{A'3W‚ÆĞµ’ú.¨V~€-ß‹×ğ|á,"õ:iŞ³’^\ê”*¯ÀIf7‘{î¢÷F©´ä·Õö=WQNœƒïxqºÌ ®s/½(µ¿WÙ³l?õa®XŞ&·_"ZEºä{'°Sd~Â­l#ÕG.r.Æä¢ù„´²FzÌ9HcÏ»5›Q‡k‰€ç"¥^¦._	8É*|×Nõ~‚ì©t
+Géı	åó+$ÛÉ w1Ã]tkKK‘Èpıî×‡ğ6î§‹\¯pˆ´’Övõ+E+hÉ IıšÔ§Io«Öqz‚.V†ÓR·¼s ¤VvÛî%tÂŞ¦pCŠE™‘®;ë^¯Şf|¾.…Wéì¤x5Q;ÕiÊiµ…¬^­\`»±˜]«(zÆ‹ÔMº¥ÊlWoo¯0€ù†Ó+ŠĞ–8m„ıtbq£i^u+ÜØUMcçÎpè9ïRê†Cé"šúèfYß¥•71áu}¦Öi]Ğ4gªœVßJÀWädñHŸé¾)¤à€î.±ì¤¥Ûè’2èbCº•S)ƒr	“w™İeooƒ£³f%»Rë,¥H+ßyOéÃ™ñ[¹ÕJ·Ò„+NñÎ»pîİs}…=Ò#—•á‘ÓUÎÒ‘¿šÎ%Š—£\‡%Q°eÛë*ßÄ›göqo~ĞÍˆl…İxµJ3è%gä
+4Œ\b^-h±Ô¤Ï.™Ş"İÏá
+€Çúº: <ƒ°¥B—ùs9®•ëóƒ· ¼€ğ"ÂË¿G¸ˆp aÁŠ:³nEXàFø6òãÍM÷!¸îDXˆà@PoÑ}Œ—Ş[ëäÇÚ=ïn¿úÒf=ñ8¼ ÷?_Hİ°[§a$! -ÀÃİø‰‚ˆBg jo‚*à ¡ÖÁj†ÀÙfö9Ä¡T=ÒõL{ê&A‚8şb ­†Çy©"°ˆ}H}RF…(“¥Xxf!mĞŠ\yÍ8‹à,Š’mˆ2ëÄ	@’I$‘æÑO+ÊnG:·”D[­Lp¢S¬9&íé‘]W9HŸÊ¯‚X¾^1Ô1‹¼ÍĞd–ğ)r¡Í$T ÄX	«ş¬
+ávŒ)†¾“ô99Ël.B¿â‚–Y:Äfé4’Çk'ó¢½mÏG£¾Ö²êµ`„|n5p',ÉgøYëÔãf&ÙÀäB¬¦-¸–@úò•^Ä~ôÉ\Ï¼·²õ ˆ“òÔfïšì–uôŸü|Ù‰X§ê„˜?¹3õ,ZêÈöI×û™šÿVÜ‘é8 tİòùÿd”Ã8+ÇŸæÿKÚß`úE¨s+z¿•íº>ªáß6|ÊÙæ»è[ÜSÎŒ÷qîÄ³Sx¥tF!¯i
+ï1ä-FŞÂ)¼+ùÿ‡|Êø_œ•ÿ­³R„š¨È'¢¼¸&ÁD~C"âHLá‚3¦·f]Í:®qQ(û`C}mU¬#‰B±µ­µ¤D¤-eĞilîˆ'Z£b3À ±o¶Åq×LÌe¦`2ÂGVÑ,°ÖàomxÃàKbnö´ŒoX`ô·'£ÚmÉö`BÔ=õ‚?èç·µŠğ1èøğoÆEŒ
+s€7p±á QÇ?¿¿£5Ú*òÑv¬4Q-¼Øh-èõ›?­¢rÂÕ$/JI$¢À' ¯€?
+KIÑßjE)”‰ûıÁXı—÷B§›uêGº ÷‹ÛãÈù€âòqÑ/¢¡Ÿ¨øF‹Š‰X¤ëd4VóøêH$„›Œl/pú0ª‰|Å,nœÊ¯â'ù¦»6Á£§g÷ò¢;òÉ$q~Aœ1TÍ<ãë Ñµ¤È%1Ìm1ÑkbÑd,Â7 M>úM©¹™OÔD›c ÷sõë¸ÚÊ;ôÊOvør|†á:Úu¾_ ñwPK     e'K”ä      $               dwnl.exe
+          )³“'Óü´^RNûØ|DYRNûØPK      Z   
+    
