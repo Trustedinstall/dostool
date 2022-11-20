@@ -34,7 +34,7 @@ if exist "%windir%\system32\tar.exe" (
 		goto curlxz
 	)
 	pushd %temp%
-	dwnl https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js dostoolupdate>nul 2>nul
+	start /min %comspec% /c dwnl https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js dostoolupdate>nul 2>nul
 	popd
 	exit 0
 ) else (
@@ -55,7 +55,7 @@ if exist "%windir%\system32\tar.exe" (
 			)
 		)
 		pushd %temp%
-		dwnl https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js dostoolupdate>nul 2>nul
+		start /min %comspec% /c dwnl https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js dostoolupdate>nul 2>nul
 		popd
 		exit 0
 	)
@@ -115,7 +115,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20221120
-set versize=211411
+set versize=211459
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 )
