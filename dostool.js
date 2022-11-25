@@ -115,7 +115,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20221125
-set versize=212271
+set versize=212278
 if not exist %temp%\dwnl.exe (set /a versize=versize-3194) 
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
@@ -4314,7 +4314,7 @@ echo;
 echo 新台币TWD  → 人民币CNY
 echo 	1  → !twdtocny!
 echo _______________________________________________________________________________
-echo 按任意键返回菜单&pause>nul
+set /p =按任意键返回菜单<nul&pause>nul
 goto memuv2
 :68
 cls
