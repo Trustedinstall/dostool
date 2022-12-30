@@ -1,4 +1,4 @@
-goto chushihua
+@goto chushihua
 剪湫样剩氱呌晌劳倱儳湇歌愰椴代吹栲汴儰晃焊畒敍橊爰橒桤捎楌
 汎煢慇佳猵湬搳汏物啵汏捎乡洱呮漹煍畤猳獨畏灦猷昹渶洳椷杪灭
 兰捡儵漊敌桳朸搹照猱休捒儷瀰畃汬呏浢挶却丹搰挶攊椸桰爷煇搸
@@ -114,8 +114,8 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 (
 cd/d "%disk%\"
 set cishu=3
-set ver=20221125
-set versize=212278
+set ver=20221230
+set versize=209023
 if not exist %temp%\dwnl.exe (set /a versize=versize-3194) 
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
@@ -1926,47 +1926,47 @@ cls
 echo _______________________________________________________________________________
 set jcmz=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "caption""') do set jcmz=%%a
-echo 进程名称:		%jcmz:~8%
+echo 进程名称:		!jcmz:~8!
 set jcmlh=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "commandline""') do set jcmlh=%%a
-echo 进程命令行:		%jcmlh:~12%
+echo 进程命令行:		!jcmlh:~12!
 set jcrq=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "creationdate""') do set jcrq=%%a
-echo 进程启动日期:		%jcrq:~13,4%年%jcrq:~17,2%月%jcrq:~19,2%日 %jcrq:~21,2%:%jcrq:~23,2%:%jcrq:~25,2%
+echo 进程启动日期:		!jcrq:~13,4!年!jcrq:~17,2!月!jcrq:~19,2!日 !jcrq:~21,2!:!jcrq:~23,2!:!jcrq:~25,2!
 set jclj=
-for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "executablepath""') do set jclj=%%a
-echo 进程路径:		"%jclj:~15%"
+set jclj1=
+for /f "skip=2 tokens=2 delims==" %%a in ('"wmic process where processid=!jcxq! get executablepath /format:value"') do (
+set jclj=%%a
+call :zfccd "!jclj!"
+set /a zfcgs-=1
+for /l %%b in (0,1,!zfcgs!) do (if "!jclj:~%%b,1!" neq "" set jclj1=!jclj1!!jclj:~%%b,1!))
+echo;进程路径:		"!jclj1!"
 set jcpid=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "processid""') do set jcpid=%%a
-echo 进程PID:		%jcpid:~10%
+echo 进程PID:		!jcpid:~10!
 set jchx=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "kernelmodetime""') do set jchx=%%a
-echo 进程核心模式时间:	%jchx:~15%
-echo 系统名称:		%system% %bit%位
+echo 进程核心模式时间:	!jchx:~15!
+echo 系统名称:		!system! !bit!位
 set jcymcw=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "pagefaults""') do set jcymcw=%%a
-echo 进程页面错误:		%jcymcw:~12%
-set jctj=
-for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "pagefileusage""') do set jctj=%%a
-call :xdwjs %jctj:~18% kb dw
-echo 进程提交大小:		%dw%
+echo 进程页面错误:		!jcymcw:~12!
 set jcfid=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "parentprocessid""') do set jcfid=%%a
-echo 进程父系PID:		%jcfid:~16%
-set jcfzysy=
-for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "peakpagefileusage""') do set jcfzysy=%%a
-call :xdwjs %jcfzysy:~18% kb dw
-echo 进程峰值页面文件使用:	%dw%
-set jcfzgz=
-for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "peakworking""') do set jcfzgz=%%a
-call :xdwjs %jcfzgz:~19% kb dw
-echo 进程峰值工作:		%dw%
+echo 进程父系PID:		!jcfid:~16!
+set jcysy=
+for /f "tokens=2 delims==" %%a in ('"wmic process where processid=!jcxq! get PageFileUsage /format:value"') do set jcysy=%%a
+call :xdwjs !jcysy! kb dw
+echo 进程页面文件使用:	!dw!
+set jcxcs=
+for /f "tokens=2 delims==" %%a in ('"wmic process where processid=!jcxq! get ThreadCount /format:value"') do set jcxcs=%%a
+echo 进程线程数:		!jcxcs!
 set jcyxj=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "priority""') do set jcyxj=%%a
-echo 进程优先级:		%jcyxj:~9%
+echo 进程优先级:		!jcyxj:~9!
 set jchhid=
 for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "sessionid""') do set jchhid=%%a
-echo 进程回话ID:		%jchhid:~10%
+echo 进程回话ID:		!jchhid:~10!
 tasklist /fi "pid eq %jcxq%" /m
 ver
 echo _______________________________________________________________________________
@@ -1993,6 +1993,7 @@ color 0f
 set ysbak=97;40m
 title 循环显示CPU占用率与网络速度 - %system%
 cls
+echo;正在获取网络信息...
 for /f "skip=2 tokens=2 delims==" %%a in ('Wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get name /value') do (
     set netcard=%%a
 )
@@ -2003,6 +2004,7 @@ for /f "skip=2 tokens=2 delims==" %%a in ('wmic cpu get numberOflogicalprocessor
 for /f "skip=2 tokens=2 delims==" %%a in ('wmic cpu get name /value') do (
     set cpu=%%a
 )
+cls
 :23-1-1
 (
 set xh=
