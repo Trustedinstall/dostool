@@ -115,8 +115,8 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20221230
-set versize=209023
-if not exist %temp%\dwnl.exe (set /a versize=versize-3194) 
+set versize=209018
+if exist %temp%\dwnl.exe (set /a versize=versize+3194)
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
 )
