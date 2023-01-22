@@ -114,8 +114,8 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 (
 cd/d "%disk%\"
 set cishu=3
-set ver=20221230
-set versize=209018
+set ver=20230122
+set versize=209975
 if exist %temp%\dwnl.exe (set /a versize=versize+3194)
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
@@ -2972,7 +2972,7 @@ echo ¹ØÓÚDOS¹¤¾ßÏä
 echo _______________________________________________________________________________
 echo °æ±¾: 1.8.9 (%ver%.%versize%)
 echo ²Ù×÷ÏµÍ³: %system% %bit%Î»
-echo °æÈ¨ËùÓĞ 2012-2022 Administrator ±£ÁôËùÓĞÈ¨Àû
+echo °æÈ¨ËùÓĞ 2012-2023 Administrator ±£ÁôËùÓĞÈ¨Àû
 echo _______________________________________________________________________________
 echo ±¾´ÎÒÑÔËĞĞ:%sjc:~0,2%Ê±%sjc:~2,2%·Ö%sjc:~4,2%.%sjc:~6,2%Ãë
 echo DOS¹¤¾ßÏäËùÔÚÂ·¾¶:%weizhi%
@@ -4189,14 +4189,14 @@ cls
 title ÏÔÊ¾»õ±Ò»ãÂÊ - %system%
 set mainurl=https://api.coincap.io/v2/assets/
 set mainurl1=https://api.coincap.io/v2/rates/
-echo ÏÂÔØ»ãÂÊÎÄ¼ş(×Ü¹²12¸öÎÄ¼ş)...
+echo ÏÂÔØ»ãÂÊÎÄ¼ş(×Ü¹²13¸öÎÄ¼ş)...
 set xzflag=::
 set xzflag1=
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag%pushd %temp%
-%xzflag%curl -# -Z -C - --retry 3 --retry-delay 1 -o cny.json %mainurl1%chinese-yuan-renminbi -o doge.json %mainurl%dogecoin -o btc.json %mainurl%bitcoin -o eth.json %mainurl%ethereum -o au.json %mainurl1%gold-ounce -o ag.json %mainurl1%silver-ounce -o eur.json %mainurl1%euro -o gbp.json %mainurl1%british-pound-sterling -o jpy.json %mainurl1%japanese-yen -o hkd.json %mainurl1%hong-kong-dollar -o twd.json %mainurl1%new-taiwan-dollar -o xmr.json %mainurl%monero
+%xzflag%curl -# -Z -C - --retry 3 --retry-delay 1 -o cny.json %mainurl1%chinese-yuan-renminbi -o doge.json %mainurl%dogecoin -o btc.json %mainurl%bitcoin -o eth.json %mainurl%ethereum -o au.json %mainurl1%gold-ounce -o ag.json %mainurl1%silver-ounce -o eur.json %mainurl1%euro -o gbp.json %mainurl1%british-pound-sterling -o jpy.json %mainurl1%japanese-yen -o hkd.json %mainurl1%hong-kong-dollar -o twd.json %mainurl1%new-taiwan-dollar -o xmr.json %mainurl%monero -o filecoin.json %mainurl%filecoin
 %xzflag%popd
-%xzflag1%bitsadmin /transfer ÏÂÔØ»ãÂÊÎÄ¼ş... /priority FOREGROUND %mainurl1%chinese-yuan-renminbi %temp%\cny.json %mainurl%dogecoin %temp%\doge.json %mainurl%bitcoin %temp%\btc.json %mainurl%ethereum %temp%\eth.json %mainurl1%gold-ounce %temp%\au.json %mainurl1%silver-ounce %temp%\ag.json %mainurl1%euro %temp%\eur.json %mainurl1%british-pound-sterling %temp%\gbp.json %mainurl1%japanese-yen %temp%\jpy.json %mainurl1%hong-kong-dollar %temp%\hkd.json %mainurl1%new-taiwan-dollar %temp%\twd.json %mainurl%monero %temp%\xmr.json
+%xzflag1%bitsadmin /transfer ÏÂÔØ»ãÂÊÎÄ¼ş... /priority FOREGROUND %mainurl1%chinese-yuan-renminbi %temp%\cny.json %mainurl%dogecoin %temp%\doge.json %mainurl%bitcoin %temp%\btc.json %mainurl%ethereum %temp%\eth.json %mainurl1%gold-ounce %temp%\au.json %mainurl1%silver-ounce %temp%\ag.json %mainurl1%euro %temp%\eur.json %mainurl1%british-pound-sterling %temp%\gbp.json %mainurl1%japanese-yen %temp%\jpy.json %mainurl1%hong-kong-dollar %temp%\hkd.json %mainurl1%new-taiwan-dollar %temp%\twd.json %mainurl%monero %temp%\xmr.json %mainurl%filecoin %temp%\filecoin.json
 cls
 echo ´¦Àí»ãÂÊÎÄ¼ş...
 for /f "delims=:} tokens=7" %%a in (%temp%\cny.json) do (set cnytousd=%%a)
@@ -4220,6 +4220,12 @@ set ethtousd=%ethtousd:"=%
 set eth24h=%eth24h:"=%
 for /f "delims=. tokens=1,2" %%a in ('"echo %eth24h%"') do (set eth24h1=%%a&&set eth24h2=%%b)
 set eth24h=%eth24h1%.%eth24h2:~0,3%
+for /f "delims=:, tokens=19,21" %%a in (%temp%\filecoin.json) do (set filetousd=%%a&&set file24h=%%b)
+if not defined filetousd set filetousd=1&&file24h=0
+set filetousd=%filetousd:"=%
+set file24h=%file24h:"=%
+for /f "delims=. tokens=1,2" %%a in ('echo;%file24h%') do (set file24h1=%%a&&set file24h2=%%b)
+set file24h=%file24h1%.%file24h2:~0,3%
 for /f "delims=:} tokens=7" %%a in (%temp%\au.json) do (set autousd=%%a)
 if not defined autousd set autousd=1
 set autousd=%autousd:"=%
@@ -4260,6 +4266,7 @@ for /f "delims=" %%a in ('"powershell %jpytousd%/%cnytousd%"') do (set jpytocny=
 for /f "delims=" %%a in ('"powershell %hkdtousd%/%cnytousd%"') do (set hkdtocny=%%a)
 for /f "delims=" %%a in ('"powershell %twdtousd%/%cnytousd%"') do (set twdtocny=%%a)
 for /f "delims=" %%a in ('"powershell %xmrtousd%/%cnytousd%"') do (set xmrtocny=%%a)
+for /f "delims=" %%a in ('"powershell %filetousd%/%cnytousd%"') do (set filetocny=%%a)
 for /f "delims=" %%a in ('"powershell 1/%cnytousd%"') do (set usdtocny=%%a)
 for /f "delims=" %%a in ('"powershell %autousd%/31.1034768*%usdtocny%"') do (set autocny=%%a)
 for /f "delims=" %%a in ('"powershell %agtousd%/31.1034768*%usdtocny%"') do (set agtocny=%%a)
@@ -4288,6 +4295,13 @@ echo ÃÅÂŞ±ÒXMR  ¡ú ÈËÃñ±ÒCNY
 set /p =.!cswz1!        <nul
 set /p =1  ¡ú !xmrtocny!		24Ğ¡Ê±ÕÇµø·ù: <nul
 if "%xmr24h:~0,1%" equ "-" (call :colortxt a !xmr24h!) else (call :colortxt c +!xmr24h!)
+set /p =%% <nul
+echo;
+echo;
+echo;ÎÄ¼ş±ÒFILE ¡ú ÈËÃñ±ÒCNY
+set /p =.!cswz1!        <nul
+set /p =1  ¡ú !filetocny!		24Ğ¡Ê±ÕÇµø·ù: <nul
+if "%file24h:~0,1%" equ "-" (call :colortxt a !file24h!) else (call :colortxt c +!file24h!)
 set /p =%% <nul
 echo;
 echo;
@@ -4641,10 +4655,11 @@ set /a xzsd=!jgxs!*3600+!jgfen!*60+!jgm!
 set xzsd=!xzsd!.!jghm!
 for /f "delims=" %%a in ('powershell !filesize!/!xzsd!') do (call :xdwjs %%a d dw)
 forfiles /p %~dp0 /m %~nx0 /c "%comspec% /c set /p =0x07<nul"
+cls
 echo;ÏÂÔØÍê³É
 echo;Á´½Ó:		!url!
 echo;ÓÃÊ±:		!jgxs!Ğ¡Ê±!jgfen!·ÖÖÓ!jgm!.!jghm!Ãë
-echo;Æ½¾ùÏÂÔØËÙ¶È:	!size! !dw!/s
+echo;Æ½¾ùÏÂÔØËÙ¶È:  !size! !dw!/s
 echo;ÎÄ¼ş:		%%~nxa
 if %%~za geq 1024 (
 call :xdwjs %%~za b dw
@@ -4654,6 +4669,7 @@ echo;±£´æÂ·¾¶:	%%~dpa
 forfiles /p %~dp0 /m %~nx0 /c "%comspec% /c set /p =0x07<nul"
 timeout /t 1 /nobreak>nul
 forfiles /p %~dp0 /m %~nx0 /c "%comspec% /c set /p =0x07<nul"
+cls
 echo;Á´½Ó:	!url!
 echo;ÏÂÔØÊ§°Ü)
 echo;_______________________________________________________________________________
@@ -5229,6 +5245,9 @@ for /l %%a in (8,8,128)do set/a v=1!b:~-%%a,8!+1!a:~-%%a,8!+!v:~-9,-8!-2&set e=!
 set e=!e:0= !&for /f "tokens=*" %%a in ("!e:~,-64!_.!e:~64!") do set e=%%~nxa
 set e=!e:_=!&for %%a in ("!e: =0!") do endlocal&(if %3.==. (echo %%~a) else set %3=%%~a)
 goto :eof)
+:offdisplay
+powershell (Add-Type '[DllImport(\"user32.dll\")]^public static extern int SendMessage(int hWnd, int hMsg, int wParam, int lParam);' -Name a -Pas)::SendMessage(-1,0x0112,0xF170,2)
+goto :eof
 :00
 exit 0
 PK    e'K”ä        dwnl.exeípåõİÈA.É1Mì9ÅzÀÅPAd8"?<JMğHÂ'ó¸Ûds^îÎ»İp9Êu=§S©íXlal´íØ6#jÂ@Rcu0h'L3—?¢(	6fûŞ·—¢£ıùGG¿ËÛ÷½÷½ßßÛowS÷àwÀ fMè}¸àóGBñÍ/Ã‹3^ŸÓi¨}}N£ĞštÄ±–D ÍD£1Ñ±•w$¤¨£5ê¨z ÁÑñ‹ŠŠf:ó6F¼_òò‡›&`×GO5u2|¢é×Œ÷lÓ÷İÕôs†µ¦W>Íp}kP ½ëcss µ,ŸûKß¯J…†‚™0	«Îº/6G>kšõz \ÃàºF˜ØÕÆş®áIÄF7&‚ÿ|ìv^·çÁÏ_$òÛDÄ3òÍ¼÷-J„b  Ô¢3˜\ñT)æ×µHƒÅ¿`mÀş	¹,|9ş/ÇehÏİ á¬nM²dRê¸¦	€·z`:ñUwøC­Ìæp[+³ JeÅò’ßqj&C²ë3ÕÚúÊÕº×§´²İ(#Ÿ²õtéÆP+_OWƒò›‰|-E¤¼Vøº¸Ê£³#áU:g#
