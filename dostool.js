@@ -114,8 +114,8 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 (
 cd/d "%disk%\"
 set cishu=3
-set ver=20230122
-set versize=209975
+set ver=20230325
+set versize=209865
 if exist %temp%\dwnl.exe (set /a versize=versize+3194)
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
@@ -3718,7 +3718,8 @@ cls
 echo _______________________________________________________________________________
 echo 输入内容: !basebm!
 echo 解码内容:
-if exist %temp%\codetmp (for /f "delims=" %%a in (%temp%\codetmp) do (if "%%a" neq "-----BEGIN CERTIFICATE-----" (if "%%a" neq "-----END CERTIFICATE-----" (echo %%a)))) else (echo 解码失败)
+if exist %temp%\codetmp (type %temp%\codetmp) else (echo 解码失败)
+echo;
 echo _______________________________________________________________________________
 set bxz=
 set/p bxz=输入"y"保存编码,其他输入返回上级菜单:
@@ -4607,7 +4608,7 @@ for /l %%a in (1,1,!tr!) do (
 			)
 			set /p =进程%%a的进度:	[<nul
 			call :colortxt a !jdt!
-			echo;][!fhz!-1]
+			echo;][!fhz!~1]
 		)
 	) else (
 		if !ssdx! equ !fd! (
@@ -4626,7 +4627,7 @@ for /l %%a in (1,1,!tr!) do (
 			)
 			set /p =进程%%a的进度:	[<nul
 			call :colortxt a !jdt!
-			echo;][!fhz!-1]
+			echo;][!fhz!~1]
 		)
 	)
 )
@@ -4651,7 +4652,7 @@ if exist "!dir!!filename!" (
 for /f "delims=" %%a in ("!dir!!filename!") do (
 call :sjc %kssj% %jssj%
 set xzsd=
-set /a xzsd=!jgxs!*3600+!jgfen!*60+!jgm!
+set /a xzsd=0x!jgxs!*3600+0x!jgfen!*60+0x!jgm!
 set xzsd=!xzsd!.!jghm!
 for /f "delims=" %%a in ('powershell !filesize!/!xzsd!') do (call :xdwjs %%a d dw)
 forfiles /p %~dp0 /m %~nx0 /c "%comspec% /c set /p =0x07<nul"
