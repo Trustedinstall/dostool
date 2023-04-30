@@ -114,8 +114,8 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 (
 cd/d "%disk%\"
 set cishu=3
-set ver=20230325
-set versize=209865
+set ver=20230430
+set versize=210021
 if exist %temp%\dwnl.exe (set /a versize=versize+3194)
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
@@ -4652,7 +4652,16 @@ if exist "!dir!!filename!" (
 for /f "delims=" %%a in ("!dir!!filename!") do (
 call :sjc %kssj% %jssj%
 set xzsd=
-set /a xzsd=0x!jgxs!*3600+0x!jgfen!*60+0x!jgm!
+if "!jgxs:~0,1!" equ "0" (
+	set jgxs=!jgxs:~1,1!
+)
+if "!jgfen:~0,1!" equ "0" (
+	set jgfen=!jgfen:~1,1!
+)
+if "!jgm:~0,1!" equ "0" (
+	set jgm=!jgm:~1,1!
+)
+set /a xzsd=!jgxs!*3600+!jgfen!*60+!jgm!
 set xzsd=!xzsd!.!jghm!
 for /f "delims=" %%a in ('powershell !filesize!/!xzsd!') do (call :xdwjs %%a d dw)
 forfiles /p %~dp0 /m %~nx0 /c "%comspec% /c set /p =0x07<nul"
