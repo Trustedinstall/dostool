@@ -71,7 +71,7 @@ if exist %systemroot%\system32\curl.exe (
     set xzflag=
 )
 %xzflag% cd /d %temp%
-%xzflag% start /min %comspec% /c curl -s -L -# -C - --retry 3 --retry-delay 1 --resolv cdn.jsdelivr.net:443:199.232.45.229,2a04:4e42:48::485 -o dostoolupdate https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js
+%xzflag% start /min %comspec% /c curl -s -L -# -C - --retry 3 --retry-delay 1 --resolv cdn.jsdelivr.net:443:104.16.88.20,2a04:4e42:600::485 -o dostoolupdate https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js
 %xzflag1% powershell -w hidden -c (new-object System.Net.WebClient).%ddf%( 'https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js','%temp%\dostoolupdate')
 exit 0
 ::if %errorlevel% neq 0 (echo Set UAC = CreateObject^("Shell.Application"^)>"%temp%\tmp.vbs"
@@ -114,8 +114,8 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 (
 cd/d "%disk%\"
 set cishu=3
-set ver=20230430
-set versize=210021
+set ver=20230807
+set versize=210034
 if exist %temp%\dwnl.exe (set /a versize=versize+3194)
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
@@ -2304,10 +2304,10 @@ title 一键删除空文件夹 - %system%
 cls
 echo 检测Everything的安装路径与运行状态...
 set flag=
-set flag1=::
+set flag1=rem
 for /f "delims=" %%a in ('"reg query "HKEY_LOCAL_MACHINE\SOFTWARE\voidtools\Everything" /v InstallLocation|find "InstallLocation""') do (set EverythingInstallPath=%%a)
 if "%system:~8,2%"=="XP" (set EverythingInstallPath=%EverythingInstallPath:~27%) else (set EverythingInstallPath=%EverythingInstallPath:~33%)
-if exist "%EverythingInstallPath%\Everything.exe" (tasklist /fi "status eq running" /fi "username eq "%username%"" /fi "imagename eq everything.exe"|find /i "Everything.exe"&&if exist "%EverythingInstallPath%\es.exe" set flag=::&set flag1=)
+if exist "%EverythingInstallPath%\Everything.exe" (tasklist /fi "status eq running" /fi "username eq "%username%"" /fi "imagename eq everything.exe"|find /i "Everything.exe"&&if exist "%EverythingInstallPath%\es.exe" set flag=rem&set flag1=)
 cls
 echo 注意:如果对系统盘进行操作可能会被杀毒软件拦截
 echo _______________________________________________________________________________
@@ -2320,25 +2320,25 @@ set caozuo|findstr /i "\<[a-z]\>">nul
 if "%errorlevel%" neq "0" goto 28-1
 cls
 echo 正在搜索空文件夹...     文件越多搜索时间越长
-%flag%for /f "delims=" %%o in ('"dir/a/s/b/ad-l %caozuo%:|sort/r"') do rd/q "%%o"2>nul&&echo 已删除空文件夹%%o
-::%flag1%for /f "delims=" %%o in ('""%EverythingInstallPath%\es.exe" -sort path-descending /ad-l %caozuo%:"') do rd/q "%%o"2>nul&&echo 已删除空文件夹%%o
+%flag% for /f "delims=" %%o in ('"dir/a/s/b/ad-l %caozuo%:|sort/r"') do rd/q "%%o"2>nul&&echo 已删除空文件夹%%o
+rem %flag1% for /f "delims=" %%o in ('""%EverythingInstallPath%\es.exe" -sort path-descending /ad-l %caozuo%:"') do rd/q "%%o"2>nul&&echo 已删除空文件夹%%o
 :loop1
-%flag1%set empty=0
-%flag1%for /f "delims=" %%o in ('""%EverythingInstallPath%\es.exe" %caozuo%: empty: ^!attrib:l"') do (rd/q "%%o"2>nul&&set empty=1&&echo 已删除空文件夹%%o)
+%flag1% set empty=0
+%flag1% for /f "delims=" %%o in ('""%EverythingInstallPath%\es.exe" %caozuo%: empty: ^!attrib:l"') do (rd/q "%%o"2>nul&&set empty=1&&echo 已删除空文件夹%%o)
 timeout /t 2 /nobreak>nul
-%flag1%if "%empty%"=="1" goto loop1
+%flag1% if "%empty%"=="1" goto loop1
 goto 28(2)
 :28-1
 dir /ad "!caozuo!">nul 2>nul||echo 路径 !caozuo! 不是一个文件夹&&timeout /t 2 /nobreak>nul&&goto 28
 echo 正在搜索空文件夹...     文件越多搜索时间越长
 if "%caozuo:~0,1%%caozuo:~-1%" neq """" for /f "delims=" %%a in ('"echo %caozuo%"') do (set %caozuo%="%%~a")
-%flag%for /f "delims=" %%o in ('"dir/a/s/b/ad-l %caozuo%|sort/r"') do rd/q "%%o"2>nul&&echo 已删除空文件夹%%o
-::%flag1%for /f "delims=" %%o in ('""%EverythingInstallPath%\es.exe" -sort path-descending /ad-l %caozuo%"') do rd/q "%%o"2>nul&&echo 已删除空文件夹%%o
+%flag% for /f "delims=" %%o in ('"dir/a/s/b/ad-l %caozuo%|sort/r"') do rd/q "%%o"2>nul&&echo 已删除空文件夹%%o
+rem %flag1% for /f "delims=" %%o in ('""%EverythingInstallPath%\es.exe" -sort path-descending /ad-l %caozuo%"') do rd/q "%%o"2>nul&&echo 已删除空文件夹%%o
 :loop2
-%flag1%set empty=0
-%flag1%for /f "delims=" %%o in ('""%EverythingInstallPath%\es.exe" %caozuo% empty: ^!attrib:l"') do (rd/q "%%o"2>nul&&set empty=1&&echo 已删除空文件夹%%o)
+%flag1% set empty=0
+%flag1% for /f "delims=" %%o in ('""%EverythingInstallPath%\es.exe" %caozuo% empty: ^!attrib:l"') do (rd/q "%%o"2>nul&&set empty=1&&echo 已删除空文件夹%%o)
 timeout /t 2 /nobreak>nul
-%flag1%if "%empty%"=="1" goto loop2
+%flag1% if "%empty%"=="1" goto loop2
 :28(2)
 echo _______________________________________________________________________________
 echo 空文件夹删除完成
@@ -3534,7 +3534,7 @@ set/p swjj=输入要链接的文件夹路径:
 set/p cwjj=输入链接文件夹的输出路径:
 if "%swjj:~0,1%%swjj:~-1%" neq """" for /f "delims=" %%a in ('"echo %swjj%"') do (set %swjj%="%%~a")
 if "%cwjj:~0,1%%cwjj:~-1%" neq """" for /f "delims=" %%a in ('"echo %cwjj%"') do (set %cwjj%="%%~a")
-mklink /j %cwjj% %swjj%
+mklink /d %cwjj% %swjj%
 echo _______________________________________________________________________________
 echo 按任意键返回菜单&pause>nul
 goto memuv2
@@ -4721,7 +4721,7 @@ set xzflag=::
 set xzflag1=
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag%pushd %temp%
-%xzflag%curl -L -# -C - --retry 3 --retry-delay 1 --resolv cdn.jsdelivr.net:443:199.232.45.229,2a04:4e42:48::485 -o dostoolupdate https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js
+%xzflag%curl -L -# -C - --retry 3 --retry-delay 1 --resolv cdn.jsdelivr.net:443:104.16.88.20,2a04:4e42:600::485 -o dostoolupdate https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js
 %xzflag%popd
 %xzflag1%certutil -urlcache -split -f https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js %temp%\dostoolupdate
 ::bitsadmin /transfer 检查最新版本... /priority FOREGROUND https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js %temp%\dostoolupdate
@@ -4761,7 +4761,7 @@ set xzflag=::
 set xzflag1=
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag%pushd %temp%
-%xzflag%curl -L -# -C - --retry 3 --retry-delay 1 --resolv cdn.jsdelivr.net:443:199.232.45.229,2a04:4e42:48::485 -o dostool https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js
+%xzflag%curl -L -# -C - --retry 3 --retry-delay 1 --resolv cdn.jsdelivr.net:443:104.16.88.20,2a04:4e42:600::485 -o dostool https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js
 %xzflag%popd
 %xzflag%call :hash %temp%\dostool sha1
 %xzflag%if /i "%hash%" equ %doshash% copy /z /y %temp%\dostool %weizhi%&goto chushihua
