@@ -65,13 +65,14 @@ if exist "%windir%\system32\tar.exe" (
 set xzflag1=
 set xzflag=rem
 set ddf=DownloadFile
+set resolv=www.apple.com:443:151.101.193.229,2a04:4e42::485
 )
 if exist %systemroot%\system32\curl.exe (
     set xzflag1=rem
     set xzflag=
 )
 %xzflag% cd /d %temp%
-%xzflag% start /min %comspec% /c curl -k -H "host: cdn.jsdelivr.net" -L -# -C - --retry 3 --retry-delay 1 --resolv www.apple.com:443:151.101.193.229,2a04:4e42::485 -o dostoolupdate https://www.apple.com/gh/Trustedinstall/dostool/update.js
+%xzflag% start /min %comspec% /c curl -k -H "host: cdn.jsdelivr.net" -L -# -C - --retry 3 --retry-delay 1 --resolv !resolv! -o dostoolupdate https://www.apple.com/gh/Trustedinstall/dostool/update.js
 %xzflag1% powershell -w hidden -c (new-object System.Net.WebClient).%ddf%( 'https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js','%temp%\dostoolupdate')
 exit 0
 ::if %errorlevel% neq 0 (echo Set UAC = CreateObject^("Shell.Application"^)>"%temp%\tmp.vbs"
@@ -115,7 +116,8 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20230831
-set versize=210103
+set versize=210171
+set resolv=www.apple.com:443:151.101.193.229,2a04:4e42::485
 if exist %temp%\dwnl.exe (set /a versize=versize+3194)
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
@@ -2324,7 +2326,12 @@ echo 正在搜索空文件夹...     文件越多搜索时间越长
 rem %flag1% for /f "delims=" %%o in ('""%EverythingInstallPath%\es.exe" -sort path-descending /ad-l %caozuo%:"') do rd/q "%%o"2>nul&&echo 已删除空文件夹%%o
 :loop1
 %flag1% set empty=0
-%flag1% for /f "delims=" %%o in ('""%EverythingInstallPath%\es.exe" %caozuo%: empty: ^!attrib:l"') do (rd/q "%%o"2>nul&&set empty=1&&echo 已删除空文件夹%%o)
+%flag1% for /f "delims=" %%o in ('"%EverythingInstallPath%\es.exe" %caozuo%: empty: ^!attrib:l') do (
+	rd /q "%%o"&&if !errorlevel! equ 0 (
+		set empty=1
+		echo;已删除空文件夹%%o
+	)
+)
 timeout /t 2 /nobreak>nul
 %flag1% if "%empty%"=="1" goto loop1
 goto 28(2)
@@ -2336,7 +2343,12 @@ if "%caozuo:~0,1%%caozuo:~-1%" neq """" for /f "delims=" %%a in ('"echo %caozuo%
 rem %flag1% for /f "delims=" %%o in ('""%EverythingInstallPath%\es.exe" -sort path-descending /ad-l %caozuo%"') do rd/q "%%o"2>nul&&echo 已删除空文件夹%%o
 :loop2
 %flag1% set empty=0
-%flag1% for /f "delims=" %%o in ('""%EverythingInstallPath%\es.exe" %caozuo% empty: ^!attrib:l"') do (rd/q "%%o"2>nul&&set empty=1&&echo 已删除空文件夹%%o)
+%flag1% for /f "delims=" %%o in ('""%EverythingInstallPath%\es.exe" %caozuo% empty: ^!attrib:l"') do (
+	rd /q "%%o"&&if !errorlevel! equ 0 (
+		set empty=1
+		echo;已删除空文件夹%%o
+	)
+)
 timeout /t 2 /nobreak>nul
 %flag1% if "%empty%"=="1" goto loop2
 :28(2)
@@ -4721,7 +4733,7 @@ set xzflag=::
 set xzflag1=
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag%pushd %temp%
-%xzflag%curl -k -H "host: cdn.jsdelivr.net" -L -# -C - --retry 3 --retry-delay 1 --resolv www.apple.com:443:151.101.193.229,2a04:4e42::485 -o dostoolupdate https://www.apple.com/gh/Trustedinstall/dostool/update.js
+%xzflag%curl -k -H "host: cdn.jsdelivr.net" -L -# -C - --retry 3 --retry-delay 1 --resolv !resolv! -o dostoolupdate https://www.apple.com/gh/Trustedinstall/dostool/update.js
 %xzflag%popd
 %xzflag1%certutil -urlcache -split -f https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js %temp%\dostoolupdate
 ::bitsadmin /transfer 检查最新版本... /priority FOREGROUND https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js %temp%\dostoolupdate
@@ -4761,7 +4773,7 @@ set xzflag=::
 set xzflag1=
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag%pushd %temp%
-%xzflag%curl -k -H "host: cdn.jsdelivr.net" -L -# -C - --retry 3 --retry-delay 1 --resolv www.apple.com:443:151.101.193.229,2a04:4e42::485 -o dostool https://www.apple.com/gh/Trustedinstall/dostool/dostool.js
+%xzflag%curl -k -H "host: cdn.jsdelivr.net" -L -# -C - --retry 3 --retry-delay 1 --resolv !resolv! -o dostool https://www.apple.com/gh/Trustedinstall/dostool/dostool.js
 %xzflag%popd
 %xzflag%call :hash %temp%\dostool sha1
 %xzflag%if /i "%hash%" equ %doshash% copy /z /y %temp%\dostool %weizhi%&goto chushihua
