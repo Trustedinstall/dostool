@@ -26,8 +26,17 @@ call :su
 fltmc 1>nul 2>nul
 if %errorlevel%==0 goto ks
 verify on
-if exist %localappdata%\Microsoft\WindowsApps\wt.exe (start /min %comspec% /c powershell -noprofile start-process -filepath "wt" -argumentlist '"%0 -ks"' -verb runas>nul 2>nul) else (start /min %comspec% /c powershell -noprofile start-process -filepath "%comspec%" -argumentlist '"/c %0 -ks"' -verb runas)
-rem start %comspec% /c mshta vbscript:createobject("shell.application").shellexecute(""%0"","-ks",,"runas",1)(window.close)
+set weizhi=%0
+for /f "delims=" %%a in (!weizhi!) do (
+	set weizhi=%%~fa
+)
+if exist %localappdata%\Microsoft\WindowsApps\wt.exe (
+	call :stwt
+) else (
+	call :stcmd
+)
+::start /min %comspec% /c powershell -noprofile start-process -filepath "%comspec%" -argumentlist '"/c %0 -ks"' -verb runas
+::start /min %comspec% /c powershell -noprofile start-process -filepath "wt" -argumentlist '"%0 -ks"' -verb runas>nul 2>nul
 if exist "%windir%\system32\tar.exe" (
 	tar -xf %0 -C %temp%>nul 2>nul
 	if !errorlevel! neq 0 (
@@ -75,6 +84,12 @@ if exist %systemroot%\system32\curl.exe (
 %xzflag% start /min %comspec% /c curl -k -H "host: cdn.jsdelivr.net" --http2 -L -# -C - --retry 3 --retry-delay 1 --resolv !resolv! -o dostoolupdate https://www.apple.com/gh/Trustedinstall/dostool/update.js
 %xzflag1% powershell -w hidden -c (new-object System.Net.WebClient).%ddf%( 'https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js','%temp%\dostoolupdate')
 exit 0
+:stwt
+start %comspec% /c mshta vbscript:createobject("shell.application").shellexecute("%localappdata%\Microsoft\WindowsApps\wt.exe","%weizhi% -ks","","runas",1)(window.close)
+goto :eof
+:stcmd
+start %comspec% /c mshta vbscript:createobject("shell.application").shellexecute("%weizhi%","-ks","","runas",1)(window.close)
+goto :eof
 ::if %errorlevel% neq 0 (echo Set UAC = CreateObject^("Shell.Application"^)>"%temp%\tmp.vbs"
 ::echo UAC.ShellExecute %0,"","","runas",^1>>"%temp%\tmp.vbs"
 ::"%temp%\tmp.vbs"&exit)
@@ -115,8 +130,8 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 (
 cd/d "%disk%\"
 set cishu=3
-set ver=20231105
-set versize=210196
+set ver=20231115
+set versize=210523
 set resolv=www.apple.com:443:151.101.193.229,2a04:4e42::485
 if exist %temp%\dwnl.exe (set /a versize=versize+3194)
 set gxflag=
