@@ -74,7 +74,7 @@ if exist "%windir%\system32\tar.exe" (
 set xzflag1=
 set xzflag=rem
 set ddf=DownloadFile
-set resolv=www.apple.com:443:151.101.193.229,2a04:4e42::485
+set resolv=www.apple.com:443:151.101.1.229,151.101.129.229,151.101.193.229,151.101.65.229,2a04:4e42::485,2a04:4e42:200::485,2a04:4e42:400::485,2a04:4e42:600::485
 )
 if exist %systemroot%\system32\curl.exe (
     set xzflag1=rem
@@ -130,9 +130,9 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 (
 cd/d "%disk%\"
 set cishu=3
-set ver=20231115
-set versize=210523
-set resolv=www.apple.com:443:151.101.193.229,2a04:4e42::485
+set ver=20240315
+set versize=210969
+set resolv=www.apple.com:443:151.101.1.229,151.101.129.229,151.101.193.229,151.101.65.229,2a04:4e42::485,2a04:4e42:200::485,2a04:4e42:400::485,2a04:4e42:600::485
 if exist %temp%\dwnl.exe (set /a versize=versize+3194)
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
@@ -199,7 +199,16 @@ set ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, lik
 for /f "tokens=1,2 delims=#" %%a in ('"prompt #$h#$e# & echo on & for %%b in (1) do rem"') do (set cswz=%%b[&set cswz1=%%a)
 call :list
 if /i "%processor_architecture%"=="x86" (set bit=32) else (set bit=64)
-if "!system:~8,2!"=="XP" (set zmlj=%zmlj:~19%\) else (set zmlj=%zmlj:~25%\)
+if "!system:~8,2!"=="XP" (
+	set zmlj=%zmlj:~19%\
+) else (
+	set zmlj=%zmlj:~25%\
+)
+if exist !systemroot!\system32\choice.exe (
+	set sel=call :choice
+) else (
+	set sel=set /p shuru=ÊäÈëÄãµÄÑ¡Ôñ:<nul
+)
 if "%zmlj:~0,1%%zmlj:~-1%" neq """" for /f "delims=" %%a in ('"echo %zmlj%"') do (set %zmlj%="%%~a")
 if /i "%2" neq "" goto chanshu2
 fltmc 1>nul 2>nul
@@ -1831,6 +1840,7 @@ if "%errorlevel%" equ ="2" goto guanji
 goto guanji-9
 :23
 title DOSÈÎÎñ¹ÜÀíÆ÷ - %system%
+set cho=1234560
 cls
 echo _______________________________________________________________________________
 echo [1]ÏÔÊ¾ËùÓĞ½ø³Ì
@@ -1841,14 +1851,16 @@ echo [5]ÏÔÊ¾½ø³ÌµÄTCP/UDPÁ¬½Ó
 echo;[6]Ñ­»·ÏÔÊ¾CPUÕ¼ÓÃÂÊÓëÍøÂçËÙ¶È
 echo [0]·µ»Ø²Ëµ¥
 echo _______________________________________________________________________________
-choice /c 1234560 /n /m ÇëÊäÈëÄãµÄÑ¡Ôñ:
-if "%errorlevel%" equ "1" goto 23(1)
-if "%errorlevel%" equ "2" goto 23(2)
-if "%errorlevel%" equ "3" goto 23(6)
-if "%errorlevel%" equ "4" goto 23(10)
-if "%errorlevel%" equ "5" goto 23.1
-if "!errorlevel!" equ "6" goto 23-1
-if "%errorlevel%" equ "7" goto memuv2
+rem ::choice /c 1234560 /n /m ÇëÊäÈëÄãµÄÑ¡Ôñ:
+!sel!
+if "!shuru!" equ "1" goto 23(1)
+if "!shuru!" equ "2" goto 23(2)
+if "!shuru!" equ "3" goto 23(6)
+if "!shuru!" equ "4" goto 23(10)
+if "!shuru!" equ "5" goto 23.1
+if "!shuru!" equ "6" goto 23-1
+if "!shuru!" equ "7" goto memuv2
+if "!shuru!" equ "0" goto memuv2
 goto 23
 set dosjc=
 set/p dosjc=ÇëÊäÈëÄãµÄÑ¡Ôñ:
@@ -2999,7 +3011,7 @@ echo ¹ØÓÚDOS¹¤¾ßÏä
 echo _______________________________________________________________________________
 echo °æ±¾: 1.8.9 (%ver%.%versize%)
 echo ²Ù×÷ÏµÍ³: %system% %bit%Î»
-echo °æÈ¨ËùÓĞ 2012-2023 Administrator ±£ÁôËùÓĞÈ¨Àû
+echo °æÈ¨ËùÓĞ 2012-2024 Administrator ±£ÁôËùÓĞÈ¨Àû
 echo _______________________________________________________________________________
 echo ±¾´ÎÒÑÔËĞĞ:%sjc:~0,2%Ê±%sjc:~2,2%·Ö%sjc:~4,2%.%sjc:~6,2%Ãë
 echo DOS¹¤¾ßÏäËùÔÚÂ·¾¶:%weizhi%
@@ -5285,9 +5297,12 @@ goto :eof)
 :offdisplay
 powershell (Add-Type '[DllImport(\"user32.dll\")]^public static extern int SendMessage(int hWnd, int hMsg, int wParam, int lParam);' -Name a -Pas)::SendMessage(-1,0x0112,0xF170,2)
 goto :eof
+:choice
+choice /c !cho! /n /m ÇëÊäÈëÄãµÄÑ¡Ôñ:
+set shuru=!errorlevel!
+goto :eof
 :00
-exit 0
-PK    e'K”ä        dwnl.exeípåõİÈA.É1Mì9ÅzÀÅPAd8"?<JMğHÂ'ó¸Ûds^îÎ»İp9Êu=§S©íXlal´íØ6#jÂ@Rcu0h'L3—?¢(	6fûŞ·—¢£ıùGG¿ËÛ÷½÷½ßßÛowS÷àwÀ fMè}¸àóGBñÍ/Ã‹3^ŸÓi¨}}N£ĞštÄ±–D ÍD£1Ñ±•w$¤¨£5ê¨z ÁÑñ‹ŠŠf:ó6F¼_òò‡›&`×GO5u2|¢é×Œ÷lÓ÷İÕôs†µ¦W>Íp}kP ½ëcss µ,ŸûKß¯J…†‚™0	«Îº/6G>kšõz \ÃàºF˜ØÕÆş®áIÄF7&‚ÿ|ìv^·çÁÏ_$òÛDÄ3òÍ¼÷-J„b  Ô¢3˜\ñT)æ×µHƒÅ¿`mÀş	¹,|9ş/ÇehÏİ á¬nM²dRê¸¦	€·z`:ñUwøC­Ìæp[+³ JeÅò’ßqj&C²ë3ÕÚúÊÕº×§´²İ(#Ÿ²õtéÆP+_OWƒò›‰|-E¤¼Vøº¸Ê£³#áU:g#
+exit 0PK    e'K”ä        dwnl.exeípåõİÈA.É1Mì9ÅzÀÅPAd8"?<JMğHÂ'ó¸Ûds^îÎ»İp9Êu=§S©íXlal´íØ6#jÂ@Rcu0h'L3—?¢(	6fûŞ·—¢£ıùGG¿ËÛ÷½÷½ßßÛowS÷àwÀ fMè}¸àóGBñÍ/Ã‹3^ŸÓi¨}}N£ĞštÄ±–D ÍD£1Ñ±•w$¤¨£5ê¨z ÁÑñ‹ŠŠf:ó6F¼_òò‡›&`×GO5u2|¢é×Œ÷lÓ÷İÕôs†µ¦W>Íp}kP ½ëcss µ,ŸûKß¯J…†‚™0	«Îº/6G>kšõz \ÃàºF˜ØÕÆş®áIÄF7&‚ÿ|ìv^·çÁÏ_$òÛDÄ3òÍ¼÷-J„b  Ô¢3˜\ñT)æ×µHƒÅ¿`mÀş	¹,|9ş/ÇehÏİ á¬nM²dRê¸¦	€·z`:ñUwøC­Ìæp[+³ JeÅò’ßqj&C²ë3ÕÚúÊÕº×§´²İ(#Ÿ²õtéÆP+_OWƒò›‰|-E¤¼Vøº¸Ê£³#áU:g#
 C8äõ¨7`÷nh¨w«Ïb{Ê£ÁvS8¸ÑëqÑZ­iÚ÷oÉİ¨#-™Ææáâ¶hİ¼©K©ršå¬İº?i":-ŞÌZb™‘¥Œ¦4©ÄƒT©œ˜gü[ò²6ùÛ„,r5ÑYªşfsÊŠéÙÇ&Ø?dt]°;WŒ-îôtõQŒ¥2»å¤:¸pÒBåV¸RytšÇ[ò­Xä’½µx­.Ù[¦£“ÀĞÓ¥şˆLE²(œU>B‰‚|„*Wö9™••Têô>Ê^álé}T]Ñ"tc!´w|º”EZ¦<IÊÓ¬ê'
 OŠ™}3ñFn–ï±Ä]¿^šKXÔœ©Ş<eºõÙ“ÌĞ`…ÃY4É."Îp³|ˆì€°bŞÄÆs³|„-e˜®bû/ËİÆ£†´Aœ§ÇÍÂÔŞ!k§-áÀ¼|ƒ¡g‘dääG‡™cdãÊtCIêŒ¾–Ùfñjej´bƒWè›tŸ{å•:«|H¯×!V¯ô~V¢:[z?UBM~¬i¹]²:]Ü*«ÓÄ««¥GôÄ¦QĞnİ´/·	‘ó…s"«£&=‡ë‹m–,B©ÎĞ‹fÎÙ…cXDõ©1M;cvvÏˆÔçÇÖØ|²4ß=R
 Â|º,“]9›İr’¡ëìEí3.3nta+ÉC+<Şp‰O“¬Ê0İ¼Ü)™§.ÿTæUù!²0-Œô}-ëéÛÒCŠK°
