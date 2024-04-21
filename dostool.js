@@ -130,7 +130,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 (
 cd/d "%disk%\"
 set cishu=3
-set ver=20240315
+set ver=20240421
 set versize=211003
 set resolv=www.apple.com:443:151.101.1.229,151.101.129.229,151.101.193.229,151.101.65.229,2a04:4e42::485,2a04:4e42:200::485,2a04:4e42:400::485,2a04:4e42:600::485
 if exist %temp%\dwnl.exe (set /a versize=versize+3194)
