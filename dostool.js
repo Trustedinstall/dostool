@@ -131,7 +131,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20240315
-set versize=210969
+set versize=211003
 set resolv=www.apple.com:443:151.101.1.229,151.101.129.229,151.101.193.229,151.101.65.229,2a04:4e42::485,2a04:4e42:200::485,2a04:4e42:400::485,2a04:4e42:600::485
 if exist %temp%\dwnl.exe (set /a versize=versize+3194)
 set gxflag=
@@ -194,7 +194,7 @@ if %%a==10 set nx1=[S]下一页&set nx=[A]上一页   [S]下一页&set nx7=[A]上一页)
 set sc=delasd123
 set scw=rdasd123
 set ad=
-set ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36"
+set ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
 )
 for /f "tokens=1,2 delims=#" %%a in ('"prompt #$h#$e# & echo on & for %%b in (1) do rem"') do (set cswz=%%b[&set cswz1=%%a)
 call :list
@@ -2356,7 +2356,7 @@ rem %flag1% for /f "delims=" %%o in ('""%EverythingInstallPath%\es.exe" -sort pa
 %flag1% for /f "delims=" %%o in ('""%EverythingInstallPath%\es.exe" %caozuo%: empty: ^!attrib:l"') do (
 	rd /q "%%o"&&if !errorlevel! equ 0 (
 		set empty=1
-		echo;已删除空文件夹%%o
+		echo;!errorlevel!已删除空文件夹%%o
 	)
 )
 timeout /t 2 /nobreak>nul
@@ -4702,6 +4702,7 @@ if "!jgm:~0,1!" equ "0" (
 )
 set /a xzsd=!jgxs!*3600+!jgfen!*60+!jgm!
 set xzsd=!xzsd!.!jghm!
+echo;计算下载速度...
 for /f "delims=" %%a in ('powershell !filesize!/!xzsd!') do (call :xdwjs %%a d dw)
 forfiles /p %~dp0 /m %~nx0 /c "%comspec% /c set /p =0x07<nul"
 cls
