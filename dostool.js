@@ -74,14 +74,14 @@ if exist "%windir%\system32\tar.exe" (
 set xzflag1=
 set xzflag=rem
 set ddf=DownloadFile
-set resolv=abc.jsdelivr.net:443:151.101.1.229,151.101.129.229,151.101.193.229,151.101.65.229,2a04:4e42::485,2a04:4e42:200::485,2a04:4e42:400::485,2a04:4e42:600::485
+set resolve=abc.jsdelivr.net:443:151.101.1.229,151.101.129.229,151.101.193.229,151.101.65.229,2a04:4e42::485,2a04:4e42:200::485,2a04:4e42:400::485,2a04:4e42:600::485
 )
 if exist %systemroot%\system32\curl.exe (
     set xzflag1=rem
     set xzflag=
 )
 %xzflag% cd /d %temp%
-%xzflag% start /min %comspec% /c curl -k -H "host: cdn.jsdelivr.net" --http2 -L -# -C - --retry 3 --retry-delay 1 --resolv !resolv! -o dostoolupdate https://abc.jsdelivr.net/gh/Trustedinstall/dostool/update.js
+%xzflag% start /min %comspec% /c curl -H "host: cdn.jsdelivr.net" -L -# -C - --retry 3 --retry-delay 1 --resolve !resolve! -o dostoolupdate https://abc.jsdelivr.net/gh/Trustedinstall/dostool/update.js
 %xzflag1% powershell -w hidden -c (new-object System.Net.WebClient).%ddf%( 'https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js','%temp%\dostoolupdate')
 exit 0
 :stwt
@@ -130,9 +130,9 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 (
 cd/d "%disk%\"
 set cishu=3
-set ver=20240528
-set versize=211018
-set resolv=abc.jsdelivr.net:443:151.101.1.229,151.101.129.229,151.101.193.229,151.101.65.229,2a04:4e42::485,2a04:4e42:200::485,2a04:4e42:400::485,2a04:4e42:600::485
+set ver=20240604
+set versize=211001
+set resolve=abc.jsdelivr.net:443:151.101.1.229,151.101.129.229,151.101.193.229,151.101.65.229,2a04:4e42::485,2a04:4e42:200::485,2a04:4e42:400::485,2a04:4e42:600::485
 if exist %temp%\dwnl.exe (set /a versize=versize+3194)
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
@@ -4761,7 +4761,7 @@ set xzflag=::
 set xzflag1=
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag%pushd %temp%
-%xzflag%curl -k -H "host: cdn.jsdelivr.net" -L -# -C - --retry 3 --retry-delay 1 --resolv !resolv! -o dostoolupdate https://abc.jsdelivr.net/gh/Trustedinstall/dostool/update.js
+%xzflag%curl -H "host: cdn.jsdelivr.net" -L -# -C - --retry 3 --retry-delay 1 --resolve !resolve! -o dostoolupdate https://abc.jsdelivr.net/gh/Trustedinstall/dostool/update.js
 %xzflag%popd
 %xzflag1%certutil -urlcache -split -f https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js %temp%\dostoolupdate
 ::bitsadmin /transfer 检查最新版本... /priority FOREGROUND https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js %temp%\dostoolupdate
@@ -4801,7 +4801,7 @@ set xzflag=::
 set xzflag1=
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag%pushd %temp%
-%xzflag%curl -k -H "host: cdn.jsdelivr.net" --http2 -L -# -C - --retry 3 --retry-delay 1 --resolv !resolv! -o dostool https://abc.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js
+%xzflag%curl -H "host: cdn.jsdelivr.net" -L -# -C - --retry 3 --retry-delay 1 --resolve !resolve! -o dostool https://abc.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js
 %xzflag%popd
 %xzflag%call :hash %temp%\dostool sha1
 %xzflag%if /i "%hash%" equ %doshash% copy /z /y %temp%\dostool %weizhi%&goto chushihua
