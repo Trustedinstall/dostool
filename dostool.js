@@ -18,13 +18,18 @@
 :chushihua
 @echo off&cls&title ¡¡&setlocal enabledelayedexpansion
 if /i "%1"=="-ks" goto ks
+if /i "%1" equ "-chrome" (
+	goto chrome
+)
 if /i "%systemdrive%" equ "x:" goto ks
 goto :tgsu
 set weizhi=%0
 call :su
 :tgsu
 fltmc 1>nul 2>nul
-if %errorlevel%==0 goto ks
+if "!errorlevel!" equ "0" (
+	goto ks
+)
 verify on
 set weizhi=%0
 for /f "delims=" %%a in (!weizhi!) do (
@@ -130,8 +135,8 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 (
 cd/d "%disk%\"
 set cishu=3
-set ver=20240604
-set versize=211003
+set ver=20240619
+set versize=216240
 set resolve=abc.jsdelivr.net:443:151.101.1.229,151.101.129.229,151.101.193.229,151.101.65.229,2a04:4e42::485,2a04:4e42:200::485,2a04:4e42:400::485,2a04:4e42:600::485
 if exist %temp%\dwnl.exe (set /a versize=versize+3194)
 set gxflag=
@@ -381,6 +386,7 @@ if /i "!caidan!" equ "go5" set start=37&goto memuv2
 if /i "!caidan!" equ "go6" set start=46&goto memuv2
 if /i "!caidan!" equ "go7" set start=55&goto memuv2
 if /i "!caidan!" equ "go8" set start=64&goto memuv2
+if /i "!caidan!" equ "go9" set start=73&goto memuv2
 echo ÇëÊäÈëÕıÈ·µÄÑ¡Ïî£¡
 timeout /t 2 /nobreak>nul
 goto memuv2
@@ -2023,28 +2029,28 @@ set ysbak=97;40m
 title Ñ­»·ÏÔÊ¾CPUÕ¼ÓÃÂÊÓëÍøÂçËÙ¶È - %system%
 cls
 echo;ÕıÔÚ»ñÈ¡ÍøÂçĞÅÏ¢...
-for /f "skip=2 tokens=2 delims==" %%a in ('Wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get name /value') do (
+for /f "tokens=2 delims==" %%a in ('"Wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get name /value"') do (
     set netcard=%%a
 )
-for /f "skip=2 tokens=2 delims==" %%a in ('wmic cpu get numberOflogicalprocessors /value') do (
+for /f "tokens=2 delims==" %%a in ('"wmic cpu get numberOflogicalprocessors /value"') do (
     set corenum=%%a
     set /a tghs=corenum*2+4+2
 )
-for /f "skip=2 tokens=2 delims==" %%a in ('wmic cpu get name /value') do (
+for /f "tokens=2 delims==" %%a in ('"wmic cpu get name /value"') do (
     set cpu=%%a
 )
 cls
 :23-1-1
 (
 set xh=
-for /f "skip=2 tokens=2 delims==" %%a in ('Wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get BytesReceivedPersec^,BytesSentPersec /value') do (
+for /f "tokens=2 delims==" %%a in ('"Wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get BytesReceivedPersec^,BytesSentPersec /value"') do (
     set /a "xh+=1"
     if !xh! equ 1 (
         set downspeed=%%a
     )
     if !xh! equ 2 (
         set upspeed=%%a
-        for /f "skip=%tghs% tokens=2 delims==" %%a in ('Wmic Path Win32_PerfFormattedData_PerfOS_Processor Get PercentIdleTime /value') do (
+        for /f "skip=%tghs% tokens=2 delims==" %%a in ('"Wmic Path Win32_PerfFormattedData_PerfOS_Processor Get PercentIdleTime /value"') do (
             set /a lyl=100-%%a
         )
     )
@@ -3009,7 +3015,7 @@ call :sjc "%dosqssj%" "%dosjssj%"
 cls
 echo ¹ØÓÚDOS¹¤¾ßÏä
 echo _______________________________________________________________________________
-echo °æ±¾: 1.8.9 (%ver%.%versize%)
+echo °æ±¾: 1.9.1 (%ver%.%versize%)
 echo ²Ù×÷ÏµÍ³: %system% %bit%Î»
 echo °æÈ¨ËùÓĞ 2012-2024 Administrator ±£ÁôËùÓĞÈ¨Àû
 echo _______________________________________________________________________________
@@ -4968,6 +4974,7 @@ set a69=½âÑ¹msi°²×°ÎÄ¼ş
 set a70=Éú³ÉCMD¿ØÖÆÌ¨É«²Ê±í
 set a71=KMS¼¤»îWindows
 set a72=curl¶à½ø³ÌÏÂÔØ
+set a73=ÓÃÓòÇ°ÖÃ²ÎÊı¿ªÆôChromiumÀàä¯ÀÀÆ÷
 )
 goto :eof
 :colortxt
@@ -5304,6 +5311,177 @@ set shuru=!errorlevel!
 goto :eof
 :00
 exit 0
+:73
+:chrome
+@echo off&setlocal enabledelayedexpansion&chcp 936>nul
+set "ÓòÃûÖØ¶¨Ïò=!temp!\ÓòÃûÖØ¶¨Ïò.txt"
+set "ÓòÃûÖØ½âÎö=!temp!\ÓòÃûÖØ½âÎö.txt"
+set "Ç¿ÖÆÊ¹ÓÃquic=!temp!\Ç¿ÖÆÊ¹ÓÃquic.txt"
+if not exist "!ÓòÃûÖØ¶¨Ïò!" (
+	(
+		echo #wikipedia
+		echo *.wikipedia.org wikidata.org
+		echo;
+		echo #pixiv
+		echo *.pximg.net pximg.net
+		echo;
+		echo #reddit
+		echo reddit.com github.githubassets.com
+		echo *.reddit.com github.githubassets.com
+		echo *.redd.it github.githubassets.com
+		echo *.redditmedia.com github.githubassets.com
+		echo;
+		echo #protonmail
+		echo proton.me pr.tn
+		echo account.proton.me a.pr.tn
+		echo account-api.proton.me b.pr.tn
+		echo mail.proton.me c.pr.tn
+		echo;
+		echo #youtube
+		echo *.youtube.com google-analytics.com
+		echo *.ytimg.com googleadservices.com
+		echo *.ggpht.com googleads.g.doubleclick.net
+		echo youtube.com static.doubleclick.net
+		echo youtu.be mt7.gstatic.com
+		echo;
+		echo #google
+		echo *.google.com googleadservices.com
+		echo *.google.com.hk googleadservices.com
+		echo *.google.com.tw googleadservices.com
+		echo *.googleapis.com googleads.g.doubleclick.net
+		echo *.googleusercontent.com static.doubleclick.net
+		echo *.gstatic.com alt6.gstatic.com
+		echo;
+		echo #github
+		echo github.com octocaptcha.com
+		echo *.github.com octocaptcha.com
+		echo *.githubusercontent.com github.githubassets.com
+		echo *.github.io octocaptcha.com
+		echo;
+		echo #steam
+		echo store.steampowered.com steamuserimages-a.akamaihd.net
+		echo *.store.steampowered.com steamuserimages-a.akamaihd.net
+		echo steamcommunity.com underlords.com
+		echo *.steamcommunity.com underlords.com
+		echo;
+		echo #onedrive
+		echo onedrive.live.com od0.live.com
+		echo skyapi.onedrive.live.com storage.live.com
+		echo;
+		echo #nyaa
+		echo nyaa.si nyaa.ddos-guard.net
+		echo;
+	)>"!ÓòÃûÖØ¶¨Ïò!"
+)
+if not exist "!ÓòÃûÖØ½âÎö!" (
+	(
+		echo #wikipedia
+		echo #wikidata.org [2620:0:863:ed1a::1]
+		echo wikidata.org 208.80.153.224
+		echo;
+		echo #protonmail
+		echo pr.tn 185.70.42.45
+		echo a.pr.tn 185.70.42.36
+		echo b.pr.tn 185.70.42.20
+		echo c.pr.tn 185.70.42.37
+		echo;
+		echo #youtube google
+		echo #mt7.gstatic.com [2404:6800:4008:c01::5a]
+		echo mt7.gstatic.com 216.239.32.40
+		echo #alt6.gstatic.com [2404:6800:4008:c01::5a]
+		echo alt6.gstatic.com 216.239.32.40
+		echo #google-analytics.com [2404:6800:4008:c01::5a]
+		echo google-analytics.com 216.239.32.40
+		echo #googleadservices.com [2404:6800:4008:c01::5a]
+		echo googleadservices.com 216.239.32.40
+		echo #googleads.g.doubleclick.net [2404:6800:4008:c01::5a]
+		echo googleads.g.doubleclick.net 216.239.32.40
+		echo #static.doubleclick.net [2404:6800:4008:c01::5a]
+		echo static.doubleclick.net 216.239.32.40
+		echo;
+		echo #nyaa
+		echo nyaa.ddos-guard.net 186.2.163.20
+		echo;
+	)>"!ÓòÃûÖØ½âÎö!"
+)
+if not exist "!Ç¿ÖÆÊ¹ÓÃquic!" (
+	(
+		echo #²»Ö§³ÖÍ¨Åä·û
+		echo www.pixiv.net
+		echo pixiv.net
+		echo www.google.com.hk
+		echo www.google.com.tw
+		echo www.google.com
+		echo www.youtube.com
+		echo acg.rip
+		echo www.quora.com
+		echo quora.com
+		echo mnya.tw
+		echo;
+	)>"!Ç¿ÖÆÊ¹ÓÃquic!"
+)
+cd /d %~dp0
+rem ºöÂÔÖ¤Êé´íÎó 0=½ûÓÃ 1=ÆôÓÃ
+set "pass_cert_error=0"
+rem ÉèÖÃÖ§³ÖchromeÃüÁîĞĞµÄä¯ÀÀÆ÷µÄÂ·¾¶
+set "chromium="C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe""
+if "!pass_cert_error!" equ "1" (
+	set "ignore-certificate-errors=--ignore-certificate-errors"
+)
+if exist "chrome.exe" (
+	set "chrome=chrome.exe"
+	goto startchrome
+) else (
+	for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe" /v Path"') do (
+		set "chrome=%%a"
+	)
+	for /f "delims=" %%a in ("!chrome!") do (
+		set "chrome=%%~fa"
+	)
+	if exist "!chrome!\Chrome.exe" (
+		set "chrome=!chrome!\Chrome.exe"
+		goto startchrome
+	) else (
+		for /f "delims=" %%a in ("!chromium!") do (
+			set "chrome=%%~fa"
+		)
+		if exist "!chrome!" (
+			goto startchrome
+		) else (
+			msg %username% Ã»ÓĞÕÒµ½ä¯ÀÀÆ÷Â·¾¶
+			exit 0
+		)
+	)
+)
+:startchrome
+if exist "!ÓòÃûÖØ¶¨Ïò!" (
+	for /f "eol=# tokens=1,2 delims= " %%a in (!ÓòÃûÖØ¶¨Ïò!) do (
+		set "host-rules=!host-rules!MAP %%a %%b, "
+	)
+	set "host-rules=--host-rules="!host-rules!""
+)
+if exist "!ÓòÃûÖØ½âÎö!" (
+	for /f "eol=# tokens=1,2 delims= " %%a in (!ÓòÃûÖØ½âÎö!) do (
+		set "host-resolver-rules=!host-resolver-rules!MAP %%a %%b, "
+	)
+	set "host-resolver-rules=--host-resolver-rules="!host-resolver-rules!""
+)
+if exist "!Ç¿ÖÆÊ¹ÓÃquic!" (
+	for /f "eol=# tokens=1,2 delims=:" %%a in (!Ç¿ÖÆÊ¹ÓÃquic!) do (
+		if "%%b" equ "" (
+			set "origin-to-force-quic-on=!origin-to-force-quic-on!%%a:443, "
+		) else (
+			set "origin-to-force-quic-on=!origin-to-force-quic-on!%%a:%%b, "
+		)
+	)
+	set "origin-to-force-quic-on=--origin-to-force-quic-on="!origin-to-force-quic-on!""
+)
+start /max "" "!chrome!" --profile-directory=Default --test-type !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors!
+if "%1" neq "-chrome" (
+	goto memuv2
+) else (
+	goto :eof
+)
 PK    e'K”ä        dwnl.exeípåõİÈA.É1Mì9ÅzÀÅPAd8"?<JMğHÂ'ó¸Ûds^îÎ»İp9Êu=§S©íXlal´íØ6#jÂ@Rcu0h'L3—?¢(	6fûŞ·—¢£ıùGG¿ËÛ÷½÷½ßßÛowS÷àwÀ fMè}¸àóGBñÍ/Ã‹3^ŸÓi¨}}N£ĞštÄ±–D ÍD£1Ñ±•w$¤¨£5ê¨z ÁÑñ‹ŠŠf:ó6F¼_òò‡›&`×GO5u2|¢é×Œ÷lÓ÷İÕôs†µ¦W>Íp}kP ½ëcss µ,ŸûKß¯J…†‚™0	«Îº/6G>kšõz \ÃàºF˜ØÕÆş®áIÄF7&‚ÿ|ìv^·çÁÏ_$òÛDÄ3òÍ¼÷-J„b  Ô¢3˜\ñT)æ×µHƒÅ¿`mÀş	¹,|9ş/ÇehÏİ á¬nM²dRê¸¦	€·z`:ñUwøC­Ìæp[+³ JeÅò’ßqj&C²ë3ÕÚúÊÕº×§´²İ(#Ÿ²õtéÆP+_OWƒò›‰|-E¤¼Vøº¸Ê£³#áU:g#
 C8äõ¨7`÷nh¨w«Ïb{Ê£ÁvS8¸ÑëqÑZ­iÚ÷oÉİ¨#-™Ææáâ¶hİ¼©K©ršå¬İº?i":-ŞÌZb™‘¥Œ¦4©ÄƒT©œ˜gü[ò²6ùÛ„,r5ÑYªşfsÊŠéÙÇ&Ø?dt]°;WŒ-îôtõQŒ¥2»å¤:¸pÒBåV¸RytšÇ[ò­Xä’½µx­.Ù[¦£“ÀĞÓ¥şˆLE²(œU>B‰‚|„*Wö9™••Têô>Ê^álé}T]Ñ"tc!´w|º”EZ¦<IÊÓ¬ê'
 OŠ™}3ñFn–ï±Ä]¿^šKXÔœ©Ş<eºõÙ“ÌĞ`…ÃY4É."Îp³|ˆì€°bŞÄÆs³|„-e˜®bû/ËİÆ£†´Aœ§ÇÍÂÔŞ!k§-áÀ¼|ƒ¡g‘dääG‡™cdãÊtCIêŒ¾–Ùfñjej´bƒWè›tŸ{å•:«|H¯×!V¯ô~V¢:[z?UBM~¬i¹]²:]Ü*«ÓÄ««¥GôÄ¦QĞnİ´/·	‘ó…s"«£&=‡ë‹m–,B©ÎĞ‹fÎÙ…cXDõ©1M;cvvÏˆÔçÇÖØ|²4ß=R
