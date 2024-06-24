@@ -136,7 +136,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20240624
-set versize=216499
+set versize=216506
 set resolve=abc.jsdelivr.net:443:151.101.1.229,151.101.129.229,151.101.193.229,151.101.65.229,2a04:4e42::485,2a04:4e42:200::485,2a04:4e42:400::485,2a04:4e42:600::485
 if exist %temp%\dwnl.exe (set /a versize=versize+3194)
 set gxflag=
@@ -5455,6 +5455,7 @@ if exist "chrome.exe" (
 for /f "delims=" %%a in ("!chrome!") do (
 	tasklist /fi "IMAGENAME eq %%~nxa"|findstr /i /c:"%%~nxa">nul
 	if "!errorlevel!" equ "0" (
+		cls
 		echo;%%~nxa正在运行,请关闭浏览器后重试.
 		set /p =按任意键退出<nul&pause>nul
 		if "%1" neq "-chrome" (
