@@ -135,8 +135,8 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 (
 cd/d "%disk%\"
 set cishu=3
-set ver=20240619
-set versize=216240
+set ver=20240624
+set versize=216499
 set resolve=abc.jsdelivr.net:443:151.101.1.229,151.101.129.229,151.101.193.229,151.101.65.229,2a04:4e42::485,2a04:4e42:200::485,2a04:4e42:400::485,2a04:4e42:600::485
 if exist %temp%\dwnl.exe (set /a versize=versize+3194)
 set gxflag=
@@ -5407,8 +5407,6 @@ if not exist "!域名重解析!" (
 if not exist "!强制使用quic!" (
 	(
 		echo #不支持通配符
-		echo www.pixiv.net
-		echo pixiv.net
 		echo www.google.com.hk
 		echo www.google.com.tw
 		echo www.google.com
@@ -5454,6 +5452,18 @@ if exist "chrome.exe" (
 	)
 )
 :startchrome
+for /f "delims=" %%a in ("!chrome!") do (
+	tasklist /fi "IMAGENAME eq %%~nxa"|findstr /i /c:"%%~nxa">nul
+	if "!errorlevel!" equ "0" (
+		echo;%%~nxa正在运行,请关闭浏览器后重试.
+		set /p =按任意键退出<nul&pause>nul
+		if "%1" neq "-chrome" (
+			goto memuv2
+		) else (
+			goto :eof
+		)
+	)
+)
 if exist "!域名重定向!" (
 	for /f "eol=# tokens=1,2 delims= " %%a in (!域名重定向!) do (
 		set "host-rules=!host-rules!MAP %%a %%b, "
