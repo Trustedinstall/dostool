@@ -135,8 +135,8 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 (
 cd/d "%disk%\"
 set cishu=3
-set ver=20240624
-set versize=216506
+set ver=20240703
+set versize=216991
 set resolve=abc.jsdelivr.net:443:151.101.1.229,151.101.129.229,151.101.193.229,151.101.65.229,2a04:4e42::485,2a04:4e42:200::485,2a04:4e42:400::485,2a04:4e42:600::485
 if exist %temp%\dwnl.exe (set /a versize=versize+3194)
 set gxflag=
@@ -199,7 +199,7 @@ if %%a==10 set nx1=[S]下一页&set nx=[A]上一页   [S]下一页&set nx7=[A]上一页)
 set sc=delasd123
 set scw=rdasd123
 set ad=
-set ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+set ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
 )
 for /f "tokens=1,2 delims=#" %%a in ('"prompt #$h#$e# & echo on & for %%b in (1) do rem"') do (set cswz=%%b[&set cswz1=%%a)
 call :list
@@ -4773,11 +4773,12 @@ if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 ::bitsadmin /transfer 检查最新版本... /priority FOREGROUND https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js %temp%\dostoolupdate
 :jcgxjs
 cls
+if exist "%temp%\dostoolupdate" (
 for /f "delims=: tokens=2" %%a in (%temp%\dostoolupdate) do (set doshash="%%a")
 for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
 set /a gxjg=%%a-!ver!
 if !gxjg! gtr 0 (set /p =检查到更新版本: <nul
-call :colortxt a %%a&echo;&goto startupdate) else (echo 没有检查到更新版本))
+call :colortxt a %%a&echo;&goto startupdate) else (echo 没有检查到更新版本)))
 del /f /q %temp%\dostoolupdate>nul 2>nul
 echo _______________________________________________________________________________
 echo 按任意键返回菜单&pause>nul
@@ -4858,10 +4859,36 @@ if %jgxs% lss 10 set jgxs=0%jgxs%
 set sjc=
 set sjc=%jgxs%%jgfen%%jgm%%jghm%
 goto :eof
+:zfccda
+set zfcgs=0
+set zfc=
+set zfc=%1
+:zfcxh
+if "!zfc:~%zfcgs%,1!" equ "" (
+	set /a zfcgs-=2
+	goto :eof
+) else (
+	set /a zfcgs+=1
+	goto zfcxh
+)
+goto :eof
 :zfccd
 set zfc=
 set zfc=%1
-for /l %%a in (0,1,1000) do if "!zfc:~%%a,1!"=="" set/a zfcgs=%%a-2&&goto :eof
+for /l %%a in (1,1,1000) do (
+	if "!zfc:~%%a,1!" equ "" (
+		set /a zfcgs=%%a-2
+		goto :eof
+	) 
+)
+goto :eof
+:strlen
+setlocal enabledelayedexpansion
+set "$=!%1!#"
+set N=&for %%a in (4096 2048 1024 512 256 128 64 32 16)do if !$:~%%a!. NEQ . set/aN+=%%a&set $=!$:~%%a!
+set $=!$!fedcba9876543210&set/aN+=0x!$:~16,1!
+endlocal&If %2. neq . (set/a%2=%N%)else echo %N%
+goto :eof
 :ys
 set ys=%1
 set ysks=%time%
@@ -5410,7 +5437,6 @@ if not exist "!强制使用quic!" (
 		echo www.google.com.hk
 		echo www.google.com.tw
 		echo www.google.com
-		echo www.youtube.com
 		echo acg.rip
 		echo www.quora.com
 		echo quora.com
