@@ -137,7 +137,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20240703
-set versize=217138
+set versize=217140
 set resolve=abc.jsdelivr.net:443:151.101.1.229,151.101.129.229,151.101.193.229,151.101.65.229,2a04:4e42::485,2a04:4e42:200::485,2a04:4e42:400::485,2a04:4e42:600::485
 if exist %temp%\dwnl.exe (set /a versize=versize+3194)
 set gxflag=
@@ -5497,13 +5497,13 @@ for /f "delims=" %%a in ("!chrome!") do (
 	)
 )
 if exist "!域名重定向!" (
-	for /f "eol=# tokens=1,2 delims==" %%a in (!域名重定向!) do (
+	for /f "eol=# tokens=1,2 delims== " %%a in (!域名重定向!) do (
 		set "host-rules=!host-rules!MAP %%a %%b, "
 	)
 	set "host-rules=--host-rules="!host-rules!""
 )
 if exist "!域名重解析!" (
-	for /f "eol=# tokens=1,2 delims==" %%a in (!域名重解析!) do (
+	for /f "eol=# tokens=1,2 delims== " %%a in (!域名重解析!) do (
 		set "host-resolver-rules=!host-resolver-rules!MAP %%a %%b, "
 	)
 	set "host-resolver-rules=--host-resolver-rules="!host-resolver-rules!""
