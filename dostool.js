@@ -42,6 +42,7 @@ if exist %localappdata%\Microsoft\WindowsApps\wt.exe (
 )
 ::start /min %comspec% /c powershell -noprofile start-process -filepath "%comspec%" -argumentlist '"/c %0 -ks"' -verb runas
 ::start /min %comspec% /c powershell -noprofile start-process -filepath "wt" -argumentlist '"%0 -ks"' -verb runas>nul 2>nul
+exit 0
 if exist "%windir%\system32\tar.exe" (
 	tar -xf %0 -C %temp%>nul 2>nul
 	if !errorlevel! neq 0 (
@@ -90,10 +91,10 @@ if exist %systemroot%\system32\curl.exe (
 %xzflag1% powershell -w hidden -c (new-object System.Net.WebClient).%ddf%( 'https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js','%temp%\dostoolupdate')
 exit 0
 :stwt
-start %comspec% /c mshta vbscript:createobject("shell.application").shellexecute("%localappdata%\Microsoft\WindowsApps\wt.exe","%weizhi% -ks","","runas",1)(window.close)
+start /min %comspec% /c mshta vbscript:createobject("shell.application").shellexecute("%localappdata%\Microsoft\WindowsApps\wt.exe","%weizhi% -ks","","runas",1)(window.close)
 goto :eof
 :stcmd
-start %comspec% /c mshta vbscript:createobject("shell.application").shellexecute("%weizhi%","-ks","","runas",1)(window.close)
+start /min %comspec% /c mshta vbscript:createobject("shell.application").shellexecute("%weizhi%","-ks","","runas",1)(window.close)
 goto :eof
 ::if %errorlevel% neq 0 (echo Set UAC = CreateObject^("Shell.Application"^)>"%temp%\tmp.vbs"
 ::echo UAC.ShellExecute %0,"","","runas",^1>>"%temp%\tmp.vbs"
@@ -136,7 +137,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20240703
-set versize=216991
+set versize=217138
 set resolve=abc.jsdelivr.net:443:151.101.1.229,151.101.129.229,151.101.193.229,151.101.65.229,2a04:4e42::485,2a04:4e42:200::485,2a04:4e42:400::485,2a04:4e42:600::485
 if exist %temp%\dwnl.exe (set /a versize=versize+3194)
 set gxflag=
@@ -5347,87 +5348,91 @@ set "Ç¿ÖÆÊ¹ÓÃquic=!temp!\Ç¿ÖÆÊ¹ÓÃquic.txt"
 if not exist "!ÓòÃûÖØ¶¨Ïò!" (
 	(
 		echo #wikipedia
-		echo *.wikipedia.org wikidata.org
+		echo *.wikipedia.org=wikidata.org
 		echo;
 		echo #pixiv
-		echo *.pximg.net pximg.net
+		echo *.pximg.net=pximg.net
 		echo;
 		echo #reddit
-		echo reddit.com github.githubassets.com
-		echo *.reddit.com github.githubassets.com
-		echo *.redd.it github.githubassets.com
-		echo *.redditmedia.com github.githubassets.com
+		echo reddit.com=github.githubassets.com
+		echo *.reddit.com=github.githubassets.com
+		echo *.redd.it=github.githubassets.com
+		echo *.redditmedia.com=github.githubassets.com
 		echo;
 		echo #protonmail
-		echo proton.me pr.tn
-		echo account.proton.me a.pr.tn
-		echo account-api.proton.me b.pr.tn
-		echo mail.proton.me c.pr.tn
+		echo proton.me=pr.tn
+		echo account.proton.me=a.pr.tn
+		echo account-api.proton.me=b.pr.tn
+		echo mail.proton.me=c.pr.tn
 		echo;
 		echo #youtube
-		echo *.youtube.com google-analytics.com
-		echo *.ytimg.com googleadservices.com
-		echo *.ggpht.com googleads.g.doubleclick.net
-		echo youtube.com static.doubleclick.net
-		echo youtu.be mt7.gstatic.com
+		echo *.youtube.com=google-analytics.com
+		echo *.ytimg.com=googleadservices.com
+		echo *.ggpht.com=googleads.g.doubleclick.net
+		echo youtube.com=static.doubleclick.net
+		echo youtu.be=mt7.gstatic.com
 		echo;
 		echo #google
-		echo *.google.com googleadservices.com
-		echo *.google.com.hk googleadservices.com
-		echo *.google.com.tw googleadservices.com
-		echo *.googleapis.com googleads.g.doubleclick.net
-		echo *.googleusercontent.com static.doubleclick.net
-		echo *.gstatic.com alt6.gstatic.com
+		echo *.google.com=googleadservices.com
+		echo *.google.com.hk=googleadservices.com
+		echo *.google.com.tw=googleadservices.com
+		echo *.googleapis.com=googleads.g.doubleclick.net
+		echo *.googleusercontent.com=static.doubleclick.net
+		echo *.gstatic.com=alt6.gstatic.com
 		echo;
 		echo #github
-		echo github.com octocaptcha.com
-		echo *.github.com octocaptcha.com
-		echo *.githubusercontent.com github.githubassets.com
-		echo *.github.io octocaptcha.com
+		echo github.com=octocaptcha.com
+		echo *.github.com=octocaptcha.com
+		echo *.githubusercontent.com=github.githubassets.com
+		echo *.githubassets.com=fastly.com
+		echo *.github.io=octocaptcha.com
 		echo;
 		echo #steam
-		echo store.steampowered.com steamuserimages-a.akamaihd.net
-		echo *.store.steampowered.com steamuserimages-a.akamaihd.net
-		echo steamcommunity.com underlords.com
-		echo *.steamcommunity.com underlords.com
+		echo store.steampowered.com=steamuserimages-a.akamaihd.net
+		echo *.store.steampowered.com=steamuserimages-a.akamaihd.net
+		echo steamcommunity.com=underlords.com
+		echo *.steamcommunity.com=underlords.com
 		echo;
 		echo #onedrive
-		echo onedrive.live.com od0.live.com
-		echo skyapi.onedrive.live.com storage.live.com
+		echo onedrive.live.com=od0.live.com
+		echo skyapi.onedrive.live.com=storage.live.com
 		echo;
 		echo #nyaa
-		echo nyaa.si nyaa.ddos-guard.net
+		echo nyaa.si=nyaa.ddos-guard.net
 		echo;
+		echo #imgur
+		echo imgur.com=fastly.com
+		echo *.imgur.com=github.githubassets.com
 	)>"!ÓòÃûÖØ¶¨Ïò!"
 )
 if not exist "!ÓòÃûÖØ½âÎö!" (
 	(
 		echo #wikipedia
-		echo #wikidata.org [2620:0:863:ed1a::1]
-		echo wikidata.org 208.80.153.224
+		echo #wikidata.org=[2620:0:863:ed1a::1]
+		echo wikidata.org=208.80.153.224
 		echo;
 		echo #protonmail
-		echo pr.tn 185.70.42.45
-		echo a.pr.tn 185.70.42.36
-		echo b.pr.tn 185.70.42.20
-		echo c.pr.tn 185.70.42.37
+		echo pr.tn=185.70.42.45
+		echo a.pr.tn=185.70.42.36
+		echo b.pr.tn=185.70.42.20
+		echo c.pr.tn=185.70.42.37
 		echo;
 		echo #youtube google
-		echo #mt7.gstatic.com [2404:6800:4008:c01::5a]
-		echo mt7.gstatic.com 216.239.32.40
-		echo #alt6.gstatic.com [2404:6800:4008:c01::5a]
-		echo alt6.gstatic.com 216.239.32.40
-		echo #google-analytics.com [2404:6800:4008:c01::5a]
-		echo google-analytics.com 216.239.32.40
-		echo #googleadservices.com [2404:6800:4008:c01::5a]
-		echo googleadservices.com 216.239.32.40
-		echo #googleads.g.doubleclick.net [2404:6800:4008:c01::5a]
-		echo googleads.g.doubleclick.net 216.239.32.40
-		echo #static.doubleclick.net [2404:6800:4008:c01::5a]
-		echo static.doubleclick.net 216.239.32.40
+		echo #mt7.gstatic.com=[2404:6800:4008:c01::5a]
+		echo mt7.gstatic.com=216.239.32.40
+		echo #alt6.gstatic.com=[2404:6800:4008:c01::5a]
+		echo alt6.gstatic.com=216.239.32.40
+		echo #google-analytics.com=[2404:6800:4008:c01::5a]
+		echo google-analytics.com=216.239.32.40
+		echo #googleadservices.com=[2404:6800:4008:c01::5a]
+		echo googleadservices.com=216.239.32.40
+		echo #googleads.g.doubleclick.net=[2404:6800:4008:c01::5a]
+		echo googleads.g.doubleclick.net=216.239.32.40
+		echo #static.doubleclick.net=[2404:6800:4008:c01::5a]
+		echo static.doubleclick.net=216.239.32.40
 		echo;
 		echo #nyaa
-		echo nyaa.ddos-guard.net 186.2.163.20
+		echo nyaa.ddos-guard.net=186.2.163.20
 		echo;
 	)>"!ÓòÃûÖØ½âÎö!"
 )
@@ -5492,13 +5497,13 @@ for /f "delims=" %%a in ("!chrome!") do (
 	)
 )
 if exist "!ÓòÃûÖØ¶¨Ïò!" (
-	for /f "eol=# tokens=1,2 delims= " %%a in (!ÓòÃûÖØ¶¨Ïò!) do (
+	for /f "eol=# tokens=1,2 delims==" %%a in (!ÓòÃûÖØ¶¨Ïò!) do (
 		set "host-rules=!host-rules!MAP %%a %%b, "
 	)
 	set "host-rules=--host-rules="!host-rules!""
 )
 if exist "!ÓòÃûÖØ½âÎö!" (
-	for /f "eol=# tokens=1,2 delims= " %%a in (!ÓòÃûÖØ½âÎö!) do (
+	for /f "eol=# tokens=1,2 delims==" %%a in (!ÓòÃûÖØ½âÎö!) do (
 		set "host-resolver-rules=!host-resolver-rules!MAP %%a %%b, "
 	)
 	set "host-resolver-rules=--host-resolver-rules="!host-resolver-rules!""
@@ -5513,24 +5518,9 @@ if exist "!Ç¿ÖÆÊ¹ÓÃquic!" (
 	)
 	set "origin-to-force-quic-on=--origin-to-force-quic-on="!origin-to-force-quic-on!""
 )
-start /max "" "!chrome!" --profile-directory=Default --test-type !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors!
+start /max "" "!chrome!" --profile-directory=Default --test-type !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors! %2
 if "%1" neq "-chrome" (
 	goto memuv2
 ) else (
 	goto :eof
 )
-PK    e'K”ä        dwnl.exeípåõİÈA.É1Mì9ÅzÀÅPAd8"?<JMğHÂ'ó¸Ûds^îÎ»İp9Êu=§S©íXlal´íØ6#jÂ@Rcu0h'L3—?¢(	6fûŞ·—¢£ıùGG¿ËÛ÷½÷½ßßÛowS÷àwÀ fMè}¸àóGBñÍ/Ã‹3^ŸÓi¨}}N£ĞštÄ±–D ÍD£1Ñ±•w$¤¨£5ê¨z ÁÑñ‹ŠŠf:ó6F¼_òò‡›&`×GO5u2|¢é×Œ÷lÓ÷İÕôs†µ¦W>Íp}kP ½ëcss µ,ŸûKß¯J…†‚™0	«Îº/6G>kšõz \ÃàºF˜ØÕÆş®áIÄF7&‚ÿ|ìv^·çÁÏ_$òÛDÄ3òÍ¼÷-J„b  Ô¢3˜\ñT)æ×µHƒÅ¿`mÀş	¹,|9ş/ÇehÏİ á¬nM²dRê¸¦	€·z`:ñUwøC­Ìæp[+³ JeÅò’ßqj&C²ë3ÕÚúÊÕº×§´²İ(#Ÿ²õtéÆP+_OWƒò›‰|-E¤¼Vøº¸Ê£³#áU:g#
-C8äõ¨7`÷nh¨w«Ïb{Ê£ÁvS8¸ÑëqÑZ­iÚ÷oÉİ¨#-™Ææáâ¶hİ¼©K©ršå¬İº?i":-ŞÌZb™‘¥Œ¦4©ÄƒT©œ˜gü[ò²6ùÛ„,r5ÑYªşfsÊŠéÙÇ&Ø?dt]°;WŒ-îôtõQŒ¥2»å¤:¸pÒBåV¸RytšÇ[ò­Xä’½µx­.Ù[¦£“ÀĞÓ¥şˆLE²(œU>B‰‚|„*Wö9™••Têô>Ê^álé}T]Ñ"tc!´w|º”EZ¦<IÊÓ¬ê'
-OŠ™}3ñFn–ï±Ä]¿^šKXÔœ©Ş<eºõÙ“ÌĞ`…ÃY4É."Îp³|ˆì€°bŞÄÆs³|„-e˜®bû/ËİÆ£†´Aœ§ÇÍÂÔŞ!k§-áÀ¼|ƒ¡g‘dääG‡™cdãÊtCIêŒ¾–Ùfñjej´bƒWè›tŸ{å•:«|H¯×!V¯ô~V¢:[z?UBM~¬i¹]²:]Ü*«ÓÄ««¥GôÄ¦QĞnİ´/·	‘ó…s"«£&=‡ë‹m–,B©ÎĞ‹fÎÙ…cXDõ©1M;cvvÏˆÔçÇÖØ|²4ß=R
-Â|º,“]9›İr’¡ëìEí3.3nta+ÉC+<Şp‰O“¬Ê0İ¼Ü)™§.ÿTæUù!²0-Œô}-ëéÛÒCŠK°
-Ãø\hğx•«)MÄıº$c¥¦,İÒ™Ôìİ4w*“Šÿ&g3©mã4¹Ø¹‡
-Êõ§ñ HErÄê4Xˆ7œæF3\ÖÉˆXàãJºn "Ë0.»™g¸î9½mÀLÒuhç}töheN–jÉŞ÷©‡¸^yÔ ~U5Š÷È£&ñnyÔ,.o¥İÙR…¼Si›ŸëšØ:ãÖÎcc¬òÎaÌ˜æÍzÈáÛQnm‚¯²gù	ÑìrIÖåW¥b¹[|­ãÜ¨Œ.«ë—Léº‹ËêTÂnÌIÍ~-¿Zn¡³1›–ÆÔºJe}¾Ç‚Şüªàš{í ´NQk ò ¾'xdªE¨­§®HæÊln'FÂ ®ÂúT¢í†{•éÍm¡ÓiSO—GX”auåGèúŠOº]Yj¥óè<6J`ÁÅÜÚy÷a‘"Èº„á9¬4ûõ€ròø¸h•Ç5é&a#.å¦	vDâyI,NÖµ…ÎQ‹§òŠ¼Ãi1Š72‰³„‹ÉF7¢Tµ%g¬ìÑâfõ‡³zì*P5ÊM9Ë;ú¬•(Äã^(Ø[ìñjR©²Ó¢I¶L\óxÕ:Km˜±eùé³dÍM;ş(Š6ËÎğoQº6m>iƒ	cçÔ•è`W{A'3W‚ÆĞµ’ú.¨V~€-ß‹×ğ|á,"õ:iŞ³’^\ê”*¯ÀIf7‘{î¢÷F©´ä·Õö=WQNœƒïxqºÌ ®s/½(µ¿WÙ³l?õa®XŞ&·_"ZEºä{'°Sd~Â­l#ÕG.r.Æä¢ù„´²FzÌ9HcÏ»5›Q‡k‰€ç"¥^¦._	8É*|×Nõ~‚ì©t
-Géı	åó+$ÛÉ w1Ã]tkKK‘Èpıî×‡ğ6î§‹\¯pˆ´’Övõ+E+hÉ IıšÔ§Io«Öqz‚.V†ÓR·¼s ¤VvÛî%tÂŞ¦pCŠE™‘®;ë^¯Şf|¾.…Wéì¤x5Q;ÕiÊiµ…¬^­\`»±˜]«(zÆ‹ÔMº¥ÊlWoo¯0€ù†Ó+ŠĞ–8m„ıtbq£i^u+ÜØUMcçÎpè9ïRê†Cé"šúèfYß¥•71áu}¦Öi]Ğ4gªœVßJÀWädñHŸé¾)¤à€î.±ì¤¥Ûè’2èbCº•S)ƒr	“w™İeooƒ£³f%»Rë,¥H+ßyOéÃ™ñ[¹ÕJ·Ò„+NñÎ»pîİs}…=Ò#—•á‘ÓUÎÒ‘¿šÎ%Š—£\‡%Q°eÛë*ßÄ›göqo~ĞÍˆl…İxµJ3è%gä
-4Œ\b^-h±Ô¤Ï.™Ş"İÏá
-€Çúº: <ƒ°¥B—ùs9®•ëóƒ· ¼€ğ"ÂË¿G¸ˆp aÁŠ:³nEXàFø6òãÍM÷!¸îDXˆà@PoÑ}Œ—Ş[ëäÇÚ=ïn¿úÒf=ñ8¼ ÷?_Hİ°[§a$! -ÀÃİø‰‚ˆBg jo‚*à ¡ÖÁj†ÀÙfö9Ä¡T=ÒõL{ê&A‚8şb ­†Çy©"°ˆ}H}RF…(“¥Xxf!mĞŠ\yÍ8‹à,Š’mˆ2ëÄ	@’I$‘æÑO+ÊnG:·”D[­Lp¢S¬9&íé‘]W9HŸÊ¯‚X¾^1Ô1‹¼ÍĞd–ğ)r¡Í$T ÄX	«ş¬
-ávŒ)†¾“ô99Ël.B¿â‚–Y:Äfé4’Çk'ó¢½mÏG£¾Ö²êµ`„|n5p',ÉgøYëÔãf&ÙÀäB¬¦-¸–@úò•^Ä~ôÉ\Ï¼·²õ ˆ“òÔfïšì–uôŸü|Ù‰X§ê„˜?¹3õ,ZêÈöI×û™šÿVÜ‘é8 tİòùÿd”Ã8+ÇŸæÿKÚß`úE¨s+z¿•íº>ªáß6|ÊÙæ»è[ÜSÎŒ÷qîÄ³Sx¥tF!¯i
-ï1ä-FŞÂ)¼+ùÿ‡|Êø_œ•ÿ­³R„š¨È'¢¼¸&ÁD~C"âHLá‚3¦·f]Í:®qQ(û`C}mU¬#‰B±µ­µ¤D¤-eĞilîˆ'Z£b3À ±o¶Åq×LÌe¦`2ÂGVÑ,°ÖàomxÃàKbnö´ŒoX`ô·'£ÚmÉö`BÔ=õ‚?èç·µŠğ1èøğoÆEŒ
-s€7p±á QÇ?¿¿£5Ú*òÑv¬4Q-¼Øh-èõ›?­¢rÂÕ$/JI$¢À' ¯€?
-KIÑßjE)”‰ûıÁXı—÷B§›uêGº ÷‹ÛãÈù€âòqÑ/¢¡Ÿ¨øF‹Š‰X¤ëd4VóøêH$„›Œl/pú0ª‰|Å,nœÊ¯â'ù¦»6Á£§g÷ò¢;òÉ$q~Aœ1TÍ<ãë Ñµ¤È%1Ìm1ÑkbÑd,Â7 M>úM©¹™OÔD›c ÷sõë¸ÚÊ;ôÊOvør|†á:Úu¾_ ñwPK     e'K”ä      $               dwnl.exe
-          )³“'Óü´^RNûØ|DYRNûØPK      Z   
-    
