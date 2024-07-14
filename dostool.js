@@ -80,14 +80,14 @@ if exist "%windir%\system32\tar.exe" (
 set xzflag1=
 set xzflag=rem
 set ddf=DownloadFile
-set resolve=abc.jsdelivr.net:443:151.101.1.229,151.101.129.229,151.101.193.229,151.101.65.229,2a04:4e42::485,2a04:4e42:200::485,2a04:4e42:400::485,2a04:4e42:600::485
+set resolve=fastly.com:443:151.101.1.229,151.101.129.229,151.101.193.229,151.101.65.229,2a04:4e42::485,2a04:4e42:200::485,2a04:4e42:400::485,2a04:4e42:600::485
 )
 if exist %systemroot%\system32\curl.exe (
     set xzflag1=rem
     set xzflag=
 )
 %xzflag% cd /d %temp%
-%xzflag% start /min %comspec% /c curl -H "host: cdn.jsdelivr.net" -L -# -C - --retry 3 --retry-delay 1 --resolve !resolve! -o dostoolupdate https://abc.jsdelivr.net/gh/Trustedinstall/dostool/update.js
+%xzflag% start /min %comspec% /c curl -H "host: cdn.jsdelivr.net" -L -# -C - --retry 3 --retry-delay 1 --resolve !resolve! -o dostoolupdate https://fastly.com/gh/Trustedinstall/dostool/update.js
 %xzflag1% powershell -w hidden -c (new-object System.Net.WebClient).%ddf%( 'https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js','%temp%\dostoolupdate')
 exit 0
 :stwt
@@ -136,9 +136,9 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 (
 cd/d "%disk%\"
 set cishu=3
-set ver=20240703
-set versize=217140
-set resolve=abc.jsdelivr.net:443:151.101.1.229,151.101.129.229,151.101.193.229,151.101.65.229,2a04:4e42::485,2a04:4e42:200::485,2a04:4e42:400::485,2a04:4e42:600::485
+set ver=20240714
+set versize=217172
+set resolve=fastly.com:443:151.101.1.229,151.101.129.229,151.101.193.229,151.101.65.229,2a04:4e42::485,2a04:4e42:200::485,2a04:4e42:400::485,2a04:4e42:600::485
 if exist %temp%\dwnl.exe (set /a versize=versize+3194)
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
@@ -4271,7 +4271,7 @@ for /f "delims=:, tokens=19,21" %%a in (%temp%\filecoin.json) do (set filetousd=
 if not defined filetousd set filetousd=1&&file24h=0
 set filetousd=%filetousd:"=%
 set file24h=%file24h:"=%
-for /f "delims=. tokens=1,2" %%a in ('echo;%file24h%') do (set file24h1=%%a&&set file24h2=%%b)
+for /f "delims=. tokens=1,2" %%a in ('"echo;%file24h%"') do (set file24h1=%%a&&set file24h2=%%b)
 set file24h=%file24h1%.%file24h2:~0,3%
 for /f "delims=:} tokens=7" %%a in (%temp%\au.json) do (set autousd=%%a)
 if not defined autousd set autousd=1
@@ -4327,35 +4327,35 @@ echo;
 echo 以太坊ETH  → 人民币CNY
 set /p =.!cswz1!        <nul
 set /p =1  → !ethtocny!		24小时涨跌幅: <nul
-if "%eth24h:~0,1%" equ "-" (call :colortxt a !eth24h!) else (call :colortxt c +!eth24h!)
+if "!eth24h:~0,1!" equ "-" (call :colortxt a !eth24h!) else (call :colortxt c +!eth24h!)
 set /p =%% <nul
 echo;
 echo;
 echo 比特币BTC  → 人民币CNY
 set /p =.!cswz1!        <nul
 set /p =1  → !btctocny!		24小时涨跌幅: <nul
-if "%btc24h:~0,1%" equ "-" (call :colortxt a !btc24h!) else (call :colortxt c +!btc24h!)
+if "!btc24h:~0,1!" equ "-" (call :colortxt a !btc24h!) else (call :colortxt c +!btc24h!)
 set /p =%% <nul
 echo;
 echo;
 echo 门罗币XMR  → 人民币CNY
 set /p =.!cswz1!        <nul
 set /p =1  → !xmrtocny!		24小时涨跌幅: <nul
-if "%xmr24h:~0,1%" equ "-" (call :colortxt a !xmr24h!) else (call :colortxt c +!xmr24h!)
+if "!xmr24h:~0,1!" equ "-" (call :colortxt a !xmr24h!) else (call :colortxt c +!xmr24h!)
 set /p =%% <nul
 echo;
 echo;
 echo;文件币FILE → 人民币CNY
 set /p =.!cswz1!        <nul
 set /p =1  → !filetocny!		24小时涨跌幅: <nul
-if "%file24h:~0,1%" equ "-" (call :colortxt a !file24h!) else (call :colortxt c +!file24h!)
+if "!file24h:~0,1!" equ "-" (call :colortxt a !file24h!) else (call :colortxt c +!file24h!)
 set /p =%% <nul
 echo;
 echo;
 echo 狗狗币DOGE → 人民币CNY
 set /p =.!cswz1!        <nul
 set /p =1  → !dogetocny!		24小时涨跌幅: <nul
-if "%doge24h:~0,1%" equ "-" (call :colortxt a !doge24h!) else (call :colortxt c +!doge24h!)
+if "!doge24h:~0,1!" equ "-" (call :colortxt a !doge24h!) else (call :colortxt c +!doge24h!)
 set /p =%% <nul
 echo;
 echo;
@@ -4768,7 +4768,7 @@ set xzflag=::
 set xzflag1=
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag%pushd %temp%
-%xzflag%curl -H "host: cdn.jsdelivr.net" -L -# -C - --retry 3 --retry-delay 1 --resolve !resolve! -o dostoolupdate https://abc.jsdelivr.net/gh/Trustedinstall/dostool/update.js
+%xzflag%curl -H "host: cdn.jsdelivr.net" -L -# -C - --retry 3 --retry-delay 1 --resolve !resolve! -o dostoolupdate https://fastly.com/gh/Trustedinstall/dostool/update.js
 %xzflag%popd
 %xzflag1%certutil -urlcache -split -f https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js %temp%\dostoolupdate
 ::bitsadmin /transfer 检查最新版本... /priority FOREGROUND https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js %temp%\dostoolupdate
@@ -4809,7 +4809,7 @@ set xzflag=::
 set xzflag1=
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag%pushd %temp%
-%xzflag%curl -H "host: cdn.jsdelivr.net" -L -# -C - --retry 3 --retry-delay 1 --resolve !resolve! -o dostool https://abc.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js
+%xzflag%curl -H "host: cdn.jsdelivr.net" -L -# -C - --retry 3 --retry-delay 1 --resolve !resolve! -o dostool https://fastly.com/gh/Trustedinstall/dostool/dostool.js
 %xzflag%popd
 %xzflag%call :hash %temp%\dostool sha1
 %xzflag%if /i "%hash%" equ %doshash% copy /z /y %temp%\dostool %weizhi%&goto chushihua
@@ -5351,6 +5351,8 @@ if not exist "!域名重定向!" (
 		echo *.wikipedia.org=wikidata.org
 		echo;
 		echo #pixiv
+		echo pixiv.net=fastly.com
+		echo *.pixiv.net=fastly.com
 		echo *.pximg.net=pximg.net
 		echo;
 		echo #reddit
