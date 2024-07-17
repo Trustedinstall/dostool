@@ -137,8 +137,11 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20240714
-set versize=217586
+set versize=219256
 set resolve=fastly.com:443:151.101.1.229,151.101.129.229,151.101.193.229,151.101.65.229,2a04:4e42::485,2a04:4e42:200::485,2a04:4e42:400::485,2a04:4e42:600::485
+set curlhost=-H "host: cdn.jsdelivr.net"
+set gxurl=https://fastly.com/gh/Trustedinstall/dostool/update.js
+set gxdos=https://fastly.com/gh/Trustedinstall/dostool/dostool.js
 if exist %temp%\dwnl.exe (set /a versize=versize+3194)
 set gxflag=
 for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
@@ -4583,7 +4586,17 @@ cls
 echo 开始获取文件信息...
 set filename=
 if exist %temp%\tag (del /f /q tag)
-curl -A !ua! -I -# -L -o tag --output-dir %temp% "!url!"
+for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
+	if "%%a" equ "0x1" (
+		for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
+			set "proxy=-x %%b"
+			echo;使用代理: %%b
+		)
+	) else (
+		set proxy=
+	)
+)
+curl !proxy! -A !ua! -I -# -L -o tag --output-dir %temp% "!url!"
 if not exist %temp%\tag (
 echo;_______________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
@@ -4623,8 +4636,18 @@ title curl多进程下载 - 等待文件下载完成(按e返回菜单) - %system%
 if exist %temp%\down (rd /s /q %temp%\down)
 md %temp%\down
 set kssj=%time%
+for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
+	if "%%a" equ "0x1" (
+		for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
+			set "proxy=-x %%b"
+			echo;使用代理: %%b
+		)
+	) else (
+		set proxy=
+	)
+)
 for /l %%a in (1,1,!tr!) do (
-	start /b curl -s -A !ua! -# -L -C - --retry 3 --retry-delay 1 -r !oldfd!-!newfd! -o %%a --output-dir %temp%\down "!url!"
+	start /b curl !proxy! -s -A !ua! -# -L -C - --retry 3 --retry-delay 1 -r !oldfd!-!newfd! -o %%a --output-dir %temp%\down "!url!"
 	set /a oldfd=!newfd!+1
 	if %%a equ !pdtr! (
 		set newfd=
@@ -4776,9 +4799,19 @@ if exist %temp%\dwnl.exe (
 )
 set xzflag=::
 set xzflag1=
+for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
+	if "%%a" equ "0x1" (
+		for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
+			set "proxy=-x %%b"
+			echo;使用代理: %%b
+		)
+	) else (
+		set proxy=
+	)
+)
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag%pushd %temp%
-%xzflag%curl -H "host: cdn.jsdelivr.net" -L -# -C - --retry 3 --retry-delay 1 --resolve !resolve! -o dostoolupdate https://fastly.com/gh/Trustedinstall/dostool/update.js
+%xzflag%curl !proxy! !curlhost! -L -# -C - --retry 3 --retry-delay 1 --resolve !resolve! -o dostoolupdate !gxurl!
 %xzflag%popd
 %xzflag1%certutil -urlcache -split -f https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js %temp%\dostoolupdate
 ::bitsadmin /transfer 检查最新版本... /priority FOREGROUND https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js %temp%\dostoolupdate
@@ -4818,8 +4851,18 @@ if exist %temp%\dwnl.exe (
 set xzflag=::
 set xzflag1=
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
+for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
+	if "%%a" equ "0x1" (
+		for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
+			set "proxy=-x %%b"
+			echo;使用代理: %%b
+		)
+	) else (
+		set proxy=
+	)
+)
 %xzflag%pushd %temp%
-%xzflag%curl -H "host: cdn.jsdelivr.net" -L -# -C - --retry 3 --retry-delay 1 --resolve !resolve! -o dostool https://fastly.com/gh/Trustedinstall/dostool/dostool.js
+%xzflag%curl !proxy! !curlhost! -L -# -C - --retry 3 --retry-delay 1 --resolve !resolve! -o dostool !gxdos!
 %xzflag%popd
 %xzflag%call :hash %temp%\dostool sha1
 %xzflag%if /i "%hash%" equ %doshash% copy /z /y %temp%\dostool %weizhi%&goto chushihua
