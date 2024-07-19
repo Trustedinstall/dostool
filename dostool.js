@@ -137,7 +137,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20240714
-set versize=219256
+set versize=219239
 set resolve=fastly.com:443:151.101.1.229,151.101.129.229,151.101.193.229,151.101.65.229,2a04:4e42::485,2a04:4e42:200::485,2a04:4e42:400::485,2a04:4e42:600::485
 set curlhost=-H "host: cdn.jsdelivr.net"
 set gxurl=https://fastly.com/gh/Trustedinstall/dostool/update.js
@@ -2366,7 +2366,7 @@ rem %flag1% for /f "delims=" %%o in ('""%EverythingInstallPath%\es.exe" -sort pa
 %flag1% for /f "delims=" %%o in ('""%EverythingInstallPath%\es.exe" %caozuo%: empty: ^!attrib:l"') do (
 	rd /q "%%o"&&if !errorlevel! equ 0 (
 		set empty=1
-		echo;!errorlevel!已删除空文件夹%%o
+		已删除空文件夹%%o
 	)
 )
 timeout /t 2 /nobreak>nul
