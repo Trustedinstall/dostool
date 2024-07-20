@@ -137,9 +137,18 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20240714
-set versize=219239
-set resolve=fastly.com:443:151.101.1.229,151.101.129.229,151.101.193.229,151.101.65.229,2a04:4e42::485,2a04:4e42:200::485,2a04:4e42:400::485,2a04:4e42:600::485
+set versize=219310
+set resolve=fastly.com:443:^
+151.101.129.57,^
+151.101.193.57,^
+151.101.65.57,^
+151.101.1.57,^
+2a04:4e42:400::313,^
+2a04:4e42:200::313,^
+2a04:4e42:600::313,^
+2a04:4e42::313
 set curlhost=-H "host: cdn.jsdelivr.net"
+set curlhost=-H "host: raw.githubusercontent.com"
 set gxurl=https://fastly.com/gh/Trustedinstall/dostool/update.js
 set gxdos=https://fastly.com/gh/Trustedinstall/dostool/dostool.js
 if exist %temp%\dwnl.exe (set /a versize=versize+3194)
