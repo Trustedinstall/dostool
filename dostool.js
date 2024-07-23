@@ -137,7 +137,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20240714
-set versize=219310
+set versize=219274
 set resolve=fastly.com:443:^
 151.101.129.57,^
 151.101.193.57,^
@@ -147,8 +147,8 @@ set resolve=fastly.com:443:^
 2a04:4e42:200::313,^
 2a04:4e42:600::313,^
 2a04:4e42::313
-set curlhost=-H "host: cdn.jsdelivr.net"
-set curlhost=-H "host: raw.githubusercontent.com"
+set jshost=-H "host: cdn.jsdelivr.net"
+set githost=-H "host: raw.githubusercontent.com"
 set gxurl=https://fastly.com/gh/Trustedinstall/dostool/update.js
 set gxdos=https://fastly.com/gh/Trustedinstall/dostool/dostool.js
 if exist %temp%\dwnl.exe (set /a versize=versize+3194)
@@ -4790,7 +4790,7 @@ cls
 title 更新DOS工具箱 - 当前版本: %ver% - %system%
 if defined gxflag goto startupdate
 echo 检查最新版本...
-timeout /t 2 /nobreak>nul
+timeout /t 1 /nobreak>nul
 if exist %temp%\dostoolupdate del /f /q %temp%\dostoolupdate>nul 2>nul
 if exist %temp%\dwnl.exe (
 	for /f "delims=" %%a in ("%temp%\dwnl.exe") do (
@@ -4806,23 +4806,23 @@ if exist %temp%\dwnl.exe (
 		)
 	)
 )
-set xzflag=::
-set xzflag1=
-for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
-	if "%%a" equ "0x1" (
-		for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
-			set "proxy=-x %%b"
-			echo;使用代理: %%b
+if exist %systemroot%\system32\curl.exe (
+	pushd %temp%
+	for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
+		if "%%a" equ "0x1" (
+			for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
+				set "proxy=-x %%b"
+				echo;使用代理: %%b
+			)
+		) else (
+			set proxy=
 		)
-	) else (
-		set proxy=
 	)
+	curl !proxy! !githost! -L -# -C - --retry 3 --retry-delay 1 --resolve !resolve! -o dostoolupdate !gxurl!
+	popd
+) else (
+	certutil -urlcache -split -f https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js %temp%\dostoolupdate
 )
-if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
-%xzflag%pushd %temp%
-%xzflag%curl !proxy! !curlhost! -L -# -C - --retry 3 --retry-delay 1 --resolve !resolve! -o dostoolupdate !gxurl!
-%xzflag%popd
-%xzflag1%certutil -urlcache -split -f https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js %temp%\dostoolupdate
 ::bitsadmin /transfer 检查最新版本... /priority FOREGROUND https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js %temp%\dostoolupdate
 :jcgxjs
 cls
@@ -4857,29 +4857,31 @@ if exist %temp%\dwnl.exe (
 		)
 	)
 )
-set xzflag=::
-set xzflag1=
-if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
-for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
-	if "%%a" equ "0x1" (
-		for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
-			set "proxy=-x %%b"
-			echo;使用代理: %%b
+if exist %systemroot%\system32\curl.exe (
+	for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
+		if "%%a" equ "0x1" (
+			for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
+				set "proxy=-x %%b"
+				echo;使用代理: %%b
+			)
+		) else (
+			set proxy=
 		)
-	) else (
-		set proxy=
 	)
+	pushd %temp%
+	curl !proxy! !githost! -L -# -C - --retry 3 --retry-delay 1 --resolve !resolve! -o dostool !gxdos!
+	popd
+	call :hash %temp%\dostool sha1
+	if /i "%hash%" equ %doshash% copy /z /y %temp%\dostool %weizhi%&goto chushihua
+	call :colortxt c 文件无效&echo;&timeout /t 2 /nobreak>nul
+	if "!tzwz!" equ "!start!" (goto memuv2) else (goto !tzwz!)
+) else (
+	certutil -urlcache -split -f https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js %temp%\dostool
+	call :hash %temp%\dostool sha1
+	if /i "%hash%" equ %doshash% copy /z /y %temp%\dostool %weizhi%&goto chushihua
+	call :colortxt c 文件无效&echo;&timeout /t 2 /nobreak>nul
+	if "!tzwz!" equ "!start!" (goto memuv2) else (goto !tzwz!)
 )
-%xzflag%pushd %temp%
-%xzflag%curl !proxy! !curlhost! -L -# -C - --retry 3 --retry-delay 1 --resolve !resolve! -o dostool !gxdos!
-%xzflag%popd
-%xzflag%call :hash %temp%\dostool sha1
-%xzflag%if /i "%hash%" equ %doshash% copy /z /y %temp%\dostool %weizhi%&goto chushihua
-%xzflag1%certutil -urlcache -split -f https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js %temp%\dostool
-%xzflag1%call :hash %temp%\dostool sha1
-%xzflag1%if /i "%hash%" equ %doshash% copy /z /y %temp%\dostool %weizhi%&goto chushihua
-call :colortxt c 文件无效&echo;&timeout /t 2 /nobreak>nul
-if "!tzwz!" equ "!start!" (goto memuv2) else (goto !tzwz!)
 ::bitsadmin /transfer 下载更新中... /priority FOREGROUND https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js %weizhi%&start %comspec% /c %0&exit 0
 :sjc
 set kssj=%1
