@@ -136,7 +136,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 (
 cd/d "%disk%\"
 set cishu=3
-set ver=20240714
+set ver=20240728
 set versize=221553
 set resolve=--resolve fastly.com:443:^
 151.101.129.57,^
