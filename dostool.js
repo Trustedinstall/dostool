@@ -137,7 +137,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20240728
-set versize=221553
+set versize=221592
 set resolve=--resolve fastly.com:443:^
 151.101.129.57,^
 151.101.193.57,^
@@ -4866,6 +4866,7 @@ if exist %systemroot%\system32\curl.exe (
 					popd
 					goto updatecheck
 				) else (
+					endlocal
 					echo;没有检查到更新版本
 					echo;_______________________________________________________________________________
 					echo;按任意键返回菜单&pause>nul
@@ -4899,6 +4900,7 @@ if exist %systemroot%\system32\curl.exe (
 			)
 			goto updatecheck
 		) else (
+			endlocal
 			echo;没有检查到更新版本
 			echo;_______________________________________________________________________________
 			echo;按任意键返回菜单&pause>nul
@@ -4919,6 +4921,7 @@ if !checkver! gtr 0 (
 	echo;
 	goto startupdate
 ) else (
+	endlocal
 	echo;没有检查到更新版本
 	echo;_______________________________________________________________________________
 	echo;按任意键返回菜单&pause>nul
