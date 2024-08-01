@@ -137,7 +137,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20240728
-set versize=221592
+set versize=222757
 set resolve=--resolve fastly.com:443:^
 151.101.129.57,^
 151.101.193.57,^
@@ -220,7 +220,10 @@ set scw=rdasd123
 set ad=
 set ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
 )
-for /f "tokens=1,2 delims=#" %%a in ('"prompt #$h#$e# & echo on & for %%b in (1) do rem"') do (set cswz=%%b[&set cswz1=%%a)
+for /f %%a in ('"echo prompt $E^ |cmd"') do (
+	set cswz=%%a[
+	set cswz1=%%a
+)
 call :list
 if /i "%processor_architecture%"=="x86" (set bit=32) else (set bit=64)
 if "!system:~8,2!"=="XP" (
@@ -5504,6 +5507,78 @@ goto :eof
 :choice
 choice /c !cho! /n /m «Î ‰»Îƒ„µƒ—°‘Ò:
 set shuru=!errorlevel!
+goto :eof
+:bk
+setlocal
+set cs=0
+for /f "delims=: skip=2 tokens=2" %%a in ('"mode con"') do (
+	set /a cs+=1
+	if !cs! equ 1 (
+		set h=%%a
+	)
+	if !cs! equ 2 (
+		set l=%%a
+	)
+)
+set /a h_1=h-1
+set /a l_1=l-1
+set /a l_4=l-4
+for /l %%a in (0,1,!l_4!) do (
+	set fh=!fh!-
+)
+set fh=+!fh!+
+set /p =!cswz!1;1H!fh!<nul
+for /l %%a in (2,1,!h_1!) do (
+	set /p =!cswz!%%a;1H^|!cswz!%%a;!l_1!H^|<nul
+)
+set /p =!cswz!!h_1!;1H!fh!<nul
+endlocal
+goto :eof
+:fk
+setlocal
+set h=%1
+set l=%2
+set /a h1=h+1
+set /a l1=%4-2
+set /a h2=h+%3-2
+set /a l2=l+%4-1
+set /a h3=h+%3-1
+for /l %%a in (1,1,!l1!) do (
+	set fh=!fh!-
+)
+set fh=+!fh!+
+set /p =!cswz!!h!;!l!H!fh!<nul
+for /l %%a in (!h1!,1,!h2!) do (
+	set /p =!cswz!%%a;!l!H^|!cswz!%%a;!l2!H^|<nul
+)
+set /p =!cswz!!h3!;!l!H!fh!<nul
+endlocal
+goto :eof
+:hx
+setlocal
+set h=%1
+set l=%2
+set /a cd=%3-2
+for /l %%a in (1,1,!cd!) do (
+	set fh=!fh!-
+)
+set fh=+!fh!+
+set /p =!cswz!!h!;!l!H!fh!<nul
+endlocal
+goto :eof
+:sx
+setlocal
+set h=%1
+set l=%2
+set /a h1=h+1
+set /a h2=h+%3-1
+set /a cd=%3+h-2
+set /p =!cswz!!h!;!l!H+<nul
+for /l %%a in (!h1!,1,!cd!) do (
+	set /p =!cswz!%%a;!l!H^|<nul
+)
+set /p =!cswz!!h2!;!l!H+<nul
+endlocal
 goto :eof
 :00
 exit 0
