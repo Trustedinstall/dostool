@@ -137,7 +137,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20240728
-set versize=222757
+set versize=222795
 set resolve=--resolve fastly.com:443:^
 151.101.129.57,^
 151.101.193.57,^
@@ -5633,8 +5633,9 @@ if not exist "!域名重定向!" (
 		echo *.github.io=octocaptcha.com
 		echo;
 		echo #steam
-		echo store.steampowered.com=steamuserimages-a.akamaihd.net
-		echo *.store.steampowered.com=steamuserimages-a.akamaihd.net
+		echo login.steampowered.com=login.steampowered.com
+		echo help.steampowered.com=help.steampowered.com
+		echo *.steampowered.com=steamuserimages-a.akamaihd.net
 		echo steamcommunity.com=underlords.com
 		echo *.steamcommunity.com=underlords.com
 		echo;
