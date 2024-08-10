@@ -136,8 +136,8 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 (
 cd/d "%disk%\"
 set cishu=3
-set ver=20240728
-set versize=222795
+set ver=20240729
+set versize=222847
 set resolve=--resolve fastly.com:443:^
 151.101.129.57,^
 151.101.193.57,^
@@ -5624,6 +5624,7 @@ if not exist "!域名重定向!" (
 		echo *.googleapis.com=googleads.g.doubleclick.net
 		echo *.googleusercontent.com=static.doubleclick.net
 		echo *.gstatic.com=alt6.gstatic.com
+		echo *.cloudfunctions.net=alt6.gstatic.com
 		echo;
 		echo #github
 		echo github.com=octocaptcha.com
@@ -5717,7 +5718,7 @@ if exist "chrome.exe" (
 	set "chrome=chrome.exe"
 	goto startchrome
 ) else (
-	for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe" /v Path"') do (
+	for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe" /v Path 2>nul"') do (
 		set "chrome=%%a"
 	)
 	for /f "delims=" %%a in ("!chrome!") do (
