@@ -137,7 +137,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20240729
-set versize=222847
+set versize=222942
 set resolve=--resolve fastly.com:443:^
 151.101.129.57,^
 151.101.193.57,^
@@ -5703,6 +5703,9 @@ if not exist "!强制使用quic!" (
 		echo v2ex.com
 		echo cdn.v2ex.com
 		echo www.v2ex.com
+		echo challenges.cloudflare.com
+		echo www.openstreetmap.org
+		echo tile.openstreetmap.org
 		echo;
 	)>"!强制使用quic!"
 )
