@@ -137,7 +137,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20240729
-set versize=222942
+set versize=222912
 set resolve=--resolve fastly.com:443:^
 151.101.129.57,^
 151.101.193.57,^
@@ -4356,35 +4356,35 @@ echo 白银XAG    → 人民币CNY
 echo 	1  → !agtocny!
 echo;
 echo 以太坊ETH  → 人民币CNY
-set /p =.!cswz1!        <nul
+set /p =!cswz1![]	<nul
 set /p =1  → !ethtocny!		24小时涨跌幅: <nul
 if "!eth24h:~0,1!" equ "-" (call :colortxt a !eth24h!) else (call :colortxt c +!eth24h!)
 set /p =%% <nul
 echo;
 echo;
 echo 比特币BTC  → 人民币CNY
-set /p =.!cswz1!        <nul
+set /p =!cswz1![]	<nul
 set /p =1  → !btctocny!		24小时涨跌幅: <nul
 if "!btc24h:~0,1!" equ "-" (call :colortxt a !btc24h!) else (call :colortxt c +!btc24h!)
 set /p =%% <nul
 echo;
 echo;
 echo 门罗币XMR  → 人民币CNY
-set /p =.!cswz1!        <nul
+set /p =!cswz1![]	<nul
 set /p =1  → !xmrtocny!		24小时涨跌幅: <nul
 if "!xmr24h:~0,1!" equ "-" (call :colortxt a !xmr24h!) else (call :colortxt c +!xmr24h!)
 set /p =%% <nul
 echo;
 echo;
 echo;文件币FILE → 人民币CNY
-set /p =.!cswz1!        <nul
+set /p =!cswz1![]	<nul
 set /p =1  → !filetocny!		24小时涨跌幅: <nul
 if "!file24h:~0,1!" equ "-" (call :colortxt a !file24h!) else (call :colortxt c +!file24h!)
 set /p =%% <nul
 echo;
 echo;
 echo 狗狗币DOGE → 人民币CNY
-set /p =.!cswz1!        <nul
+set /p =!cswz1![]	<nul
 set /p =1  → !dogetocny!		24小时涨跌幅: <nul
 if "!doge24h:~0,1!" equ "-" (call :colortxt a !doge24h!) else (call :colortxt c +!doge24h!)
 set /p =%% <nul
