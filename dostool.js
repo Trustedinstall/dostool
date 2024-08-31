@@ -137,7 +137,7 @@ for /f "delims=" %%a in ('hostname') do set hostname=%%a
 cd/d "%disk%\"
 set cishu=3
 set ver=20240729
-set versize=222912
+set versize=222987
 set resolve=--resolve fastly.com:443:^
 151.101.129.57,^
 151.101.193.57,^
@@ -5625,11 +5625,12 @@ if not exist "!域名重定向!" (
 		echo *.googleusercontent.com=static.doubleclick.net
 		echo *.gstatic.com=alt6.gstatic.com
 		echo *.cloudfunctions.net=alt6.gstatic.com
+		echo *.blogspot.com=google-analytics.com
 		echo;
 		echo #github
 		echo github.com=octocaptcha.com
 		echo *.github.com=octocaptcha.com
-		echo *.githubusercontent.com=github.githubassets.com
+		echo *.githubusercontent.com=fastly.com
 		echo *.githubassets.com=fastly.com
 		echo *.github.io=octocaptcha.com
 		echo;
@@ -5706,6 +5707,8 @@ if not exist "!强制使用quic!" (
 		echo challenges.cloudflare.com
 		echo www.openstreetmap.org
 		echo tile.openstreetmap.org
+		echo ipfs.io
+		echo cloudflare-ipfs.com
 		echo;
 	)>"!强制使用quic!"
 )
