@@ -1,4 +1,4 @@
-@goto chushihua
+goto chushihua
 剪湫样剩氱呌晌劳倱儳湇歌愰椴代吹栲汴儰晃焊畒敍橊爰橒桤捎楌
 汎煢慇佳猵湬搳汏物啵汏捎乡洱呮漹煍畤猳獨畏灦猷昹渶洳椷杪灭
 兰捡儵漊敌桳朸搹照猱休捒儷瀰畃汬呏浢挶却丹搰挶攊椸桰爷煇搸
@@ -39,6 +39,27 @@ if exist %localappdata%\Microsoft\WindowsApps\wt.exe (
 	call :stwt
 ) else (
 	call :stcmd
+)
+rem 在权限申请进程中预读命令提升后面初始化速度
+if not exist "!temp!\dos_pre_reading_cache_os.tmp" (
+	wmic os get caption /value>"!temp!\dos_pre_reading_cache_os.tmp"
+) else (
+	type "!temp!\dos_pre_reading_cache_os.tmp"
+)
+if not exist "!temp!\dos_pre_reading_cache_wmictype.tmp" (
+	wmic PATH Win32_SystemEnclosure get ChassisTypes/value>"!temp!\dos_pre_reading_cache_wmictype.tmp"
+) else (
+	type "!temp!\dos_pre_reading_cache_wmictype.tmp"
+)
+if not exist "!temp!\dos_pre_reading_cache_hostname.tmp" (
+	hostname>"!temp!\dos_pre_reading_cache_hostname.tmp"
+) else (
+	type "!temp!\dos_pre_reading_cache_hostname.tmp"
+)
+if not exist "!temp!\dos_pre_reading_cache_zmlj.tmp" (
+	reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v desktop>"!temp!\dos_pre_reading_cache_zmlj.tmp"
+) else (
+	type "!temp!\dos_pre_reading_cache_zmlj.tmp"
 )
 ::start /min %comspec% /c powershell -noprofile start-process -filepath "%comspec%" -argumentlist '"/c %0 -ks"' -verb runas
 ::start /min %comspec% /c powershell -noprofile start-process -filepath "wt" -argumentlist '"%0 -ks"' -verb runas>nul 2>nul
@@ -96,22 +117,6 @@ goto :eof
 :stcmd
 start /min %comspec% /c mshta vbscript:createobject("shell.application").shellexecute("%weizhi%","-ks","","runas",1)(window.close)
 goto :eof
-::if %errorlevel% neq 0 (echo Set UAC = CreateObject^("Shell.Application"^)>"%temp%\tmp.vbs"
-::echo UAC.ShellExecute %0,"","","runas",^1>>"%temp%\tmp.vbs"
-::"%temp%\tmp.vbs"&exit)
-::echo;>%systemdrive%\windows\system32\dos.tmp
-::if not exist %systemdrive%\windows\system32\dos.tmp (echo Set UAC = CreateObject^("Shell.Application"^)>"%temp%\tmp.vbs"
-::echo UAC.ShellExecute %0,"","","runas",^1>>"%temp%\tmp.vbs"
-::"%temp%\tmp.vbs"&exit) else (del/f/q %systemdrive%\windows\system32\dos.tmp)
-:ks
-(
-set dosqssj=%time%
-title 　
-color f1
-setlocal enabledelayedexpansion
-chcp 936>nul
-goto qidongjs
-)
 set qidongjd=0
 set qidongbz=█████████████████
 :qidong
@@ -123,21 +128,17 @@ echo │%qidongbz%│
 echo  ----------------------------------------------------------------------------
 set qidongbz=%qidongbz%█
 set/a qidongjd+=5
-if "%qidongjd%"=="105" goto qidongjs
+if "%qidongjd%"=="105" goto ks
 goto qidong
-:qidongjs
-for /f "delims=" %%a in ('"reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v desktop"') do (set zmlj=%%a)
-if not defined zmlj set zmlj=X:\Users\Default\Desktop\
-if "%zmlj:~0,1%%zmlj:~-1%" neq """" for /f "delims=" %%a in ('"echo %zmlj%"') do (set %zmlj%="%%~a")
-set weizhi=%0
-for /f "delims=" %%a in ("%weizhi%") do set daxiao=%%~za
-for /f "delims=" %%a in ("%weizhi%") do set disk=%%~da
-for /f "delims=" %%a in ('hostname') do set hostname=%%a
+:ks
 (
-cd/d "%disk%\"
-set cishu=3
+set dosqssj=%time%
+title 　
+color f1
+setlocal enabledelayedexpansion
+chcp 936>nul
 set ver=20240729
-set versize=222987
+set versize=234074
 set resolve=--resolve fastly.com:443:^
 151.101.129.57,^
 151.101.193.57,^
@@ -157,68 +158,109 @@ set gxdoshost1=https://fastly.com/Trustedinstall/dostool/main/dostool.js
 set gxdoshost2=https://fastly.com/gh/Trustedinstall/dostool/dostool.js
 set gxdos1=https://raw.githubusercontent.com/Trustedinstall/dostool/main/dostool.js
 set gxdos2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js
-if exist %temp%\dwnl.exe (set /a versize=versize+3194)
+rem if exist %temp%\dwnl.exe (set /a versize=versize+3194)
 set gxflag=
-for /f "tokens=4 delims=.[]" %%a in ('"ver"') do set build=%%a
-)
-set build|findstr "\<[0-9]*\>">nul
-if !errorlevel! equ 0 (if !build! lss 10586 (set winv=1) else (set winv=0)) else (set winv=0)
-(
-set system=
 set baidu=start https://www.baidu.com/s?wd=
 set google=start https://www.google.com.hk/search?q=
-for /f "skip=2 tokens=2 delims==" %%a in ('wmic os get caption /value') do (
-Set system1=%%a
-call :zfccd "!system1!"
-set /a zfcgs-=1
-for /l %%b in (0,1,!zfcgs!) do (if "!system1:~%%b,1!" neq "" set system=!system!!system1:~%%b,1!)
-if /i "!system!" equ "Microsoft Windows XP Home" (set system=Windows XP 家庭版)
-if /i "!system!" equ "Microsoft Windows XP Professional" (set system=Windows XP 专业版)
-if /i "!system!" equ "Microsoft Windows 7 Ultimate" (set system=Windows 7 旗舰版)
-if /i "!system!" equ "Microsoft Windows 7 Home Basic" (set system=Windows 7 家庭普通版)
-if /i "!system!" equ "Microsoft Windows 7 Home Premium" (set system=Windows 7 家庭高级版)
-if /i "!system!" equ "Microsoft Windows 7 Professional" (set system=Windows 7 专业版)
-if /i "!system!" equ "Microsoft Windows 7 Enterprise" (set system=Windows 7 企业版)
-if /i "!system!" equ "Microsoft Windows 8 Pro" (set system=Windows 8 专业版)
-if /i "!system!" equ "Microsoft Windows 8 China" (set system=Windows 8 中国版)
-if /i "!system!" equ "Microsoft Windows 8 Enterprise" (set system=Windows 8 企业版)
-if /i "!system!" equ "Microsoft Windows 8.1 Pro" (set system=Windows 8.1 专业版)
-if /i "!system!" equ "Microsoft Windows 8.1 China" (set system=Windows 8.1 中国版)
-if /i "!system!" equ "Microsoft Windows 8.1 Enterprise" (set system=Windows 8.1 企业版)
-if /i "!system!" equ "Microsoft Windows 10 Home" (set system=Windows 10 家庭版)
-if /i "!system!" equ "Microsoft Windows 10 Professional" (set system=Windows 10 专业版)
-if /i "!system!" equ "Microsoft Windows 10 Education" (set system=Windows 10 教育版)
-if /i "!system!" equ "Microsoft Windows 10 Enterprise" (set system=Windows 10 企业版)
-if /i "!system!" equ "Microsoft Windows 11 Home" (set system=Windows 11 家庭版)
-if /i "!system!" equ "Microsoft Windows 11 Professional" (set system=Windows 11 专业版)
-if /i "!system!" equ "Microsoft Windows 11 Education" (set system=Windows 11 教育版)
-if /i "!system!" equ "Microsoft Windows 11 Enterprise" (set system=Windows 11 企业版)
-if /i "%date:~11,2%"=="周一" set xingqi=星期一
-if /i "%date:~11,2%"=="周二" set xingqi=星期二
-if /i "%date:~11,2%"=="周三" set xingqi=星期三
-if /i "%date:~11,2%"=="周四" set xingqi=星期四
-if /i "%date:~11,2%"=="周五" set xingqi=星期五
-if /i "%date:~11,2%"=="周六" set xingqi=星期六
-if /i "%date:~11,2%"=="周日" set xingqi=星期天
-if /i "%date:~11,3%"=="星期一" set xingqi=星期一
-if /i "%date:~11,3%"=="星期二" set xingqi=星期二
-if /i "%date:~11,3%"=="星期三" set xingqi=星期三
-if /i "%date:~11,3%"=="星期四" set xingqi=星期四
-if /i "%date:~11,3%"=="星期五" set xingqi=星期五
-if /i "%date:~11,3%"=="星期六" set xingqi=星期六
-if /i "%date:~11,3%"=="星期日" set xingqi=星期天
-set nx1=[+]下一页&set nx=[-]上一页   [+]下一页&set nx7=[-]上一页
-)
-)
-for /f "tokens=2 delims=={}" %%a in ('wmic PATH Win32_SystemEnclosure get ChassisTypes/value') do (
-if %%a==8 set nx1=[S]下一页&set nx=[A]上一页   [S]下一页&set nx7=[A]上一页
-if %%a==9 set nx1=[S]下一页&set nx=[A]上一页   [S]下一页&set nx7=[A]上一页
-if %%a==10 set nx1=[S]下一页&set nx=[A]上一页   [S]下一页&set nx7=[A]上一页)
-(
 set sc=delasd123
 set scw=rdasd123
-set ad=
+set weizhi=%0
+rem set cishu=3
 set ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+set nx1=[+]下一页&set nx=[-]上一页   [+]下一页&set nx7=[-]上一页
+if exist "!temp!\dos_pre_reading_cache_wmictype.tmp" (
+	set "wmictype='"type "!temp!\dos_pre_reading_cache_wmictype.tmp""'"
+) else (
+	set "wmictype='"wmic PATH Win32_SystemEnclosure get ChassisTypes /value"'"
+)
+for /f "tokens=2 delims=={}" %%a in (!wmictype!) do (
+	if %%a==8 set nx1=[S]下一页&set nx=[A]上一页   [S]下一页&set nx7=[A]上一页
+	if %%a==9 set nx1=[S]下一页&set nx=[A]上一页   [S]下一页&set nx7=[A]上一页
+	if %%a==10 set nx1=[S]下一页&set nx=[A]上一页   [S]下一页&set nx7=[A]上一页
+)
+)
+if exist "!temp!\dos_pre_reading_cache_zmlj.tmp" (
+	set "zmlj=!temp!\dos_pre_reading_cache_zmlj.tmp"
+) else (
+	set "zmlj='"reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v desktop"'"
+)
+for /f "skip=2 delims=" %%a in (!zmlj!) do (
+	set zmlj=%%a
+	if not defined zmlj (
+		set zmlj=X:\Users\Default\Desktop\
+	)
+	if "!zmlj:~0,1!!zmlj:~-1!" neq """" (
+		for /f "delims=" %%a in ("!zmlj!") do (
+			set !zmlj!="%%~a"
+		)
+	)
+)
+for /f "delims=" %%a in ("%0") do (
+	set daxiao=%%~za
+	set disk=%%~da
+)
+if exist "!temp!\dos_pre_reading_cache_hostname.tmp" (
+	set "zjname=!temp!\dos_pre_reading_cache_hostname.tmp"
+) else (
+	set "zjname='"hostname"'"
+)
+for /f "delims=" %%a in (!zjname!) do set hostname=%%a
+for /f "tokens=3 delims=." %%a in ('"ver"') do (
+	if %%a lss 10586 (
+		set winv=1
+	) else (
+		set winv=0
+	)
+)
+if exist "!temp!\dos_pre_reading_cache_os.tmp" (
+	set "wmicos='"type "!temp!\dos_pre_reading_cache_os.tmp""'"
+) else (
+	set "wmicos='"wmic os get caption /value"'"
+	set comd=1
+)
+for /f "skip=2 tokens=2 delims==" %%a in (!wmicos!) do (
+	set system=%%a
+	if "!comd!" equ "1" (
+		set "system=!system:~0,-1!"
+		set comd=
+	)
+	for /f "tokens=3" %%a in ("!system!") do (
+		if "%%a" equ "11" (
+			call :pd11
+			goto jspd
+		)
+		if "%%a" equ "10" (
+			call :pd10
+			goto jspd
+		)
+		if "%%a" equ "8.1" (
+			call :pd8.1
+			goto jspd
+		)
+		if "%%a" equ "8" (
+			call :pd8
+			goto jspd
+		)
+		if "%%a" equ "7" (
+			call :pd7
+			goto jspd
+		)
+		if /i "%%a" equ "XP" (
+			call :pdxp
+			goto jspd
+		)
+	)
+:jspd
+	if "!zmlj:~0,1!!zmlj:~-1!" neq """" (
+		for /f "delims=" %%a in ('"echo %zmlj%"') do (
+			set !zmlj!="%%~a"
+		)
+	)
+)
+if "%date:~11,1%" equ "周" (
+	set "xingqi=%date:~11,2%"
+) else (
+	set "xingqi=%date:~11,3%"
 )
 for /f %%a in ('"echo prompt $E^ |cmd"') do (
 	set cswz=%%a[
@@ -226,24 +268,13 @@ for /f %%a in ('"echo prompt $E^ |cmd"') do (
 )
 call :list
 if /i "%processor_architecture%"=="x86" (set bit=32) else (set bit=64)
-if "!system:~8,2!"=="XP" (
-	set zmlj=%zmlj:~19%\
-) else (
-	set zmlj=%zmlj:~25%\
-)
 if exist !systemroot!\system32\choice.exe (
-	set sel=call :choice
+	set "sel=call :choice"
 ) else (
-	set sel=set /p shuru=输入你的选择:<nul
+	set "sel=set /p shuru=输入你的选择:<nul"
 )
-if "%zmlj:~0,1%%zmlj:~-1%" neq """" for /f "delims=" %%a in ('"echo %zmlj%"') do (set %zmlj%="%%~a")
-if /i "%2" neq "" goto chanshu2
-fltmc 1>nul 2>nul
-if %errorlevel% neq 0 (echo 部分功能无法正常使用，请以管理员身份运行
-echo _______________________________________________________________________________
-echo 按任意键继续运行&pause>nul)
-forfiles /p %~dp0 /m %~nx0 /c "%comspec% /c set /p =0x070x07<nul"
-cls
+if /i "%2" neq "" goto %2
+rem call :xsjc !dosqssj! !time! jg
 goto memuv2
 for /f "delims=" %%a in ('"wmic cpu get processorid|find /i /v "processorid""') do (for /f "delims=" %%b in ('"echo %%a|find /i /v "echo""') do (set a=%%b))
 for /f "delims=" %%a in ('"wmic bios get smbiosbiosversion|find /i /v "smbiosbiosversion""') do (for /f "delims=" %%b in ('"echo %%a|find /i /v "echo""') do (set b=%%b))
@@ -264,7 +295,7 @@ set sfzc=%sfzc:~21%
 for /f "delims=" %%a in ('"reg query HKEY_CURRENT_USER\System\DOS工具箱 /v 注册码 2>nul|find "注册码""') do (set sfzcm=%%a)
 set sfzcm=%sfzcm:~21%
 if /i %sfzc%==%jqm% if /i %sfzcm%==%zh% goto memuv2
-:ks
+:ks1
 color f1
 title 注册码验证 - %system%
 cls
@@ -314,8 +345,6 @@ echo ___________________________________________________________________________
 echo 密码正确！
 ping/n 2 0.0>nul
 goto memuv2
-:chanshu2
-if /i "%2" neq "" goto %2
 :memuv2
 if !start! lss 1 set start=1
 set /a memuys=!start!/9+1
@@ -339,6 +368,7 @@ for /f "delims=: tokens=2" %%b in (%temp%\dostoolupdate) do (set doshash="%%b"))
 del /f /q %temp%\dostoolupdate)
 title DOS工具箱 - %system%%gxflag%
 cls
+rem echo;初始化用时: !jg!
 if !winv! equ 0 (echo                                     菜单 - 第!cswz!!ysbak:~0,3!92m!memuys!!cswz!!ysbak!页) else (
 set /p =!cswz1!　　　　　　　　　　　　　　　　　　菜单 - 第<nul
 call :colortxt a !memuys!
@@ -2450,7 +2480,6 @@ for /f "skip=2 tokens=2 delims==" %%a in ('Wmic OS Get InstallDate /value') do (
     echo;系统安装日期:	!systeminstalltime:~0,4!年!systeminstalltime:~4,2!月!systeminstalltime:~6,2!日 !systeminstalltime:~8,2!:!systeminstalltime:~10,2!:!systeminstalltime:~12,2!
     echo;
 )
-set cpu=,cpuid=,cpuzp=,cpuws=,cpuwp=,cpul1=,cpul2=,cpul3=,ch=,cpuhx=,cpuxc=
 for /f "delims== tokens=2" %%a in ('"wmic cpu get name/value"') do set cpu=%%a
 echo CPU: 		%cpu%
 echo;
@@ -4553,12 +4582,12 @@ if defined !sysid! (echo 系统名称: %system%) else (call :colortxt c 没有当前系统
 ping /n 1 www.baidu.com>nul||call :colortxt c 没有网络连接&echo;
 echo 请选择KMS服务器
 echo _______________________________________________________________________________
-echo [1]xykz.f3322.org
+echo [1]kms.loli.best
 echo [2]kms.03k.org
 echo [0]返回菜单
 echo _______________________________________________________________________________
 choice /c 120 /n /m 请输入你的选择:
-if "%errorlevel%" equ "1" set server=xykz.f3322.org&goto 71.1
+if "%errorlevel%" equ "1" set server=kms.loli.best&goto 71.1
 if "%errorlevel%" equ "2" set server=kms.03k.org&goto 71.1
 if "%errorlevel%" equ "3" goto memuv2
 goto 71
@@ -4784,10 +4813,21 @@ echo;___________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
 goto memuv2
 :hash
-set url=%1
-set shuanfa=%2
-if "%shuanfa%" equ "" set shuanfa=sha256
-for /f "skip=1 eol=C" %%a in ('"certutil -hashfile %url% %shuanfa%"') do (set hash=%%a)
+setlocal
+set "url=%1"
+set "shuanfa=%2"
+if "!shuanfa!" equ "" (set "shuanfa=sha256")
+for /f "skip=1 eol=C" %%a in ('"certutil -hashfile !url! !shuanfa!"') do (
+	if "%3" neq "" (
+		endlocal&set "%3=%%a"
+		goto :eof
+	) else (
+		echo;%%a
+		goto :eof
+	)
+	
+)
+goto :eof
 ::for /f "delims=" %%a in ('"powershell get-filehash %url% -algorithm %shuanfa%^|select-object hash^|format-list"') do (set hash=%%a)
 ::set hash=%hash:~7%
 goto :eof
@@ -5055,18 +5095,33 @@ for /l %%a in (1,1,1000) do (
 )
 goto :eof
 :strlen
-setlocal enabledelayedexpansion
+setlocal
 set "$=!%1!#"
 set N=&for %%a in (4096 2048 1024 512 256 128 64 32 16)do if !$:~%%a!. NEQ . set/aN+=%%a&set $=!$:~%%a!
 set $=!$!fedcba9876543210&set/aN+=0x!$:~16,1!
 endlocal&If %2. neq . (set/a%2=%N%)else echo %N%
 goto :eof
 :ys
-set ys=%1
-set ysks=%time%
-:jxjc
-call :sjc "%ysks%" "%time%"
-if not 0x%sjc% geq 0x%ys% goto jxjc
+setlocal
+for /f "tokens=1,2,3,4 delims=:." %%a in ("!time!") do (
+	set /a "start=1%%a*360000+1%%b*6000+1%%c*100+1%%d"
+)
+:ys_loop
+for /f "tokens=1,2,3,4 delims=:." %%a in ("!time!") do (
+	set /a "sub=(1%%a*360000+1%%b*6000+1%%c*100+1%%d)-start"
+)
+if "!sub!" lss "0" (
+	endlocal
+	goto :eof
+) else (
+	if !sub! geq %1 (
+		endlocal
+		goto :eof
+	) else (
+		goto ys_loop
+	)
+)
+endlocal
 goto :eof
 :dwjs
 set blxsws=%3
@@ -5312,46 +5367,49 @@ timeout /t 2 /nobreak>nul
 del %temp%\su.txt;%temp%\1.base;%temp%\2.base;%temp%\1.txt;%temp%\2.txt;%temp%\bypass.ps1;%temp%\su.bat
 exit 0
 :xdwjs
+setlocal
 set Bytes=%~1
 set danwei=%~2
-if /i "!danwei!" equ "kb" (set /a bytes=bytes*1024)
-if /i "!danwei!" equ "mb" (set /a bytes=btyes*1048576)
-if /i "!danwei!" equ "gb" (set /a bytes=bytes*1073741824)
+if /i "!danwei!" equ "kb" (set /a bytes*=1024)
+if /i "!danwei!" equ "mb" (set /a bytes*=1048576)
+if /i "!danwei!" equ "gb" (set /a bytes*=1073741824)
 if "%~3" == "" Goto :eof
-call :Division !Bytes! 1152921504606846976 OK
+call :Division !Bytes! 1152921504606846976 2 OK
 if not "%OK:~0,2%"=="0." (
-	set %~3=!OK! EB
+	endlocal&set %~3=%OK% EB
 	Goto :eof
-	) else (call :Division !Bytes! 1125899906842624 OK)
+) else (call :Division !Bytes! 1125899906842624 2 OK)
 if not "%OK:~0,2%"=="0." (
-	set %~3=!OK! PB
+	endlocal&set %~3=%OK% PB
 	Goto :eof
-	) else (call :Division !Bytes! 1099511627776 OK)
+) else (call :Division !Bytes! 1099511627776 2 OK)
 if not "%OK:~0,2%"=="0." (
-	set %~3=!OK! TB
+	endlocal&set %~3=%OK% TB
 	Goto :eof
-	) else (call :Division !Bytes! 1073741824 OK)
+) else (call :Division !Bytes! 1073741824 2 OK)
 if not "%OK:~0,2%"=="0." (
-	set %~3=!OK! GB
+	endlocal&set %~3=%OK% GB
 	Goto :eof
-	) else (call :Division !Bytes! 1048576 OK)
+) else (call :Division !Bytes! 1048576 2 OK)
 if not "%OK:~0,2%"=="0." (
-	set %~3=!OK! MB
+	endlocal&set %~3=%OK% MB
 	Goto :eof
-	) else (call :Division !Bytes! 1024 OK)
+) else (call :Division !Bytes! 1024 2 OK)
 if not "%OK:~0,2%"=="0." (
-	set %~3=!OK! KB
+	endlocal&set %~3=%OK% KB
 	Goto :eof
-	) else (
-	set %~3=!Bytes! Byte
-	Goto :eof)
+) else (
+	endlocal&set %~3=%Bytes% Byte
+	Goto :eof
+)
 :Division
-if "%~3" == "" Goto :eof
+endlocal
+if "%~4" == "" Goto :eof
 set Div.1=%~1
 set Div.2=%~2
 set Div.3=
 set Div.I=0
-set Div.D=2
+set Div.D=%~3
 set Div.1.Len.0=
 set Div.2.Len.0=
 set Div.Z=00000000
@@ -5453,21 +5511,28 @@ if defined Div.D if %Div.D% gtr 0 set Div.3=!Div.3:~,-%Div.D%!.!Div.3:~-%Div.D%!
 for /f "tokens=* delims=0" %%i in ("!Div.3!") do set Div.3=%%i
 if "!Div.3:~0,1!"=="." set Div.3=0!Div.3!
 if "!Div.3!"=="" set Div.3=0
-set %~3=%Div.3%
+endlocal&set %~4=%Div.3%
 goto :eof
 :xsjc
+setlocal
 set /a N=0
 for /f "tokens=1-8 delims=.:" %%I in ("%~2:%~1") do (
 	set /a N+=10%%I%%100*360000+10%%J%%100*6000+10%%K%%100*100+10%%L%%100
 	set /a N-=10%%M%%100*360000+10%%N%%100*6000+10%%O%%100*100+10%%P%%100
 )
 set Sco=!N!
-set /a S=N/360000,N=N%%360000,F=N/6000,N=N%%6000,M=N/100,N=N%%100
+set /a S=N/360000,N=N%%360000,F=N/6000,N=N%%6000,M=N/100,N=N*%%100
+set /a n*=10
 if %F% equ 0 (set T=%M%秒%N%毫秒) else set T=%F%分%M%秒%N%毫秒
 if %s% neq 0 set t=%s%小时%F%分%M%秒%N%毫秒
-set %~3=%T%
+endlocal&set %~3=%T%
 Goto :eof
 :cf
+setlocal
+call :cf_1 %1 %2 %3 jg
+endlocal&set %4=%jg%
+goto :eof
+:cf_1
 set num=0
 set dec_str=
 set input=
@@ -5787,3 +5852,539 @@ if "%1" neq "-chrome" (
 ) else (
 	goto :eof
 )
+:checkvar
+setlocal
+if "%1" equ "" (
+	endlocal
+	goto :eof
+) else (
+	set "val=!%1!"
+)
+if "%2" equ "num" (
+	goto checkvar_num
+)
+if "%2" equ "num." (
+	goto checkvar_num.
+)
+if "%2" equ "-num" (
+	goto checkvar_-num
+)
+if "%2" equ "-num." (
+	goto checkvar_-num.
+)
+if "%2" equ "az" (
+	goto checkvar_az
+)
+if "%2" equ "aznum" (
+	goto checkvar_aznum
+)
+endlocal
+goto :eof
+:checkvar_num
+if defined %1 (
+	for /f "delims=0123456789" %%a in ("!%1!") do (
+		if "%3" neq "" (
+			endlocal&set "%3=0"
+			goto :eof
+		) else (
+			echo;0
+			endlocal
+			goto :eof
+		)
+	)
+) else (
+	if "%3" neq "" (
+		endlocal&set "%3=0"
+		goto :eof
+	) else (
+		echo;0
+		endlocal
+		goto :eof
+	)
+)
+if "%3" neq "" (
+	endlocal&set "%3=1"
+	goto :eof
+) else (
+	echo;1
+	endlocal
+	goto :eof
+)
+endlocal
+goto :eof
+:checkvar_num.
+if defined %1 (
+	for /f "delims=.0123456789" %%a in ("!%1!") do (
+		if "%3" neq "" (
+			endlocal&set "%3=0"
+			goto :eof
+		) else (
+			echo;0
+			endlocal
+			goto :eof
+		)
+	)
+) else (
+	if "%3" neq "" (
+		endlocal&set "%3=0"
+		goto :eof
+	) else (
+		echo;0
+		endlocal
+		goto :eof
+	)
+)
+for /f "tokens=1,2 delims=." %%a in ("!%1!") do (
+	if "%%a" neq "" (
+		set "val1=%%a"
+	) else (
+		set "val1=0"
+	)
+	if "%%b" neq "" (
+		set "val2=%%b"
+	) else (
+		if "%3" neq "" (
+			endlocal&set "%3=0"
+			goto :eof
+		) else (
+			echo;0
+			endlocal
+			goto :eof
+		)
+	)
+)
+if "!val1!!val2!" neq "" (
+	if "%3" neq "" (
+		endlocal&set "%3=1"
+		goto :eof
+	) else (
+		echo;1
+		endlocal
+		goto :eof
+	)
+) else (
+	if "%3" neq "" (
+		endlocal&set "%3=0"
+		goto :eof
+	) else (
+		echo;0
+		endlocal
+		goto :eof
+	)
+)
+endlocal
+goto :eof
+:checkvar_-num
+if defined %1 (
+	for /f "delims=0123456789-" %%a in ("!%1!") do (
+		if "%3" neq "" (
+			endlocal&set "%3=0"
+			goto :eof
+		) else (
+			echo;0
+			endlocal
+			goto :eof
+		)
+	)
+) else (
+	if "%3" neq "" (
+		endlocal&set "%3=0"
+		goto :eof
+	) else (
+		echo;0
+		endlocal
+		goto :eof
+	)
+)
+for /f "tokens=1 delims=-" %%a in ("!%1!") do (
+	if "!%1:~0,1!" equ "-" (
+		if "%3" neq "" (
+			endlocal&set "%3=1"
+			goto :eof
+		) else (
+			echo;1
+			endlocal
+			goto :eof
+		)
+	) else (
+		if "%3" neq "" (
+			endlocal&set "%3=0"
+			goto :eof
+		) else (
+			echo;0
+			endlocal
+			goto :eof
+		)
+	)
+)
+endlocal
+goto :eof
+:checkvar_-num.
+set "val1=!val:~1!"
+set "val2=!val:.=!"
+if defined val1 (
+	call :checkvar val1 num. jg
+	if "!jg!" equ "1" (
+		call :checkvar val2 -num jg
+		if "!jg!" equ "1" (
+			if "%3" neq "" (
+				endlocal&set "%3=1"
+				goto :eof
+			) else (
+				echo;1
+				endlocal
+				goto :eof
+			)
+		)
+	)
+)
+if "%3" neq "" (
+	endlocal&set "%3=0"
+	goto :eof
+) else (
+	echo;0
+	endlocal
+	goto :eof
+)
+endlocal
+goto :eof
+:checkvar_az
+if defined %1 (
+	for /f "delims=abcdefghijklmnopqrstuvwxyz" %%a in ("!%1!") do (
+		if "%3" neq "" (
+			endlocal&set "%3=0"
+			goto :eof
+		) else (
+			echo;0
+			endlocal
+			goto :eof
+		)
+	)
+	if "%3" neq "" (
+		endlocal&set "%3=1"
+		goto :eof
+	) else (
+		echo;1
+		endlocal
+		goto :eof
+	)
+)
+endlocal
+goto :eof
+:checkvar_aznum
+if defined %1 (
+	for /f "delims=0123456789abcdefghijklmnopqrstuvwxyz" %%a in ("!%1!") do (
+		if "%3" neq "" (
+			endlocal&set "%3=0"
+			goto :eof
+		) else (
+			echo;0
+			endlocal
+			goto :eof
+		)
+	)
+	if "%3" neq "" (
+		endlocal&set "%3=1"
+		goto :eof
+	) else (
+		echo;1
+		endlocal
+		goto :eof
+	)
+)
+if "%3" neq "" (
+	endlocal&set "%3=0"
+	goto :eof
+) else (
+	echo;0
+	endlocal
+	goto :eof
+)
+endlocal
+goto :eof
+:sqrt
+endlocal
+set s=%1
+set w=%2
+if defined W (for /l %%i in (1 1 %W%) do set "s=!s!00") else set W=0
+set p=!s!&set /a len=N=0
+for %%i in (4096 2048 1024 512 256 128 64 32 16 8 4 2 1) do IF "!p:~%%i!" NEQ "" set/a len+=%%i&set "p=!p:~%%i!"
+set /a "N-=~(len%%2)"
+set M=!s:~,%N%!
+for /l %%i in (1 1 9) do set/a Mx=%%i*%%i&if !Mx! leq !M! set/a "i=%%i,j=100+M-Mx"
+set /a "len-=1,Len_i=_N=i/5+1,p=i*20"
+set j=!j:~-%_N%!&set p=0!p!&set kl=0000000
+set /a _N=8-_N
+for /l %%i in (%N% 2 !len!) do (
+set "j=!j!!s:~%%i,2!"
+if "!j:0=!" neq "" (
+set /a Ln_i=Len_i+=2
+if "!p!" lss "!j!" (
+set d=Z&set in=!kl!!P!&set /a Ln_i+=7
+for /l %%j in (9 -1 2) do (
+if "!d!" gtr "!j!" (
+set "x=%%j"
+set d=&set /a "b=x*x"
+for /l %%k in (8 8 !Ln_i!) do (
+set /a "b=1!in:~-%%k,8!*%%j+b"
+set d=!b:~-8!!d!&set /a "b=!b:~,-8!-%%j"
+)
+set d=!b!!d!
+for %%k in (!Len_i!) do set "d=!d:~-%%k!"
+)
+)
+if "!d!" gtr "!j!" (set d=!in!&set x=1&set b=1) else set d=!kl!!d!&set b=0
+set j=!kl!!j!&set "t="
+for /l %%j in (8 8 !Ln_i!) do (
+set /a "b=3!j:~-%%j,8!-1!d:~-%%j,8!-!b:~,1!%%2"
+set "t=!b:~1!!t!"
+)
+for %%j in (!Len_i!) do set "j=!t:~-%%j!"
+set "j=!j:~1!" ) else set "x=0"
+set /a "Len_i-=1"
+if "!x!" neq "0" (
+if "!x!" geq "5" (
+set p=&set b=0&set "in=!kl!!i!!x!"
+set /a "Ln_i=Len_i+_N"
+for /l %%j in (8 8 !Ln_i!) do (
+set /a "b=1!in:~-%%j,8!*2+!b:~,1!%%2"
+set p=!b:~1!!p!
+)
+set /a "b=!b:~,1!%%2"
+for %%j in (!Len_i!) do set "p=!b:1=01!!p:~-%%j!0"
+) else set /a t=x*2&set "p=!p:~,-1!!t!0"
+) else set p=!p!0&set "j=!j:~1!"
+) else set j=!j:~1!&set p=!p!0&set /a "Len_i+=1,x=0"
+set i=!i!!x!
+)
+for /f "tokens=* delims=." %%i in ("!i:~,-%W%!.!i:~-%W%!") do (endlocal&set %3=%%i)
+goto :eof
+:10to16
+(setlocal
+set "ran=%1"
+:10to16_1
+set /a "s=!ran!%%16"
+if !s! lss 10 goto 10to16_3
+if !s! gtr 12 goto 10to16_2
+if "!s!" equ "10" set "s=A"&goto 10to16_3
+if "!s!" equ "11" set "s=B"&goto 10to16_3
+if "!s!" equ "12" set "s=C"&goto 10to16_3
+:10to16_2
+if "!s!" equ "13" set "s=D"&goto 10to16_3
+if "!s!" equ "14" set "s=E"&goto 10to16_3
+if "!s!" equ "15" set "s=F"&goto 10to16_3
+:10to16_3
+set "jg=!s!!jg!"
+set /a "ran/=16"
+if !ran! neq 0 goto 10to16_1
+if "%2" neq "" (
+	endlocal&set "%2=%jg%"
+) else (
+	endlocal&echo %jg%
+)
+goto :eof
+)
+:10to2
+(setlocal
+set "num=%1"
+:10to2_1
+set /a "e=num%%2"
+set /a "num/=2"
+set "num1=!e!!num1!"
+if !num! neq 0 goto 10to2_1
+if "%2" neq "" (
+	endlocal&set "%2=%num1%"
+) else (
+	endlocal&echo %num1%
+)
+goto :eof
+)
+:10to8
+(setlocal
+set "num=%1"
+:10to8_2
+set /a "b=num%%8"
+set /a "num/=8"
+set "num1=!b!!num1!"
+if !num! neq 0 goto 10to8_2
+if "%2" neq "" (
+	endlocal&set "%2=%num1%"
+) else (
+	endlocal&echo %num1%
+)
+goto :eof
+)
+:2to10
+(setlocal
+set nn=
+set "nnn=1"
+set "n=%1"
+set "n=!n:0= 0!"
+set "n=!n:1= 1!"
+for %%a in (!n!) do (
+	set "nn=%%a !nn!"
+)
+for %%a in (!nn!) do (
+	set /a "num+=%%a*nnn,nnn*=2"
+)
+if "%2" neq "" (
+	endlocal&set "%2=%num%"
+) else (
+	endlocal&echo %num%
+)
+goto :eof
+)
+:calc
+set a=%~1.0
+set b=%~3.0
+for /f "tokens=1,2 delims=." %%a in ("%a:-=%") do set "a_1=%%a"&set "a_2=%%b"
+for /f "tokens=1,2 delims=." %%a in ("%b:-=%") do set "b_1=%%a"&set "b_2=%%b"
+call :strlenx %a_1% L1_1
+call :strlenx %a_2% L1_2
+call :strlenx %b_1% L2_1
+call :strlenx %b_2% L2_2
+for %%i in (1 2) do (
+    set "zero="&set m=0
+    if !L1_%%i! leq !L2_%%i! (
+        set /a m=L2_%%i-L1_%%i
+        if !m! neq 0 (
+            for /l %%a in (1 1 !m!) do set zero=!zero!0
+        )
+        if "%%i" equ "1" (set a_%%i=!zero!!a_%%i!) else set a_%%i=!a_%%i!!zero!
+        set Len_%%i=!L2_%%i!
+    ) else (
+        set /a m=L1_%%i-L2_%%i
+        for /l %%a in (1 1 !m!) do set zero=!zero!0
+        if "%%i" equ "1" (set b_%%i=!zero!!b_%%i!) else set b_%%i=!b_%%i!!zero!
+        set Len_%%i=!L1_%%i!
+    )
+)
+set /a Len=Len_1+Len_2+1
+if "%~2" equ "+" (
+    if "!a:~,1!" neq "-" (
+        if "!b:~,1!" neq "-" (
+            call :jia %a_1%.%a_2% %b_1%.%b_2% %Len% s
+            set "%~4=!s!"
+        ) else (
+            call :jian %a_1%.%a_2% %b_1%.%b_2% %Len% s
+            if "%a_1%.%a_2%" gtr "%b_1%.%b_2%" (set "%~4=!s!") else set "%~4=-!s!"
+        )
+    ) else (
+        if "!b:~,1!" neq "-" (
+            call :jian %a_1%.%a_2% %b_1%.%b_2% %Len% s
+            if "%a_1%.%a_2%" gtr "%b_1%.%b_2%" (set "%~4=-!s!") else set "%~4=!s!"
+        ) else (
+            call :jia %a_1%.%a_2% %b_1%.%b_2% %Len% s
+            set "%~4=-!s!"
+        )
+    )
+) else (
+    if "!a:~,1!" neq "-" (
+        if "!b:~,1!" neq "-" (
+            call :jian %a_1%.%a_2% %b_1%.%b_2% %Len% s
+            if "%a_1%.%a_2%" lss "%b_1%.%b_2%" (set "%~4=-!s!") else set "%~4=!s!"
+        ) else (
+            call :jia %a_1%.%a_2% %b_1%.%b_2% %Len% s
+            set "%~4=!s!"
+        )
+    ) else (
+        if "!b:~,1!" neq "-" (
+            call :jia %a_1%.%a_2% %b_1%.%b_2% %Len% s
+            set "%~4=-!s!"
+        ) else (
+            call :jian %a_1%.%a_2% %b_1%.%b_2% %Len% s
+            if "%a_1%.%a_2%" lss "%b_1%.%b_2%" (set "%~4=!s!") else set "%~4=-!s!"
+        )
+    )
+)
+goto :eof
+:strlenx
+setlocal
+set "$=%1#"
+set len=&for %%a in (4000 2048 1024 512 256 128 64 32 16)do if !$:~%%a!. neq . set/a len+=%%a&set $=!$:~%%a!
+set $=!$!fedcba9876543210&set/a len+=0x!$:~16,1!
+endlocal&set %2=%len%&goto :eof
+:jia
+setlocal
+set a=%~1
+set b=%~2
+set t=0
+set "s="
+for /l %%a in (-1 -1 -%~3) do (
+    if "!a:~%%a,1!" equ "." (
+      set s=.!s!
+    ) else (
+        set /a "c=t+!a:~%%a,1!+!b:~%%a,1!"
+        if !c! geq 10 (set t=1) else set t=0
+        set s=!c:~-1!!s!
+    )
+)
+if %t% equ 1 (set s=1!s!)
+for /f "tokens=1,2 delims=." %%a in ("%s%") do (
+    for /f "tokens=1* delims=0" %%c in (".%%b") do if "%%c%%d" equ "." set s=%%a
+)
+endlocal&set %~4=%s%&goto :eof
+:jian
+setlocal
+if "%~1" lss "%~2" (
+    set a=%~2
+    set b=%~1
+) else (
+    set a=%~1
+    set b=%~2
+)
+set t=0
+set "s="
+for /l %%a in (-1 -1 -%~3) do (
+    if "!a:~%%a,1!" equ "." (
+      set s=.!s!
+    ) else (
+        set /a "c=10+!a:~%%a,1!-!b:~%%a,1!-t"
+        if !c! lss 10 (set t=1) else set t=0
+        set s=!c:~-1!!s!
+    )
+)
+for /f "tokens=1,2 delims=." %%a in ("%s%") do (
+    for /f "tokens=* delims=0" %%c in ("%%a") do if "%%c" equ "" (set pre=0) else set pre=%%c
+    for /f "tokens=* delims=0" %%c in ("%%b") do if "%%c" equ "" (set s=!pre!) else set s=!pre!.%%b
+)
+endlocal&set %~4=%s%&goto :eof
+:pdxp
+set zmlj=%zmlj:~19%\
+if /i "!system!" equ "Microsoft Windows XP Home" (set system=Windows XP 家庭版)
+if /i "!system!" equ "Microsoft Windows XP Professional" (set system=Windows XP 专业版)
+goto :eof
+:pd7
+set zmlj=%zmlj:~25%\
+if /i "!system!" equ "Microsoft Windows 7 Ultimate" (set system=Windows 7 旗舰版)
+if /i "!system!" equ "Microsoft Windows 7 Home Basic" (set system=Windows 7 家庭普通版)
+if /i "!system!" equ "Microsoft Windows 7 Home Premium" (set system=Windows 7 家庭高级版)
+if /i "!system!" equ "Microsoft Windows 7 Professional" (set system=Windows 7 专业版)
+if /i "!system!" equ "Microsoft Windows 7 Enterprise" (set system=Windows 7 企业版)
+goto :eof
+:pd8
+set zmlj=%zmlj:~25%\
+if /i "!system!" equ "Microsoft Windows 8 Pro" (set system=Windows 8 专业版)
+if /i "!system!" equ "Microsoft Windows 8 China" (set system=Windows 8 中国版)
+if /i "!system!" equ "Microsoft Windows 8 Enterprise" (set system=Windows 8 企业版)
+goto :eof
+:pd8.1
+set zmlj=%zmlj:~25%\
+if /i "!system!" equ "Microsoft Windows 8.1 Pro" (set system=Windows 8.1 专业版)
+if /i "!system!" equ "Microsoft Windows 8.1 China" (set system=Windows 8.1 中国版)
+if /i "!system!" equ "Microsoft Windows 8.1 Enterprise" (set system=Windows 8.1 企业版)
+goto :eof
+:pd10
+set zmlj=%zmlj:~25%\
+if /i "!system!" equ "Microsoft Windows 10 Home" (set system=Windows 10 家庭版)
+if /i "!system!" equ "Microsoft Windows 10 Professional" (set system=Windows 10 专业版)
+if /i "!system!" equ "Microsoft Windows 10 Education" (set system=Windows 10 教育版)
+if /i "!system!" equ "Microsoft Windows 10 Enterprise" (set system=Windows 10 企业版)
+goto :eof
+:pd11
+set zmlj=%zmlj:~25%\
+if /i "!system!" equ "Microsoft Windows 11 Home" (set system=Windows 11 家庭版)
+if /i "!system!" equ "Microsoft Windows 11 Professional" (set system=Windows 11 专业版)
+if /i "!system!" equ "Microsoft Windows 11 Education" (set system=Windows 11 教育版)
+if /i "!system!" equ "Microsoft Windows 11 Enterprise" (set system=Windows 11 企业版)
+goto :eof
