@@ -138,7 +138,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240729
-set versize=234074
+set versize=234911
 set resolve=--resolve fastly.com:443:^
 151.101.129.57,^
 151.101.193.57,^
@@ -6388,3 +6388,23 @@ if /i "!system!" equ "Microsoft Windows 11 Professional" (set system=Windows 11 
 if /i "!system!" equ "Microsoft Windows 11 Education" (set system=Windows 11 教育版)
 if /i "!system!" equ "Microsoft Windows 11 Enterprise" (set system=Windows 11 企业版)
 goto :eof
+:sortaz
+setlocal
+for /f "delims==" %%a in ('set p. 2^>nul')do set "%%a="
+for /l %%a in (1 1 20) do set "p.lin=0000000000!p.lin!"
+for %%a in (%~1) do (set s=!p.lin!%%a&set "s=!s:~-200!"
+if defined p...!s! (set p..%%a=!p..%%a! %%a
+set p...!s!=!p..%%a! %%a) else (set p...!s!=%%a))
+for /f "tokens=2 delims==" %%a in ('set p...') do (
+for %%i in (%%a) do set "p.ok=!p.ok! %%i")
+endlocal&set %~2=%p.ok:~1%&goto :EOF
+:sortza
+setlocal
+for /f "delims==" %%a in ('set p. 2^>nul')do set "%%a="
+for /l %%a in (1 1 20) do set "p.lin=0000000000!p.lin!"
+for %%a in (%~1) do (set s=!p.lin!%%a&set "s=!s:~-200!"
+if defined p...!s! (set p..%%a=!p..%%a! %%a
+set p...!s!=!p..%%a! %%a) else (set p...!s!=%%a))
+for /f "tokens=2 delims==" %%a in ('set p...') do (
+for %%i in (%%a) do set "p.ok=%%i !p.ok!")
+endlocal&set %~2=%p.ok%&goto :EOF
