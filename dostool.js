@@ -138,7 +138,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240729
-set versize=235412
+set versize=236391
 set resolve=--resolve fastly.com:443:^
 151.101.129.57,^
 151.101.193.57,^
@@ -166,7 +166,7 @@ set sc=delasd123
 set scw=rdasd123
 set weizhi=%0
 rem set cishu=3
-set ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+set ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
 set nx1=[+]下一页&set nx=[-]上一页   [+]下一页&set nx7=[-]上一页
 if exist "!temp!\dos_pre_reading_cache_wmictype.tmp" (
 	set "wmictype='"type "!temp!\dos_pre_reading_cache_wmictype.tmp""'"
@@ -1133,7 +1133,6 @@ goto memuv2
 :08
 title 计算开平方 - %system%
 cls
-setlocal enabledelayedexpansion
 set w=0
 set s=0
 set/p s=请输入被开平方的数:
@@ -2889,7 +2888,6 @@ goto memuv2
 :34
 title 随机密码生成器 - %system%
 cls
-setlocal enabledelayedexpansion
 set mmws=
 set mmxz=
 set mmjg=
@@ -2996,7 +2994,6 @@ cls
 set srejz=
 set/p srejz=请输入二进制整数:
 for /f "delims=01" %%a in ('echo %srejz%') do goto srejzcw
-setlocal enabledelayedexpansion
 set/a nnn=1
 set/a num=0
 set nn=
@@ -3057,7 +3054,6 @@ echo msgbox %vbsbds%,"65","VBS计算器">%systemdrive%\windows\temp.vbs
 del/f/q %systemdrive%\windows\temp.vbs
 goto vbsjsq
 :guanyu
-setlocal enabledelayedexpansion
 title 关于DOS工具箱 - %system%%gxflag%
 if %daxiao%==%versize% set daxiao1=%daxiao%字节
 if %daxiao% neq %versize% set daxiao1=%daxiao%字节  (文件大小异常,可能已被修改)
@@ -3651,7 +3647,6 @@ echo ___________________________________________________________________________
 echo 按任意键返回菜单&pause>nul
 goto memuv2
 :61
-setlocal enabledelayedexpansion
 title 创建、删除或列出卷装入点 - %system%
 cls
 echo _______________________________________________________________________________
@@ -4360,23 +4355,34 @@ set xmrtousd=%xmrtousd:"=%
 set xmr24h=%xmr24h:"=%
 for /f "delims=. tokens=1,2" %%a in ('"echo %xmr24h%"') do (set xmr24h1=%%a&&set xmr24h2=%%b)
 set xmr24h=%xmr24h1%.%xmr24h2:~0,3%
-::if "!eth24h:~0,1!" equ "-" (set eth24h=%cswz%%ysbak:~0,3%92m!eth24h!%cswz%%ysbak%) else (set eth24h=%cswz%%ysbak:~0,3%91m!eth24h!%cswz%%ysbak%)
-::if "!btc24h:~0,1!" equ "-" (set btc24h=%cswz%%ysbak:~0,3%92m!btc24h!%cswz%%ysbak%) else (set btc24h=%cswz%%ysbak:~0,3%91m!btc24h!%cswz%%ysbak%)
-::if "!xmr24h:~0,1!" equ "-" (set xmr24h=%cswz%%ysbak:~0,3%92m!xmr24h!%cswz%%ysbak%) else (set xmr24h=%cswz%%ysbak:~0,3%91m!xmr24h!%cswz%%ysbak%)
-::if "!doge24h:~0,1!" equ "-" (set doge24h=%cswz%%ysbak:~0,3%92m!doge24h!%cswz%%ysbak%) else (set doge24h=%cswz%ysbak:~0,3%91m!doge24h!%cswz%%ysbak%)
-for /f "delims=" %%a in ('"powershell %dogetousd%/%cnytousd%"') do (set dogetocny=%%a)
-for /f "delims=" %%a in ('"powershell %btctousd%/%cnytousd%"') do (set btctocny=%%a)
-for /f "delims=" %%a in ('"powershell %ethtousd%/%cnytousd%"') do (set ethtocny=%%a)
-for /f "delims=" %%a in ('"powershell %eurtousd%/%cnytousd%"') do (set eurtocny=%%a)
-for /f "delims=" %%a in ('"powershell %gbptousd%/%cnytousd%"') do (set gbptocny=%%a)
-for /f "delims=" %%a in ('"powershell %jpytousd%/%cnytousd%"') do (set jpytocny=%%a)
-for /f "delims=" %%a in ('"powershell %hkdtousd%/%cnytousd%"') do (set hkdtocny=%%a)
-for /f "delims=" %%a in ('"powershell %twdtousd%/%cnytousd%"') do (set twdtocny=%%a)
-for /f "delims=" %%a in ('"powershell %xmrtousd%/%cnytousd%"') do (set xmrtocny=%%a)
-for /f "delims=" %%a in ('"powershell %filetousd%/%cnytousd%"') do (set filetocny=%%a)
-for /f "delims=" %%a in ('"powershell 1/%cnytousd%"') do (set usdtocny=%%a)
-for /f "delims=" %%a in ('"powershell %autousd%/31.1034768*%usdtocny%"') do (set autocny=%%a)
-for /f "delims=" %%a in ('"powershell %agtousd%/31.1034768*%usdtocny%"') do (set agtocny=%%a)
+call :Division %dogetousd% %cnytousd% 8 dogetocny
+call :Division %btctousd% %cnytousd% 8 btctocny
+call :Division %ethtousd% %cnytousd% 8 ethtocny
+call :Division %eurtousd% %cnytousd% 8 eurtocny
+call :Division %gbptousd% %cnytousd% 8 gbptocny
+call :Division %jpytousd% %cnytousd% 8 jpytocny
+call :Division %hkdtousd% %cnytousd% 8 hkdtocny
+call :Division %twdtousd% %cnytousd% 8 twdtocny
+call :Division %xmrtousd% %cnytousd% 8 xmrtocny
+call :Division %filetousd% %cnytousd% 8 filetocny
+call :Division 1 %cnytousd% 3 usdtocny
+call :Division %autousd% 31.1034768 3 autocny
+call :Division %agtousd% 31.1034768 3 agtocny
+call :xcf !autocny! !usdtocny! autocny
+call :xcf !agtocny! !usdtocny! agtocny
+rem for /f "delims=" %%a in ('"powershell %dogetousd%/%cnytousd%"') do (set dogetocny=%%a)
+rem for /f "delims=" %%a in ('"powershell %btctousd%/%cnytousd%"') do (set btctocny=%%a)
+rem for /f "delims=" %%a in ('"powershell %ethtousd%/%cnytousd%"') do (set ethtocny=%%a)
+rem for /f "delims=" %%a in ('"powershell %eurtousd%/%cnytousd%"') do (set eurtocny=%%a)
+rem for /f "delims=" %%a in ('"powershell %gbptousd%/%cnytousd%"') do (set gbptocny=%%a)
+rem for /f "delims=" %%a in ('"powershell %jpytousd%/%cnytousd%"') do (set jpytocny=%%a)
+rem for /f "delims=" %%a in ('"powershell %hkdtousd%/%cnytousd%"') do (set hkdtocny=%%a)
+rem for /f "delims=" %%a in ('"powershell %twdtousd%/%cnytousd%"') do (set twdtocny=%%a)
+rem for /f "delims=" %%a in ('"powershell %xmrtousd%/%cnytousd%"') do (set xmrtocny=%%a)
+rem for /f "delims=" %%a in ('"powershell %filetousd%/%cnytousd%"') do (set filetocny=%%a)
+rem for /f "delims=" %%a in ('"powershell 1/%cnytousd%"') do (set usdtocny=%%a)
+rem for /f "delims=" %%a in ('"powershell %autousd%/31.1034768*%usdtocny%"') do (set autocny=%%a)
+rem for /f "delims=" %%a in ('"powershell %agtousd%/31.1034768*%usdtocny%"') do (set agtocny=%%a)
 cls
 echo 黄金XAU    → 人民币CNY
 echo 	1  → !autocny!
@@ -4414,7 +4420,7 @@ echo;
 echo;
 echo 狗狗币DOGE → 人民币CNY
 set /p =!cswz1![]	<nul
-set /p =1  → !dogetocny!		24小时涨跌幅: <nul
+set /p =1  → !dogetocny!			24小时涨跌幅: <nul
 if "!doge24h:~0,1!" equ "-" (call :colortxt a !doge24h!) else (call :colortxt c +!doge24h!)
 set /p =%% <nul
 echo;
@@ -4857,7 +4863,7 @@ if exist %systemroot%\system32\curl.exe (
 	)
 	echo;使用链接:	!gxurlhost1!
 	echo;Host域名:	!githost:~10,-1!
-	curl !proxy! !githost! -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 !resolve! -o dostoolupdate !gxurlhost1!
+	curl !proxy! !githost! -A !ua! -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 !resolve! -o dostoolupdate !gxurlhost1!
 	if exist "%temp%\dostoolupdate" (
 		for /f "delims=: tokens=1,2" %%a in (%temp%\dostoolupdate) do (
 			set "gxver=%%a"
@@ -4870,7 +4876,7 @@ if exist %systemroot%\system32\curl.exe (
 		goto updatecheck
 	) else (
 		echo;使用链接:	!gxurl1!
-		curl !proxy! -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 -o dostoolupdate !gxurl1!
+		curl !proxy! -A !ua! -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 -o dostoolupdate !gxurl1!
 		if exist "%temp%\dostoolupdate" (
 			for /f "delims=: tokens=1,2" %%a in (%temp%\dostoolupdate) do (
 				set "gxver=%%a"
@@ -4884,7 +4890,7 @@ if exist %systemroot%\system32\curl.exe (
 		) else (
 			echo;使用链接:	!gxurlhost2!
 			echo;Host域名:	!jshost:~10,-1!
-			curl !proxy! !jshost! -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 !resolve! -o dostoolupdate !gxurlhost2!
+			curl !proxy! !jshost! -A !ua! -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 !resolve! -o dostoolupdate !gxurlhost2!
 			if exist "%temp%\dostoolupdate" (
 				for /f "delims=: tokens=1,2" %%a in (%temp%\dostoolupdate) do (
 					set "gxver=%%a"
@@ -4897,7 +4903,7 @@ if exist %systemroot%\system32\curl.exe (
 				goto updatecheck
 			) else (
 				echo;使用链接:	!gxurl2!
-				curl !proxy! -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 -o dostoolupdate !gxurl2!
+				curl !proxy! -A !ua! -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 -o dostoolupdate !gxurl2!
 				if exist "%temp%\dostoolupdate" (
 					for /f "delims=: tokens=1,2" %%a in (%temp%\dostoolupdate) do (
 						set "gxver=%%a"
@@ -4996,7 +5002,7 @@ if exist %systemroot%\system32\curl.exe (
 	if defined host (
 		echo;Host域名:	%host:~10,-1%
 	)
-	curl !proxy! !host! -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 !resolve! -o dostool !url!
+	curl !proxy! !host! -A !ua! -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 !resolve! -o dostool !url!
 	popd
 	call :hash %temp%\dostool sha1
 	if /i "!hash!" equ "!doshash!" (
@@ -5111,17 +5117,14 @@ for /f "tokens=1,2,3,4 delims=:." %%a in ("!time!") do (
 	set /a "sub=(1%%a*360000+1%%b*6000+1%%c*100+1%%d)-start"
 )
 if "!sub!" lss "0" (
-	endlocal
 	goto :eof
 ) else (
 	if !sub! geq %1 (
-		endlocal
 		goto :eof
 	) else (
 		goto ys_loop
 	)
 )
-endlocal
 goto :eof
 :dwjs
 set blxsws=%3
@@ -5403,7 +5406,7 @@ if not "%OK:~0,2%"=="0." (
 	Goto :eof
 )
 :Division
-endlocal
+setlocal
 if "%~4" == "" Goto :eof
 set Div.1=%~1
 set Div.2=%~2
@@ -5597,7 +5600,6 @@ for /l %%a in (2,1,!h_1!) do (
 	set /p =!cswz!%%a;1H^|!cswz!%%a;!l_1!H^|<nul
 )
 set /p =!cswz!!h_1!;1H!fh!<nul
-endlocal
 goto :eof
 :fk
 setlocal
@@ -5617,7 +5619,6 @@ for /l %%a in (!h1!,1,!h2!) do (
 	set /p =!cswz!%%a;!l!H^|!cswz!%%a;!l2!H^|<nul
 )
 set /p =!cswz!!h3!;!l!H!fh!<nul
-endlocal
 goto :eof
 :hx
 setlocal
@@ -5629,7 +5630,6 @@ for /l %%a in (1,1,!cd!) do (
 )
 set fh=+!fh!+
 set /p =!cswz!!h!;!l!H!fh!<nul
-endlocal
 goto :eof
 :sx
 setlocal
@@ -5643,7 +5643,6 @@ for /l %%a in (!h1!,1,!cd!) do (
 	set /p =!cswz!%%a;!l!H^|<nul
 )
 set /p =!cswz!!h2!;!l!H+<nul
-endlocal
 goto :eof
 :00
 exit 0
@@ -5855,7 +5854,6 @@ if "%1" neq "-chrome" (
 :checkvar
 setlocal
 if "%1" equ "" (
-	endlocal
 	goto :eof
 ) else (
 	set "val=!%1!"
@@ -5878,7 +5876,6 @@ if "%2" equ "az" (
 if "%2" equ "aznum" (
 	goto checkvar_aznum
 )
-endlocal
 goto :eof
 :checkvar_num
 if defined %1 (
@@ -5888,7 +5885,6 @@ if defined %1 (
 			goto :eof
 		) else (
 			echo;0
-			endlocal
 			goto :eof
 		)
 	)
@@ -5898,7 +5894,6 @@ if defined %1 (
 		goto :eof
 	) else (
 		echo;0
-		endlocal
 		goto :eof
 	)
 )
@@ -5907,10 +5902,8 @@ if "%3" neq "" (
 	goto :eof
 ) else (
 	echo;1
-	endlocal
 	goto :eof
 )
-endlocal
 goto :eof
 :checkvar_num.
 if defined %1 (
@@ -5920,7 +5913,6 @@ if defined %1 (
 			goto :eof
 		) else (
 			echo;0
-			endlocal
 			goto :eof
 		)
 	)
@@ -5930,7 +5922,6 @@ if defined %1 (
 		goto :eof
 	) else (
 		echo;0
-		endlocal
 		goto :eof
 	)
 )
@@ -5948,7 +5939,6 @@ for /f "tokens=1,2 delims=." %%a in ("!%1!") do (
 			goto :eof
 		) else (
 			echo;0
-			endlocal
 			goto :eof
 		)
 	)
@@ -5959,7 +5949,6 @@ if "!val1!!val2!" neq "" (
 		goto :eof
 	) else (
 		echo;1
-		endlocal
 		goto :eof
 	)
 ) else (
@@ -5968,11 +5957,9 @@ if "!val1!!val2!" neq "" (
 		goto :eof
 	) else (
 		echo;0
-		endlocal
 		goto :eof
 	)
 )
-endlocal
 goto :eof
 :checkvar_-num
 if defined %1 (
@@ -5982,7 +5969,6 @@ if defined %1 (
 			goto :eof
 		) else (
 			echo;0
-			endlocal
 			goto :eof
 		)
 	)
@@ -5992,7 +5978,6 @@ if defined %1 (
 		goto :eof
 	) else (
 		echo;0
-		endlocal
 		goto :eof
 	)
 )
@@ -6003,7 +5988,6 @@ for /f "tokens=1 delims=-" %%a in ("!%1!") do (
 			goto :eof
 		) else (
 			echo;1
-			endlocal
 			goto :eof
 		)
 	) else (
@@ -6012,12 +5996,10 @@ for /f "tokens=1 delims=-" %%a in ("!%1!") do (
 			goto :eof
 		) else (
 			echo;0
-			endlocal
 			goto :eof
 		)
 	)
 )
-endlocal
 goto :eof
 :checkvar_-num.
 set "val1=!val:~1!"
@@ -6032,7 +6014,6 @@ if defined val1 (
 				goto :eof
 			) else (
 				echo;1
-				endlocal
 				goto :eof
 			)
 		)
@@ -6043,10 +6024,8 @@ if "%3" neq "" (
 	goto :eof
 ) else (
 	echo;0
-	endlocal
 	goto :eof
 )
-endlocal
 goto :eof
 :checkvar_az
 if defined %1 (
@@ -6056,7 +6035,6 @@ if defined %1 (
 			goto :eof
 		) else (
 			echo;0
-			endlocal
 			goto :eof
 		)
 	)
@@ -6065,11 +6043,9 @@ if defined %1 (
 		goto :eof
 	) else (
 		echo;1
-		endlocal
 		goto :eof
 	)
 )
-endlocal
 goto :eof
 :checkvar_aznum
 if defined %1 (
@@ -6079,7 +6055,6 @@ if defined %1 (
 			goto :eof
 		) else (
 			echo;0
-			endlocal
 			goto :eof
 		)
 	)
@@ -6088,7 +6063,6 @@ if defined %1 (
 		goto :eof
 	) else (
 		echo;1
-		endlocal
 		goto :eof
 	)
 )
@@ -6097,13 +6071,12 @@ if "%3" neq "" (
 	goto :eof
 ) else (
 	echo;0
-	endlocal
 	goto :eof
 )
-endlocal
+
 goto :eof
 :sqrt
-endlocal
+setlocal
 set s=%1
 set w=%2
 if defined W (for /l %%i in (1 1 %W%) do set "s=!s!00") else set W=0
@@ -6423,3 +6396,79 @@ for /f "tokens=2 delims==" %%a in ('"wmic OS get FreePhysicalMemory /Value"') do
 	)
 )
 goto :eof
+:xcf
+setlocal
+set "num1=%1"
+set "num2=%2"
+if "!num1!" equ "" (
+	goto :eof
+) else (
+	for /f "delims=-.0123456789" %%a in ("!num1!") do (
+		goto :eof
+	)
+	for /f "tokens=1,2 delims=." %%a in ("!num1!") do (
+		set "num1a=%%a"
+		set "num1b=%%b"
+	)
+)
+if "!num1a!" equ "0" (
+	set num1a=
+)
+:xcf_loop1
+if "!num1b:~-1!" equ "0" (
+	set "num1b=!num1b:~0,-1!"
+	goto xcf_loop1
+)
+if "!num1b!" equ "" (
+	set dot1=0
+) else (
+	call :strlen num1b dot1
+)
+if "!num2!" equ "0" (
+	goto :eof
+) else (
+	for /f "delims=-.0123456789" %%a in ("!num2!") do (
+		goto :eof
+	)
+	for /f "tokens=1,2 delims=." %%a in ("!num2!") do (
+		set "num2a=%%a"
+		set "num2b=%%b"
+	)
+)
+if "!num2a!" equ "" (
+	set num2a=
+)
+:xcf_loop2
+if "!num2b:~-1!" equ "0" (
+	set "num2b=!num2b:~0,-1!"
+	goto xcf_loop2
+)
+if "!num2b!" equ "" (
+	set dot2=0
+) else (
+	call :strlen num2b dot2
+)
+set /a "dot=dot1+dot2"
+set /a "num=!num1a!!num1b!*!num2a!!num2b!"
+call :strlen num cs
+set /a cs-=dot
+set "numa=!num:~0,%cs%!"
+set "numb=!num:~-%dot%!"
+:xcf_loop
+if "!numb:~-1!" equ "0" (
+	set "numb=!numb:~0,-1!"
+	goto xcf_loop
+)
+if "!dot!" neq "0" (
+	set "num=!numa!.!numb!"
+)
+if "!num:~-1!" equ "." (
+	set "num=!num:~0,-1!"
+)
+if "%3" neq "" (
+		endlocal&set "%3=%num%"
+		goto :eof
+) else (
+		echo;!num!
+		goto :eof
+)
