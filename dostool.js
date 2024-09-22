@@ -137,8 +137,8 @@ title 　
 color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
-set ver=20240729
-set versize=237110
+set ver=20240922
+set versize=237187
 set resolve=--resolve fastly.com:443:^
 151.101.129.57,^
 151.101.193.57,^
@@ -430,6 +430,7 @@ if /i "!caidan!" equ "gcd" set tzwz=!start!&goto gcd
 if /i "!caidan!" equ "xz" set tzwz=!start!&goto xz
 if /i "!caidan!" equ "js" set tzwz=!start!&goto 49
 if /i "!caidan!" equ "gx" set tzwz=!start!&goto update
+if /i "!caidan!" equ "qzgx" set tzwz=!start!&set ver=0&goto update
 if /i "!caidan!" equ "go1" set start=1&goto memuv2
 if /i "!caidan!" equ "go2" set start=10&goto memuv2
 if /i "!caidan!" equ "go3" set start=19&goto memuv2
@@ -3062,13 +3063,13 @@ call :sjc "%dosqssj%" "%dosjssj%"
 cls
 echo 关于DOS工具箱
 echo _______________________________________________________________________________
-echo 版本: 1.9.1 (%ver%.%versize%)
-echo 操作系统: %system:~3% %bit%位
-echo 版权所有 2012-2024 Administrator 保留所有权利
+echo 版本: 		1.9.1 (%ver%.%versize%)
+echo 操作系统: 	%system:~3% %bit%位
+echo 版权所有 	2012-2024 Administrator 保留所有权利
 echo _______________________________________________________________________________
-echo 本次已运行:%sjc:~0,2%时%sjc:~2,2%分%sjc:~4,2%.%sjc:~6,2%秒
-echo DOS工具箱所在路径:%weizhi%
-echo 文件大小:%daxiao1%
+echo 本次已运行:		%sjc:~0,2%时%sjc:~2,2%分%sjc:~4,2%.%sjc:~6,2%秒
+echo DOS工具箱所在路径:	%weizhi%
+echo 文件大小:		%daxiao1%
 echo _______________________________________________________________________________
 echo 按任意键返回菜单&pause>nul
 if "!tzwz!" equ "!start!" (goto memuv2) else (goto !tzwz!)
