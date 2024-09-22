@@ -138,7 +138,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=237217
+set versize=237231
 set resolve=--resolve fastly.com:443:^
 151.101.129.57,^
 151.101.193.57,^
@@ -5849,7 +5849,7 @@ if exist "!强制使用quic!" (
 			set "origin-to-force-quic-on=!origin-to-force-quic-on!%%a:%%b, "
 		)
 	)
-	set "origin-to-force-quic-on=--origin-to-force-quic-on="!origin-to-force-quic-on!""
+	set "origin-to-force-quic-on=--enable-quic --origin-to-force-quic-on="!origin-to-force-quic-on!""
 )
 start /max "" "!chrome!" --profile-directory=Default --test-type !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors! %2
 if "%1" neq "-chrome" (
