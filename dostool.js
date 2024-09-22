@@ -138,7 +138,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=237187
+set versize=237217
 set resolve=--resolve fastly.com:443:^
 151.101.129.57,^
 151.101.193.57,^
@@ -329,7 +329,7 @@ echo ___________________________________________________________________________
 set mima=
 set/p mima=请输入密码:
 set /p ="!mima!"<nul>%temp%\mima.tmp
-call :hash %temp%\mima.tmp
+call :hash %temp%\mima.tmp hash
 del /f /q %temp%\mima.tmp
 if /i "%hash%"=="DCA9A6E6D000573FDC4DF6FEBA6035B87A8CE07C" goto mima1
 set/a cishu-=1
@@ -4267,12 +4267,12 @@ echo;文件大小: 	!dw! %%~za字节
 echo;文件大小: 	%%~za字节
 )
 )
-call :hash %url% md5
+call :hash %url% md5 hash
 echo;
 echo MD5:	 %hash%
-call :hash %url% sha1
+call :hash %url% sha1 hash
 echo SHA-1:	 %hash%
-call :hash %url% sha256
+call :hash %url% sha256 hash
 echo SHA-256: %hash%
 echo _______________________________________________________________________________
 echo 按任意键返回菜单&pause>nul
@@ -5005,7 +5005,7 @@ if exist %systemroot%\system32\curl.exe (
 	)
 	curl !proxy! !host! -A !ua! -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 !resolve! -o dostool !url!
 	popd
-	call :hash %temp%\dostool sha1
+	call :hash %temp%\dostool sha1 hash
 	if /i "!hash!" equ "!doshash!" (
 		endlocal
 		copy /z /y %temp%\dostool %weizhi%&goto chushihua
@@ -5021,7 +5021,7 @@ if exist %systemroot%\system32\curl.exe (
 	)
 ) else (
 	certutil -urlcache -split -f !url! %temp%\dostool
-	call :hash %temp%\dostool sha1
+	call :hash %temp%\dostool sha1 hash
 	if /i "!hash!" equ "!doshash!" (
 		endlocal
 		copy /z /y %temp%\dostool %weizhi%&goto chushihua
