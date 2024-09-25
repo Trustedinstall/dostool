@@ -138,7 +138,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=237231
+set versize=237318
 set resolve=--resolve fastly.com:443:^
 151.101.129.57,^
 151.101.193.57,^
@@ -5728,6 +5728,10 @@ if not exist "!域名重定向!" (
 		echo;
 		echo #lain.la
 		echo *.lain.la=lain.la
+		echo;
+		echo #disqus
+		echo disqus.com=fastly.com
+		echo *.disqus.com=fastly.com
 		echo;
 	)>"!域名重定向!"
 )
