@@ -138,7 +138,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=237318
+set versize=237515
 set resolve=--resolve fastly.com:443:^
 151.101.129.57,^
 151.101.193.57,^
@@ -5789,6 +5789,8 @@ if not exist "!强制使用quic!" (
 cd /d %~dp0
 rem 忽略证书错误 0=禁用 1=启用
 set "pass_cert_error=0"
+rem 生成chrome-command-line文件 0=禁用 1=启用
+set "chrome-command-line=0"
 rem 设置支持chrome命令行的浏览器的路径
 set "chromium="C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe""
 if "!pass_cert_error!" equ "1" (
@@ -5854,6 +5856,9 @@ if exist "!强制使用quic!" (
 		)
 	)
 	set "origin-to-force-quic-on=--enable-quic --origin-to-force-quic-on="!origin-to-force-quic-on!""
+)
+if "!chrome-command-line!" equ "1" (
+	set /p =chrome !host-rules! !origin-to-force-quic-on!<nul>chrome-command-line
 )
 start /max "" "!chrome!" --profile-directory=Default --test-type !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors! %2
 if "%1" neq "-chrome" (
