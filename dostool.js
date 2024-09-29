@@ -138,7 +138,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=237515
+set versize=236622
 set resolve=--resolve fastly.com:443:^
 151.101.129.57,^
 151.101.193.57,^
@@ -2011,50 +2011,40 @@ if /i !jcxq!=="f" goto 23(10)
 tasklist /fi "pid eq %jcxq%"|findstr /i "%jcxq%"||echo 没有此进程&&timeout /t 2 /nobreak>nul&&goto 23(10)
 cls
 echo _______________________________________________________________________________
-set jcmz=
-for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "caption""') do set jcmz=%%a
-echo 进程名称:		!jcmz:~8!
-set jcmlh=
-for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "commandline""') do set jcmlh=%%a
-echo 进程命令行:		!jcmlh:~12!
-set jcrq=
-for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "creationdate""') do set jcrq=%%a
-echo 进程启动日期:		!jcrq:~13,4!年!jcrq:~17,2!月!jcrq:~19,2!日 !jcrq:~21,2!:!jcrq:~23,2!:!jcrq:~25,2!
-set jclj=
-set jclj1=
-for /f "skip=2 tokens=2 delims==" %%a in ('"wmic process where processid=!jcxq! get executablepath /format:value"') do (
-set jclj=%%a
-call :zfccd "!jclj!"
-set /a zfcgs-=1
-for /l %%b in (0,1,!zfcgs!) do (if "!jclj:~%%b,1!" neq "" set jclj1=!jclj1!!jclj:~%%b,1!))
-echo;进程路径:		"!jclj1!"
-set jcpid=
-for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "processid""') do set jcpid=%%a
-echo 进程PID:		!jcpid:~10!
-set jchx=
-for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "kernelmodetime""') do set jchx=%%a
-echo 进程核心模式时间:	!jchx:~15!
-echo 系统名称:		!system:~3! !bit!位
-set jcymcw=
-for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "pagefaults""') do set jcymcw=%%a
-echo 进程页面错误:		!jcymcw:~12!
-set jcfid=
-for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "parentprocessid""') do set jcfid=%%a
-echo 进程父系PID:		!jcfid:~16!
-set jcysy=
-for /f "tokens=2 delims==" %%a in ('"wmic process where processid=!jcxq! get PageFileUsage /format:value"') do set jcysy=%%a
-call :xdwjs !jcysy! kb dw
-echo 进程页面文件使用:	!dw!
-set jcxcs=
-for /f "tokens=2 delims==" %%a in ('"wmic process where processid=!jcxq! get ThreadCount /format:value"') do set jcxcs=%%a
-echo 进程线程数:		!jcxcs!
-set jcyxj=
-for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "priority""') do set jcyxj=%%a
-echo 进程优先级:		!jcyxj:~9!
-set jchhid=
-for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value|find /i "sessionid""') do set jchhid=%%a
-echo 进程回话ID:		!jchhid:~10!
-tasklist /fi "pid eq %jcxq%" /m
+setlocal
+for /f "skip=2 delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value"') do (
+	set "tmp=%%a"
+	set "!tmp:~0,-1!">nul
+)
+if defined name (echo;名称:		!name!)
+if defined parentprocessid (echo;父系PID:	!parentprocessid!)
+if defined threadCount (echo;线程数:		!threadCount!)
+if defined handlecount (echo;句柄数:		!handlecount!)
+if defined workingsetsize (
+	call :xdwjs !workingsetsize! zj workingsetsize
+	echo;工作集大小:	!workingsetsize!
+)
+if defined pagefileusage (
+	call :xdwjs !pagefileusage! kb pagefileusage
+	echo;页面文件使用:	!pagefileusage!
+)
+if defined creationdate (echo;进程启动日期:	!creationdate:~0,4!年!creationdate:~4,2!月!creationdate:~6,2!日 !creationdate:~8,2!:!creationdate:~10,2!:!creationdate:~12,2!)
+if defined priority (echo;优先级:		!priority!)
+if defined sessionid (echo;会话ID:		!sessionid!)
+if defined readoperationcount (echo;读取操作数:	!readoperationcount!)
+if defined readtransfercount (
+	call :xdwjs !readtransfercount! zj readtransfercount
+	echo;读取传输量:	!readtransfercount!
+)
+if defined writeoperationcount (echo;写入操作数:	!writeoperationcount!)
+if defined writetransfercount (
+	call :xdwjs !writetransfercount! zj writetransfercount
+	echo;写入传输量:	!writetransfercount!
+)
+if defined executablepath (echo;路径:		!executablepath!)
+if defined commandline (echo;命令行:		!commandline!)
+endlocal
+tasklist /fi "pid eq !jcxq!" /m
 ver
 echo _______________________________________________________________________________
 echo 按任意键返回&pause>nul
@@ -2494,7 +2484,7 @@ for /f "delims== tokens=2" %%a in ('"wmic cpu get currentclockspeed/value"') do 
 echo 主频: 		%cpuzp%
 echo;
 for /f "delims== tokens=2" %%a in ('"wmic cpu get datawidth/value"') do set cpuws=%%abit
-echo 数据宽度: 	%cpuws%
+echo 数据位宽: 	%cpuws%
 echo;
 for /f "delims== tokens=2" %%a in ('"wmic cpu get extclock/value"') do set cpuwp=%%aMHz
 echo 外频: 		%cpuwp%
