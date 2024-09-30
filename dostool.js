@@ -138,7 +138,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=236622
+set versize=238126
 set resolve=--resolve fastly.com:443:^
 151.101.129.57,^
 151.101.193.57,^
@@ -2047,7 +2047,7 @@ endlocal
 tasklist /fi "pid eq !jcxq!" /m
 ver
 echo _______________________________________________________________________________
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 23
 :23.1
 title 显示TCP/UDP连接%system%
@@ -4258,14 +4258,17 @@ echo;文件大小: 	%%~za字节
 )
 )
 call :hash %url% md5 hash
+call :convertu !hash! hash
 echo;
 echo MD5:	 %hash%
 call :hash %url% sha1 hash
+call :convertu !hash! hash
 echo SHA-1:	 %hash%
 call :hash %url% sha256 hash
+call :convertu !hash! hash
 echo SHA-256: %hash%
 echo _______________________________________________________________________________
-echo 按任意键返回菜单&pause>nul
+set /p =按任意键返回菜单<nul&pause>nul
 goto memuv2
 :67
 cls
@@ -6501,3 +6504,77 @@ set jia=!ss!!t:~0,-1!)
 if not "!j:~0,1!"=="0" set "t=!j:~0,1!!t!"
 set "ji=!t!!ji:~1!"
 Endlocal&set %~3=%ji%&goto :EOF
+:convertu
+setlocal
+if "%1" equ "" (goto :eof)
+set "tmp=%1"
+set "tmp=!tmp:a=A!"
+set "tmp=!tmp:b=B!"
+set "tmp=!tmp:c=C!"
+set "tmp=!tmp:d=D!"
+set "tmp=!tmp:e=E!"
+set "tmp=!tmp:f=F!"
+set "tmp=!tmp:g=G!"
+set "tmp=!tmp:h=H!"
+set "tmp=!tmp:i=I!"
+set "tmp=!tmp:j=J!"
+set "tmp=!tmp:k=K!"
+set "tmp=!tmp:l=L!"
+set "tmp=!tmp:m=M!"
+set "tmp=!tmp:n=N!"
+set "tmp=!tmp:o=O!"
+set "tmp=!tmp:p=P!"
+set "tmp=!tmp:q=Q!"
+set "tmp=!tmp:r=R!"
+set "tmp=!tmp:s=S!"
+set "tmp=!tmp:t=T!"
+set "tmp=!tmp:u=U!"
+set "tmp=!tmp:v=V!"
+set "tmp=!tmp:w=W!"
+set "tmp=!tmp:x=X!"
+set "tmp=!tmp:y=Y!"
+set "tmp=!tmp:z=Z!"
+if "%2" neq "" (
+	endlocal&set "%2=%tmp%"
+	goto :eof
+) else (
+	echo;!tmp!
+	goto :eof
+)
+:convertl
+setlocal
+if "%1" equ "" (goto :eof)
+set "tmp=%1"
+set "tmp=!tmp:A=a!"
+set "tmp=!tmp:B=b!"
+set "tmp=!tmp:C=c!"
+set "tmp=!tmp:D=d!"
+set "tmp=!tmp:E=e!"
+set "tmp=!tmp:F=f!"
+set "tmp=!tmp:G=g!"
+set "tmp=!tmp:H=h!"
+set "tmp=!tmp:I=i!"
+set "tmp=!tmp:J=j!"
+set "tmp=!tmp:K=k!"
+set "tmp=!tmp:L=l!"
+set "tmp=!tmp:M=m!"
+set "tmp=!tmp:N=n!"
+set "tmp=!tmp:O=o!"
+set "tmp=!tmp:P=p!"
+set "tmp=!tmp:Q=q!"
+set "tmp=!tmp:R=r!"
+set "tmp=!tmp:S=s!"
+set "tmp=!tmp:T=t!"
+set "tmp=!tmp:U=u!"
+set "tmp=!tmp:V=v!"
+set "tmp=!tmp:W=w!"
+set "tmp=!tmp:X=x!"
+set "tmp=!tmp:Y=y!"
+set "tmp=!tmp:Z=z!"
+if "%2" neq "" (
+	endlocal&set "%2=%tmp%"
+	goto :eof
+) else (
+	echo;!tmp!
+	goto :eof
+)
