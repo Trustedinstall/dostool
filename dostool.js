@@ -138,7 +138,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=238126
+set versize=237748
 set resolve=--resolve fastly.com:443:^
 151.101.129.57,^
 151.101.193.57,^
@@ -225,32 +225,8 @@ for /f "skip=2 tokens=2 delims==" %%a in (!wmicos!) do (
 		set comd=
 	)
 	for /f "tokens=3" %%a in ("!system!") do (
-		if "%%a" equ "11" (
-			call :pd11
-			goto jspd
-		)
-		if "%%a" equ "10" (
-			call :pd10
-			goto jspd
-		)
-		if "%%a" equ "8.1" (
-			call :pd8.1
-			goto jspd
-		)
-		if "%%a" equ "8" (
-			call :pd8
-			goto jspd
-		)
-		if "%%a" equ "7" (
-			call :pd7
-			goto jspd
-		)
-		if /i "%%a" equ "XP" (
-			call :pdxp
-			goto jspd
-		)
+		call :pd%%a 2>nul
 	)
-:jspd
 	if "!zmlj:~0,1!!zmlj:~-1!" neq """" (
 		for /f "delims=" %%a in ('"echo %zmlj%"') do (
 			set !zmlj!="%%~a"
@@ -5673,7 +5649,7 @@ if not exist "!域名重定向!" (
 		echo #youtube
 		echo *.youtube.com=google-analytics.com
 		echo *.ytimg.com=googleadservices.com
-		echo *.ggpht.com=googleads.g.doubleclick.net
+		echo *.ggpht.com=static.doubleclick.net
 		echo youtube.com=static.doubleclick.net
 		echo youtu.be=mt7.gstatic.com
 		echo;
@@ -5681,7 +5657,7 @@ if not exist "!域名重定向!" (
 		echo *.google.com=googleadservices.com
 		echo *.google.com.hk=googleadservices.com
 		echo *.google.com.tw=googleadservices.com
-		echo *.googleapis.com=googleads.g.doubleclick.net
+		echo *.googleapis.com=static.doubleclick.net
 		echo *.googleusercontent.com=static.doubleclick.net
 		echo *.gstatic.com=alt6.gstatic.com
 		echo *.cloudfunctions.net=alt6.gstatic.com
@@ -5726,6 +5702,9 @@ if not exist "!域名重定向!" (
 		echo disqus.com=fastly.com
 		echo *.disqus.com=fastly.com
 		echo;
+		echo pkuanvil.com=gcore.com
+		echo *.pkuanvil.com=gcore.com
+		echo;
 	)>"!域名重定向!"
 )
 if not exist "!域名重解析!" (
@@ -5749,8 +5728,6 @@ if not exist "!域名重解析!" (
 		echo google-analytics.com=216.239.32.40
 		echo #googleadservices.com=[2404:6800:4008:c01::5a]
 		echo googleadservices.com=216.239.32.40
-		echo #googleads.g.doubleclick.net=[2404:6800:4008:c01::5a]
-		echo googleads.g.doubleclick.net=216.239.32.40
 		echo #static.doubleclick.net=[2404:6800:4008:c01::5a]
 		echo static.doubleclick.net=216.239.32.40
 		echo;
