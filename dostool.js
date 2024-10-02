@@ -138,7 +138,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=237748
+set versize=237902
 set resolve=--resolve fastly.com:443:^
 151.101.129.57,^
 151.101.193.57,^
@@ -5630,15 +5630,16 @@ if not exist "!域名重定向!" (
 		echo *.wikinews.org=wikidata.org
 		echo;
 		echo #pixiv
-		echo pixiv.net=fastly.com
-		echo *.pixiv.net=fastly.com
+		echo pixiv.net=pixiv.me
+		echo *.pixiv.net=pixiv.me
 		echo *.pximg.net=pximg.net
 		echo;
 		echo #reddit
-		echo reddit.com=github.githubassets.com
-		echo *.reddit.com=github.githubassets.com
-		echo *.redd.it=github.githubassets.com
-		echo *.redditmedia.com=github.githubassets.com
+		echo reddit.com=ax.redditinc.com
+		echo *.reddit.com=ax.redditinc.com
+		echo *.redd.it=ax.redditinc.com
+		echo redd.it=ax.redditinc.com
+		echo *.redditmedia.com=ax.redditinc.com
 		echo;
 		echo #protonmail
 		echo proton.me=pr.tn
@@ -5666,9 +5667,9 @@ if not exist "!域名重定向!" (
 		echo #github
 		echo github.com=octocaptcha.com
 		echo *.github.com=octocaptcha.com
-		echo *.githubusercontent.com=fastly.com
-		echo *.githubassets.com=fastly.com
+		echo *.githubusercontent.com=raw.github.io
 		echo *.github.io=octocaptcha.com
+		echo github.io=octocaptcha.com
 		echo;
 		echo #steam
 		echo login.steampowered.com=login.steampowered.com
@@ -5684,27 +5685,23 @@ if not exist "!域名重定向!" (
 		echo #nyaa
 		echo nyaa.si=nyaa.ddos-guard.net
 		echo;
-		echo #imgur
-		echo imgur.com=fastly.com
-		echo *.imgur.com=github.githubassets.com
-		echo;
 		echo #vercel.app
 		echo vercel.app=no-sni.vercel-infra.com
 		echo *.vercel.app=no-sni.vercel-infra.com
 		echo;
-		echo #twimg
-		echo *.twimg.com=fastly.com
-		echo;
 		echo #lain.la
 		echo *.lain.la=lain.la
-		echo;
-		echo #disqus
-		echo disqus.com=fastly.com
-		echo *.disqus.com=fastly.com
 		echo;
 		echo pkuanvil.com=gcore.com
 		echo *.pkuanvil.com=gcore.com
 		echo;
+		echo #quora
+		echo quora.com=qr.ae
+		echo *.quora.com=qr.ae
+		echo;
+		echo #mega
+		echo mega.io=static.mega.co.nz
+		echo g.api.mega.co.nz=static.mega.co.nz
 	)>"!域名重定向!"
 )
 if not exist "!域名重解析!" (
@@ -5714,10 +5711,10 @@ if not exist "!域名重解析!" (
 		echo wikidata.org=208.80.153.224
 		echo;
 		echo #protonmail
-		echo pr.tn=185.70.42.45
-		echo a.pr.tn=185.70.42.36
-		echo b.pr.tn=185.70.42.20
-		echo c.pr.tn=185.70.42.37
+		echo pr.tn=proton.me
+		echo a.pr.tn=account.proton.me
+		echo b.pr.tn=account-api.proton.me
+		echo c.pr.tn=mail.proton.me
 		echo;
 		echo #youtube google
 		echo #mt7.gstatic.com=[2404:6800:4008:c01::5a]
@@ -5732,8 +5729,16 @@ if not exist "!域名重解析!" (
 		echo static.doubleclick.net=216.239.32.40
 		echo;
 		echo #nyaa
-		echo nyaa.ddos-guard.net=186.2.163.20
+		echo nyaa.ddos-guard.net=nyaa.si
 		echo;
+		echo #reddit
+		echo ax.redditinc.com=redd.it
+		echo;
+		echo #github
+		echo raw.github.io=raw.githubusercontent.com
+		echo;
+		echo #mega
+		echo static.mega.co.nz=mega.io
 	)>"!域名重解析!"
 )
 if not exist "!强制使用quic!" (
@@ -5753,7 +5758,6 @@ if not exist "!强制使用quic!" (
 		echo tile.openstreetmap.org
 		echo ipfs.io
 		echo cloudflare-ipfs.com
-		echo;
 	)>"!强制使用quic!"
 )
 cd /d %~dp0
@@ -5828,7 +5832,7 @@ if exist "!强制使用quic!" (
 	set "origin-to-force-quic-on=--enable-quic --origin-to-force-quic-on="!origin-to-force-quic-on!""
 )
 if "!chrome-command-line!" equ "1" (
-	set /p =chrome !host-rules! !origin-to-force-quic-on!<nul>chrome-command-line
+	set /p =chrome !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors!<nul>chrome-command-line
 )
 start /max "" "!chrome!" --profile-directory=Default --test-type !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors! %2
 if "%1" neq "-chrome" (
