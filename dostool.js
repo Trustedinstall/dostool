@@ -138,7 +138,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=237902
+set versize=237745
 set resolve=--resolve fastly.com:443:^
 151.101.129.57,^
 151.101.193.57,^
@@ -5698,10 +5698,6 @@ if not exist "!域名重定向!" (
 		echo #quora
 		echo quora.com=qr.ae
 		echo *.quora.com=qr.ae
-		echo;
-		echo #mega
-		echo mega.io=static.mega.co.nz
-		echo g.api.mega.co.nz=static.mega.co.nz
 	)>"!域名重定向!"
 )
 if not exist "!域名重解析!" (
@@ -5736,9 +5732,6 @@ if not exist "!域名重解析!" (
 		echo;
 		echo #github
 		echo raw.github.io=raw.githubusercontent.com
-		echo;
-		echo #mega
-		echo static.mega.co.nz=mega.io
 	)>"!域名重解析!"
 )
 if not exist "!强制使用quic!" (
