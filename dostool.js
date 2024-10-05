@@ -138,8 +138,8 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=237745
-set resolve=--resolve fastly.com:443:^
+set versize=238000
+set resolve1=--resolve cdn.jsdelivr.net:443:^
 151.101.129.57,^
 151.101.193.57,^
 151.101.65.57,^
@@ -148,15 +148,24 @@ set resolve=--resolve fastly.com:443:^
 2a04:4e42:200::313,^
 2a04:4e42:600::313,^
 2a04:4e42::313
+set resolve2=--resolve raw.github.io:443:^
+185.199.110.133,^
+185.199.109.133,^
+185.199.111.133,^
+185.199.108.133,^
+2606:50c0:8001::154,^
+2606:50c0:8003::154,^
+2606:50c0:8000::154,^
+2606:50c0:8002::154
 set jshost=-H "host: cdn.jsdelivr.net"
 set githost=-H "host: raw.githubusercontent.com"
-set gxurlhost1=https://fastly.com/Trustedinstall/dostool/main/update.js
-set gxurlhost2=https://fastly.com/gh/Trustedinstall/dostool/update.js
-set gxurl1=https://raw.githubusercontent.com/Trustedinstall/dostool/main/update.js
+set gxurlhost1=https://raw.github.io/Trustedinstall/dostool/main/update.js
+set gxurlhost2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js
+set gxurl1=https://raw.github.io/Trustedinstall/dostool/main/update.js
 set gxurl2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js
-set gxdoshost1=https://fastly.com/Trustedinstall/dostool/main/dostool.js
-set gxdoshost2=https://fastly.com/gh/Trustedinstall/dostool/dostool.js
-set gxdos1=https://raw.githubusercontent.com/Trustedinstall/dostool/main/dostool.js
+set gxdoshost1=https://raw.github.io/Trustedinstall/dostool/main/dostool.js
+set gxdoshost2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js
+set gxdos1=https://raw.github.io/Trustedinstall/dostool/main/dostool.js
 set gxdos2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js
 rem if exist %temp%\dwnl.exe (set /a versize=versize+3194)
 set gxflag=
@@ -166,7 +175,7 @@ set sc=delasd123
 set scw=rdasd123
 set weizhi=%0
 rem set cishu=3
-set ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
+set ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36"
 set nx1=[+]下一页&set nx=[-]上一页   [+]下一页&set nx7=[-]上一页
 if exist "!temp!\dos_pre_reading_cache_wmictype.tmp" (
 	set "wmictype='"type "!temp!\dos_pre_reading_cache_wmictype.tmp""'"
@@ -4833,13 +4842,13 @@ if exist %systemroot%\system32\curl.exe (
 	)
 	echo;使用链接:	!gxurlhost1!
 	echo;Host域名:	!githost:~10,-1!
-	curl !proxy! !githost! -A !ua! -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 !resolve! -o dostoolupdate !gxurlhost1!
+	curl !proxy! !githost! -A !ua! -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 !resolve! !resolve2! -o dostoolupdate !gxurlhost1!
 	if exist "%temp%\dostoolupdate" (
 		for /f "delims=: tokens=1,2" %%a in (%temp%\dostoolupdate) do (
 			set "gxver=%%a"
 			set "doshash=%%b"
 			set "host=!githost!"
-			set "resolve=!resolve!"
+			set "resolve=!resolve! !resolve2!"
 			set "url=!gxdoshost1!"
 		)
 		popd
@@ -4860,13 +4869,13 @@ if exist %systemroot%\system32\curl.exe (
 		) else (
 			echo;使用链接:	!gxurlhost2!
 			echo;Host域名:	!jshost:~10,-1!
-			curl !proxy! !jshost! -A !ua! -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 !resolve! -o dostoolupdate !gxurlhost2!
+			curl !proxy! !jshost! -A !ua! -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 !resolve! !resolve2! -o dostoolupdate !gxurlhost2!
 			if exist "%temp%\dostoolupdate" (
 				for /f "delims=: tokens=1,2" %%a in (%temp%\dostoolupdate) do (
 					set "gxver=%%a"
 					set "doshash=%%b"
 					set "host=!jshost!"
-					set "resolve=!resolve!"
+					set "resolve=!resolve! !resolve2!"
 					set "url=!gxdoshost2!"
 				)
 				popd
