@@ -138,7 +138,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=238000
+set versize=242775
 set resolve1=--resolve cdn.jsdelivr.net:443:^
 151.101.129.57,^
 151.101.193.57,^
@@ -3038,7 +3038,7 @@ call :sjc "%dosqssj%" "%dosjssj%"
 cls
 echo 关于DOS工具箱
 echo _______________________________________________________________________________
-echo 版本: 		1.9.1 (%ver%.%versize%)
+echo 版本: 		1.9.2 (%ver%.%versize%)
 echo 操作系统: 	%system:~3% %bit%位
 echo 版权所有 	2012-2024 Administrator 保留所有权利
 echo _______________________________________________________________________________
@@ -4745,8 +4745,8 @@ for /l %%a in (1,1,!tr!) do (
 choice /c 1e /t 1 /d 1 >nul
 if "!errorlevel!" equ "2" (
 	taskkill /im curl.exe /f
-	rd /s /q %temp%\down
 	popd
+	rd /s /q %temp%\down
 	goto memuv2
 )
 if !jccs! neq !tr! goto 72.2
@@ -4755,8 +4755,8 @@ cls
 echo;合并文件中...
 if "!dir:~-1!" neq "\" (set dir=!dir!\)
 copy /b /z !file! "!dir!!filename!"
-rd /s /q %temp%\down
 popd
+rd /s /q %temp%\down
 cls
 title curl多进程下载%system%
 if exist "!dir!!filename!" (
@@ -5211,6 +5211,7 @@ set a70=生成CMD控制台色彩表
 set a71=KMS激活Windows
 set a72=curl多进程下载
 set a73=用域前置参数开启Chromium类浏览器
+set a74=逐一复制文件并压缩
 )
 goto :eof
 :colortxt
@@ -5842,6 +5843,59 @@ if "%1" neq "-chrome" (
 ) else (
 	goto :eof
 )
+:74
+title 逐一复制文件并压缩%system%
+cls
+rem 设置源目录和目标目录
+set "source_dir="
+set "target_dir="
+set /p "source_dir=输入源目录: "
+set /p "target_dir=输入目标目录: "
+rem 创建目标目录结构
+for /r "%source_dir%" %%f in (*) do (
+	cls
+    set "relative_path=%%~pf"
+    set "relative_path=!relative_path:%source_dir%=!"
+    set "target_path=%target_dir%!relative_path!"
+    rem 创建目标子目录（如果不存在）
+    if not exist "!target_path!" ( mkdir "!target_path!" )
+    rem 拷贝文件到目标目录
+    copy /y /z "%%f" "!target_path!%%~nxf"
+    rem 压缩文件
+    call :74_2 "!target_path!%%~nxf" %%~zf %%~xf
+)
+set /p =按任意键返回菜单<nul&pause>nul
+goto memuv2
+:74_2
+if "%3" equ ".ogg" goto :eof
+if "%3" equ ".mpg" goto :eof
+if "%3" equ ".gif" goto :eof
+if "%3" equ ".zip" goto :eof
+if "%3" equ ".rar" goto :eof
+if "%3" equ ".7z" goto :eof
+if "%3" equ ".png" goto :eof
+if "%3" equ ".jpg" goto :eof
+if "%3" equ ".jpeg" goto :eof
+if "%3" equ ".wmf" goto :eof
+if "%3" equ ".wmv" goto :eof
+if "%3" equ ".bik" goto :eof
+if "%3" equ ".bk2" goto :eof
+if "%3" equ ".mp3" goto :eof
+if "%3" equ ".acc" goto :eof
+if "%3" equ ".m4a" goto :eof
+if "%3" equ ".flac" goto :eof
+if "%3" equ ".ape" goto :eof
+if "%3" equ ".mp4" goto :eof
+if "%3" equ ".avi" goto :eof
+if "%3" equ ".flv" goto :eof
+if "%3" equ ".f4v" goto :eof
+if "%3" equ ".mkv" goto :eof
+if "%3" equ ".3gp" goto :eof
+if "%3" equ ".cab" goto :eof
+if "%3" equ ".pdf" goto :eof
+if %2 lss 4096 goto :eof
+compact /c /exe:lzx "%1"
+goto :eof
 :checkvar
 setlocal
 if "%1" equ "" (
@@ -6561,3 +6615,116 @@ if "%2" neq "" (
 	echo;!tmp!
 	goto :eof
 )
+:curldxc
+setlocal
+if not exist %systemroot%\system32\curl.exe (
+	if not exist .\curl.exe (
+		echo;没有找到curl.exe
+		goto :eof
+	)
+)
+set "url=%1"
+set "tr=%2"
+set "filename=%3"
+set "dir=%4"
+set "par=%5"
+set ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36"
+if not defined url (
+	echo;链接不能为空!
+	goto :eof
+)
+if not defined tr (set "tr=8")
+set tr|findstr "\<[0-9]*\>">nul
+if !errorlevel! neq 0 (
+	echo;线程数只能输入数字!
+	goto :eof
+)
+if not defined dir (
+	for /f "delims=" %%a in ("%0") do (
+		set "dir=%%~dpa"
+	)
+)
+if not exist "!dir!" (
+	echo;路径 !dir! 不存在
+	goto :eof
+)
+dir /ad !dir!>nul 2>nul||echo 路径 !dir! 不是一个文件夹&&goto :eof
+if exist %temp%\tag (del /f /q tag)
+for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
+	if "%%a" equ "0x1" (
+		for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
+			set "proxy=-x %%b"
+			echo;使用代理:	%%b
+		)
+	) else (
+		set proxy=
+	)
+)
+curl !proxy! !par! -A !ua! -I -# -L -o tag --connect-timeout 5 --output-dir %temp% "!url!"
+if not exist %temp%\tag (
+	echo;没有获取到文件信息
+	goto :eof
+)
+for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Accept-Ranges:"') do (set "trflag=%%a")
+for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Content-Length:"') do (set "filesize=%%a")
+for /f "tokens=2 delims==" %%a in ('type %temp%\tag^|findstr /c:"filename="') do (set "filename=%%a")
+if "!trflag!" neq "bytes" (set "tr=1")
+del /f /q %temp%\tag
+if not defined filename (set "filename=%3")
+set /a fd=!filesize!/!tr!
+set /a ys=%filesize%%%tr%
+set oldfd=0
+set /a pdtr=!tr!-1
+set /a newfd=!fd!-1
+set /a pdfd=!fd!+!ys!
+set file=
+for /l %%a in (1,1,!tr!) do (set file=!file!%%a+)
+set newtr=
+set /a newtr=!tr!+1
+set file=!file:~0,-1!
+if exist %temp%\down (rd /s /q %temp%\down)
+md %temp%\down
+for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
+	if "%%a" equ "0x1" (
+		for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
+			set "proxy=-x %%b"
+			echo;使用代理:	%%b
+		)
+	) else (
+		set proxy=
+	)
+)
+for /l %%a in (1,1,!tr!) do (
+	start /b curl !proxy! !par! -s -A !ua! -# -L -C - --retry 1 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir %temp%\down "!url!"
+	set /a oldfd=!newfd!+1
+	if %%a equ !pdtr! (
+		set newfd=
+	) else (
+		set /a newfd=!oldfd!+!fd!-1
+	)
+)
+pushd %temp%\down
+:curldxc_2
+set 次数=
+for /l %%a in (1,1,!tr!) do (
+	if %%a equ !tr! (
+		if %%~za equ !pdfd! (
+			echo;进程%%a完成
+			set /a 次数=!次数!+1
+		)
+	) else (
+		if %%~za equ !fd! (
+			echo;进程%%a完成
+			set /a 次数=!次数!+1
+		)
+	)
+)
+timeout /t 1 /nobreak>nul
+if !次数! neq !tr! (
+	goto curldxc_2
+)
+if "!dir:~-1!" neq "\" ("set dir=!dir!\")
+copy /b /z !file! "!dir!!filename!"
+popd
+rd /s /q %temp%\down
+goto :eof
