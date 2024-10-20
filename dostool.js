@@ -1,4 +1,4 @@
-goto chushihua
+@goto chushihua
 ¼ôäĞÑùÊ£šç…ÓÉÎÀÍ‚“ƒ§œ¸èéé²´ú´µèàãêƒ¤»Îº¸®y”›˜ñë¼˜øèçÉÓ—ğ
 šøŸ¦‘@¼Ñªpœ©“ŠšùÎïà£šùÉÓÏç¶ı…ævŸ”®‡ªoªšÎ·¶éà•lœ€ä²—ßèÂÃğ
 À¼¼ñƒ©UµĞ—L–^“ÕÕâ®Ğİ’¿ƒ«…®p›H…Ö›Ã’±È´µ¤“‡’±”i—à—IÒ¯Ÿ“
@@ -138,7 +138,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=242775
+set versize=242776
 set resolve1=--resolve cdn.jsdelivr.net:443:^
 151.101.129.57,^
 151.101.193.57,^
