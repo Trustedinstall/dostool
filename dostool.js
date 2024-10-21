@@ -138,7 +138,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=242776
+set versize=242721
 set resolve1=--resolve cdn.jsdelivr.net:443:^
 151.101.129.57,^
 151.101.193.57,^
@@ -5677,7 +5677,7 @@ if not exist "!域名重定向!" (
 		echo #github
 		echo github.com=octocaptcha.com
 		echo *.github.com=octocaptcha.com
-		echo *.githubusercontent.com=raw.github.io
+		echo raw.githubusercontent.com=avatars.githubusercontent.com
 		echo *.github.io=octocaptcha.com
 		echo github.io=octocaptcha.com
 		echo;
@@ -5739,9 +5739,6 @@ if not exist "!域名重解析!" (
 		echo;
 		echo #reddit
 		echo ax.redditinc.com=redd.it
-		echo;
-		echo #github
-		echo raw.github.io=raw.githubusercontent.com
 	)>"!域名重解析!"
 )
 if not exist "!强制使用quic!" (
