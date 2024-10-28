@@ -138,7 +138,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=242721
+set versize=242731
 set resolve1=--resolve cdn.jsdelivr.net:443:^
 151.101.129.57,^
 151.101.193.57,^
@@ -5723,16 +5723,16 @@ if not exist "!”Ú√˚÷ÿΩ‚Œˆ!" (
 		echo c.pr.tn=mail.proton.me
 		echo;
 		echo #youtube google
-		echo #mt7.gstatic.com=[2404:6800:4008:c01::5a]
-		echo mt7.gstatic.com=216.239.32.40
-		echo #alt6.gstatic.com=[2404:6800:4008:c01::5a]
-		echo alt6.gstatic.com=216.239.32.40
-		echo #google-analytics.com=[2404:6800:4008:c01::5a]
-		echo google-analytics.com=216.239.32.40
-		echo #googleadservices.com=[2404:6800:4008:c01::5a]
-		echo googleadservices.com=216.239.32.40
-		echo #static.doubleclick.net=[2404:6800:4008:c01::5a]
-		echo static.doubleclick.net=216.239.32.40
+		echo #mt7.gstatic.com=[2404:6800:4008:c07::5a]
+		echo mt7.gstatic.com=108.177.125.188
+		echo #alt6.gstatic.com=[2404:6800:4008:c07::5a]
+		echo alt6.gstatic.com=108.177.125.188
+		echo #google-analytics.com=[2404:6800:4008:c07::5a]
+		echo google-analytics.com=108.177.125.188
+		echo #googleadservices.com=[2404:6800:4008:c07::5a]
+		echo googleadservices.com=108.177.125.188
+		echo #static.doubleclick.net=[2404:6800:4008:c07::5a]
+		echo static.doubleclick.net=108.177.125.188
 		echo;
 		echo #nyaa
 		echo nyaa.ddos-guard.net=nyaa.si
