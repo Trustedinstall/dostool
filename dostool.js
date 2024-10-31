@@ -5724,15 +5724,15 @@ if not exist "!”Ú√˚÷ÿΩ‚Œˆ!" (
 		echo;
 		echo #youtube google
 		echo #mt7.gstatic.com=[2404:6800:4008:c07::5a]
-		echo mt7.gstatic.com=108.177.125.188
+		echo mt7.gstatic.com=108.177.125.196
 		echo #alt6.gstatic.com=[2404:6800:4008:c07::5a]
-		echo alt6.gstatic.com=108.177.125.188
+		echo alt6.gstatic.com=108.177.125.196
 		echo #google-analytics.com=[2404:6800:4008:c07::5a]
-		echo google-analytics.com=108.177.125.188
+		echo google-analytics.com=108.177.125.196
 		echo #googleadservices.com=[2404:6800:4008:c07::5a]
-		echo googleadservices.com=108.177.125.188
+		echo googleadservices.com=108.177.125.196
 		echo #static.doubleclick.net=[2404:6800:4008:c07::5a]
-		echo static.doubleclick.net=108.177.125.188
+		echo static.doubleclick.net=108.177.125.196
 		echo;
 		echo #nyaa
 		echo nyaa.ddos-guard.net=nyaa.si
