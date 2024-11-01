@@ -138,7 +138,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=242731
+set versize=242829
 set resolve1=--resolve cdn.jsdelivr.net:443:^
 151.101.129.57,^
 151.101.193.57,^
@@ -2027,7 +2027,12 @@ if defined writetransfercount (
 	echo;写入传输量:	!writetransfercount!
 )
 if defined executablepath (echo;路径:		!executablepath!)
-if defined commandline (echo;命令行:		!commandline!)
+if defined commandline (
+	echo;命令行:		!commandline!
+) else (
+	echo;命令行:
+	wmic process where processid=!jcxq! get commandline /format:value
+)
 endlocal
 tasklist /fi "pid eq !jcxq!" /m
 ver
