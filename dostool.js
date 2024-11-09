@@ -138,7 +138,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=242829
+set versize=243105
 set resolve1=--resolve cdn.jsdelivr.net:443:^
 151.101.129.57,^
 151.101.193.57,^
@@ -1626,7 +1626,7 @@ net user
 echo _______________________________________________________________________________
 echo 当前已登录的用户:%username%
 echo _______________________________________________________________________________
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 21
 :21(2)
 title 创建新用户%system%
@@ -1645,7 +1645,7 @@ echo ___________________________________________________________________________
 cls
 net user %xinyonghuming% %xinyonghumima% /add
 echo _______________________________________________________________________________
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 21
 :21(3)
 title 删除用户%system%
@@ -1660,7 +1660,7 @@ set/p shanchuyonghu=请输入要删除的用户:
 cls
 net user %shanchuyonghu% /del
 echo _______________________________________________________________________________
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 21
 :21(4)
 title 提升用户为管理员%system%
@@ -1675,7 +1675,7 @@ set/p tishengyonghu=请输入要提升的用户名:
 cls
 net localgroup administrators %tishengyonghu% /add
 echo _______________________________________________________________________________
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 21
 :21(5)
 title 强制修改用户密码%system%
@@ -1692,7 +1692,7 @@ set/p xinmima=请输入新密码:
 cls
 net user %xiougaimima% %xinmima%
 echo _______________________________________________________________________________
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 21
 :21(6)
 title 查看用户信息%system%
@@ -1706,7 +1706,7 @@ set/p chakanyonghuxinxi=请输入要查看的用户名:
 cls
 net user %chakanyonghuxinxi%
 echo _______________________________________________________________________________
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 21
 :21(7)
 title 激活账户%system%
@@ -1720,7 +1720,7 @@ set/p jhzh=请输入要操作的用户名:
 cls
 net user %jhzh% /active:yes
 echo _______________________________________________________________________________
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 21
 :21(8)
 title 停用账户%system%
@@ -1734,7 +1734,7 @@ set/p tyzh=请输入要操作的用户名:
 cls
 net user %tyzh% /active:no
 echo _______________________________________________________________________________
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 21
 :22
 cls
@@ -1869,7 +1869,7 @@ title 显示系统上可用的睡眠状态%system%
 cls
 powercfg -a
 echo _______________________________________________________________________________
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto guanji
 :guanji-9
 title 循环显示唤醒计时器与电源请求%system%
@@ -2157,7 +2157,7 @@ titel 列出所有驱动器
 cls
 fsutil fsinfo drives
 echo _______________________________________________________________________________
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 24
 :24(2)
 title 查询一个驱动器的类型%system%
@@ -2170,7 +2170,7 @@ set/p qdqlx=请输入要查询的驱动器:
 cls
 fsutil fsinfo drivetype %qdqlx%:
 echo _______________________________________________________________________________
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 24
 :24(3)
 title 查询卷信息%system%
@@ -2183,7 +2183,7 @@ set/p juanxx=请输入要查询的驱动器:
 cls
 fsutil fsinfo volumeinfo %juanxx%:
 echo _______________________________________________________________________________
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 24
 :24(4)
 title 查询NTFS卷信息%system%
@@ -2196,7 +2196,7 @@ set/p ntfsjxx=请输入要查询的驱动器:
 cls
 fsutil fsinfo ntfsinfo %ntfsjxx%:
 echo _______________________________________________________________________________
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 24
 :24(5)
 title 查询REFS卷信息%system%
@@ -2209,7 +2209,7 @@ set/p ntfsjxx=请输入要查询的驱动器:
 cls
 fsutil fsinfo refsinfo %ntfsjxx%:
 echo _______________________________________________________________________________
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 24
 :24(6)
 title 查询扇区信息%system%
@@ -2222,7 +2222,7 @@ set/p ntfsjxx=请输入要查询的驱动器:
 cls
 fsutil fsinfo sectorinfo %ntfsjxx%:
 echo _______________________________________________________________________________
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 24
 :25
 title 创建指定大小的文件%system%
@@ -2240,7 +2240,7 @@ if /i !cjdx!=="e" goto memuv2
 :24(6)
 fsutil file createnew %cjlj% %cjdx%
 echo _______________________________________________________________________________
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 25
 :26
 title 免疫U盘病毒%system%
@@ -2276,7 +2276,7 @@ fsutil fsinfo drivetype %%l|find /i "可移动驱动器"&&goto 26-3)
 cls
 echo 没有找到可移动磁盘
 echo _______________________________________________________________________________
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 26
 :26-3
 cls
@@ -2295,7 +2295,7 @@ fsutil fsinfo drivetype %%l|find /i "可移动驱动器"&&echo y|cacls %%lautorun.inf 
 echo;
 echo _______________________________________________________________________________
 echo U盘免疫完成
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 26
 :26(2)
 title 取消U盘免疫%system%
@@ -2308,7 +2308,7 @@ fsutil fsinfo drivetype %%m|find /i "可移动驱动器"&&goto 26-4)
 cls
 echo 没有找到可移动磁盘
 echo _______________________________________________________________________________
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 26
 :26-4
 cls
@@ -2322,7 +2322,7 @@ fsutil fsinfo drivetype %%m|find /i "可移动驱动器"&&del/f/q %%mautorun.inf
 fsutil fsinfo drivetype %%m|find /i "可移动驱动器"&&rd/s/q %%mautorun.inf) 2>nul
 echo _______________________________________________________________________________
 echo 取消U盘免疫完成
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 26
 :27
 title 磁盘碎片整理%system%
@@ -2358,13 +2358,13 @@ set sypf=%sypf:~5%
 if /i "%system:~18,2%"=="XP" for %%n in (%sypf%) do defrag/v/x %%n
 for %%n in (%sypf%) do defrag/u/v/x %%n
 echo _______________________________________________________________________________
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 27
 :27(2)
 cls
 defrag/u/v/x %fenxi%:||defrag/v/x %fenxi%:
 echo _______________________________________________________________________________
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 27
 :28
 title 一键删除空文件夹%system%
@@ -2964,7 +2964,7 @@ echo 二进制:%erjinzhi%
 echo 八进制:%bajinzhi%
 echo 十六进制:%shilioujinzhi%
 echo _______________________________________________________________________________
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 36
 :shijinzhicw
 echo 不是十进制整数!
@@ -3014,7 +3014,7 @@ echo 二进制:%erjinzhi%
 echo 八进制:%bajinzhi%
 echo 十六进制:%shilioujinzhi%
 echo _______________________________________________________________________________
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 36
 :srejzcw
 echo 不是二进制整数!
@@ -3401,21 +3401,23 @@ echo 如果无法连接请手动获取IP地址(如果开启系统防火墙也会无法连接成功)
 echo Wifi名称(SSID):%wifissid%
 echo Wifi密码:%wifimima%
 echo _______________________________________________________________________________
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 47
 :gbwifi
 title 关闭Wifi热点%system%
 cls
 netsh wlan stop hostednetwork
 echo _______________________________________________________________________________
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 47
 :wlpz
 title 查看网络配置%system%
 cls
 ipconfig /all
+netsh wlan show drivers
+netsh wlan show interface
 echo _______________________________________________________________________________
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 47
 :48
 title 反编译chm文件%system%
@@ -3663,7 +3665,7 @@ title 列出卷装入点%system%
 cls
 for /f "skip=22" %%a in ('"mountvol"') do echo %%a
 echo _______________________________________________________________________________
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 61
 :61(2)
 title 删除不在系统中的,卷的装入点目录和注册表设置%system%
@@ -3671,7 +3673,7 @@ cls
 mountvol /r
 echo 操作完成
 echo _______________________________________________________________________________
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 61
 :61(3)
 title 列出指定目录的已装入的卷名称%system%
@@ -3683,7 +3685,7 @@ set/p xszz=请输入需要显示的盘符:
 cls
 echo %xszz%:\&mountvol %xszz%: /l
 echo _______________________________________________________________________________
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 61
 :61(4)
 title 创建盘符(创建卷装入点)%system%
@@ -3703,7 +3705,7 @@ set/p xzpf=输入盘符:
 mountvol %xzpf%: !b%cjpf%!
 echo 操作完成
 echo _______________________________________________________________________________
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 61
 :61(5)
 title 删除盘符(删除卷装入点)%system%
@@ -3715,7 +3717,7 @@ set/p scpf=请输入需要删除的盘符:
 mountvol %scpf%: /d
 echo 操作完成
 echo _______________________________________________________________________________
-echo 按任意键返回&pause>nul
+set /p =按任意键返回<nul&pause>nul
 goto 61
 :62
 title 注册表搜索%system%
