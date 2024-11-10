@@ -138,16 +138,16 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=243105
+set versize=243314
 set resolve1=--resolve cdn.jsdelivr.net:443:^
-151.101.129.57,^
-151.101.193.57,^
-151.101.65.57,^
-151.101.1.57,^
-2a04:4e42:400::313,^
-2a04:4e42:200::313,^
-2a04:4e42:600::313,^
-2a04:4e42::313
+151.101.129.229,^
+151.101.193.229,^
+151.101.65.229,^
+151.101.1.229,^
+2a04:4e42:400::485,^
+2a04:4e42:200::485,^
+2a04:4e42:600::485,^
+2a04:4e42::485
 set resolve2=--resolve raw.github.io:443:^
 185.199.110.133,^
 185.199.109.133,^
@@ -4280,67 +4280,69 @@ for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\W
 echo 下载汇率文件(总共13个文件)...
 set xzflag=::
 set xzflag1=
+if not exist %temp%\down (md %temp%\down) 
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
-%xzflag%pushd %temp%
+%xzflag%pushd %temp%\down
 %xzflag%curl !proxy! -A !ua! -# -Z -C - --retry 1 --retry-delay 1 --connect-timeout 5 -o cny.json %mainurl1%chinese-yuan-renminbi -o doge.json %mainurl%dogecoin -o btc.json %mainurl%bitcoin -o eth.json %mainurl%ethereum -o au.json %mainurl1%gold-ounce -o ag.json %mainurl1%silver-ounce -o eur.json %mainurl1%euro -o gbp.json %mainurl1%british-pound-sterling -o jpy.json %mainurl1%japanese-yen -o hkd.json %mainurl1%hong-kong-dollar -o twd.json %mainurl1%new-taiwan-dollar -o xmr.json %mainurl%monero -o filecoin.json %mainurl%filecoin
 %xzflag%popd
-%xzflag1%bitsadmin /transfer 下载汇率文件... /priority FOREGROUND %mainurl1%chinese-yuan-renminbi %temp%\cny.json %mainurl%dogecoin %temp%\doge.json %mainurl%bitcoin %temp%\btc.json %mainurl%ethereum %temp%\eth.json %mainurl1%gold-ounce %temp%\au.json %mainurl1%silver-ounce %temp%\ag.json %mainurl1%euro %temp%\eur.json %mainurl1%british-pound-sterling %temp%\gbp.json %mainurl1%japanese-yen %temp%\jpy.json %mainurl1%hong-kong-dollar %temp%\hkd.json %mainurl1%new-taiwan-dollar %temp%\twd.json %mainurl%monero %temp%\xmr.json %mainurl%filecoin %temp%\filecoin.json
+%xzflag1%bitsadmin /transfer 下载汇率文件... /priority FOREGROUND %mainurl1%chinese-yuan-renminbi %temp%\down\cny.json %mainurl%dogecoin %temp%\down\doge.json %mainurl%bitcoin %temp%\down\btc.json %mainurl%ethereum %temp%\down\eth.json %mainurl1%gold-ounce %temp%\down\au.json %mainurl1%silver-ounce %temp%\down\ag.json %mainurl1%euro %temp%\down\eur.json %mainurl1%british-pound-sterling %temp%\down\gbp.json %mainurl1%japanese-yen %temp%\down\jpy.json %mainurl1%hong-kong-dollar %temp%\down\hkd.json %mainurl1%new-taiwan-dollar %temp%\down\twd.json %mainurl%monero %temp%\down\xmr.json %mainurl%filecoin %temp%\down\filecoin.json
 cls
 echo 处理汇率文件...
-for /f "delims=:} tokens=7" %%a in (%temp%\cny.json) do (set cnytousd=%%a)
+for /f "delims=:} tokens=7" %%a in (%temp%\down\cny.json) do (set cnytousd=%%a)
 if not defined cnytousd set cnytousd=1
 set cnytousd=%cnytousd:"=%
-for /f "delims=:, tokens=19,21" %%a in (%temp%\doge.json) do (set dogetousd=%%a&&set doge24h=%%b)
+for /f "delims=:, tokens=19,21" %%a in (%temp%\down\doge.json) do (set dogetousd=%%a&&set doge24h=%%b)
 if not defined dogetousd set dogetousd=1&&set doge24h=0
 set dogetousd=%dogetousd:"=%
 set doge24h=%doge24h:"=%
 for /f "delims=. tokens=1,2" %%a in ('"echo %doge24h%"') do (set doge24h1=%%a&&set doge24h2=%%b)
 set doge24h=%doge24h1%.%doge24h2:~0,3%
-for /f "delims=:, tokens=19,21" %%a in (%temp%\btc.json) do (set btctousd=%%a&&set btc24h=%%b)
+for /f "delims=:, tokens=19,21" %%a in (%temp%\down\btc.json) do (set btctousd=%%a&&set btc24h=%%b)
 if not defined btctousd set btctousd=1&&set btc24h=0
 set btctousd=%btctousd:"=%
 set btc24h=%btc24h:"=%
 for /f "delims=. tokens=1,2" %%a in ('"echo %btc24h%"') do (set btc24h1=%%a&&set btc24h2=%%b)
 set btc24h=%btc24h1%.%btc24h2:~0,3%
-for /f "delims=:, tokens=19,21" %%a in (%temp%\eth.json) do (set ethtousd=%%a&&set eth24h=%%b)
+for /f "delims=:, tokens=19,21" %%a in (%temp%\down\eth.json) do (set ethtousd=%%a&&set eth24h=%%b)
 if not defined ethtousd set ethtousd=1&&set eth24h=0
 set ethtousd=%ethtousd:"=%
 set eth24h=%eth24h:"=%
 for /f "delims=. tokens=1,2" %%a in ('"echo %eth24h%"') do (set eth24h1=%%a&&set eth24h2=%%b)
 set eth24h=%eth24h1%.%eth24h2:~0,3%
-for /f "delims=:, tokens=19,21" %%a in (%temp%\filecoin.json) do (set filetousd=%%a&&set file24h=%%b)
+for /f "delims=:, tokens=19,21" %%a in (%temp%\down\filecoin.json) do (set filetousd=%%a&&set file24h=%%b)
 if not defined filetousd set filetousd=1&&file24h=0
 set filetousd=%filetousd:"=%
 set file24h=%file24h:"=%
 for /f "delims=. tokens=1,2" %%a in ('"echo;%file24h%"') do (set file24h1=%%a&&set file24h2=%%b)
 set file24h=%file24h1%.%file24h2:~0,3%
-for /f "delims=:} tokens=7" %%a in (%temp%\au.json) do (set autousd=%%a)
+for /f "delims=:} tokens=7" %%a in (%temp%\down\au.json) do (set autousd=%%a)
 if not defined autousd set autousd=1
 set autousd=%autousd:"=%
-for /f "delims=:} tokens=7" %%a in (%temp%\ag.json) do (set agtousd=%%a)
+for /f "delims=:} tokens=7" %%a in (%temp%\down\ag.json) do (set agtousd=%%a)
 if not defined agtousd set agtousd=1
 set agtousd=%agtousd:"=%
-for /f "delims=:} tokens=7" %%a in (%temp%\eur.json) do (set eurtousd=%%a)
+for /f "delims=:} tokens=7" %%a in (%temp%\down\eur.json) do (set eurtousd=%%a)
 if not defined eurtousd set eurtousd=1
 set eurtousd=%eurtousd:"=%
-for /f "delims=:} tokens=7" %%a in (%temp%\gbp.json) do (set gbptousd=%%a)
+for /f "delims=:} tokens=7" %%a in (%temp%\down\gbp.json) do (set gbptousd=%%a)
 if not defined gbptousd set gbptousd=1
 set gbptousd=%gbptousd:"=%
-for /f "delims=:} tokens=7" %%a in (%temp%\jpy.json) do (set jpytousd=%%a)
+for /f "delims=:} tokens=7" %%a in (%temp%\down\jpy.json) do (set jpytousd=%%a)
 if not defined jpytousd set jpytousd=1
 set jpytousd=%jpytousd:"=%
-for /f "delims=:} tokens=7" %%a in (%temp%\hkd.json) do (set hkdtousd=%%a)
+for /f "delims=:} tokens=7" %%a in (%temp%\down\hkd.json) do (set hkdtousd=%%a)
 if not defined hkdtousd set hkdtousd=1
 set hkdtousd=%hkdtousd:"=%
-for /f "delims=:} tokens=7" %%a in (%temp%\twd.json) do (set twdtousd=%%a)
+for /f "delims=:} tokens=7" %%a in (%temp%\down\twd.json) do (set twdtousd=%%a)
 if not defined twdtousd set twdtousd=1
 set hkdtousd=%hkdtousd:"=%
-for /f "delims=:, tokens=19,21" %%a in (%temp%\xmr.json) do (set xmrtousd=%%a&&set xmr24h=%%b)
+for /f "delims=:, tokens=19,21" %%a in (%temp%\down\xmr.json) do (set xmrtousd=%%a&&set xmr24h=%%b)
 if not defined xmrtousd set xmrtousd=1&&set xmr24h=0
 set xmrtousd=%xmrtousd:"=%
 set xmr24h=%xmr24h:"=%
 for /f "delims=. tokens=1,2" %%a in ('"echo %xmr24h%"') do (set xmr24h1=%%a&&set xmr24h2=%%b)
 set xmr24h=%xmr24h1%.%xmr24h2:~0,3%
+rd /s /q %temp%\down>nul
 call :Division %dogetousd% %cnytousd% 8 dogetocny
 call :Division %btctousd% %cnytousd% 8 btctocny
 call :Division %ethtousd% %cnytousd% 8 ethtocny
