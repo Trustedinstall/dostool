@@ -138,7 +138,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=244235
+set versize=244273
 set resolve1=--resolve cdn.jsdelivr.net:443:^
 151.101.129.229,^
 151.101.193.229,^
@@ -256,7 +256,7 @@ if /i "%processor_architecture%"=="x86" (set bit=32) else (set bit=64)
 if exist !systemroot!\system32\choice.exe (
 	set "sel=call :choice"
 ) else (
-	set "sel=set /p shuru=输入你的选择:<nul"
+	set "sel=call :set"
 )
 if /i "%2" neq "" goto %2
 rem call :xsjc !dosqssj! !time! jg
@@ -5600,6 +5600,10 @@ goto :eof
 :choice
 choice /c !cho! /n /m 请输入你的选择:
 set shuru=!errorlevel!
+goto :eof
+:set
+set shuru=
+set /p "shuru=输入你的选择:"
 goto :eof
 :bk
 setlocal
