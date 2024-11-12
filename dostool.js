@@ -138,7 +138,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=244163
+set versize=244187
 set "doh=--doh-url https://101.101.101.101/dns-query" 
 set resolve2=--resolve raw.github.io:443:^
 185.199.110.133,^
@@ -3181,10 +3181,10 @@ goto memuv2
 title 显示开机启动项%system%
 cls
 echo _______________________________________________________________________________
-if /i "%system:~18,1%"=="x" dir/a/s/b "%systemdrive%\Documents and Settings\%username%\「开始」菜单\程序\启动"
-if /i "%system:~18,1%"=="x" dir/a/s/b "%systemdrive%\Documents and Settings\all users\「开始」菜单\程序\启动"
-if /i "%system:~18,1%" neq "x" dir/a/s/b "%systemdrive%\Users\%username%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"
-if /i "%system:~18,1%" neq "x" dir/a/s/b "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp"
+if /i "%system:~18,1%"=="x" dir/a/s/b "%systemdrive%\Documents and Settings\%username%\「开始」菜单\程序\启动" 2>nul
+if /i "%system:~18,1%"=="x" dir/a/s/b "%systemdrive%\Documents and Settings\all users\「开始」菜单\程序\启动" 2>nul
+if /i "%system:~18,1%" neq "x" dir/a/s/b "%systemdrive%\Users\%username%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup" 2>nul
+if /i "%system:~18,1%" neq "x" dir/a/s/b "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp" 2>nul
 echo;
 for /f "delims=" %%a in ('"reg query HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run 2>nul"') do if not "%%a"=="" echo %%a&echo;
 for /f "delims=" %%a in ('"reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run 2>nul"') do if not "%%a"=="" echo %%a&echo;
