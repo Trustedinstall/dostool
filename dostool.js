@@ -138,7 +138,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=244187
+set versize=244195
 set "doh=--doh-url https://101.101.101.101/dns-query" 
 set resolve2=--resolve raw.github.io:443:^
 185.199.110.133,^
@@ -3773,8 +3773,8 @@ set /p =按任意键返回菜单<nul&pause>nul
 goto memuv2
 :63-0
 echo _______________________________________________________________________________
-echo [1]Base解码
-echo [2]Base编码
+echo [1]Base64解码
+echo [2]Base64编码
 echo [0]返回菜单
 echo _______________________________________________________________________________
 choice /c 120 /n /m 请输入你的选择:
@@ -3794,7 +3794,7 @@ goto 63
 :63-1
 cls
 del/f/q %temp%\codetmp>nul 2>nul
-title Base解码%system%
+title Base64解码%system%
 set basebm=
 set/p basebm=输入要解码的字符串或文件路径:
 if "!basebm!"=="" goto 63-1
@@ -3831,7 +3831,7 @@ goto 63
 :63-2
 cls
 del/f/q %temp%\codetmp>nul 2>nul
-title Base编码%system%
+title Base64编码%system%
 set basebm=
 set/p basebm=输入要编码的字符串或文件路径:
 if "!basebm!"=="" goto 63-2
