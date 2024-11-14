@@ -138,7 +138,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=243987
+set versize=244016
 set "doh=--doh-url https://101.101.101.101/dns-query"
 set resolve2=--resolve raw.github.io:443:^
 185.199.110.133,^
@@ -153,11 +153,11 @@ set jshost=-H "host: cdn.jsdelivr.net"
 set githost=-H "host: raw.githubusercontent.com"
 set "gxurlhost1=https://raw.github.io/Trustedinstall/dostool/main/update.js"
 set "gxurlhost2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js"
-set "gxurl1=https://raw.github.io/Trustedinstall/dostool/main/update.js"
+set "gxurl1=https://raw.githubusercontent.com/Trustedinstall/dostool/main/update.js"
 set "gxurl2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js"
 set "gxdoshost1=https://raw.github.io/Trustedinstall/dostool/main/dostool.js"
 set "gxdoshost2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js"
-set "gxdos1=https://raw.github.io/Trustedinstall/dostool/main/dostool.js"
+set "gxdos1=https://raw.githubusercontent.com/Trustedinstall/dostool/main/dostool.js"
 set "gxdos2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js"
 rem if exist %temp%\dwnl.exe (set /a versize=versize+3194)
 set gxflag=
@@ -5018,7 +5018,7 @@ if exist %systemroot%\system32\curl.exe (
 	if defined host (
 		echo;Host”Ú√˚:	%host:~10,-1%
 	)
-	curl !proxy! !doh! !host! -A "!ua!" -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 !doh! -o dostool !url!
+	curl !proxy! !doh! !host! -A "!ua!" -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 !resolve2! -o dostool !url!
 	popd
 	call :hash %temp%\dostool sha1 hash
 	if /i "!hash!" equ "!doshash!" (
