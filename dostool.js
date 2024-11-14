@@ -138,8 +138,8 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=243947
-set "doh=--doh-url https://101.101.101.101/dns-query" 
+set versize=243966
+set "doh=--doh-url https://101.101.101.101/dns-query"
 set resolve2=--resolve raw.github.io:443:^
 185.199.110.133,^
 185.199.109.133,^
@@ -4305,7 +4305,7 @@ set xzflag1=
 if not exist %temp%\down (md %temp%\down) 
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag%pushd %temp%\down
-%xzflag%curl !proxy! !doh! -A !ua! -# -Z -C - --retry 1 --retry-delay 1 --connect-timeout 5 -o cny.json %mainurl1%chinese-yuan-renminbi -o doge.json %mainurl%dogecoin -o btc.json %mainurl%bitcoin -o eth.json %mainurl%ethereum -o au.json %mainurl1%gold-ounce -o ag.json %mainurl1%silver-ounce -o eur.json %mainurl1%euro -o gbp.json %mainurl1%british-pound-sterling -o jpy.json %mainurl1%japanese-yen -o hkd.json %mainurl1%hong-kong-dollar -o twd.json %mainurl1%new-taiwan-dollar -o xmr.json %mainurl%monero -o filecoin.json %mainurl%filecoin
+%xzflag%curl !proxy! !doh! -A "!ua!" -# -Z -C - --retry 1 --retry-delay 1 --connect-timeout 5 -o cny.json %mainurl1%chinese-yuan-renminbi -o doge.json %mainurl%dogecoin -o btc.json %mainurl%bitcoin -o eth.json %mainurl%ethereum -o au.json %mainurl1%gold-ounce -o ag.json %mainurl1%silver-ounce -o eur.json %mainurl1%euro -o gbp.json %mainurl1%british-pound-sterling -o jpy.json %mainurl1%japanese-yen -o hkd.json %mainurl1%hong-kong-dollar -o twd.json %mainurl1%new-taiwan-dollar -o xmr.json %mainurl%monero -o filecoin.json %mainurl%filecoin
 %xzflag%popd
 %xzflag1%bitsadmin /transfer 下载汇率文件... /priority FOREGROUND %mainurl1%chinese-yuan-renminbi %temp%\down\cny.json %mainurl%dogecoin %temp%\down\doge.json %mainurl%bitcoin %temp%\down\btc.json %mainurl%ethereum %temp%\down\eth.json %mainurl1%gold-ounce %temp%\down\au.json %mainurl1%silver-ounce %temp%\down\ag.json %mainurl1%euro %temp%\down\eur.json %mainurl1%british-pound-sterling %temp%\down\gbp.json %mainurl1%japanese-yen %temp%\down\jpy.json %mainurl1%hong-kong-dollar %temp%\down\hkd.json %mainurl1%new-taiwan-dollar %temp%\down\twd.json %mainurl%monero %temp%\down\xmr.json %mainurl%filecoin %temp%\down\filecoin.json
 cls
@@ -4665,7 +4665,7 @@ for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\W
 		set proxy=
 	)
 )
-curl !proxy! !doh! -A !ua! -I -# -L -o tag --connect-timeout 5 --output-dir %temp% "!url!"
+curl !proxy! !doh! -A "!ua!" -I -# -L -o tag --connect-timeout 5 --output-dir %temp% "!url!"
 if not exist %temp%\tag (
 echo;_______________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
@@ -4716,7 +4716,7 @@ for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\W
 	)
 )
 for /l %%a in (1,1,!tr!) do (
-	start /b curl !proxy! !doh! -s -A !ua! -# -L -C - --retry 1 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir %temp%\down "!url!"
+	start /b curl !proxy! !doh! -s -A "!ua!" -# -L -C - --retry 1 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir %temp%\down "!url!"
 	set /a oldfd=!newfd!+1
 	if %%a equ !pdtr! (
 		set newfd=
@@ -4879,7 +4879,7 @@ if exist %systemroot%\system32\curl.exe (
 	)
 	echo;使用链接:	!gxurlhost1!
 	echo;Host域名:	!githost:~10,-1!
-	curl !proxy! !doh! !githost! -A !ua! -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 !doh! !resolve2! -o dostoolupdate !gxurlhost1!
+	curl !proxy! !doh! !githost! -A "!ua!" -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 !doh! !resolve2! -o dostoolupdate !gxurlhost1!
 	if exist "%temp%\dostoolupdate" (
 		for /f "delims=: tokens=1,2" %%a in (%temp%\dostoolupdate) do (
 			set "gxver=%%a"
@@ -4892,7 +4892,7 @@ if exist %systemroot%\system32\curl.exe (
 		goto updatecheck
 	) else (
 		echo;使用链接:	!gxurl1!
-		curl !proxy! !doh! -A !ua! -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 -o dostoolupdate !gxurl1!
+		curl !proxy! !doh! -A "!ua!" -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 -o dostoolupdate !gxurl1!
 		if exist "%temp%\dostoolupdate" (
 			for /f "delims=: tokens=1,2" %%a in (%temp%\dostoolupdate) do (
 				set "gxver=%%a"
@@ -4906,7 +4906,7 @@ if exist %systemroot%\system32\curl.exe (
 		) else (
 			echo;使用链接:	!gxurlhost2!
 			echo;Host域名:	!jshost:~10,-1!
-			curl !proxy! !doh! !jshost! -A !ua! -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 !doh! !resolve2! -o dostoolupdate !gxurlhost2!
+			curl !proxy! !doh! !jshost! -A "!ua!" -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 !doh! !resolve2! -o dostoolupdate !gxurlhost2!
 			if exist "%temp%\dostoolupdate" (
 				for /f "delims=: tokens=1,2" %%a in (%temp%\dostoolupdate) do (
 					set "gxver=%%a"
@@ -4919,7 +4919,7 @@ if exist %systemroot%\system32\curl.exe (
 				goto updatecheck
 			) else (
 				echo;使用链接:	!gxurl2!
-				curl !proxy! !doh! -A !ua! -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 -o dostoolupdate !gxurl2!
+				curl !proxy! !doh! -A "!ua!" -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 -o dostoolupdate !gxurl2!
 				if exist "%temp%\dostoolupdate" (
 					for /f "delims=: tokens=1,2" %%a in (%temp%\dostoolupdate) do (
 						set "gxver=%%a"
@@ -5018,7 +5018,7 @@ if exist %systemroot%\system32\curl.exe (
 	if defined host (
 		echo;Host域名:	%host:~10,-1%
 	)
-	curl !proxy! !doh! !host! -A !ua! -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 !doh! -o dostool !url!
+	curl !proxy! !doh! !host! -A "!ua!" -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 !doh! -o dostool !url!
 	popd
 	call :hash %temp%\dostool sha1 hash
 	if /i "!hash!" equ "!doshash!" (
@@ -6688,7 +6688,7 @@ for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\W
 		set proxy=
 	)
 )
-curl !proxy! !doh! !par! -A !ua! -I -# -L -o tag --connect-timeout 5 --output-dir %temp% "!url!"
+curl !proxy! !doh! !par! -A "!ua!" -I -# -L -o tag --connect-timeout 5 --output-dir %temp% "!url!"
 if not exist %temp%\tag (
 	echo;没有获取到文件信息
 	goto :eof
@@ -6723,7 +6723,7 @@ for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\W
 	)
 )
 for /l %%a in (1,1,!tr!) do (
-	start /b curl !proxy! !doh! !par! -s -A !ua! -# -L -C - --retry 1 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir %temp%\down "!url!"
+	start /b curl !proxy! !doh! !par! -s -A "!ua!" -# -L -C - --retry 1 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir %temp%\down "!url!"
 	set /a oldfd=!newfd!+1
 	if %%a equ !pdtr! (
 		set newfd=
