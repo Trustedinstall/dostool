@@ -138,7 +138,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=244016
+set versize=244004
 set "doh=--doh-url https://101.101.101.101/dns-query"
 set resolve2=--resolve raw.github.io:443:^
 185.199.110.133,^
@@ -4879,7 +4879,7 @@ if exist %systemroot%\system32\curl.exe (
 	)
 	echo;使用链接:	!gxurlhost1!
 	echo;Host域名:	!githost:~10,-1!
-	curl !proxy! !doh! !githost! -A "!ua!" -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 !doh! !resolve2! -o dostoolupdate !gxurlhost1!
+	curl !proxy! !doh! !githost! -A "!ua!" -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 !resolve2! -o dostoolupdate !gxurlhost1!
 	if exist "%temp%\dostoolupdate" (
 		for /f "delims=: tokens=1,2" %%a in (%temp%\dostoolupdate) do (
 			set "gxver=%%a"
@@ -4906,7 +4906,7 @@ if exist %systemroot%\system32\curl.exe (
 		) else (
 			echo;使用链接:	!gxurlhost2!
 			echo;Host域名:	!jshost:~10,-1!
-			curl !proxy! !doh! !jshost! -A "!ua!" -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 !doh! !resolve2! -o dostoolupdate !gxurlhost2!
+			curl !proxy! !doh! !jshost! -A "!ua!" -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 !resolve2! -o dostoolupdate !gxurlhost2!
 			if exist "%temp%\dostoolupdate" (
 				for /f "delims=: tokens=1,2" %%a in (%temp%\dostoolupdate) do (
 					set "gxver=%%a"
