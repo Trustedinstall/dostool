@@ -138,7 +138,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=243966
+set versize=243987
 set "doh=--doh-url https://101.101.101.101/dns-query"
 set resolve2=--resolve raw.github.io:443:^
 185.199.110.133,^
@@ -149,8 +149,8 @@ set resolve2=--resolve raw.github.io:443:^
 2606:50c0:8003::154,^
 2606:50c0:8000::154,^
 2606:50c0:8002::154
-set "jshost=-H host: cdn.jsdelivr.net"
-set "githost=-H host: raw.githubusercontent.com"
+set jshost=-H "host: cdn.jsdelivr.net"
+set githost=-H "host: raw.githubusercontent.com"
 set "gxurlhost1=https://raw.github.io/Trustedinstall/dostool/main/update.js"
 set "gxurlhost2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js"
 set "gxurl1=https://raw.github.io/Trustedinstall/dostool/main/update.js"
@@ -4934,7 +4934,7 @@ if exist %systemroot%\system32\curl.exe (
 					endlocal
 					echo;没有检查到更新版本
 					echo;_______________________________________________________________________________
-					echo;按任意键返回菜单&pause>nul
+					set /p =按任意键返回菜单<nul&pause>nul
 					if "!tzwz!" equ "!start!" (
 						goto memuv2
 					) else (
@@ -4968,7 +4968,7 @@ if exist %systemroot%\system32\curl.exe (
 			endlocal
 			echo;没有检查到更新版本
 			echo;_______________________________________________________________________________
-			echo;按任意键返回菜单&pause>nul
+			set /p =按任意键返回菜单<nul&pause>nul
 			if "!tzwz!" equ "!start!" (
 				goto memuv2
 			) else (
@@ -4989,7 +4989,7 @@ if !checkver! gtr 0 (
 	endlocal
 	echo;没有检查到更新版本
 	echo;_______________________________________________________________________________
-	echo;按任意键返回菜单&pause>nul
+	set /p =按任意键返回菜单<nul&pause>nul
 	if "!tzwz!" equ "!start!" (
 		goto memuv2
 	) else (
