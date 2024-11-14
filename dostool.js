@@ -138,7 +138,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=244195
+set versize=243947
 set "doh=--doh-url https://101.101.101.101/dns-query" 
 set resolve2=--resolve raw.github.io:443:^
 185.199.110.133,^
@@ -149,25 +149,25 @@ set resolve2=--resolve raw.github.io:443:^
 2606:50c0:8003::154,^
 2606:50c0:8000::154,^
 2606:50c0:8002::154
-set jshost=-H "host: cdn.jsdelivr.net"
-set githost=-H "host: raw.githubusercontent.com"
-set gxurlhost1=https://raw.github.io/Trustedinstall/dostool/main/update.js
-set gxurlhost2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js
-set gxurl1=https://raw.github.io/Trustedinstall/dostool/main/update.js
-set gxurl2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js
-set gxdoshost1=https://raw.github.io/Trustedinstall/dostool/main/dostool.js
-set gxdoshost2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js
-set gxdos1=https://raw.github.io/Trustedinstall/dostool/main/dostool.js
-set gxdos2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js
+set "jshost=-H host: cdn.jsdelivr.net"
+set "githost=-H host: raw.githubusercontent.com"
+set "gxurlhost1=https://raw.github.io/Trustedinstall/dostool/main/update.js"
+set "gxurlhost2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js"
+set "gxurl1=https://raw.github.io/Trustedinstall/dostool/main/update.js"
+set "gxurl2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js"
+set "gxdoshost1=https://raw.github.io/Trustedinstall/dostool/main/dostool.js"
+set "gxdoshost2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js"
+set "gxdos1=https://raw.github.io/Trustedinstall/dostool/main/dostool.js"
+set "gxdos2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js"
 rem if exist %temp%\dwnl.exe (set /a versize=versize+3194)
 set gxflag=
-set baidu=start https://www.baidu.com/s?wd=
-set google=start https://www.google.com.hk/search?q=
+set "baidu=start https://www.baidu.com/s?wd="
+set "google=start https://www.google.com.hk/search?q="
 set sc=delasd123
 set scw=rdasd123
 set weizhi=%0
 rem set cishu=3
-set ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
+set "ua=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
 set nx1=[+]下一页&set nx=[-]上一页   [+]下一页&set nx7=[-]上一页
 if exist "!temp!\dos_pre_reading_cache_wmictype.tmp" (
 	set "wmictype='"type "!temp!\dos_pre_reading_cache_wmictype.tmp""'"
@@ -5685,13 +5685,6 @@ if not exist "!域名重定向!" (
 		echo *.pixiv.net=pixiv.me
 		echo *.pximg.net=pximg.net
 		echo;
-		echo #reddit
-		echo reddit.com=ax.redditinc.com
-		echo *.reddit.com=ax.redditinc.com
-		echo *.redd.it=ax.redditinc.com
-		echo redd.it=ax.redditinc.com
-		echo *.redditmedia.com=ax.redditinc.com
-		echo;
 		echo #protonmail
 		echo proton.me=pr.tn
 		echo account.proton.me=a.pr.tn
@@ -5777,9 +5770,6 @@ if not exist "!域名重解析!" (
 		echo;
 		echo #nyaa
 		echo nyaa.ddos-guard.net=nyaa.si
-		echo;
-		echo #reddit
-		echo ax.redditinc.com=redd.it
 	)>"!域名重解析!"
 )
 if not exist "!强制使用quic!" (
