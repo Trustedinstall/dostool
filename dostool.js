@@ -108,7 +108,7 @@ if exist %systemroot%\system32\curl.exe (
     set xzflag=
 )
 %xzflag% cd /d %temp%
-%xzflag% start /min %comspec% /c curl -H "host: cdn.jsdelivr.net" -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 --resolve !doh! -o dostoolupdate https://fastly.com/gh/Trustedinstall/dostool/update.js
+%xzflag% start /min %comspec% /c curl -H "host: cdn.jsdelivr.net" -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 --resolve !doh! -o dostoolupdate https://fastly.com/gh/Trustedinstall/dostool/update.js
 %xzflag1% powershell -w hidden -c (new-object System.Net.WebClient).%ddf%( 'https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js','%temp%\dostoolupdate')
 exit 0
 :stwt
@@ -138,7 +138,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=244004
+set versize=244539
 set "doh=--doh-url https://101.101.101.101/dns-query"
 set resolve2=--resolve raw.github.io:443:^
 185.199.110.133,^
@@ -3050,7 +3050,7 @@ call :sjc "%dosqssj%" "%dosjssj%"
 cls
 echo 关于DOS工具箱
 echo _______________________________________________________________________________
-echo 版本: 		1.9.2 (%ver%.%versize%)
+echo 版本: 		1.9.3 (%ver%.%versize%)
 echo 操作系统: 	%system:~3% %bit%位
 echo 版权所有 	2012-2024 Administrator 保留所有权利
 echo _______________________________________________________________________________
@@ -4305,7 +4305,7 @@ set xzflag1=
 if not exist %temp%\down (md %temp%\down) 
 if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
 %xzflag%pushd %temp%\down
-%xzflag%curl !proxy! !doh! -A "!ua!" -# -Z -C - --retry 1 --retry-delay 1 --connect-timeout 5 -o cny.json %mainurl1%chinese-yuan-renminbi -o doge.json %mainurl%dogecoin -o btc.json %mainurl%bitcoin -o eth.json %mainurl%ethereum -o au.json %mainurl1%gold-ounce -o ag.json %mainurl1%silver-ounce -o eur.json %mainurl1%euro -o gbp.json %mainurl1%british-pound-sterling -o jpy.json %mainurl1%japanese-yen -o hkd.json %mainurl1%hong-kong-dollar -o twd.json %mainurl1%new-taiwan-dollar -o xmr.json %mainurl%monero -o filecoin.json %mainurl%filecoin
+%xzflag%curl !proxy! !doh! -A "!ua!" -# -Z -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o cny.json %mainurl1%chinese-yuan-renminbi -o doge.json %mainurl%dogecoin -o btc.json %mainurl%bitcoin -o eth.json %mainurl%ethereum -o au.json %mainurl1%gold-ounce -o ag.json %mainurl1%silver-ounce -o eur.json %mainurl1%euro -o gbp.json %mainurl1%british-pound-sterling -o jpy.json %mainurl1%japanese-yen -o hkd.json %mainurl1%hong-kong-dollar -o twd.json %mainurl1%new-taiwan-dollar -o xmr.json %mainurl%monero -o filecoin.json %mainurl%filecoin
 %xzflag%popd
 %xzflag1%bitsadmin /transfer 下载汇率文件... /priority FOREGROUND %mainurl1%chinese-yuan-renminbi %temp%\down\cny.json %mainurl%dogecoin %temp%\down\doge.json %mainurl%bitcoin %temp%\down\btc.json %mainurl%ethereum %temp%\down\eth.json %mainurl1%gold-ounce %temp%\down\au.json %mainurl1%silver-ounce %temp%\down\ag.json %mainurl1%euro %temp%\down\eur.json %mainurl1%british-pound-sterling %temp%\down\gbp.json %mainurl1%japanese-yen %temp%\down\jpy.json %mainurl1%hong-kong-dollar %temp%\down\hkd.json %mainurl1%new-taiwan-dollar %temp%\down\twd.json %mainurl%monero %temp%\down\xmr.json %mainurl%filecoin %temp%\down\filecoin.json
 cls
@@ -4716,7 +4716,7 @@ for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\W
 	)
 )
 for /l %%a in (1,1,!tr!) do (
-	start /b curl !proxy! !doh! -s -A "!ua!" -# -L -C - --retry 1 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir %temp%\down "!url!"
+	start /b curl !proxy! !doh! -s -A "!ua!" -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir %temp%\down "!url!"
 	set /a oldfd=!newfd!+1
 	if %%a equ !pdtr! (
 		set newfd=
@@ -4879,7 +4879,7 @@ if exist %systemroot%\system32\curl.exe (
 	)
 	echo;使用链接:	!gxurlhost1!
 	echo;Host域名:	!githost:~10,-1!
-	curl !proxy! !doh! !githost! -A "!ua!" -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 !resolve2! -o dostoolupdate !gxurlhost1!
+	curl !proxy! !doh! !githost! -A "!ua!" -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 !resolve2! -o dostoolupdate !gxurlhost1!
 	if exist "%temp%\dostoolupdate" (
 		for /f "delims=: tokens=1,2" %%a in (%temp%\dostoolupdate) do (
 			set "gxver=%%a"
@@ -4892,7 +4892,7 @@ if exist %systemroot%\system32\curl.exe (
 		goto updatecheck
 	) else (
 		echo;使用链接:	!gxurl1!
-		curl !proxy! !doh! -A "!ua!" -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 -o dostoolupdate !gxurl1!
+		curl !proxy! !doh! -A "!ua!" -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o dostoolupdate !gxurl1!
 		if exist "%temp%\dostoolupdate" (
 			for /f "delims=: tokens=1,2" %%a in (%temp%\dostoolupdate) do (
 				set "gxver=%%a"
@@ -4906,7 +4906,7 @@ if exist %systemroot%\system32\curl.exe (
 		) else (
 			echo;使用链接:	!gxurlhost2!
 			echo;Host域名:	!jshost:~10,-1!
-			curl !proxy! !doh! !jshost! -A "!ua!" -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 !resolve2! -o dostoolupdate !gxurlhost2!
+			curl !proxy! !doh! !jshost! -A "!ua!" -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 !resolve2! -o dostoolupdate !gxurlhost2!
 			if exist "%temp%\dostoolupdate" (
 				for /f "delims=: tokens=1,2" %%a in (%temp%\dostoolupdate) do (
 					set "gxver=%%a"
@@ -4919,7 +4919,7 @@ if exist %systemroot%\system32\curl.exe (
 				goto updatecheck
 			) else (
 				echo;使用链接:	!gxurl2!
-				curl !proxy! !doh! -A "!ua!" -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 -o dostoolupdate !gxurl2!
+				curl !proxy! !doh! -A "!ua!" -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o dostoolupdate !gxurl2!
 				if exist "%temp%\dostoolupdate" (
 					for /f "delims=: tokens=1,2" %%a in (%temp%\dostoolupdate) do (
 						set "gxver=%%a"
@@ -5018,7 +5018,7 @@ if exist %systemroot%\system32\curl.exe (
 	if defined host (
 		echo;Host域名:	%host:~10,-1%
 	)
-	curl !proxy! !doh! !host! -A "!ua!" -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 5 !resolve2! -o dostool !url!
+	curl !proxy! !doh! !host! -A "!ua!" -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 !resolve2! -o dostool !url!
 	popd
 	call :hash %temp%\dostool sha1 hash
 	if /i "!hash!" equ "!doshash!" (
@@ -5249,6 +5249,7 @@ set a71=KMS激活Windows
 set a72=curl多进程下载
 set a73=用域前置参数开启Chromium类浏览器
 set a74=逐一复制文件并压缩
+set a75=打开证书管理单元
 )
 goto :eof
 :colortxt
@@ -5924,6 +5925,21 @@ if "%3" equ ".pdf" goto :eof
 if %2 lss 4096 goto :eof
 compact /c /exe:lzx "%1"
 goto :eof
+:75
+cls
+title 打开证书管理单元%system%
+set "cho=120"
+echo _______________________________________________________________________________
+echo [1]certmgr	[证书 - 当前用户]
+echo [2]certlm	[证书 - 本地计算机]
+echo [0]返回菜单
+echo _______________________________________________________________________________
+!sel!
+if "!shuru!" equ "1" start certmgr.msc & goto memuv2
+if "!shuru!" equ "2" start certlm.msc & goto memuv2
+if "!shuru!" equ "3" goto memuv2
+if "!shuru!" equ "0" goto memuv2
+goto 75
 :checkvar
 setlocal
 if "%1" equ "" (
@@ -6723,7 +6739,7 @@ for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\W
 	)
 )
 for /l %%a in (1,1,!tr!) do (
-	start /b curl !proxy! !doh! !par! -s -A "!ua!" -# -L -C - --retry 1 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir %temp%\down "!url!"
+	start /b curl !proxy! !doh! !par! -s -A "!ua!" -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir %temp%\down "!url!"
 	set /a oldfd=!newfd!+1
 	if %%a equ !pdtr! (
 		set newfd=
