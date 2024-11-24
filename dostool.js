@@ -138,7 +138,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=244539
+set versize=244543
 set "doh=--doh-url https://101.101.101.101/dns-query"
 set resolve2=--resolve raw.github.io:443:^
 185.199.110.133,^
@@ -2242,7 +2242,7 @@ if /i !cjdx!=="e" goto memuv2
 fsutil file createnew %cjlj% %cjdx%
 echo _______________________________________________________________________________
 set /p =∞¥»Œ“‚º¸∑µªÿ<nul&pause>nul
-goto 25
+goto memuv2
 :26
 title √‚“ﬂU≈Ã≤°∂æ%system%
 set "cho=120"
