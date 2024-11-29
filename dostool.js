@@ -138,7 +138,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=244543
+set versize=244583
 set "doh=--doh-url https://101.101.101.101/dns-query"
 set resolve2=--resolve raw.github.io:443:^
 185.199.110.133,^
@@ -4836,10 +4836,10 @@ set /p =按任意键返回菜单<nul&pause>nul
 goto memuv2
 :hash
 setlocal
-set "url=%1"
+for /f "delims=" %%a in ("%1") do (set "url=%%~a")
 set "shuanfa=%2"
 if "!shuanfa!" equ "" (set "shuanfa=sha256")
-for /f "skip=1 eol=C" %%a in ('"certutil -hashfile !url! !shuanfa!"') do (
+for /f "skip=1 eol=C" %%a in ('"certutil -hashfile "!url!" !shuanfa!"') do (
 	if "%3" neq "" (
 		endlocal&set "%3=%%a"
 		goto :eof
