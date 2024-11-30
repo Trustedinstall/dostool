@@ -138,7 +138,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=244583
+set versize=244565
 set "doh=--doh-url https://101.101.101.101/dns-query"
 set resolve2=--resolve raw.github.io:443:^
 185.199.110.133,^
@@ -2623,15 +2623,15 @@ for /f "skip=2 tokens=2 delims==" %%a in ('Wmic path Win32_PerfFormattedData_Tcp
     echo;
 )
 echo Íø¹ØµØÖ·:
-for /f "delims== tokens=2" %%a in ('"Wmic Path Win32_NetworkAdapterConfiguration WHERE "IPEnabled^='TRUE'" get defaultipgateway /value"') do (set mrwg=%%a
-set mrwg=!mrwg:~0,-1!
-if "!mrwg!" equ "" goto mrwgtc
-set mrwg=!mrwg:{=!
-set mrwg=!mrwg:}=!
-set mrwg=!mrwg:"=!
-set mrwg=!mrwg:,=	!
-echo !mrwg!)
-:mrwgtc
+set mrwg=
+for /f "tokens=2 delims==" %%a in ('Wmic Path Win32_NetworkAdapterConfiguration WHERE "IPEnabled='TRUE'" get defaultipgateway /value') do (
+	set "mrwg=%%a"
+	set "mrwg=!mrwg:{=!"
+	set "mrwg=!mrwg:}=!"
+	set "mrwg=!mrwg:"=!"
+	set "mrwg=!mrwg:,=	!"
+	if defined mrwg (echo;!mrwg!)
+)
 echo;
 echo IP:
 if exist %systemroot%\system32\curl.exe (ping /n 1 www.baidu.com>nul&&curl 4.ipw.cn) else (for /f "skip=12 tokens=4 delims=: " %%a in ('"netsh interface Teredo show state"') do (echo %%a))
