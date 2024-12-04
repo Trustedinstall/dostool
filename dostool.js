@@ -138,7 +138,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=244565
+set versize=244602
 set "doh=--doh-url https://101.101.101.101/dns-query"
 set resolve2=--resolve raw.github.io:443:^
 185.199.110.133,^
@@ -5680,6 +5680,7 @@ if not exist "!域名重定向!" (
 		echo *.wikipedia.org=wikidata.org
 		echo *.wikiquote.org=wikidata.org
 		echo *.wikinews.org=wikidata.org
+		echo *.wikibooks.org=wikidata.org
 		echo;
 		echo #pixiv
 		echo pixiv.net=pixiv.me
