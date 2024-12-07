@@ -138,7 +138,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=244602
+set versize=244745
 set "doh=--doh-url https://101.101.101.101/dns-query"
 set resolve2=--resolve raw.github.io:443:^
 185.199.110.133,^
@@ -5681,6 +5681,10 @@ if not exist "!域名重定向!" (
 		echo *.wikiquote.org=wikidata.org
 		echo *.wikinews.org=wikidata.org
 		echo *.wikibooks.org=wikidata.org
+		echo *.wiktionary.org=wikidata.org
+		echo *.wikisource.org=wikidata.org
+		echo *.wikivoyage.org=wikidata.org
+		echo *.wikiversity.org=wikidata.org
 		echo;
 		echo #pixiv
 		echo pixiv.net=pixiv.me
@@ -5760,15 +5764,15 @@ if not exist "!域名重解析!" (
 		echo;
 		echo #youtube google
 		echo #mt7.gstatic.com=[2404:6800:4008:c07::5a]
-		echo mt7.gstatic.com=108.177.125.196
+		echo mt7.gstatic.com=39.106.25.252
 		echo #alt6.gstatic.com=[2404:6800:4008:c07::5a]
-		echo alt6.gstatic.com=108.177.125.196
+		echo alt6.gstatic.com=39.106.25.252
 		echo #google-analytics.com=[2404:6800:4008:c07::5a]
-		echo google-analytics.com=108.177.125.196
+		echo google-analytics.com=39.106.25.252
 		echo #googleadservices.com=[2404:6800:4008:c07::5a]
-		echo googleadservices.com=108.177.125.196
+		echo googleadservices.com=39.106.25.252
 		echo #static.doubleclick.net=[2404:6800:4008:c07::5a]
-		echo static.doubleclick.net=108.177.125.196
+		echo static.doubleclick.net=39.106.25.252
 		echo;
 		echo #nyaa
 		echo nyaa.ddos-guard.net=nyaa.si
