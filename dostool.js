@@ -43,23 +43,14 @@ if exist %localappdata%\Microsoft\WindowsApps\wt.exe (
 rem 在权限申请进程中预读命令提升后面初始化速度
 if not exist "!temp!\dos_pre_reading_cache_os.tmp" (
 	wmic os get caption /value>"!temp!\dos_pre_reading_cache_os.tmp"
-) else (
-	type "!temp!\dos_pre_reading_cache_os.tmp"
-)
-if not exist "!temp!\dos_pre_reading_cache_wmictype.tmp" (
 	wmic PATH Win32_SystemEnclosure get ChassisTypes/value>"!temp!\dos_pre_reading_cache_wmictype.tmp"
-) else (
-	type "!temp!\dos_pre_reading_cache_wmictype.tmp"
-)
-if not exist "!temp!\dos_pre_reading_cache_hostname.tmp" (
 	hostname>"!temp!\dos_pre_reading_cache_hostname.tmp"
-) else (
-	type "!temp!\dos_pre_reading_cache_hostname.tmp"
-)
-if not exist "!temp!\dos_pre_reading_cache_zmlj.tmp" (
 	reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v desktop>"!temp!\dos_pre_reading_cache_zmlj.tmp"
 ) else (
-	type "!temp!\dos_pre_reading_cache_zmlj.tmp"
+	type "!temp!\dos_pre_reading_cache_os.tmp">nul
+	type "!temp!\dos_pre_reading_cache_wmictype.tmp">nul
+	type "!temp!\dos_pre_reading_cache_hostname.tmp">nul
+	type "!temp!\dos_pre_reading_cache_zmlj.tmp">nul
 )
 ::start /min %comspec% /c powershell -noprofile start-process -filepath "%comspec%" -argumentlist '"/c %0 -ks"' -verb runas
 ::start /min %comspec% /c powershell -noprofile start-process -filepath "wt" -argumentlist '"%0 -ks"' -verb runas>nul 2>nul
@@ -138,7 +129,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=244745
+set versize=244980
 set "doh=--doh-url https://101.101.101.101/dns-query"
 set resolve2=--resolve raw.github.io:443:^
 185.199.110.133,^
@@ -167,7 +158,7 @@ set sc=delasd123
 set scw=rdasd123
 set weizhi=%0
 rem set cishu=3
-set "ua=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
+set "ua=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36"
 set nx1=[+]下一页&set nx=[-]上一页   [+]下一页&set nx7=[-]上一页
 if exist "!temp!\dos_pre_reading_cache_wmictype.tmp" (
 	set "wmictype='"type "!temp!\dos_pre_reading_cache_wmictype.tmp""'"
@@ -220,7 +211,7 @@ if exist "!temp!\dos_pre_reading_cache_os.tmp" (
 	set comd=1
 )
 for /f "skip=2 tokens=2 delims==" %%a in (!wmicos!) do (
-	set system=%%a
+	set "system=%%a"
 	if "!comd!" equ "1" (
 		set "system=!system:~0,-1!"
 		set comd=
@@ -6418,42 +6409,48 @@ for /f "tokens=1,2 delims=." %%a in ("%s%") do (
 endlocal&set %~4=%s%&goto :eof
 :pdxp
 set zmlj=%zmlj:~19%\
-if /i "!system!" equ "Microsoft Windows XP Home" (set system= - Windows XP 家庭版)
-if /i "!system!" equ "Microsoft Windows XP Professional" (set system= - Windows XP 专业版)
+if /i "!system!" equ "Microsoft Windows XP Home" (set "system= - Windows XP 家庭版"&goto :eof)
+if /i "!system!" equ "Microsoft Windows XP Professional" (set "system= - Windows XP 专业版"&goto :eof)
+set "system= - !system:~10!"
 goto :eof
 :pd7
 set zmlj=%zmlj:~25%\
-if /i "!system!" equ "Microsoft Windows 7 Ultimate" (set system= - Windows 7 旗舰版)
-if /i "!system!" equ "Microsoft Windows 7 Home Basic" (set system= - Windows 7 家庭普通版)
-if /i "!system!" equ "Microsoft Windows 7 Home Premium" (set system= - Windows 7 家庭高级版)
-if /i "!system!" equ "Microsoft Windows 7 Professional" (set system= - Windows 7 专业版)
-if /i "!system!" equ "Microsoft Windows 7 Enterprise" (set system= - Windows 7 企业版)
+if /i "!system!" equ "Microsoft Windows 7 Ultimate" (set "system= - Windows 7 旗舰版"&goto :eof)
+if /i "!system!" equ "Microsoft Windows 7 Home Basic" (set "system= - Windows 7 家庭普通版"&goto :eof)
+if /i "!system!" equ "Microsoft Windows 7 Home Premium" (set "system= - Windows 7 家庭高级版"&goto :eof)
+if /i "!system!" equ "Microsoft Windows 7 Professional" (set "system= - Windows 7 专业版"&goto :eof)
+if /i "!system!" equ "Microsoft Windows 7 Enterprise" (set "system= - Windows 7 企业版"&goto :eof)
+set "system= - !system:~10!"
 goto :eof
 :pd8
 set zmlj=%zmlj:~25%\
-if /i "!system!" equ "Microsoft Windows 8 Pro" (set system= - Windows 8 专业版)
-if /i "!system!" equ "Microsoft Windows 8 China" (set system= - Windows 8 中国版)
-if /i "!system!" equ "Microsoft Windows 8 Enterprise" (set system= - Windows 8 企业版)
+if /i "!system!" equ "Microsoft Windows 8 Pro" (set "system= - Windows 8 专业版"&goto :eof)
+if /i "!system!" equ "Microsoft Windows 8 China" (set "system= - Windows 8 中国版"&goto :eof)
+if /i "!system!" equ "Microsoft Windows 8 Enterprise" (set "system= - Windows 8 企业版"&goto :eof)
+set "system= - !system:~10!"
 goto :eof
 :pd8.1
 set zmlj=%zmlj:~25%\
-if /i "!system!" equ "Microsoft Windows 8.1 Pro" (set system= - Windows 8.1 专业版)
-if /i "!system!" equ "Microsoft Windows 8.1 China" (set system= - Windows 8.1 中国版)
-if /i "!system!" equ "Microsoft Windows 8.1 Enterprise" (set system= - Windows 8.1 企业版)
+if /i "!system!" equ "Microsoft Windows 8.1 Pro" (set "system= - Windows 8.1 专业版"&goto :eof)
+if /i "!system!" equ "Microsoft Windows 8.1 China" (set "system= - Windows 8.1 中国版"&goto :eof)
+if /i "!system!" equ "Microsoft Windows 8.1 Enterprise" (set "system= - Windows 8.1 企业版"&goto :eof)
+set "system= - !system:~10!"
 goto :eof
 :pd10
 set zmlj=%zmlj:~25%\
-if /i "!system!" equ "Microsoft Windows 10 Home" (set system= - Windows 10 家庭版)
-if /i "!system!" equ "Microsoft Windows 10 Professional" (set system= - Windows 10 专业版)
-if /i "!system!" equ "Microsoft Windows 10 Education" (set system= - Windows 10 教育版)
-if /i "!system!" equ "Microsoft Windows 10 Enterprise" (set system= - Windows 10 企业版)
+if /i "!system!" equ "Microsoft Windows 10 Home" (set "system= - Windows 10 家庭版"&goto :eof)
+if /i "!system!" equ "Microsoft Windows 10 Professional" (set "system= - Windows 10 专业版"&goto :eof)
+if /i "!system!" equ "Microsoft Windows 10 Education" (set "system= - Windows 10 教育版"&goto :eof)
+if /i "!system!" equ "Microsoft Windows 10 Enterprise" (set "system= - Windows 10 企业版"&goto :eof)
+set "system= - !system:~10!"
 goto :eof
 :pd11
 set zmlj=%zmlj:~25%\
-if /i "!system!" equ "Microsoft Windows 11 Home" (set system= - Windows 11 家庭版)
-if /i "!system!" equ "Microsoft Windows 11 Professional" (set system= - Windows 11 专业版)
-if /i "!system!" equ "Microsoft Windows 11 Education" (set system= - Windows 11 教育版)
-if /i "!system!" equ "Microsoft Windows 11 Enterprise" (set system= - Windows 11 企业版)
+if /i "!system!" equ "Microsoft Windows 11 Home" (set "system= - Windows 11 家庭版"&goto :eof)
+if /i "!system!" equ "Microsoft Windows 11 Professional" (set "system= - Windows 11 专业版"&goto :eof)
+if /i "!system!" equ "Microsoft Windows 11 Education" (set "system= - Windows 11 教育版"&goto :eof)
+if /i "!system!" equ "Microsoft Windows 11 Enterprise" (set "system= - Windows 11 企业版"&goto :eof)
+set "system= - !system:~10!"
 goto :eof
 :sortaz
 setlocal
