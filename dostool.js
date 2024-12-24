@@ -18,18 +18,14 @@
 :chushihua
 @echo off&cls&title 　&setlocal enabledelayedexpansion
 if /i "%1"=="-ks" goto ks
-if /i "%1" equ "-chrome" (
-	goto chrome
-)
+if /i "%1" equ "-chrome" ( goto chrome )
 if /i "%systemdrive%" equ "x:" goto ks
 goto :tgsu
 set weizhi=%0
 call :su
 :tgsu
 fltmc 1>nul 2>nul
-if "!errorlevel!" equ "0" (
-	goto ks
-)
+if "!errorlevel!" equ "0" ( goto ks )
 verify on
 set weizhi=%0
 for /f "delims=" %%a in (!weizhi!) do (
@@ -57,29 +53,22 @@ if not exist "!temp!\dos_pre_reading_cache_os.tmp" (
 exit 0
 if exist "%windir%\system32\tar.exe" (
 	tar -xf %0 -C %temp%>nul 2>nul
-	if !errorlevel! neq 0 (
-		goto curlxz
-	)
+	if !errorlevel! neq 0 ( goto curlxz )
 	pushd %temp%
 	start /min %comspec% /c dwnl https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js dostoolupdate>nul 2>nul
 	popd
 	exit 0
 ) else (
 	for /f "delims=" %%a in ('reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\7zFM.exe" /v path^|findstr /c:"path"') do (
-		set 7zpath=%%a
-		set 7z1=!7zpath:~22!
-		set 7z2=!7zpath:~16!
-		pause
+		set "7zpath=%%a"
+		set "7z1=!7zpath:~22!"
+		set "7z2=!7zpath:~16!"
 		if exist "!7z1!7z.exe" (
 			"!7z1!7z.exe" x %0 -o%temp%>nul 2>nul
-			if !errorlevel! neq 0 (
-				goto curlxz
-			)
+			if !errorlevel! neq 0 ( goto curlxz )
 		) else (
 			"!7z2!7z.exe" x %0 -o%temp%>nul 2>nul
-			if !errorlevel! neq 0 (
-				goto curlxz
-			)
+			if !errorlevel! neq 0 ( goto curlxz )
 		)
 		pushd %temp%
 		start /min %comspec% /c dwnl https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js dostoolupdate>nul 2>nul
@@ -123,13 +112,13 @@ if "%qidongjd%"=="105" goto ks
 goto qidong
 :ks
 (
-set dosqssj=%time%
+set "dosqssj=%time%"
 title 　
 color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=232451
+set versize=232942
 set "doh=--doh-url https://101.101.101.101/dns-query"
 set resolve2=--resolve raw.github.io:443:^
 185.199.110.133,^
@@ -140,8 +129,8 @@ set resolve2=--resolve raw.github.io:443:^
 2606:50c0:8003::154,^
 2606:50c0:8000::154,^
 2606:50c0:8002::154
-set jshost=-H "host: cdn.jsdelivr.net"
-set githost=-H "host: raw.githubusercontent.com"
+set "jshost=-H "host: cdn.jsdelivr.net""
+set "githost=-H "host: raw.githubusercontent.com""
 set "gxurlhost1=https://raw.github.io/Trustedinstall/dostool/main/update.js"
 set "gxurlhost2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js"
 set "gxurl1=https://raw.githubusercontent.com/Trustedinstall/dostool/main/update.js"
@@ -156,19 +145,33 @@ set "baidu=start https://www.baidu.com/s?wd="
 set "google=start https://www.google.com.hk/search?q="
 set sc=delasd123
 set scw=rdasd123
-set weizhi=%0
+set "weizhi=%0"
 rem set cishu=3
 set "ua=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36"
-set nx1=[+]下一页&set nx=[-]上一页   [+]下一页&set nx7=[-]上一页
+set "nx1=[+]下一页"
+set "nx=[-]上一页   [+]下一页"
+set "nx7=[-]上一页"
 if exist "!temp!\dos_pre_reading_cache_wmictype.tmp" (
 	set "wmictype='"type "!temp!\dos_pre_reading_cache_wmictype.tmp""'"
 ) else (
 	set "wmictype='"wmic PATH Win32_SystemEnclosure get ChassisTypes /value"'"
 )
 for /f "tokens=2 delims=={}" %%a in (!wmictype!) do (
-	if %%a==8 set nx1=[S]下一页&set nx=[A]上一页   [S]下一页&set nx7=[A]上一页
-	if %%a==9 set nx1=[S]下一页&set nx=[A]上一页   [S]下一页&set nx7=[A]上一页
-	if %%a==10 set nx1=[S]下一页&set nx=[A]上一页   [S]下一页&set nx7=[A]上一页
+	if "%%a" equ "8" (
+		set "nx1=[S]下一页"
+		set "nx=[A]上一页   [S]下一页"
+		set "nx7=[A]上一页"
+	)
+	if "%%a" equ "9" (
+		set "nx1=[S]下一页"
+		set "nx=[A]上一页   [S]下一页"
+		set "nx7=[A]上一页"
+	)
+	if "%%a" equ "10" (
+		set "nx1=[S]下一页"
+		set "nx=[A]上一页   [S]下一页"
+		set "nx7=[A]上一页"
+	)
 )
 )
 if exist "!temp!\dos_pre_reading_cache_zmlj.tmp" (
@@ -177,19 +180,17 @@ if exist "!temp!\dos_pre_reading_cache_zmlj.tmp" (
 	set "zmlj='"reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v desktop"'"
 )
 for /f "skip=2 delims=" %%a in (!zmlj!) do (
-	set zmlj=%%a
-	if not defined zmlj (
-		set zmlj=X:\Users\Default\Desktop\
-	)
+	set "zmlj=%%a"
+	if not defined zmlj ( set "zmlj=X:\Users\Default\Desktop\" )
 	if "!zmlj:~0,1!!zmlj:~-1!" neq """" (
 		for /f "delims=" %%a in ("!zmlj!") do (
-			set !zmlj!="%%~a"
+			set "!zmlj!="%%~a""
 		)
 	)
 )
 for /f "delims=" %%a in ("!weizhi!") do (
-	set daxiao=%%~za
-	set disk=%%~da
+	set "daxiao=%%~za"
+	set "disk=%%~da"
 )
 if exist "!temp!\dos_pre_reading_cache_hostname.tmp" (
 	set "zjname=!temp!\dos_pre_reading_cache_hostname.tmp"
@@ -221,7 +222,7 @@ for /f "skip=2 tokens=2 delims==" %%a in (!wmicos!) do (
 	)
 	if "!zmlj:~0,1!!zmlj:~-1!" neq """" (
 		for /f "delims=" %%a in ('"echo %zmlj%"') do (
-			set !zmlj!="%%~a"
+			set "!zmlj!="%%~a""
 		)
 	)
 )
@@ -231,8 +232,8 @@ if "%date:~11,1%" equ "周" (
 	set "xingqi=%date:~11,3%"
 )
 for /f %%a in ('"echo prompt $E^ |cmd"') do (
-	set cswz=%%a[
-	set cswz1=%%a
+	set "cswz=%%a["
+	set "cswz1=%%a"
 )
 call :list
 if /i "%processor_architecture%"=="x86" (set bit=32) else (set bit=64)
@@ -241,12 +242,12 @@ if exist !systemroot!\system32\choice.exe (
 ) else (
 	set "sel=call :set"
 )
-if /i "%2" neq "" goto %2
+if /i "%2" neq "" ( goto %2 )
 rem call :xsjc !dosqssj! !time! jg
 goto memuv2
 for /f "delims=" %%a in ('"wmic cpu get processorid|find /i /v "processorid""') do (for /f "delims=" %%b in ('"echo %%a|find /i /v "echo""') do (set a=%%b))
 for /f "delims=" %%a in ('"wmic bios get smbiosbiosversion|find /i /v "smbiosbiosversion""') do (for /f "delims=" %%b in ('"echo %%a|find /i /v "echo""') do (set b=%%b))
-set jqm=%a: =%%b: =%
+set "jqm=%a: =%%b: =%"
 for /l %%a in (1,1,1000) do (if "!jqm:~%%a,1!"=="" set ws=%%a&goto jqmzh)
 :jqmzh
 set cs=0
@@ -2068,13 +2069,13 @@ for /f "tokens=2 delims==" %%a in ('"Wmic path Win32_PerfFormattedData_Tcpip_Net
     set /a "xh+=1"
     if !xh! equ 1 (
         set downspeed=%%a
-    )
+	)
     if !xh! equ 2 (
         set upspeed=%%a
         for /f "skip=%tghs% tokens=2 delims==" %%a in ('"Wmic Path Win32_PerfFormattedData_PerfOS_Processor Get PercentIdleTime /value"') do (
             set /a lyl=100-%%a
-        )
-    )
+		)
+	)
 )
 call :xdwjs !upspeed! b upspeed
 call :xdwjs !downspeed! b downspeed
@@ -2090,13 +2091,13 @@ if !lyl! leq 25 (
 ) else (
     if !lyl! leq 50 (
         call :rgb 12.12.12 255.255.0 !lyl!
-    ) else (
+	) else (
         if !lyl! leq 75 (
             call :rgb 12.12.12 255.127.0 !lyl!
-        ) else (
+		) else (
             call :rgb 12.12.12 255.0.0 !lyl!
-        )
-    )
+		)
+	)
 )
 set /p =%%  <nul
 echo;
@@ -2479,19 +2480,19 @@ for /f "skip= 2 tokens=2 delims==" %%a in ('"wmic path win32_cachememory get max
     set /a "ch+=1"
     if !ch! equ 1 (
         set /a cpul1=%%a
-    ) else (
+	) else (
         if !ch! equ 2 (
             set /a cpul2=%%a
-        ) else (
+		) else (
             if !ch! equ 3 (
                 set /a cpul3=%%a
-            ) else (
+			) else (
                 if !ch! equ 4 (
                     set /a cpul4=%%a
-                )
-            )
-        )
-    )
+				)
+			)
+		)
+	)
 )
 echo;一级缓存:	!cpul1! KB
 echo;
@@ -4159,8 +4160,8 @@ goto memuv2
 :67
 cls
 title 显示货币汇率%system%
-set mainurl=https://api.coincap.io/v2/assets/
-set mainurl1=https://api.coincap.io/v2/rates/
+set "mainurl=https://api.coincap.io/v2/assets/"
+set "mainurl1=https://api.coincap.io/v2/rates/"
 for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
 	if "%%a" equ "0x1" (
 		for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
@@ -4172,71 +4173,144 @@ for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\W
 	)
 )
 echo 下载汇率文件(总共13个文件)...
-set xzflag=::
-set xzflag1=
-if not exist %temp%\down (md %temp%\down) 
-if exist %systemroot%\system32\curl.exe (set xzflag1=::&set xzflag=)
-%xzflag%pushd %temp%\down
-%xzflag%curl !proxy! !doh! -A "!ua!" -# -Z -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o cny.json %mainurl1%chinese-yuan-renminbi -o doge.json %mainurl%dogecoin -o btc.json %mainurl%bitcoin -o eth.json %mainurl%ethereum -o au.json %mainurl1%gold-ounce -o ag.json %mainurl1%silver-ounce -o eur.json %mainurl1%euro -o gbp.json %mainurl1%british-pound-sterling -o jpy.json %mainurl1%japanese-yen -o hkd.json %mainurl1%hong-kong-dollar -o twd.json %mainurl1%new-taiwan-dollar -o xmr.json %mainurl%monero -o filecoin.json %mainurl%filecoin
-%xzflag%popd
-%xzflag1%bitsadmin /transfer 下载汇率文件... /priority FOREGROUND %mainurl1%chinese-yuan-renminbi %temp%\down\cny.json %mainurl%dogecoin %temp%\down\doge.json %mainurl%bitcoin %temp%\down\btc.json %mainurl%ethereum %temp%\down\eth.json %mainurl1%gold-ounce %temp%\down\au.json %mainurl1%silver-ounce %temp%\down\ag.json %mainurl1%euro %temp%\down\eur.json %mainurl1%british-pound-sterling %temp%\down\gbp.json %mainurl1%japanese-yen %temp%\down\jpy.json %mainurl1%hong-kong-dollar %temp%\down\hkd.json %mainurl1%new-taiwan-dollar %temp%\down\twd.json %mainurl%monero %temp%\down\xmr.json %mainurl%filecoin %temp%\down\filecoin.json
+if not exist "%temp%\down" ( md "%temp%\down" ) 
+if exist "%systemroot%\system32\curl.exe" (
+	pushd "%temp%\down"
+	curl !proxy! !doh! -A "!ua!" -# -Z -C - --retry 2 --retry-delay 1 --connect-timeout 5 ^
+	-o cny.json			%mainurl1%chinese-yuan-renminbi ^
+	-o doge.json		%mainurl%dogecoin ^
+	-o btc.json			%mainurl%bitcoin ^
+	-o eth.json			%mainurl%ethereum ^
+	-o au.json			%mainurl1%gold-ounce ^
+	-o ag.json			%mainurl1%silver-ounce ^
+	-o eur.json			%mainurl1%euro ^
+	-o gbp.json			%mainurl1%british-pound-sterling ^
+	-o jpy.json			%mainurl1%japanese-yen ^
+	-o hkd.json			%mainurl1%hong-kong-dollar ^
+	-o twd.json			%mainurl1%new-taiwan-dollar ^
+	-o xmr.json			%mainurl%monero ^
+	-o filecoin.json	%mainurl%filecoin
+	popd
+) else (
+	bitsadmin /transfer 下载汇率文件... /priority FOREGROUND ^
+	%mainurl1%chinese-yuan-renminbi		"%temp%\down\cny.json" ^
+	%mainurl%dogecoin					"%temp%\down\doge.json" ^
+	%mainurl%bitcoin					"%temp%\down\btc.json" ^
+	%mainurl%ethereum					"%temp%\down\eth.json" ^
+	%mainurl1%gold-ounce				"%temp%\down\au.json" ^
+	%mainurl1%silver-ounce				"%temp%\down\ag.json" ^
+	%mainurl1%euro						"%temp%\down\eur.json" ^
+	%mainurl1%british-pound-sterling	"%temp%\down\gbp.json" ^
+	%mainurl1%japanese-yen				"%temp%\down\jpy.json" ^
+	%mainurl1%hong-kong-dollar			"%temp%\down\hkd.json" ^
+	%mainurl1%new-taiwan-dollar			"%temp%\down\twd.json" ^
+	%mainurl%monero						"%temp%\down\xmr.json" ^
+	%mainurl%filecoin					"%temp%\down\filecoin.json"
+)
 cls
 echo 处理汇率文件...
-for /f "delims=:} tokens=7" %%a in (%temp%\down\cny.json) do (set cnytousd=%%a)
-if not defined cnytousd set cnytousd=1
-set cnytousd=%cnytousd:"=%
-for /f "delims=:, tokens=19,21" %%a in (%temp%\down\doge.json) do (set dogetousd=%%a&&set doge24h=%%b)
-if not defined dogetousd set dogetousd=1&&set doge24h=0
-set dogetousd=%dogetousd:"=%
-set doge24h=%doge24h:"=%
-for /f "delims=. tokens=1,2" %%a in ('"echo %doge24h%"') do (set doge24h1=%%a&&set doge24h2=%%b)
-set doge24h=%doge24h1%.%doge24h2:~0,3%
-for /f "delims=:, tokens=19,21" %%a in (%temp%\down\btc.json) do (set btctousd=%%a&&set btc24h=%%b)
-if not defined btctousd set btctousd=1&&set btc24h=0
-set btctousd=%btctousd:"=%
-set btc24h=%btc24h:"=%
-for /f "delims=. tokens=1,2" %%a in ('"echo %btc24h%"') do (set btc24h1=%%a&&set btc24h2=%%b)
-set btc24h=%btc24h1%.%btc24h2:~0,3%
-for /f "delims=:, tokens=19,21" %%a in (%temp%\down\eth.json) do (set ethtousd=%%a&&set eth24h=%%b)
-if not defined ethtousd set ethtousd=1&&set eth24h=0
-set ethtousd=%ethtousd:"=%
-set eth24h=%eth24h:"=%
-for /f "delims=. tokens=1,2" %%a in ('"echo %eth24h%"') do (set eth24h1=%%a&&set eth24h2=%%b)
-set eth24h=%eth24h1%.%eth24h2:~0,3%
-for /f "delims=:, tokens=19,21" %%a in (%temp%\down\filecoin.json) do (set filetousd=%%a&&set file24h=%%b)
-if not defined filetousd set filetousd=1&&file24h=0
-set filetousd=%filetousd:"=%
-set file24h=%file24h:"=%
-for /f "delims=. tokens=1,2" %%a in ('"echo;%file24h%"') do (set file24h1=%%a&&set file24h2=%%b)
-set file24h=%file24h1%.%file24h2:~0,3%
-for /f "delims=:} tokens=7" %%a in (%temp%\down\au.json) do (set autousd=%%a)
-if not defined autousd set autousd=1
-set autousd=%autousd:"=%
-for /f "delims=:} tokens=7" %%a in (%temp%\down\ag.json) do (set agtousd=%%a)
-if not defined agtousd set agtousd=1
-set agtousd=%agtousd:"=%
-for /f "delims=:} tokens=7" %%a in (%temp%\down\eur.json) do (set eurtousd=%%a)
-if not defined eurtousd set eurtousd=1
-set eurtousd=%eurtousd:"=%
-for /f "delims=:} tokens=7" %%a in (%temp%\down\gbp.json) do (set gbptousd=%%a)
-if not defined gbptousd set gbptousd=1
-set gbptousd=%gbptousd:"=%
-for /f "delims=:} tokens=7" %%a in (%temp%\down\jpy.json) do (set jpytousd=%%a)
-if not defined jpytousd set jpytousd=1
-set jpytousd=%jpytousd:"=%
-for /f "delims=:} tokens=7" %%a in (%temp%\down\hkd.json) do (set hkdtousd=%%a)
-if not defined hkdtousd set hkdtousd=1
-set hkdtousd=%hkdtousd:"=%
-for /f "delims=:} tokens=7" %%a in (%temp%\down\twd.json) do (set twdtousd=%%a)
-if not defined twdtousd set twdtousd=1
-set hkdtousd=%hkdtousd:"=%
-for /f "delims=:, tokens=19,21" %%a in (%temp%\down\xmr.json) do (set xmrtousd=%%a&&set xmr24h=%%b)
-if not defined xmrtousd set xmrtousd=1&&set xmr24h=0
-set xmrtousd=%xmrtousd:"=%
-set xmr24h=%xmr24h:"=%
-for /f "delims=. tokens=1,2" %%a in ('"echo %xmr24h%"') do (set xmr24h1=%%a&&set xmr24h2=%%b)
-set xmr24h=%xmr24h1%.%xmr24h2:~0,3%
-rd /s /q %temp%\down>nul
+for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\cny.json") do (
+	set "cnytousd=%%a"
+)
+if not defined cnytousd ( set "cnytousd=1" )
+set "cnytousd=%cnytousd:"=%"
+for /f "usebackq delims=:, tokens=19,21" %%a in ("%temp%\down\doge.json") do (
+	set "dogetousd=%%a"
+	set "doge24h=%%b"
+)
+if not defined dogetousd (
+	set dogetousd=1
+	set doge24h=0
+)
+set "dogetousd=%dogetousd:"=%"
+set "doge24h=%doge24h:"=%"
+for /f "delims=. tokens=1,2" %%a in ('"echo %doge24h%"') do (
+	set "doge24h1=%%a"
+	set "doge24h2=%%b"
+)
+set "doge24h=%doge24h1%.%doge24h2:~0,3%"
+for /f "usebackq delims=:, tokens=19,21" %%a in (%temp%\down\btc.json) do (
+	set "btctousd=%%a"
+	set "btc24h=%%b"
+)
+if not defined btctousd (
+	set btctousd=1
+	set btc24h=0
+)
+set "btctousd=%btctousd:"=%"
+set "btc24h=%btc24h:"=%"
+for /f "delims=. tokens=1,2" %%a in ('"echo %btc24h%"') do (
+	set "btc24h1=%%a"
+	set "btc24h2=%%b"
+)
+set "btc24h=%btc24h1%.%btc24h2:~0,3%"
+for /f "usebackq delims=:, tokens=19,21" %%a in (%temp%\down\eth.json) do (
+	set "ethtousd=%%a"
+	set "eth24h=%%b"
+)
+if not defined ethtousd (
+	set ethtousd=1
+	set eth24h=0
+)
+set "ethtousd=%ethtousd:"=%"
+set "eth24h=%eth24h:"=%"
+for /f "delims=. tokens=1,2" %%a in ('"echo %eth24h%"') do (
+	set "eth24h1=%%a"
+	set "eth24h2=%%b"
+)
+set "eth24h=%eth24h1%.%eth24h2:~0,3%"
+for /f "usebackq delims=:, tokens=19,21" %%a in (%temp%\down\filecoin.json) do (
+	set "filetousd=%%a"
+	set "file24h=%%b"
+)
+if not defined filetousd (
+	set filetousd=1
+	file24h=0
+)
+set "filetousd=%filetousd:"=%"
+set "file24h=%file24h:"=%"
+for /f "delims=. tokens=1,2" %%a in ('"echo;%file24h%"') do (
+	set "file24h1=%%a"
+	set "file24h2=%%b"
+)
+set "file24h=%file24h1%.%file24h2:~0,3%"
+for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\au.json") do ( set "autousd=%%a" )
+if not defined autousd ( set "autousd=1" )
+set "autousd=%autousd:"=%"
+for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\ag.json") do ( set "agtousd=%%a" )
+if not defined agtousd ( set "agtousd=1" )
+set "agtousd=%agtousd:"=%"
+for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\eur.json") do ( set "eurtousd=%%a" )
+if not defined eurtousd ( set "eurtousd=1" )
+set "eurtousd=%eurtousd:"=%"
+for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\gbp.json") do ( set "gbptousd=%%a" )
+if not defined gbptousd ( set "gbptousd=1" )
+set "gbptousd=%gbptousd:"=%"
+for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\jpy.json") do ( set "jpytousd=%%a" )
+if not defined jpytousd ( set "jpytousd=1" )
+set "jpytousd=%jpytousd:"=%"
+for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\hkd.json") do ( set "hkdtousd=%%a" )
+if not defined hkdtousd ( set "hkdtousd=1" )
+set "hkdtousd=%hkdtousd:"=%"
+for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\twd.json") do ( set "twdtousd=%%a" )
+if not defined twdtousd ( set "twdtousd=1" )
+set "hkdtousd=%hkdtousd:"=%"
+for /f "usebackq delims=:, tokens=19,21" %%a in ("%temp%\down\xmr.json") do (
+	set "xmrtousd=%%a"
+	set "xmr24h=%%b"
+)
+if not defined xmrtousd (
+	set xmrtousd=1
+	set xmr24h=0
+)
+set "xmrtousd=%xmrtousd:"=%"
+set "xmr24h=%xmr24h:"=%"
+for /f "delims=. tokens=1,2" %%a in ('"echo %xmr24h%"') do (
+	set "xmr24h1=%%a"
+	set "xmr24h2=%%b"
+)
+set "xmr24h=%xmr24h1%.%xmr24h2:~0,3%"
+rd /s /q "%temp%\down">nul
 call :Division %dogetousd% %cnytousd% 8 dogetocny
 call :Division %btctousd% %cnytousd% 8 btctocny
 call :Division %ethtousd% %cnytousd% 8 ethtocny
@@ -5393,7 +5467,7 @@ for /l %%l in (!Div.2.Len.0! 1 !Div.1.Len.0!) do (
 			for /l %%j in (8 8 !Div.Tem.Len!) do (
 				set /a Div.V=3!Div.S:~-%%j,8!-1!Div.Num.%%i:~-%%j,8!-!Div.V:~,1!%%2
 				set Div.P=!Div.V:~1!!Div.P!
-              		 )
+			)
 		)	
 	) else set Div.3=!Div.3!0
 )
@@ -6172,15 +6246,15 @@ for %%i in (1 2) do (
         set /a m=L2_%%i-L1_%%i
         if !m! neq 0 (
             for /l %%a in (1 1 !m!) do set zero=!zero!0
-        )
+		)
         if "%%i" equ "1" (set a_%%i=!zero!!a_%%i!) else set a_%%i=!a_%%i!!zero!
         set Len_%%i=!L2_%%i!
-    ) else (
+	) else (
         set /a m=L1_%%i-L2_%%i
         for /l %%a in (1 1 !m!) do set zero=!zero!0
         if "%%i" equ "1" (set b_%%i=!zero!!b_%%i!) else set b_%%i=!b_%%i!!zero!
         set Len_%%i=!L1_%%i!
-    )
+	)
 )
 set /a Len=Len_1+Len_2+1
 if "%~2" equ "+" (
@@ -6188,37 +6262,37 @@ if "%~2" equ "+" (
         if "!b:~,1!" neq "-" (
             call :jia %a_1%.%a_2% %b_1%.%b_2% %Len% s
             set "%~4=!s!"
-        ) else (
+		) else (
             call :jian %a_1%.%a_2% %b_1%.%b_2% %Len% s
             if "%a_1%.%a_2%" gtr "%b_1%.%b_2%" (set "%~4=!s!") else set "%~4=-!s!"
-        )
-    ) else (
+		)
+	) else (
         if "!b:~,1!" neq "-" (
             call :jian %a_1%.%a_2% %b_1%.%b_2% %Len% s
             if "%a_1%.%a_2%" gtr "%b_1%.%b_2%" (set "%~4=-!s!") else set "%~4=!s!"
-        ) else (
+		) else (
             call :jia %a_1%.%a_2% %b_1%.%b_2% %Len% s
             set "%~4=-!s!"
-        )
-    )
+		)
+	)
 ) else (
     if "!a:~,1!" neq "-" (
         if "!b:~,1!" neq "-" (
             call :jian %a_1%.%a_2% %b_1%.%b_2% %Len% s
             if "%a_1%.%a_2%" lss "%b_1%.%b_2%" (set "%~4=-!s!") else set "%~4=!s!"
-        ) else (
+		) else (
             call :jia %a_1%.%a_2% %b_1%.%b_2% %Len% s
             set "%~4=!s!"
-        )
-    ) else (
+		)
+	) else (
         if "!b:~,1!" neq "-" (
             call :jia %a_1%.%a_2% %b_1%.%b_2% %Len% s
             set "%~4=-!s!"
-        ) else (
+		) else (
             call :jian %a_1%.%a_2% %b_1%.%b_2% %Len% s
             if "%a_1%.%a_2%" lss "%b_1%.%b_2%" (set "%~4=!s!") else set "%~4=-!s!"
-        )
-    )
+		)
+	)
 )
 goto :eof
 :strlenx
@@ -6236,11 +6310,11 @@ set "s="
 for /l %%a in (-1 -1 -%~3) do (
     if "!a:~%%a,1!" equ "." (
       set s=.!s!
-    ) else (
+	) else (
         set /a "c=t+!a:~%%a,1!+!b:~%%a,1!"
         if !c! geq 10 (set t=1) else set t=0
         set s=!c:~-1!!s!
-    )
+	)
 )
 if %t% equ 1 (set s=1!s!)
 for /f "tokens=1,2 delims=." %%a in ("%s%") do (
@@ -6261,11 +6335,11 @@ set "s="
 for /l %%a in (-1 -1 -%~3) do (
     if "!a:~%%a,1!" equ "." (
       set s=.!s!
-    ) else (
+	) else (
         set /a "c=10+!a:~%%a,1!-!b:~%%a,1!-t"
         if !c! lss 10 (set t=1) else set t=0
         set s=!c:~-1!!s!
-    )
+	)
 )
 for /f "tokens=1,2 delims=." %%a in ("%s%") do (
     for /f "tokens=* delims=0" %%c in ("%%a") do if "%%c" equ "" (set pre=0) else set pre=%%c
@@ -6516,7 +6590,7 @@ if "%2" neq "" (
 )
 :curldxc
 setlocal
-if not exist %systemroot%\system32\curl.exe (
+if not exist "%systemroot%\system32\curl.exe" (
 	if not exist .\curl.exe (
 		echo;没有找到curl.exe
 		goto :eof
@@ -6532,7 +6606,7 @@ if not defined url (
 	echo;链接不能为空!
 	goto :eof
 )
-if not defined tr (set "tr=8")
+if not defined tr ( set "tr=8" )
 set tr|findstr "\<[0-9]*\>">nul
 if !errorlevel! neq 0 (
 	echo;线程数只能输入数字!
@@ -6547,8 +6621,8 @@ if not exist "!dir!" (
 	echo;路径 !dir! 不存在
 	goto :eof
 )
-dir /ad !dir!>nul 2>nul||echo 路径 !dir! 不是一个文件夹&&goto :eof
-if exist %temp%\tag (del /f /q tag)
+dir /ad "!dir!">nul 2>nul||echo 路径 !dir! 不是一个文件夹&&goto :eof
+if exist "%temp%\tag" ( del /f /q "%temp%\tag" )
 for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
 	if "%%a" equ "0x1" (
 		for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
@@ -6560,15 +6634,15 @@ for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\W
 	)
 )
 curl !proxy! !doh! !par! -A "!ua!" -I -# -L -o tag --connect-timeout 5 --output-dir %temp% "!url!"
-if not exist %temp%\tag (
+if not exist "%temp%\tag" (
 	echo;没有获取到文件信息
 	goto :eof
 )
-for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Accept-Ranges:"') do (set "trflag=%%a")
-for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Content-Length:"') do (set "filesize=%%a")
-for /f "tokens=2 delims==" %%a in ('type %temp%\tag^|findstr /c:"filename="') do (set "filename=%%a")
+for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Accept-Ranges:"') do ( set "trflag=%%a" )
+for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Content-Length:"') do ( set "filesize=%%a" )
+for /f "tokens=2 delims==" %%a in ('type %temp%\tag^|findstr /c:"filename="') do ( set "filename=%%a" )
 if "!trflag!" neq "bytes" ( set "tr=1" )
-del /f /q %temp%\tag
+del /f /q "%temp%\tag"
 if not defined filename ( set "filename=%3" )
 set /a "fd=!filesize!/!tr!"
 set /a "ys=%filesize%%%tr%"
@@ -6581,8 +6655,8 @@ for /l %%a in (1,1,!tr!) do ( set "file=!file!%%a+" )
 set newtr=
 set /a "newtr=!tr!+1"
 set "file=!file:~0,-1!"
-if exist %temp%\down ( rd /s /q %temp%\down )
-md %temp%\down
+if exist "%temp%\down" ( rd /s /q "%temp%\down" )
+md "%temp%\down"
 for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
 	if "%%a" equ "0x1" (
 		for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
@@ -6602,7 +6676,7 @@ for /l %%a in (1,1,!tr!) do (
 		set /a "newfd=!oldfd!+!fd!-1"
 	)
 )
-pushd %temp%\down
+pushd "%temp%\down"
 :curldxc_2
 set 次数=
 for /l %%a in (1,1,!tr!) do (
@@ -6623,7 +6697,7 @@ if !次数! neq !tr! ( goto curldxc_2 )
 if "!dir:~-1!" neq "\" ( set "dir=!dir!\" )
 copy /b /z !file! "!dir!!filename!"
 popd
-rd /s /q %temp%\down
+rd /s /q "%temp%\down"
 goto :eof
 :pwiex
 powershell -command "$command=[IO.File]::ReadAllText('%0') -split '#%1\#.*'; iex ($command[1])"
