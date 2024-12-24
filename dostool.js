@@ -129,7 +129,7 @@ color f1
 setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=232391
+set versize=232451
 set "doh=--doh-url https://101.101.101.101/dns-query"
 set resolve2=--resolve raw.github.io:443:^
 185.199.110.133,^
@@ -4708,9 +4708,9 @@ set /p =按任意键返回菜单<nul&pause>nul
 goto memuv2
 :hash
 setlocal
-for /f "delims=" %%a in ("%1") do (set "url=%%~a")
+for /f "delims=" %%a in ("%1") do ( set "url=%%~a" )
 set "shuanfa=%2"
-if "!shuanfa!" equ "" (set "shuanfa=sha256")
+if "!shuanfa!" equ "" ( set "shuanfa=sha256" )
 for /f "skip=1 eol=C" %%a in ('"certutil -hashfile "!url!" !shuanfa!"') do (
 	if "%3" neq "" (
 		endlocal&set "%3=%%a"
@@ -4968,10 +4968,10 @@ set zfc=
 set zfc=%1
 :zfcxh
 if "!zfc:~%zfcgs%,1!" equ "" (
-	set /a zfcgs-=2
+	set /a "zfcgs-=2"
 	goto :eof
 ) else (
-	set /a zfcgs+=1
+	set /a "zfcgs+=1"
 	goto zfcxh
 )
 goto :eof
@@ -4980,7 +4980,7 @@ set zfc=
 set zfc=%1
 for /l %%a in (1,1,1000) do (
 	if "!zfc:~%%a,1!" equ "" (
-		set /a zfcgs=%%a-2
+		set /a "zfcgs=%%a-2"
 		goto :eof
 	) 
 )
@@ -5405,17 +5405,17 @@ endlocal&set %~4=%Div.3%
 goto :eof
 :xsjc
 setlocal
-set /a N=0
+set "n=0"
 for /f "tokens=1-8 delims=.:" %%I in ("%~2:%~1") do (
-	set /a N+=10%%I%%100*360000+10%%J%%100*6000+10%%K%%100*100+10%%L%%100
-	set /a N-=10%%M%%100*360000+10%%N%%100*6000+10%%O%%100*100+10%%P%%100
+	set /a "n+=10%%i%%100*360000+10%%j%%100*6000+10%%k%%100*100+10%%l%%100"
+	set /a "n-=10%%m%%100*360000+10%%n%%100*6000+10%%o%%100*100+10%%p%%100"
 )
-set Sco=!N!
-set /a S=N/360000,N=N%%360000,F=N/6000,N=N%%6000,M=N/100,N=N*%%100
-set /a n*=10
-if %F% equ 0 (set T=%M%秒%N%毫秒) else set T=%F%分%M%秒%N%毫秒
-if %s% neq 0 set t=%s%小时%F%分%M%秒%N%毫秒
-endlocal&set %~3=%T%
+set "sco=!n!"
+set /a "s=n/360000,n=n%%360000,f=n/6000,n=n%%6000,m=n/100,n=n*%%100"
+set /a "n*=10"
+if %F% equ 0 ( set "T=%M%秒%N%毫秒" ) else ( set "T=%F%分%M%秒%N%毫秒" )
+if %s% neq 0 ( set "t=%s%小时%F%分%M%秒%N%毫秒" )
+endlocal&set "%~3=%T%"
 Goto :eof
 :cf
 setlocal
@@ -5809,10 +5809,10 @@ echo [2]certlm	[证书 - 本地计算机]
 echo [0]返回菜单
 echo _______________________________________________________________________________
 !sel!
-if "!shuru!" equ "1" start certmgr.msc & goto memuv2
-if "!shuru!" equ "2" start certlm.msc & goto memuv2
-if "!shuru!" equ "3" goto memuv2
-if "!shuru!" equ "0" goto memuv2
+if "!shuru!" equ "1" ( start certmgr.msc & goto memuv2 )
+if "!shuru!" equ "2" ( start certlm.msc & goto memuv2 )
+if "!shuru!" equ "3" ( goto memuv2 )
+if "!shuru!" equ "0" ( goto memuv2 )
 goto 75
 :checkvar
 setlocal
@@ -5821,24 +5821,12 @@ if "%1" equ "" (
 ) else (
 	set "val=!%1!"
 )
-if "%2" equ "num" (
-	goto checkvar_num
-)
-if "%2" equ "num." (
-	goto checkvar_num.
-)
-if "%2" equ "-num" (
-	goto checkvar_-num
-)
-if "%2" equ "-num." (
-	goto checkvar_-num.
-)
-if "%2" equ "az" (
-	goto checkvar_az
-)
-if "%2" equ "aznum" (
-	goto checkvar_aznum
-)
+if "%2" equ "num" ( goto checkvar_num )
+if "%2" equ "num." ( goto checkvar_num. )
+if "%2" equ "-num" ( goto checkvar_-num )
+if "%2" equ "-num." ( goto checkvar_-num. )
+if "%2" equ "az" ( goto checkvar_az )
+if "%2" equ "aznum" ( goto checkvar_aznum )
 goto :eof
 :checkvar_num
 if defined %1 (
@@ -6036,7 +6024,6 @@ if "%3" neq "" (
 	echo;0
 	goto :eof
 )
-
 goto :eof
 :sqrt
 setlocal
@@ -6352,16 +6339,16 @@ for %%i in (%%a) do set "p.ok=%%i !p.ok!")
 endlocal&set %~2=%p.ok%&goto :EOF
 :checkmem
 setlocal
-if "%1" equ "" (goto :eof)
-if "%2" equ "" (goto :eof)
-if "%3" equ "" (goto :eof)
+if "%1" equ "" ( goto :eof )
+if "%2" equ "" ( goto :eof )
+if "%3" equ "" ( goto :eof )
 for /f "tokens=2 delims==" %%a in ('"wmic OS get FreePhysicalMemory /Value"') do (
 	set "mem=%%a"
 	set "mem=!mem:~0,-1!"
 	if !mem! %1 %2 (
-		endlocal&set %3=1
+		endlocal&set "%3=1"
 	) else (
-		endlocal&set %3=0
+		endlocal&set "%3=0"
 	)
 )
 goto :eof
@@ -6380,9 +6367,7 @@ if "!num1!" equ "" (
 		set "num1b=%%b"
 	)
 )
-if "!num1a!" equ "0" (
-	set num1a=
-)
+if "!num1a!" equ "0" ( set "num1a=" )
 :xcf_loop1
 if "!num1b:~-1!" equ "0" (
 	set "num1b=!num1b:~0,-1!"
@@ -6404,9 +6389,7 @@ if "!num2!" equ "0" (
 		set "num2b=%%b"
 	)
 )
-if "!num2a!" equ "0" (
-	set num2a=
-)
+if "!num2a!" equ "0" ( set "num2a=" )
 :xcf_loop2
 if "!num2b:~-1!" equ "0" (
 	set "num2b=!num2b:~0,-1!"
@@ -6426,24 +6409,16 @@ if "!numb:~-1!" equ "0" (
 	set "numb=!numb:~0,-1!"
 	goto xcf_loop
 )
-if "!dot!" neq "0" (
-	set "num=!numa!.!numb!"
-)
-if "!num:~-1!" equ "." (
-	set "num=!num:~0,-1!"
-)
-if "!num:~0,1!" equ "." (
-	set "num=!num:.=0.!"
-)
-if "!num:~0,2!" equ "-." (
-	set "num=-0.!num:~2!"
-)
+if "!dot!" neq "0" ( set "num=!numa!.!numb!" )
+if "!num:~-1!" equ "." ( set "num=!num:~0,-1!" )
+if "!num:~0,1!" equ "." ( set "num=!num:.=0.!" )
+if "!num:~0,2!" equ "-." ( set "num=-0.!num:~2!" )
 if "%3" neq "" (
-		endlocal&set "%3=%num%"
-		goto :eof
+	endlocal&set "%3=%num%"
+	goto :eof
 ) else (
-		echo;!num!
-		goto :eof
+	echo;!num!
+	goto :eof
 )
 :scf
 if "%~1"=="0" Endlocal&set %~3=0&goto :EOF
@@ -6467,7 +6442,7 @@ set "ji=!t!!ji:~1!"
 Endlocal&set %~3=%ji%&goto :EOF
 :convertu
 setlocal
-if "%1" equ "" (goto :eof)
+if "%1" equ "" ( goto :eof )
 set "tmp=%1"
 set "tmp=!tmp:a=A!"
 set "tmp=!tmp:b=B!"
@@ -6504,7 +6479,7 @@ if "%2" neq "" (
 )
 :convertl
 setlocal
-if "%1" equ "" (goto :eof)
+if "%1" equ "" ( goto :eof )
 set "tmp=%1"
 set "tmp=!tmp:A=a!"
 set "tmp=!tmp:B=b!"
@@ -6552,7 +6527,7 @@ set "tr=%2"
 set "filename=%3"
 set "dir=%4"
 set "par=%5"
-set ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
+set "ua=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
 if not defined url (
 	echo;链接不能为空!
 	goto :eof
@@ -6592,21 +6567,21 @@ if not exist %temp%\tag (
 for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Accept-Ranges:"') do (set "trflag=%%a")
 for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Content-Length:"') do (set "filesize=%%a")
 for /f "tokens=2 delims==" %%a in ('type %temp%\tag^|findstr /c:"filename="') do (set "filename=%%a")
-if "!trflag!" neq "bytes" (set "tr=1")
+if "!trflag!" neq "bytes" ( set "tr=1" )
 del /f /q %temp%\tag
-if not defined filename (set "filename=%3")
-set /a fd=!filesize!/!tr!
-set /a ys=%filesize%%%tr%
+if not defined filename ( set "filename=%3" )
+set /a "fd=!filesize!/!tr!"
+set /a "ys=%filesize%%%tr%"
 set oldfd=0
-set /a pdtr=!tr!-1
-set /a newfd=!fd!-1
-set /a pdfd=!fd!+!ys!
+set /a "pdtr=!tr!-1"
+set /a "newfd=!fd!-1"
+set /a "pdfd=!fd!+!ys!"
 set file=
-for /l %%a in (1,1,!tr!) do (set file=!file!%%a+)
+for /l %%a in (1,1,!tr!) do ( set "file=!file!%%a+" )
 set newtr=
-set /a newtr=!tr!+1
-set file=!file:~0,-1!
-if exist %temp%\down (rd /s /q %temp%\down)
+set /a "newtr=!tr!+1"
+set "file=!file:~0,-1!"
+if exist %temp%\down ( rd /s /q %temp%\down )
 md %temp%\down
 for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
 	if "%%a" equ "0x1" (
@@ -6620,11 +6595,11 @@ for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\W
 )
 for /l %%a in (1,1,!tr!) do (
 	start /b curl !proxy! !doh! !par! -s -A "!ua!" -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir %temp%\down "!url!"
-	set /a oldfd=!newfd!+1
+	set /a "oldfd=!newfd!+1"
 	if %%a equ !pdtr! (
 		set newfd=
 	) else (
-		set /a newfd=!oldfd!+!fd!-1
+		set /a "newfd=!oldfd!+!fd!-1"
 	)
 )
 pushd %temp%\down
@@ -6634,20 +6609,18 @@ for /l %%a in (1,1,!tr!) do (
 	if %%a equ !tr! (
 		if %%~za equ !pdfd! (
 			echo;进程%%a完成
-			set /a 次数=!次数!+1
+			set /a "次数=!次数!+1"
 		)
 	) else (
 		if %%~za equ !fd! (
 			echo;进程%%a完成
-			set /a 次数=!次数!+1
+			set /a "次数=!次数!+1"
 		)
 	)
 )
 timeout /t 1 /nobreak>nul
-if !次数! neq !tr! (
-	goto curldxc_2
-)
-if "!dir:~-1!" neq "\" ("set dir=!dir!\")
+if !次数! neq !tr! ( goto curldxc_2 )
+if "!dir:~-1!" neq "\" ( set "dir=!dir!\" )
 copy /b /z !file! "!dir!!filename!"
 popd
 rd /s /q %temp%\down
