@@ -17,21 +17,19 @@
 à¡–ð…W…Y¬{’°×¡›KßÉÂÔ ²–[ñž‰êÅºÎ¬„Ö´†• n•jÌ¡ºº½½Ø¦¹À•jœ}ž™
 :chushihua
 @echo off&cls&title ¡¡&setlocal enabledelayedexpansion
-if /i "%1"=="-ks" goto ks
+if /i "%1" equ "-ks" ( goto ks )
 if /i "%1" equ "-chrome" ( goto chrome )
-if /i "%systemdrive%" equ "x:" goto ks
+if /i "%systemdrive%" equ "x:" ( goto ks )
 goto :tgsu
-set weizhi=%0
+set "weizhi=%0"
 call :su
 :tgsu
 fltmc 1>nul 2>nul
 if "!errorlevel!" equ "0" ( goto ks )
 verify on
-set weizhi=%0
-for /f "delims=" %%a in (!weizhi!) do (
-	set weizhi=%%~fa
-)
-if exist %localappdata%\Microsoft\WindowsApps\wt.exe (
+set "weizhi=%0"
+for /f "delims=" %%a in ("!weizhi!") do ( set "weizhi=%%~fa" )
+if exist "%localappdata%\Microsoft\WindowsApps\wt.exe" (
 	call :stwt
 ) else (
 	call :stcmd
@@ -50,46 +48,6 @@ if not exist "!temp!\dos_pre_reading_cache_os.tmp" (
 )
 ::start /min %comspec% /c powershell -noprofile start-process -filepath "%comspec%" -argumentlist '"/c %0 -ks"' -verb runas
 ::start /min %comspec% /c powershell -noprofile start-process -filepath "wt" -argumentlist '"%0 -ks"' -verb runas>nul 2>nul
-exit 0
-if exist "%windir%\system32\tar.exe" (
-	tar -xf %0 -C %temp%>nul 2>nul
-	if !errorlevel! neq 0 ( goto curlxz )
-	pushd %temp%
-	start /min %comspec% /c dwnl https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js dostoolupdate>nul 2>nul
-	popd
-	exit 0
-) else (
-	for /f "delims=" %%a in ('reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\7zFM.exe" /v path^|findstr /c:"path"') do (
-		set "7zpath=%%a"
-		set "7z1=!7zpath:~22!"
-		set "7z2=!7zpath:~16!"
-		if exist "!7z1!7z.exe" (
-			"!7z1!7z.exe" x %0 -o%temp%>nul 2>nul
-			if !errorlevel! neq 0 ( goto curlxz )
-		) else (
-			"!7z2!7z.exe" x %0 -o%temp%>nul 2>nul
-			if !errorlevel! neq 0 ( goto curlxz )
-		)
-		pushd %temp%
-		start /min %comspec% /c dwnl https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js dostoolupdate>nul 2>nul
-		popd
-		exit 0
-	)
-)
-:curlxz
-(
-set xzflag1=
-set xzflag=rem
-set ddf=DownloadFile
-set resolve=fastly.com:443:151.101.1.229,151.101.129.229,151.101.193.229,151.101.65.229,2a04:4e42::485,2a04:4e42:200::485,2a04:4e42:400::485,2a04:4e42:600::485
-)
-if exist %systemroot%\system32\curl.exe (
-    set xzflag1=rem
-    set xzflag=
-)
-%xzflag% cd /d %temp%
-%xzflag% start /min %comspec% /c curl -H "host: cdn.jsdelivr.net" -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 --resolve !doh! -o dostoolupdate https://fastly.com/gh/Trustedinstall/dostool/update.js
-%xzflag1% powershell -w hidden -c (new-object System.Net.WebClient).%ddf%( 'https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js','%temp%\dostoolupdate')
 exit 0
 :stwt
 start /min %comspec% /c mshta vbscript:createobject("shell.application").shellexecute("%localappdata%\Microsoft\WindowsApps\wt.exe","%weizhi% -ks","","runas",1)(window.close)
@@ -115,10 +73,9 @@ goto qidong
 set "dosqssj=%time%"
 title ¡¡
 color f1
-setlocal enabledelayedexpansion
 chcp 936>nul
 set ver=20240922
-set versize=232942
+set versize=231342
 set "doh=--doh-url https://101.101.101.101/dns-query"
 set resolve2=--resolve raw.github.io:443:^
 185.199.110.133,^
