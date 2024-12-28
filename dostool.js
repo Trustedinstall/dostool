@@ -17,18 +17,12 @@
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
 :chushihua
 @echo off&cls&title 　&setlocal enabledelayedexpansion
-if /i "%1" equ "-ks" ( goto ks )
-if /i "%1" equ "-chrome" ( goto chrome )
-if /i "%systemdrive%" equ "x:" ( goto ks )
-goto :tgsu
-set "weizhi=%0"
-call :su
-:tgsu
+if /i "%1" equ "-ks" (goto ks)
+if /i "%1" equ "-chrome" (goto chrome)
+if /i "%systemdrive%" equ "x:" (goto ks)
 fltmc 1>nul 2>nul
-if "!errorlevel!" equ "0" ( goto ks )
-verify on
-set "weizhi=%0"
-for /f "delims=" %%a in ("!weizhi!") do ( set "weizhi=%%~fa" )
+if "!errorlevel!" equ "0" (goto ks)
+for /f "delims=" %%a in ("%0") do (set "weizhi=%%~fa")
 if exist "%localappdata%\Microsoft\WindowsApps\wt.exe" (
 	call :stwt
 ) else (
@@ -46,14 +40,14 @@ if not exist "!temp!\dos_pre_reading_cache_os.tmp" (
 	type "!temp!\dos_pre_reading_cache_hostname.tmp">nul
 	type "!temp!\dos_pre_reading_cache_zmlj.tmp">nul
 )
-::start /min %comspec% /c powershell -noprofile start-process -filepath "%comspec%" -argumentlist '"/c %0 -ks"' -verb runas
-::start /min %comspec% /c powershell -noprofile start-process -filepath "wt" -argumentlist '"%0 -ks"' -verb runas>nul 2>nul
+::start /min %comspec% /c powershell -mta -nologo -noprofile start-process -filepath "%comspec%" -argumentlist '"/c %0 -ks"' -verb runas
+::start /min %comspec% /c powershell -mta -nologo -noprofile start-process -filepath "wt" -argumentlist '"%0 -ks"' -verb runas>nul 2>nul
 exit 0
 :stwt
-start /min %comspec% /c mshta vbscript:createobject("shell.application").shellexecute("%localappdata%\Microsoft\WindowsApps\wt.exe","%weizhi% -ks","","runas",1)(window.close)
+start /min %comspec% /c mshta vbscript:createobject("shell.application").shellexecute("%localappdata%\Microsoft\WindowsApps\wt.exe","!weizhi!","-ks","runas",1)(window.close)
 goto :eof
 :stcmd
-start /min %comspec% /c mshta vbscript:createobject("shell.application").shellexecute("%weizhi%","-ks","","runas",1)(window.close)
+start /min %comspec% /c mshta vbscript:createobject("shell.application").shellexecute("!weizhi!","-ks","","runas",1)(window.close)
 goto :eof
 set qidongjd=0
 set qidongbz=█████████████████
@@ -71,11 +65,10 @@ goto qidong
 :ks
 (
 set "dosqssj=%time%"
-title 　
 color f1
 chcp 936>nul
 set ver=20240922
-set versize=231342
+set versize=210993
 set "doh=--doh-url https://101.101.101.101/dns-query"
 set resolve2=--resolve raw.github.io:443:^
 185.199.110.133,^
@@ -97,12 +90,11 @@ set "gxdoshost2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js"
 set "gxdos1=https://raw.githubusercontent.com/Trustedinstall/dostool/main/dostool.js"
 set "gxdos2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js"
 rem if exist %temp%\dwnl.exe (set /a versize=versize+3194)
-set gxflag=
 set "baidu=start https://www.baidu.com/s?wd="
 set "google=start https://www.google.com.hk/search?q="
 set sc=delasd123
 set scw=rdasd123
-set "weizhi=%0"
+for /f "delims=" %%a in ("%0") do (set "weizhi=%%~fa")
 rem set cishu=3
 set "ua=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36"
 set "nx1=[+]下一页"
@@ -136,16 +128,11 @@ if exist "!temp!\dos_pre_reading_cache_zmlj.tmp" (
 ) else (
 	set "zmlj='"reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v desktop"'"
 )
-for /f "skip=2 delims=" %%a in (!zmlj!) do (
-	set "zmlj=%%a"
-	if not defined zmlj ( set "zmlj=X:\Users\Default\Desktop\" )
-	if "!zmlj:~0,1!!zmlj:~-1!" neq """" (
-		for /f "delims=" %%a in ("!zmlj!") do (
-			set "!zmlj!="%%~a""
-		)
-	)
+for /f "skip=2 tokens=3 delims= " %%a in (!zmlj!) do (
+	set "zmlj=%%~fa"
+	if not defined zmlj (set "zmlj=X:\Users\Default\Desktop")
 )
-for /f "delims=" %%a in ("!weizhi!") do (
+for /f "delims=" %%a in ("%0") do (
 	set "daxiao=%%~za"
 	set "disk=%%~da"
 )
@@ -154,8 +141,8 @@ if exist "!temp!\dos_pre_reading_cache_hostname.tmp" (
 ) else (
 	set "zjname='"hostname"'"
 )
-for /f "delims=" %%a in (!zjname!) do set hostname=%%a
-for /f "tokens=3 delims=.]" %%a in ('"ver"') do (
+for /f "delims=" %%a in (!zjname!) do (set "hostname=%%a")
+for /f "tokens=3 delims=.]" %%a in ('ver') do (
 	if %%a lss 10586 (
 		set winv=1
 	) else (
@@ -177,11 +164,6 @@ for /f "skip=2 tokens=2 delims==" %%a in (!wmicos!) do (
 	for /f "tokens=3" %%a in ("!system!") do (
 		call :pd%%a 2>nul
 	)
-	if "!zmlj:~0,1!!zmlj:~-1!" neq """" (
-		for /f "delims=" %%a in ('"echo %zmlj%"') do (
-			set "!zmlj!="%%~a""
-		)
-	)
 )
 if "%date:~11,1%" equ "周" (
 	set "xingqi=%date:~11,2%"
@@ -194,16 +176,20 @@ for /f %%a in ('"echo prompt $E^ |cmd"') do (
 )
 call :list
 if /i "%processor_architecture%"=="x86" (set bit=32) else (set bit=64)
-if exist !systemroot!\system32\choice.exe (
+if exist "!systemroot!\system32\choice.exe" (
 	set "sel=call :choice"
 ) else (
 	set "sel=call :set"
 )
-if /i "%2" neq "" ( goto %2 )
+if /i "%2" neq "" (goto %2)
 rem call :xsjc !dosqssj! !time! jg
 goto memuv2
-for /f "delims=" %%a in ('"wmic cpu get processorid|find /i /v "processorid""') do (for /f "delims=" %%b in ('"echo %%a|find /i /v "echo""') do (set a=%%b))
-for /f "delims=" %%a in ('"wmic bios get smbiosbiosversion|find /i /v "smbiosbiosversion""') do (for /f "delims=" %%b in ('"echo %%a|find /i /v "echo""') do (set b=%%b))
+for /f "delims=" %%a in ('"wmic cpu get processorid|find /i /v "processorid""') do (
+	for /f "delims=" %%b in ('"echo %%a|find /i /v "echo""') do (set "a=%%b")
+)
+for /f "delims=" %%a in ('"wmic bios get smbiosbiosversion|find /i /v "smbiosbiosversion""') do (
+	for /f "delims=" %%b in ('"echo %%a|find /i /v "echo""') do (set "b=%%b")
+)
 set "jqm=%a: =%%b: =%"
 for /l %%a in (1,1,1000) do (if "!jqm:~%%a,1!"=="" set ws=%%a&goto jqmzh)
 :jqmzh
@@ -261,7 +247,7 @@ if /i "%hash%"=="DCA9A6E6D000573FDC4DF6FEBA6035B87A8CE07C" goto mima1
 set/a cishu-=1
 echo 密码错误！你还有%cishu%次机会
 ping/n 2 0.0>nul
-if %cishu%==0 goto 00
+if %cishu%==0 goto 0
 goto mima
 :mima1
 cls
@@ -270,652 +256,182 @@ echo 现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
 echo _______________________________________________________________________________
 echo 密码正确！
 ping/n 2 0.0>nul
-goto memuv2
 :memuv2
-if !start! lss 1 set start=1
-set /a memuys=!start!/9+1
-if not defined a!start! set /a !start!=!start!-9
+if !start! lss 1 (set start=1)
+set /a "memuys=start/9+1"
+if not defined a!start! (set /a "!start!=start-9")
 set color=
 set color1=f
-set/a color=%random%%%5
-if %color%==0 set ysbak=40;97m
-if %color%==1 set ysbak=44;97m
-if %color%==2 set color=5&set ysbak=45;97m
-if %color%==3 set ysbak=46;97m
-if %color%==4 set color=7&set color1=8&set ysbak=47;90m
-color %color%%color1%
-set fy=!cswz!!ysbak:~0,3!91m_!cswz!!ysbak!!cswz!!ysbak:~0,3!92m_!cswz!!ysbak!!cswz!!ysbak:~0,3!93m_!cswz!!ysbak!
+set /a "color=!random!%%5"
+if "!color!" equ "0" (
+	set ysbak=40;97m
+) else (
+	if "!color!" equ "1" (
+		set ysbak=44;97m
+	) else (
+		if "!color!" equ "2" (
+		set color=5
+		set ysbak=45;97m
+		) else (
+			if "!color!" equ "3" (
+				set ysbak=46;97m
+			) else (
+				if "!color!" equ "4" (
+					set color=7
+					set color1=8
+					set ysbak=47;90m
+				)
+			)
+		)
+	)
+)
+set "fy=!cswz!!ysbak:~0,3!91m_!cswz!!ysbak!!cswz!!ysbak:~0,3!92m_!cswz!!ysbak!!cswz!!ysbak:~0,3!93m_!cswz!!ysbak!"
 set fy1=___
-if exist %temp%\dostoolupdate (
-for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
-set /a gxjg=%%a-!ver!
-if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a
-for /f "delims=: tokens=2" %%b in (%temp%\dostoolupdate) do (set doshash="%%b")))
-del /f /q %temp%\dostoolupdate)
-title DOS工具箱%system%%gxflag%
+color !color!!color1!
+title DOS工具箱!system!
 cls
 rem echo;初始化用时: !jg!
-if !winv! equ 0 (echo                                     菜单 - 第!cswz!!ysbak:~0,3!92m!memuys!!cswz!!ysbak!页) else (
-set /p =!cswz1!　　　　　　　　　　　　　　　　　　菜单 - 第<nul
-call :colortxt a !memuys!
-set /p =页<nul
-echo;)
-echo 现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
-if !winv! equ 0 (for /l %%a in (1,1,26) do (if %%a lss 26 (set /p =!fy!<nul) else (echo !fy!))) else (for /l %%a in (1,1,26) do (if %%a lss 26 (set /p =!fy1!<nul) else (echo !fy1!)))
-set /a end=!start!+8
+if "!winv!" equ "0" (
+	echo                                     菜单 - 第!cswz!!ysbak:~0,3!92m!memuys!!cswz!!ysbak!页
+) else (
+	echo;　　　　　　　　　　　　　　　　　　菜单 - 第!memuys!页
+)
+echo 现在是!date:~0,4!年!date:~5,2!月!date:~8,2!日 !xingqi! !time:~0,8!
+call :csfgf
+set /a "end=start+8"
 set xx=0
-for /l %%a in (!start!,1,!end!) do (if defined a%%a (set /a xx=!xx!+1&echo [!xx!]!a%%a!&set xz!xx!=%%a))
-set /a pd=!end!+1
-if !winv! equ 0 (if not defined a!pd! (echo [0]退出                                             !cswz!42;97m%nx7%!cswz!!ysbak!)) else (
-if not defined a!pd! (
-set /p =[0]退出<nul
-set /p =.!cswz1!　　　　　　　　　　　　　　　　　　　　<nul
-call :colortxt 2f %nx7%
-echo;))
-set /a pd1=!start!-1
-if !winv! equ 0 (if !pd1! lss 1 (echo [0]退出                                                         !cswz!42;97m%nx1%!cswz!!ysbak!)) else (
-if !pd1! lss 1 (
-set /p =[0]退出<nul
-set /p =.!cswz1!　　　　　　　　　　　　　　　　　　　　<nul
-call :colortxt 2f %nx1%
-echo;))
-if !winv! equ 0 (if defined a!pd! (if not !pd1! lss 1 echo [0]退出                                             !cswz!42;97m%nx1%   %nx7%!cswz!!ysbak!)) else (
-if defined a!pd! (
-if not !pd1! lss 1 (
-set /p =[0]退出<nul
-set /p =.!cswz1!　　　　　　　　　　　　　　　　　　　　<nul
-call :colortxt 2f %nx1%
-set /p =.!cswz1!　　　<nul
-call :colortxt 2f %nx7%
-echo;)))
-::if !start! equ 1 (echo [0]退出                                                         !cswz!42;97m%nx1%!cswz!!ysbak!) else (if !start! equ 64 (echo [0]退出                                                      !cswz!42;97m%nx7%!cswz!!ysbak!) else (echo [0]退出                                             !cswz!42;97m%nx%!cswz!!ysbak!))
-if !winv! equ 0 (for /l %%a in (1,1,26) do (if %%a lss 26 (set /p =!fy!<nul) else (echo !fy!))) else (for /l %%a in (1,1,26) do (if %%a lss 26 (set /p =!fy1!<nul) else (echo !fy1!)))
+for /l %%a in (!start!,1,!end!) do (
+	if defined a%%a (
+		set /a "xx+=1"
+		set "xz!xx!=%%a"
+		echo;[!xx!]!a%%a!
+	)
+)
+set /a "pd=end+1"
+if "!winv!" equ "0" (
+	if not defined a!pd! (
+		echo;[0]退出                                             !cswz!42;97m!nx7!!cswz!!ysbak!
+	)
+) else (
+	if not defined a!pd! (
+		echo;[0]退出                                             !nx7!
+	)
+)
+set /a "pd1=start-1"
+if "!winv!" equ "0" (
+	if !pd1! lss 1 (
+		echo [0]退出                                                         !cswz!42;97m!nx1!!cswz!!ysbak!
+	)
+) else (
+	if !pd1! lss 1 (
+		echo;[0]退出                                             !nx1!
+	)
+)
+if "!winv!" equ "0" (
+	if defined a!pd! (
+		if !pd1! geq 1 (
+			echo [0]退出                                             !cswz!42;97m!nx1!   !nx7!!cswz!!ysbak!
+		)
+	)
+) else (
+	if defined a!pd! (
+		if !pd1! geq 1 (
+			echo;[0]退出                                             !nx1!　　　!nx7!
+		)
+	)
+)
+call :csfgf
 set caidan=
-set/p caidan=请输入你的选择:
-if "!caidan!" equ "1" if !xz1! lss 10 (goto 0!xz1!) else (goto !xz1!)
-if "!caidan!" equ "2" if !xz2! lss 10 (goto 0!xz2!) else (goto !xz2!)
-if "!caidan!" equ "3" if !xz3! lss 10 (goto 0!xz3!) else (goto !xz3!)
-if "!caidan!" equ "4" if !xz4! lss 10 (goto 0!xz4!) else (goto !xz4!)
-if "!caidan!" equ "5" if !xz5! lss 10 (goto 0!xz5!) else (goto !xz5!)
-if "!caidan!" equ "6" if !xz6! lss 10 (goto 0!xz6!) else (goto !xz6!)
-if "!caidan!" equ "7" if !xz7! lss 10 (goto 0!xz7!) else (goto !xz7!)
-if "!caidan!" equ "8" if !xz8! lss 10 (goto 0!xz8!) else (goto !xz8!)
-if "!caidan!" equ "9" if !xz9! lss 10 (goto 0!xz9!) else (goto !xz9!)
-if "!caidan!" equ "0" exit 0
-if "!caidan!" equ "-" (set /a pd=!start!-1&if not !pd! lss 1 set /a start=!start!-9&goto memuv2)
-if "!caidan!" equ "+" (set /a pd=!end!+1&if defined a!pd! set /a start=!start!+9&goto memuv2)
-if /i "!caidan!" equ "a" (set /a pd=!start!-1&if not !pd! lss 1 set /a start=!start!-9&goto memuv2)
-if /i "!caidan!" equ "s" (set /a pd=!end!+1&if defined a!pd! set /a start=!start!+9&goto memuv2)
-if /i "!caidan!" equ "vbsjsq" set tzwz=!start!&goto vbsjsq
-if /i "!caidan!" equ "guanji" set tzwz=!start!&goto guanji
-if "!caidan!" equ "BATJIAMI" set tzwz=!start!&goto batjiami
-if /i "!caidan!" equ "guanyu" set tzwz=!start!&goto guanyu
-if /i "!caidan!" equ "csh" goto chushihua
-if /i "!caidan!" equ "kcd" set tzwz=!start!&goto kcd
-if /i "!caidan!" equ "gcd" set tzwz=!start!&goto gcd
-if /i "!caidan!" equ "xz" set tzwz=!start!&goto xz
-if /i "!caidan!" equ "js" set tzwz=!start!&goto 49
-if /i "!caidan!" equ "gx" set tzwz=!start!&goto update
-if /i "!caidan!" equ "qzgx" set tzwz=!start!&set ver=0&goto update
-if /i "!caidan!" equ "go1" set start=1&goto memuv2
-if /i "!caidan!" equ "go2" set start=10&goto memuv2
-if /i "!caidan!" equ "go3" set start=19&goto memuv2
-if /i "!caidan!" equ "go4" set start=28&goto memuv2
-if /i "!caidan!" equ "go5" set start=37&goto memuv2
-if /i "!caidan!" equ "go6" set start=46&goto memuv2
-if /i "!caidan!" equ "go7" set start=55&goto memuv2
-if /i "!caidan!" equ "go8" set start=64&goto memuv2
-if /i "!caidan!" equ "go9" set start=73&goto memuv2
+set /p "caidan=请输入你的选择:"
+if "!caidan!" equ "0" (exit 0)
+if "!caidan!" equ "1" (goto !xz1!)
+if "!caidan!" equ "2" (goto !xz2!)
+if "!caidan!" equ "3" (goto !xz3!)
+if "!caidan!" equ "4" (goto !xz4!)
+if "!caidan!" equ "5" (goto !xz5!)
+if "!caidan!" equ "6" (goto !xz6!)
+if "!caidan!" equ "7" (goto !xz7!)
+if "!caidan!" equ "8" (goto !xz8!)
+if "!caidan!" equ "9" (goto !xz9!)
+if /i "!caidan!" equ "go1" (set "start=1"&goto memuv2)
+if /i "!caidan!" equ "go2" (set "start=10"&goto memuv2)
+if /i "!caidan!" equ "go3" (set "start=19"&goto memuv2)
+if /i "!caidan!" equ "go4" (set "start=28"&goto memuv2)
+if /i "!caidan!" equ "go5" (set "start=37"&goto memuv2)
+if /i "!caidan!" equ "go6" (set "start=46"&goto memuv2)
+if /i "!caidan!" equ "go7" (set "start=55"&goto memuv2)
+if /i "!caidan!" equ "go8" (set "start=64"&goto memuv2)
+if /i "!caidan!" equ "go9" (set "start=73"&goto memuv2)
+if /i "!caidan!" equ "vbsjsq" (set "tzwz=!start!"&goto vbsjsq)
+if /i "!caidan!" equ "guanji" (set "tzwz=!start!"&goto guanji)
+if /i "!caidan!" equ "guanyu" (set "tzwz=!start!"&goto guanyu)
+if "!caidan!" equ "BATJIAMI" (set "tzwz=!start!"&goto batjiami)
+if /i "!caidan!" equ "csh" (goto chushihua)
+if /i "!caidan!" equ "xz" (set "tzwz=!start!"&goto xz)
+if /i "!caidan!" equ "js" (set "tzwz=!start!"&goto 49)
+if /i "!caidan!" equ "kcd" (set "tzwz=!start!"&goto kcd)
+if /i "!caidan!" equ "gcd" (set "tzwz=!start!"&goto gcd)
+if /i "!caidan!" equ "gx" (set "tzwz=!start!"&goto update)
+if /i "!caidan!" equ "qzgx" (
+	set "tzwz=!start!"
+	set ver=0
+	goto update
+)
+if "!caidan!" equ "-" (
+	set /a "pd=start-1"
+	if !pd! geq 1 (
+		set /a "start=start-9"
+		goto memuv2
+	)
+)
+if "!caidan!" equ "+" (
+	set /a "pd=end+1"
+	if defined a!pd! (
+		set /a "start=start+9"
+		goto memuv2
+	)
+)
+if /i "!caidan!" equ "a" (
+	set /a "pd=start-1"
+	if !pd! geq 1 (
+		set /a "start=start-9"
+		goto memuv2
+	)
+)
+if /i "!caidan!" equ "s" (
+	set /a "pd=end+1"
+	if defined a!pd! (
+		set /a "start=start+9"
+		goto memuv2
+	)
+)
 echo 请输入正确的选项！
-timeout /t 2 /nobreak>nul
+if exist "!systemroot!\system32\timeout.exe" (
+	timeout /t 2 /nobreak>nul
+) else (
+	ping /n 2 0.0>nul
+)
 goto memuv2
-:a
-set color=
-set color1=f
-set/a color=%random%%%5
-if %color%==0 set ysbak=40;97m
-if %color%==1 set ysbak=44;97m
-if %color%==2 set color=5&set ysbak=45;97m
-if %color%==3 set ysbak=46;97m
-if %color%==4 set color=7&set color1=8&set ysbak=47;90m
-color %color%%color1%
-if exist %temp%\dostoolupdate (
-for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
-set /a gxjg=%%a-!ver!
-if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a
-for /f "delims=: tokens=2" %%b in (%temp%\dostoolupdate) do (set doshash="%%b")))
-del /f /q %temp%\dostoolupdate)
-title DOS工具箱%system%%gxflag%
-cls
-echo                                     菜单 - 第!cswz!!ysbak:~0,3!92m1!cswz!!ysbak!页
-echo 现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
-echo _______________________________________________________________________________
-echo [1]清除U盘里的lpk.dll病毒
-echo [2]清除U盘里的jwgkvsq.vmx病毒，并免疫该病毒
-echo [3]清理系统垃圾
-echo [4]显示系统信息
-echo [5]解除任务管理器被禁用
-echo [6]显示被隐藏文件(中了该类病毒后)
-echo [7]解除注册表被禁用
-echo [8]计算开平方
-echo [9]切换到命令提示符
-echo [0]退出                                                         !cswz!42;97m%nx1%!cswz!!ysbak!
-echo _______________________________________________________________________________
-set caidan=
-set/p caidan=请输入你的选择:
-if "!caidan!"=="1" goto 01
-if "!caidan!"=="2" goto 02
-if "!caidan!"=="3" goto 03
-if "!caidan!"=="4" goto 04
-if "!caidan!"=="5" goto 05
-if "!caidan!"=="6" goto 06
-if "!caidan!"=="7" goto 07
-if "!caidan!"=="8" goto 08
-if "!caidan!"=="9" goto 09
-if "!caidan!"=="0" goto 00
-if "!caidan!"=="+" goto memuv2
-if /i "!caidan!"=="s" goto memuv2
-if /i "!caidan!"=="vbsjsq" set tzwz=a&goto vbsjsq
-if /i "!caidan!"=="guanji" set tzwz=a&goto guanji
-if "!caidan!"=="BATJIAMI" set tzwz=a&goto batjiami
-if /i "!caidan!"=="guanyu" set tzwz=a&goto guanyu
-if /i "!caidan!"=="csh" goto chushihua
-if /i "!caidan!"=="kcd" set tzwz=a&goto kcd
-if /i "!caidan!"=="gcd" set tzwz=a&goto gcd
-if /i "!caidan!"=="xz" set tzwz=a&goto xz
-if /i "!caidan!"=="js" set tzwz=a&goto 49
-if /i "!caidan!"=="gx" set tzwz=a&goto update
-if /i "!caidan!"=="go1" goto memuv2
-if /i "!caidan!"=="go2" goto memuv2
-if /i "!caidan!"=="go3" goto memuv2
-if /i "!caidan!"=="go4" goto memuv2
-if /i "!caidan!"=="go5" goto memuv2
-if /i "!caidan!"=="go6" goto memuv2
-if /i "!caidan!"=="go7" goto memuv2
-if /i "!caidan!"=="go8" goto memuv2
-echo 请输入正确的选项！
-ping/n 2 0.0>nul
-goto memuv2
-:b
-set color=
-set color1=f
-set/a color=%random%%%5
-if %color%==0 set ysbak=40;97m
-if %color%==1 set ysbak=44;97m
-if %color%==2 set color=5&set ysbak=45;97m
-if %color%==3 set ysbak=46;97m
-if %color%==4 set color=7&set color1=8&set ysbak=47;90m
-color %color%%color1%
-if exist %temp%\dostoolupdate (
-for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
-set /a gxjg=%%a-!ver!
-if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a
-for /f "delims=: tokens=2" %%b in (%temp%\dostoolupdate) do (set doshash="%%b")))
-del /f /q %temp%\dostoolupdate)
-title DOS工具箱%system%%gxflag%
-cls
-echo                                     菜单 - 第!cswz!!ysbak:~0,3!92m2!cswz!!ysbak!页
-echo 现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
-echo _______________________________________________________________________________
-echo [1]将磁盘格式转换为NTFS
-echo [2]磁盘错误修复
-echo [3]格式化
-echo [4]DOS计算器
-echo [5]解除命令提示符被禁用
-echo [6]随机数生成器
-echo [7]清除KHATRA病毒
-echo [8]打开注册表
-echo [9]打开控制面板
-echo [0]退出                                             !cswz!42;97m%nx%!cswz!!ysbak!
-echo _______________________________________________________________________________
-set caidan=
-set/p caidan=请输入你的选择:
-if "!caidan!"=="1" goto 10
-if "!caidan!"=="2" goto 11
-if "!caidan!"=="3" goto 12
-if "!caidan!"=="4" goto 13
-if "!caidan!"=="5" goto 14
-if "!caidan!"=="6" goto 15
-if "!caidan!"=="7" goto 16
-if "!caidan!"=="8" goto 17
-if "!caidan!"=="9" goto 18
-if "!caidan!"=="0" goto 00
-if "!caidan!"=="-" goto memuv2
-if "!caidan!"=="+" goto memuv2
-if /i "!caidan!"=="a" goto memuv2
-if /i "!caidan!"=="s" goto memuv2
-if /i "!caidan!"=="vbsjsq" set tzwz=b&goto vbsjsq
-if /i "!caidan!"=="guanji" set tzwz=b&goto guanji
-if "!caidan!"=="BATJIAMI" set tzwz=b&goto batjiami
-if /i "!caidan!"=="guanyu" set tzwz=b&goto guanyu
-if /i "!caidan!"=="csh" goto chushihua
-if /i "!caidan!"=="kcd" set tzwz=b&goto kcd
-if /i "!caidan!"=="gcd" set tzwz=b&goto gcd
-if /i "!caidan!"=="xz" set tzwz=b&goto xz
-if /i "!caidan!"=="js" set tzwz=b&goto 49
-if /i "!caidan!"=="gx" set tzwz=a&goto update
-if /i "!caidan!"=="go1" goto memuv2
-if /i "!caidan!"=="go2" goto memuv2
-if /i "!caidan!"=="go3" goto memuv2
-if /i "!caidan!"=="go4" goto memuv2
-if /i "!caidan!"=="go5" goto memuv2
-if /i "!caidan!"=="go6" goto memuv2
-if /i "!caidan!"=="go7" goto memuv2
-if /i "!caidan!"=="go8" goto memuv2
-echo 请输入正确的选项！
-ping/n 2 0.0>nul
-goto memuv2
-:c
-set color=
-set color1=f
-set/a color=%random%%%5
-if %color%==0 set ysbak=40;97m
-if %color%==1 set ysbak=44;97m
-if %color%==2 set color=5&set ysbak=45;97m
-if %color%==3 set ysbak=46;97m
-if %color%==4 set color=7&set color1=8&set ysbak=47;90m
-color %color%%color1%
-if exist %temp%\dostoolupdate (
-for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
-set /a gxjg=%%a-!ver!
-if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a
-for /f "delims=: tokens=2" %%b in (%temp%\dostoolupdate) do (set doshash="%%b")))
-del /f /q %temp%\dostoolupdate)
-title DOS工具箱%system%%gxflag%
-cls
-echo                                     菜单 - 第!cswz!!ysbak:~0,3!92m3!cswz!!ysbak!页
-echo 现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
-echo _______________________________________________________________________________
-echo [1]打开DirectX诊断工具
-echo [2]打开计算机管理
-echo [3]用户管理
-echo [4]打开组策略
-echo [5]DOS任务管理器
-echo [6]文件系统信息查询
-echo [7]创建指定大小的文件
-echo [8]免疫U盘病毒
-echo [9]磁盘碎片整理
-echo [0]退出                                             !cswz!42;97m%nx%!cswz!!ysbak!
-echo _______________________________________________________________________________
-set caidan=
-set/p caidan=请输入你的选择:
-if "!caidan!"=="1" goto 19
-if "!caidan!"=="2" goto 20
-if "!caidan!"=="3" goto 21
-if "!caidan!"=="4" goto 22
-if "!caidan!"=="5" goto 23
-if "!caidan!"=="6" goto 24
-if "!caidan!"=="7" goto 25
-if "!caidan!"=="8" goto 26
-if "!caidan!"=="9" goto 27
-if "!caidan!"=="0" goto 00
-if "!caidan!"=="-" goto memuv2
-if "!caidan!"=="+" goto memuv2
-if /i "!caidan!"=="a" goto memuv2
-if /i "!caidan!"=="s" goto memuv2
-if /i "!caidan!"=="vbsjsq" set tzwz=c&goto vbsjsq
-if /i "!caidan!"=="guanji" set tzwz=c&goto guanji
-if "!caidan!"=="BATJIAMI" set tzwz=c&goto batjiami
-if /i "!caidan!"=="guanyu" set tzwz=c&goto guanyu
-if /i "!caidan!"=="csh" goto chushihua
-if /i "!caidan!"=="kcd" set tzwz=c&goto kcd
-if /i "!caidan!"=="gcd" set tzwz=c&goto gcd
-if /i "!caidan!"=="xz" set tzwz=c&goto xz
-if /i "!caidan!"=="js" set tzwz=c&goto 49
-if /i "!caidan!"=="gx" set tzwz=c&goto update
-if /i "!caidan!"=="go1" goto memuv2
-if /i "!caidan!"=="go2" goto memuv2
-if /i "!caidan!"=="go3" goto memuv2
-if /i "!caidan!"=="go4" goto memuv2
-if /i "!caidan!"=="go5" goto memuv2
-if /i "!caidan!"=="go6" goto memuv2
-if /i "!caidan!"=="go7" goto memuv2
-if /i "!caidan!"=="go8" goto memuv2
-echo 请输入正确的选项！
-ping/n 2 0.0>nul
-goto memuv2
-:d
-set color=
-set color1=f
-set/a color=%random%%%5
-if %color%==0 set ysbak=40;97m
-if %color%==1 set ysbak=44;97m
-if %color%==2 set color=5&set ysbak=45;97m
-if %color%==3 set ysbak=46;97m
-if %color%==4 set color=7&set color1=8&set ysbak=47;90m
-color %color%%color1%
-if exist %temp%\dostoolupdate (
-for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
-set /a gxjg=%%a-!ver!
-if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a
-for /f "delims=: tokens=2" %%b in (%temp%\dostoolupdate) do (set doshash="%%b")))
-del /f /q %temp%\dostoolupdate)
-title DOS工具箱%system%%gxflag%
-cls
-echo                                     菜单 - 第!cswz!!ysbak:~0,3!92m4!cswz!!ysbak!页
-echo 现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
-echo _______________________________________________________________________________
-echo [1]一键删除空文件夹
-echo [2]ping测试网络延迟
-echo [3]硬件检测
-echo [4]读心术
-echo [5]DOS闹钟
-echo [6]计时器
-echo [7]随机密码生成器
-echo [8]删除每个盘符下的System Volume Information文件夹
-echo [9]二进制转换器
-echo [0]退出                                             !cswz!42;97m%nx%!cswz!!ysbak!
-echo _______________________________________________________________________________
-set caidan=
-set/p caidan=请输入你的选择:
-if "!caidan!"=="1" goto 28
-if "!caidan!"=="2" goto 29
-if "!caidan!"=="3" goto 30
-if "!caidan!"=="4" goto 31
-if "!caidan!"=="5" goto 32
-if "!caidan!"=="6" goto 33
-if "!caidan!"=="7" goto 34
-if "!caidan!"=="8" goto 35
-if "!caidan!"=="9" goto 36
-if "!caidan!"=="0" goto 00
-if "!caidan!"=="-" goto memuv2
-if "!caidan!"=="+" goto memuv2
-if /i "!caidan!"=="a" goto memuv2
-if /i "!caidan!"=="s" goto memuv2
-if /i "!caidan!"=="vbsjsq" set tzwz=d&goto vbsjsq
-if /i "!caidan!"=="guanji" set tzwz=d&goto guanji
-if "!caidan!"=="BATJIAMI" set tzwz=d&goto batjiami
-if /i "!caidan!"=="guanyu" set tzwz=d&goto guanyu
-if /i "!caidan!"=="csh" goto chushihua
-if /i "!caidan!"=="kcd" set tzwz=d&goto kcd
-if /i "!caidan!"=="gcd" set tzwz=d&goto gcd
-if /i "!caidan!"=="xz" set tzwz=d&goto xz
-if /i "!caidan!"=="js" set tzwz=d&goto 49
-if /i "!caidan!"=="gx" set tzwz=d&goto update
-if /i "!caidan!"=="go1" goto memuv2
-if /i "!caidan!"=="go2" goto memuv2
-if /i "!caidan!"=="go3" goto memuv2
-if /i "!caidan!"=="go4" goto memuv2
-if /i "!caidan!"=="go5" goto memuv2
-if /i "!caidan!"=="go6" goto memuv2
-if /i "!caidan!"=="go7" goto memuv2
-if /i "!caidan!"=="go8" goto memuv2
-echo 请输入正确的选项！
-ping/n 2 0.0>nul
-goto memuv2
-:e
-set color=
-set color1=f
-set/a color=%random%%%5
-if %color%==0 set ysbak=40;97m
-if %color%==1 set ysbak=44;97m
-if %color%==2 set color=5&set ysbak=45;97m
-if %color%==3 set ysbak=46;97m
-if %color%==4 set color=7&set color1=8&set ysbak=47;90m
-color %color%%color1%
-if exist %temp%\dostoolupdate (
-for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
-set /a gxjg=%%a-!ver!
-if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a
-for /f "delims=: tokens=2" %%b in (%temp%\dostoolupdate) do (set doshash="%%b")))
-del /f /q %temp%\dostoolupdate)
-title DOS工具箱%system%%gxflag%
-cls
-echo                                     菜单 - 第!cswz!!ysbak:~0,3!92m5!cswz!!ysbak!页
-echo 现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
-echo _______________________________________________________________________________
-echo [1]文本浏览
-echo [2]显示计算机与用户的设置
-echo [3]NTFS压缩
-echo [4]修改文件权限
-echo [5]显示开机启动项
-echo [6]语音阅读器
-echo [7]批处理文件风险分析
-echo [8]文件搜索
-echo [9]修复已损坏的文件
-echo [0]退出                                             !cswz!42;97m%nx%!cswz!!ysbak!
-echo _______________________________________________________________________________
-set caidan=
-set/p caidan=请输入你的选择:
-if "!caidan!"=="1" goto 37
-if "!caidan!"=="2" goto 38
-if "!caidan!"=="3" goto 39
-if "!caidan!"=="4" goto 40
-if "!caidan!"=="5" goto 41
-if "!caidan!"=="6" goto 42
-if "!caidan!"=="7" goto 43
-if "!caidan!"=="8" goto 44
-if "!caidan!"=="9" goto 45
-if "!caidan!"=="0" goto 00
-if "!caidan!"=="-" goto memuv2
-if "!caidan!"=="+" goto memuv2
-if /i "!caidan!"=="a" goto memuv2
-if /i "!caidan!"=="s" goto memuv2
-if /i "!caidan!"=="vbsjsq" set tzwz=e&goto vbsjsq
-if /i "!caidan!"=="guanji" set tzwz=e&goto guanji
-if "!caidan!"=="BATJIAMI" set tzwz=e&goto batjiami
-if /i "!caidan!"=="guanyu" set tzwz=e&goto guanyu
-if /i "!caidan!"=="csh" goto chushihua
-if /i "!caidan!"=="kcd" set tzwz=e&goto kcd
-if /i "!caidan!"=="gcd" set tzwz=e&goto gcd
-if /i "!caidan!"=="xz" set tzwz=e&goto xz
-if /i "!caidan!"=="js" set tzwz=e&goto 49
-if /i "!caidan!"=="gx" set tzwz=e&goto update
-if /i "!caidan!"=="go1" goto memuv2
-if /i "!caidan!"=="go2" goto memuv2
-if /i "!caidan!"=="go3" goto memuv2
-if /i "!caidan!"=="go4" goto memuv2
-if /i "!caidan!"=="go5" goto memuv2
-if /i "!caidan!"=="go6" goto memuv2
-if /i "!caidan!"=="go7" goto memuv2
-if /i "!caidan!"=="go8" goto memuv2
-echo 请输入正确的选项！
-ping/n 2 0.0>nul
-goto memuv2
-:f
-set color=
-set color1=f
-set/a color=%random%%%5
-if %color%==0 set ysbak=40;97m
-if %color%==1 set ysbak=44;97m
-if %color%==2 set color=5&set ysbak=45;97m
-if %color%==3 set ysbak=46;97m
-if %color%==4 set color=7&set color1=8&set ysbak=47;90m
-color %color%%color1%
-if exist %temp%\dostoolupdate (
-for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
-set /a gxjg=%%a-!ver!
-if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a
-for /f "delims=: tokens=2" %%b in (%temp%\dostoolupdate) do (set doshash="%%b")))
-del /f /q %temp%\dostoolupdate)
-title DOS工具箱%system%%gxflag%
-cls
-echo                                     菜单 - 第!cswz!!ysbak:~0,3!92m6!cswz!!ysbak!页
-echo 现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
-echo _______________________________________________________________________________
-echo [1]暴力破解压缩包密码
-echo [2]Wifi热点
-echo [3]反编译chm文件
-echo [4]关闭无响应进程
-echo [5]文件比较器
-echo [6]将文字写入剪切板
-echo [7]打开系统服务设置
-echo [8]已知年月日计算星期
-echo [9]查询系统激活状态
-echo [0]退出                                             !cswz!42;97m%nx%!cswz!!ysbak!
-echo _______________________________________________________________________________
-set caidan=
-set/p caidan=请输入你的选择:
-if "!caidan!"=="1" goto 46
-if "!caidan!"=="2" goto 47
-if "!caidan!"=="3" goto 48
-if "!caidan!"=="4" set tzwz=f&goto 49
-if "!caidan!"=="5" goto 50
-if "!caidan!"=="6" goto 51
-if "!caidan!"=="7" goto 52
-if "!caidan!"=="8" goto 53
-if "!caidan!"=="9" goto 54
-if "!caidan!"=="0" goto 00
-if "!caidan!"=="-" goto memuv2
-if "!caidan!"=="+" goto memuv2
-if /i "!caidan!"=="a" goto memuv2
-if /i "!caidan!"=="s" goto memuv2
-if /i "!caidan!"=="vbsjsq" set tzwz=f&goto vbsjsq
-if /i "!caidan!"=="guanji" set tzwz=f&goto guanji
-if "!caidan!"=="BATJIAMI" set tzwz=f&goto batjiami
-if /i "!caidan!"=="guanyu" set tzwz=f&goto guanyu
-if /i "!caidan!"=="csh" goto chushihua
-if /i "!caidan!"=="kcd" set tzwz=f&goto kcd
-if /i "!caidan!"=="gcd" set tzwz=f&goto gcd
-if /i "!caidan!"=="xz" set tzwz=f&goto xz
-if /i "!caidan!"=="js" set tzwz=f&goto 49
-if /i "!caidan!"=="gx" set tzwz=f&goto update
-if /i "!caidan!"=="go1" goto memuv2
-if /i "!caidan!"=="go2" goto memuv2
-if /i "!caidan!"=="go3" goto memuv2
-if /i "!caidan!"=="go4" goto memuv2
-if /i "!caidan!"=="go5" goto memuv2
-if /i "!caidan!"=="go6" goto memuv2
-if /i !caidna!=="go7" goto memuv2
-if /i "!caidan!"=="go8" goto memuv2
-echo 请输入正确的选项！
-ping/n 2 0.0>nul
-goto memuv2
-:g
-set color=
-set color1=f
-set/a color=%random%%%5
-if %color%==0 set ysbak=40;97m
-if %color%==1 set ysbak=44;97m
-if %color%==2 set color=5&set ysbak=45;97m
-if %color%==3 set ysbak=46;97m
-if %color%==4 set color=7&set color1=8&set ysbak=47;90m
-color %color%%color1%
-if exist %temp%\dostoolupdate (
-for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
-set /a gxjg=%%a-!ver!
-if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a
-for /f "delims=: tokens=2" %%b in (%temp%\dostoolupdate) do (set doshash="%%b")))
-del /f /q %temp%\dostoolupdate)
-title DOS工具箱%system%%gxflag%
-cls
-echo                                     菜单 - 第!cswz!!ysbak:~0,3!92m7!cswz!!ysbak!页
-echo 现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
-echo _______________________________________________________________________________
-echo [1]创建指定文件的快捷方式到桌面
-echo [2]打开系统配置
-echo [3]字数统计
-echo [4]创建符号链接
-echo [5]打开管理控制台
-echo [6]解除Streams文件锁定
-echo [7]创建、删除或列出卷装入点
-echo [8]注册表搜索
-echo [9]Base64编解码
-echo [0]退出                                             !cswz!42;97m%nx%!cswz!!ysbak!
-echo _______________________________________________________________________________
-set caidan=
-set/p caidan=请输入你的选择:
-if "!caidan!"=="1" goto 55
-if "!caidan!"=="2" goto 56
-if "!caidan!"=="3" goto 57
-if "!caidan!"=="4" goto 58
-if "!caidan!"=="5" goto 59
-if "!caidan!"=="6" goto 60
-if "!caidan!"=="7" goto 61
-if "!caidan!"=="8" goto 62
-if "!caidan!"=="9" goto 63
-if "!caidan!"=="0" goto 00
-if "!caidan!"=="-" goto memuv2
-if "!caidan!"=="+" goto memuv2
-if /i "!caidan!"=="a" goto memuv2
-if /i "!caidan!"=="s" goto memuv2
-if /i "!caidan!"=="vbsjsq" set tzwz=g&goto vbsjsq
-if /i "!caidan!"=="guanji" set tzwz=g&goto guanji
-if "!caidan!"=="BATJIAMI" set tzwz=g&goto batjiami
-if /i "!caidan!"=="guanyu" set tzwz=g&goto guanyu
-if /i "!caidan!"=="csh" goto chushihua
-if /i "!caidan!"=="kcd" set tzwz=g&goto kcd
-if /i "!caidan!"=="gcd" set tzwz=g&goto gcd
-if /i "!caidan!"=="xz" set tzwz=g&goto xz
-if /i "!caidan!"=="js" set tzwz=g&goto 49
-if /i "!caidan!"=="gx" set tzwz=g&goto update
-if /i "!caidan!"=="go1" goto memuv2
-if /i "!caidan!"=="go2" goto memuv2
-if /i "!caidan!"=="go3" goto memuv2
-if /i "!caidan!"=="go4" goto memuv2
-if /i "!caidan!"=="go5" goto memuv2
-if /i "!caidan!"=="go6" goto memuv2
-if /i "!caidan!"=="go7" goto memuv2
-if /i "!caidan!"=="go8" goto memuv2
-echo 请输入正确的选项！
-ping/n 2 0.0>nul
-goto memuv2
-:h
-set color=
-set color1=f
-set/a color=%random%%%5
-if %color%==0 set ysbak=40;97m
-if %color%==1 set ysbak=44;97m
-if %color%==2 set color=5&set ysbak=45;97m
-if %color%==3 set ysbak=46;97m
-if %color%==4 set color=7&set color1=8&set ysbak=47;90m
-color %color%%color1%
-if exist %temp%\dostoolupdate (
-for /f "delims=: tokens=1" %%a in (%temp%\dostoolupdate) do (
-set /a gxjg=%%a-!ver!
-if !gxjg! gtr 0 (set gxflag= - 检查到更新版本: %%a
-for /f "delims=: tokens=2" %%b in (%temp%\dostoolupdate) do (set doshash="%%b")))
-del /f /q %temp%\dostoolupdate)
-title DOS工具箱%system%%gxflag%
-cls
-echo                                     菜单 - 第!cswz!!ysbak:~0,3!92m8!cswz!!ysbak!页
-echo 现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
-echo _______________________________________________________________________________
-echo [1]8.3短文件名管理
-echo [2]智能NTFS压缩
-echo [3]计算文件哈希值
-echo [4]显示货币汇率
-echo [5]创建虚拟盘符
-echo [6]解压msi安装文件
-echo [7]生成CMD控制台色彩表
-echo [8]KMS激活Windows 10
-echo [0]退出                                                      !cswz!42;97m%nx7%!cswz!!ysbak!
-echo _______________________________________________________________________________
-set caidan=
-set/p caidan=请输入你的选择:
-if "!caidan!"=="1" goto 64
-if "!caidan!"=="2" goto 65
-if "!caidan!"=="3" goto 66
-if "!caidan!"=="4" goto 67
-if "!caidan!"=="5" goto 68
-if "!caidan!"=="6" goto 69
-if "!caidan!"=="7" goto 70
-if "!caidan!"=="8" goto 71
-if "!caidan!"=="0" goto 00
-if "!caidan!"=="-" goto memuv2
-if /i "!caidan!"=="a" goto memuv2
-if /i "!caidan!"=="vbsjsq" set tzwz=h&goto vbsjsq
-if /i "!caidan!"=="guanji" set tzwz=h&goto guanji
-if "!caidan!"=="BATJIAMI" set tzwz=h&goto batjiami
-if /i "!caidan!"=="guanyu" set tzwz=h&goto guanyu
-if /i "!caidan!"=="csh" goto chushihua
-if /i "!caidan!"=="kcd" set tzwz=h&goto kcd
-if /i "!caidan!"=="gcd" set tzwz=h&goto gcd
-if /i "!caidan!"=="xz" set tzwz=h&goto xz
-if /i "!caidan!"=="js" set tzwz=h&goto 49
-if /i "!caidan!"=="gx" set tzwz=a&goto update
-if /i "!caidan!"=="go1" goto memuv2
-if /i "!caidan!"=="go2" goto memuv2
-if /i "!caidan!"=="go3" goto memuv2
-if /i "!caidan!"=="go4" goto memuv2
-if /i "!caidan!"=="go5" goto memuv2
-if /i "!caidan!"=="go6" goto memuv2
-if /i "!caidan!"=="go7" goto memuv2
-if /i !caidna!=="go8" goto memuv2
-echo 请输入正确的选项！
-ping/n 2 0.0>nul
-goto memuv2
-:01
+:csfgf
+if "!winv!" equ "0" (
+	for /l %%a in (1,1,26) do (
+		if %%a lss 26 (
+			set /p =!fy!<nul
+		) else (
+			echo !fy!
+		)
+	)
+) else (
+	for /l %%a in (1,1,26) do (
+		if %%a lss 26 (
+			set /p =!fy1!<nul
+		) else (
+			echo !fy1!
+		)
+	)
+)
+goto :eof
+:1
 title 清除U盘里的lpk.dll病毒%system%
 cls
 echo 按任意键开始清除lpl.dll病毒&pause>nul
@@ -924,23 +440,31 @@ echo 正在搜索可移动磁盘...
 for /f "delims=" %%a in ('"fsutil fsinfo drives"') do (set sypf=%%a)
 set sypf=%sypf:~5%
 for %%h in (%sypf%) do (
-fsutil fsinfo drivetype %%h|find /i "可移动驱动器"&&goto 01-1)
+fsutil fsinfo drivetype %%h|find /i "可移动驱动器"&&goto 1-1)
 cls
 echo 没有找到可移动磁盘
 echo _______________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
 goto memuv2
-:01-1
+:1-1
 cls
 echo 正在清除lpk.dll病毒...
 for /f "delims=" %%a in ('"fsutil fsinfo drives"') do (set sypf=%%a)
 set sypf=%sypf:~5%
-for %%h in (%sypf%) do fsutil fsinfo drivetype %%h|find /i "可移动驱动器"&&for /f "delims=" %%i in ('"dir/a/s/b %%hlpk.dll"') do if %%~zi==44032 attrib -s -h -r "%%i"|del/f/q "%%i"|echo 已删除%%i
+for %%h in (%sypf%) do (
+	fsutil fsinfo drivetype %%h|find /i "可移动驱动器"&&for /f "delims=" %%i in ('"dir/a/s/b %%hlpk.dll"') do (
+		if "%%~zi" equ "44032" (
+			attrib -s -h -r "%%i"
+			del/f/q "%%i"
+			echo 已删除%%i
+		)
+	)
+)
 echo _______________________________________________________________________________
 echo 清除完成
 set /p =按任意键返回菜单<nul&pause>nul
 goto memuv2
-:02
+:2
 title 清除U盘里的jwgkvsq.vmx病毒，并免疫该病毒%system%
 cls
 echo 按任意键开始清除jwgkvsq.vmx病毒&pause>nul
@@ -949,13 +473,13 @@ echo 正在搜索可移动磁盘...
 for /f "delims=" %%a in ('"fsutil fsinfo drives"') do (set sypf=%%a)
 set sypf=%sypf:~5%
 for %%j in (%sypf%) do (
-fsutil fsinfo drivetype %%j|find /i "可移动驱动器"&&goto 02-1)
+fsutil fsinfo drivetype %%j|find /i "可移动驱动器"&&goto 2-1)
 cls
 echo 没有找到可移动磁盘
 echo _______________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
 goto memuv2
-:02-1
+:2-1
 cls
 echo 正在清除jwgkvsq.vmx病毒...
 for /f "delims=" %%a in ('"fsutil fsinfo drives"') do (set sypf=%%a)
@@ -974,13 +498,13 @@ echo ___________________________________________________________________________
 echo 清除完成
 set /p =按任意键返回菜单<nul&pause>nul
 goto memuv2
-:03
+:3
 title 清理系统垃圾%system%
 cls
 %sc:~0,3%/f%ad%/s/%ad%q %systemdrive%\*.tm%ad%p
 %sc:~0,3%/f%ad%/s/%ad%q %systemdrive%\*._mp
 %sc:~0,3%/f%ad%/s/%ad%q %systemdrive%\~*.*
-goto 03(1)
+goto 3(1)
 %sc:~0,3%/f%ad%/s/%ad%q %systemdrive%\*.syd
 %sc:~0,3%/f%ad%/s/%ad%q %systemdrive%\*.spc
 %sc:~0,3%/f%ad%/s/%ad%q %systemdrive%\*.cdr_
@@ -1001,7 +525,7 @@ goto 03(1)
 %sc:~0,3%/f%ad%/s/%ad%q %systemdrive%\*.wbk
 %sc:~0,3%/f%ad%/s/%ad%q %systemdrive%\*.xlk
 %sc:~0,3%/f%ad%/s/%ad%q %systemdrive%\*.diz
-:03(1)
+:3(1)
 %sc:~0,3%/f%ad%/s/%ad%q %systemdrive%\*log.txt
 %sc:~0,3%/f%ad%/s/%ad%q %systemdrive%\*.dmp
 %sc:~0,3%/f%ad%/s/%ad%q %systemdrive%\*.log
@@ -1020,7 +544,7 @@ echo ___________________________________________________________________________
 echo 清理完成
 set /p =按任意键返回菜单<nul&pause>nul
 goto memuv2
-:04
+:4
 title 显示系统信息%system%
 cls
 systeminfo
@@ -1028,21 +552,21 @@ mode
 echo _______________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
 goto memuv2
-:05
+:5
 title 解除任务管理器被禁用%system%
 cls
 reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v DisableTaskmgr /t reg_dword /d 00000000 /f
 echo _______________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
 goto memuv2
-:06
+:6
 title 显示被隐藏文件(中了该类病毒后)%system%
 cls
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\Hidden\SHOWALL" /v CheckedValue /t reg_dword /d 00000001 /f
 echo _______________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
 goto memuv2
-:07
+:7
 title 解除注册表被禁用%system%
 cls
 echo [Version]>%systemdrive%\windows\temp\reg.inf
@@ -1057,7 +581,7 @@ del/f/q %systemdrive%\windows\temp\reg.inf
 echo _______________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
 goto memuv2
-:08
+:8
 title 计算开平方%system%
 cls
 set w=0
@@ -1104,7 +628,7 @@ set /a "b=3!j:~-%%j,8!-1!d:~-%%j,8!-!b:~,1!%%2"
 set "t=!b:~1!!t!"
 )
 for %%j in (!Len_i!) do set "j=!t:~-%%j!"
-set "j=!j:~1!" ) else set "x=0"
+set "j=!j:~1!") else set "x=0"
 set /a "Len_i-=1"
 if "!x!" neq "0" (
 if "!x!" geq "5" (
@@ -1131,12 +655,12 @@ goto memuv2
 :kpfcw
 echo 不是有效数字!
 ping/n 2 0.0>nul
-goto 08
+goto 8
 :xswscw
 echo 不是有效数字!
 ping/n 2 0.0>nul
-goto 08
-:09
+goto 8
+:9
 title 命令提示符%system%
 cls
 ver
@@ -1251,9 +775,17 @@ ping/n 2 0.0>nul
 goto batjiami(1)
 :batjiami(1)(1)
 copy/y "!jiami!" %systemdrive%linshiwenjian.tmp
-echo %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a >%systemdrive%1.tmp
+echo %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
+%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
+%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
+%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
+%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
+%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
+%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
+%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
+%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a >%systemdrive%1.tmp
 echo cls>%systemdrive%2.tmp
-copy/b %systemdrive%1.tmp+%systemdrive%2.tmp+%systemdrive%linshiwenjian.tmp "%zmlj%已加密的%wjm%.%geshi%"
+copy/b %systemdrive%1.tmp+%systemdrive%2.tmp+%systemdrive%linshiwenjian.tmp "%zmlj%\已加密的%wjm%.%geshi%"
 del/f/q %systemdrive%1.tmp
 del/f/q %systemdrive%2.tmp
 del/f/q %systemdrive%linshiwenjian.tmp
@@ -1288,7 +820,7 @@ goto batjiami(2)
 :batjiami(2)(1)
 copy/y "!jiemi!" %systemdrive%linshiwenjian.tmp
 echo;>%systemdrive%3.tmp
-copy/b %systemdrive%3.tmp+%systemdrive%linshiwenjian.tmp "%zmlj%已解密的%wjm%.%geshi%"
+copy/b %systemdrive%3.tmp+%systemdrive%linshiwenjian.tmp "%zmlj%\已解密的%wjm%.%geshi%"
 del/f/q 3.tmp
 del/f/q %systemdrive%linshiwenjian.tmp
 cls
@@ -1310,9 +842,17 @@ ping/n 2 0.0>nul
 goto batjiami(1)
 :beiyongjiami(1)
 copy/y "!jiami!" %systemdrive%linshiwenjian.tmp
-echo %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a>%systemdrive%4.tmp
+echo %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
+%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
+%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
+%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
+%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
+%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
+%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
+%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
+%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a>%systemdrive%4.tmp
 echo cls>%systemdrive%5.tmp
-copy/b %systemdrive%4.tmp+%systemdrive%5.tmp+%systemdrive%linshiwenjian.tmp "%zmlj%已加密的%wjm%.%geshi%"
+copy/b %systemdrive%4.tmp+%systemdrive%5.tmp+%systemdrive%linshiwenjian.tmp "%zmlj%\已加密的%wjm%.%geshi%"
 del/f/q %systemdrive%4.tmp
 del/f/q %systemdrive%5.tmp
 del/f/q %systemdrive%linshiwenjian.tmp
@@ -1345,11 +885,10 @@ ping/n 2 0.0>nul
 goto batjiami(3)
 :jiami2(1)
 cls
-verify on
 copy/y "!jiami2!" %systemdrive%temp.0
 set /p =//4NCg==<nul>%temp%\tmpcode
 certutil -decode -f %temp%\tmpcode %systemdrive%temp>nul
-copy/b %systemdrive%temp+%systemdrive%temp.0 "%zmlj%已加密的%wjm%.%geshi%"
+copy/b %systemdrive%temp+%systemdrive%temp.0 "%zmlj%\已加密的%wjm%.%geshi%"
 del/f/q %systemdrive%temp
 del/f/q %systemdrive%temp.0
 cls
@@ -1774,7 +1313,7 @@ cls
 set zhuxiao=
 set/p zhuxiao=是否立即注销(y/n):
 set zhuxiao="%zhuxiao:|=%"
-if /i !zhuxiao!=="y" logoff&goto 00
+if /i !zhuxiao!=="y" logoff&goto 0
 if /i !zhuxiao!=="n" goto guanji
 echo 请输入正确的选项！
 ping/n 2 0.0>nul
@@ -2009,14 +1548,14 @@ title 循环显示CPU占用率与网络速度%system%
 cls
 echo;正在获取网络信息...
 for /f "tokens=2 delims==" %%a in ('"Wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get name /value"') do (
-    set netcard=%%a
+    set "netcard=%%a"
 )
 for /f "tokens=2 delims==" %%a in ('"wmic cpu get numberOflogicalprocessors /value"') do (
     set corenum=%%a
-    set /a tghs=corenum*2+4+2
+    set /a "tghs=corenum*2+4+2"
 )
 for /f "tokens=2 delims==" %%a in ('"wmic cpu get name /value"') do (
-    set cpu=%%a
+    set "cpu=%%a"
 )
 cls
 :23-1-1
@@ -2024,13 +1563,13 @@ cls
 set xh=
 for /f "tokens=2 delims==" %%a in ('"Wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get BytesReceivedPersec^,BytesSentPersec /value"') do (
     set /a "xh+=1"
-    if !xh! equ 1 (
-        set downspeed=%%a
+    if "!xh!" equ "1" (
+        set "downspeed=%%a"
 	)
-    if !xh! equ 2 (
-        set upspeed=%%a
+    if "!xh!" equ "2" (
+        set "upspeed=%%a"
         for /f "skip=%tghs% tokens=2 delims==" %%a in ('"Wmic Path Win32_PerfFormattedData_PerfOS_Processor Get PercentIdleTime /value"') do (
-            set /a lyl=100-%%a
+            set /a "lyl=100-%%a"
 		)
 	)
 )
@@ -2062,7 +1601,7 @@ echo;___________________________________________________________________________
 echo;按e返回菜单
 set /p =!cswz!s!cswz!0;0H<nul
 choice /c 1e /t 1 /d 1 >nul
-if "!errorlevel!" equ ="2" goto 23
+if "!errorlevel!" equ "2" goto 23
 goto 23-1-1
 )
 :24
@@ -2325,9 +1864,20 @@ cls
 echo 检测Everything的安装路径与运行状态...
 set flag=
 set flag1=rem
-for /f "delims=" %%a in ('"reg query "HKEY_LOCAL_MACHINE\SOFTWARE\voidtools\Everything" /v InstallLocation|find "InstallLocation""') do (set EverythingInstallPath=%%a)
-if "%system:~8,2%"=="XP" (set EverythingInstallPath=%EverythingInstallPath:~27%) else (set EverythingInstallPath=%EverythingInstallPath:~33%)
-if exist "%EverythingInstallPath%\Everything.exe" (tasklist /fi "status eq running" /fi "username eq "%username%"" /fi "imagename eq everything.exe"|find /i "Everything.exe"&&if exist "%EverythingInstallPath%\es.exe" set flag=rem&set flag1=)
+for /f "delims=" %%a in ('"reg query "HKEY_LOCAL_MACHINE\SOFTWARE\voidtools\Everything" /v InstallLocation|find "InstallLocation""') do (
+	set "EverythingInstallPath=%%a"
+)
+if "!system:~8,2!"=="XP" (
+	set "EverythingInstallPath=!EverythingInstallPath:~27!"
+) else (
+	set "EverythingInstallPath=!EverythingInstallPath:~33!"
+)
+if exist "%EverythingInstallPath%\Everything.exe" (
+	tasklist /fi "status eq running" /fi "username eq "%username%"" /fi "imagename eq everything.exe"|find /i "Everything.exe"&&if exist "%EverythingInstallPath%\es.exe" (
+		set flag=rem
+		set flag1=
+	)
+)
 cls
 echo 注意:如果对系统盘进行操作可能会被杀毒软件拦截
 echo _______________________________________________________________________________
@@ -2340,7 +1890,9 @@ set caozuo|findstr /i "\<[a-z]\>">nul
 if "%errorlevel%" neq "0" goto 28-1
 cls
 echo 正在搜索空文件夹...     文件越多搜索时间越长
-%flag% for /f "delims=" %%o in ('"dir/a/s/b/ad-l %caozuo%:|sort/r"') do rd/q "%%o"2>nul&&echo 已删除空文件夹%%o
+%flag% for /f "delims=" %%o in ('"dir/a/s/b/ad-l %caozuo%:|sort/r"') do (
+	rd/q "%%o"2>nul&&echo 已删除空文件夹%%o
+)
 rem %flag1% for /f "delims=" %%o in ('""%EverythingInstallPath%\es.exe" -sort path-descending /ad-l %caozuo%:"') do rd/q "%%o"2>nul&&echo 已删除空文件夹%%o
 :loop1
 %flag1% set empty=0
@@ -2403,49 +1955,49 @@ title 硬件检测%system%
 cls
 set systemstarttime=
 for /f "skip=2 tokens=2 delims==" %%a in ('Wmic OS Get LastBootUpTime /value') do (
-    set systemstarttime=%%a
+    set "systemstarttime=%%a"
     echo;系统启动时间:	!systemstarttime:~0,4!年!systemstarttime:~4,2!月!systemstarttime:~6,2!日 !systemstarttime:~8,2!:!systemstarttime:~10,2!:!systemstarttime:~12,2!
     echo;
 )
 set systeminstalltime=
 for /f "skip=2 tokens=2 delims==" %%a in ('Wmic OS Get InstallDate /value') do (
-    set systeminstalltime=%%a
+    set "systeminstalltime=%%a"
     echo;系统安装日期:	!systeminstalltime:~0,4!年!systeminstalltime:~4,2!月!systeminstalltime:~6,2!日 !systeminstalltime:~8,2!:!systeminstalltime:~10,2!:!systeminstalltime:~12,2!
     echo;
 )
-for /f "delims== tokens=2" %%a in ('"wmic cpu get name/value"') do set cpu=%%a
+for /f "delims== tokens=2" %%a in ('"wmic cpu get name/value"') do (set "cpu=%%a")
 echo CPU: 		%cpu%
 echo;
-for /f "delims== tokens=2" %%a in ('"wmic cpu get processorid/value"') do set cpuid=%%a
+for /f "delims== tokens=2" %%a in ('"wmic cpu get processorid/value"') do (set "cpuid=%%a")
 echo CPU ID: 	%cpuid%
 echo;
-for /f "delims== tokens=2" %%a in ('"wmic cpu get numberofcores/value"') do set cpuhx=%%a
-for /f "delims== tokens=2" %%a in ('"wmic cpu get numberOflogicalprocessors/value"') do set cpuxc=%%a
+for /f "delims== tokens=2" %%a in ('"wmic cpu get numberofcores/value"') do (set "cpuhx=%%a")
+for /f "delims== tokens=2" %%a in ('"wmic cpu get numberOflogicalprocessors/value"') do (set "cpuxc=%%a")
 echo 		%cpuhx%核心%cpuxc%线程
 echo;
-for /f "delims== tokens=2" %%a in ('"wmic cpu get currentclockspeed/value"') do set cpuzp=%%aMHz
+for /f "delims== tokens=2" %%a in ('"wmic cpu get currentclockspeed/value"') do (set "cpuzp=%%aMHz")
 echo 主频: 		%cpuzp%
 echo;
-for /f "delims== tokens=2" %%a in ('"wmic cpu get datawidth/value"') do set cpuws=%%abit
+for /f "delims== tokens=2" %%a in ('"wmic cpu get datawidth/value"') do (set "cpuws=%%abit")
 echo 数据位宽: 	%cpuws%
 echo;
-for /f "delims== tokens=2" %%a in ('"wmic cpu get extclock/value"') do set cpuwp=%%aMHz
+for /f "delims== tokens=2" %%a in ('"wmic cpu get extclock/value"') do (set "cpuwp=%%aMHz")
 echo 外频: 		%cpuwp%
 echo;
 set ch=
 for /f "skip= 2 tokens=2 delims==" %%a in ('"wmic path win32_cachememory get maxcachesize/value"') do (
     set /a "ch+=1"
-    if !ch! equ 1 (
-        set /a cpul1=%%a
+    if "!ch!" equ "1" (
+        set /a "cpul1=%%a"
 	) else (
-        if !ch! equ 2 (
-            set /a cpul2=%%a
+        if "!ch!" equ "2" (
+            set /a "cpul2=%%a"
 		) else (
-            if !ch! equ 3 (
-                set /a cpul3=%%a
+            if "!ch!" equ "3" (
+                set /a "cpul3=%%a"
 			) else (
-                if !ch! equ 4 (
-                    set /a cpul4=%%a
+                if "!ch!" equ "4" (
+                    set /a "cpul4=%%a"
 				)
 			)
 		)
@@ -2482,11 +2034,12 @@ rem set cpul3|findstr "\<[0-9]*\>">nul
 rem if "%errorlevel%" equ "0" call :dwjs %cpul3% 1
 rem echo 三级缓存: 	%size% %dw%)
 echo _______________________________________________________________________________
-set zhuban=,zhubanxh=
-for /f "delims== tokens=2" %%a in ('"wmic baseboard get manufacturer/value"') do set zhuban=%%a
+set zhuban=
+set zhubanxh=
+for /f "delims== tokens=2" %%a in ('"wmic baseboard get manufacturer/value"') do (set "zhuban=%%a")
 echo 主板制造商: 	%zhuban%
 echo;
-for /f "delims== tokens=2" %%a in ('"wmic baseboard get product/value"') do set zhubanxh=%%a
+for /f "delims== tokens=2" %%a in ('"wmic baseboard get product/value"') do (set "zhubanxh=%%a")
 echo 主板型号: 	%zhubanxh%
 echo;
 set zbuuid=
@@ -2494,61 +2047,69 @@ for /f "skip=2 tokens=2 delims==" %%a in ('Wmic Csproduct Get Uuid /Value') do (
     echo;主板UUID:	%%a
     echo;
 )
-set bioszzs=,biosbb=,bioszzrq
-for /f "delims== tokens=2" %%a in ('"wmic bios get manufacturer/value"') do set bioszzs=%%a
+set bioszzs=
+set biosbb=
+set bioszzrq=
+for /f "delims== tokens=2" %%a in ('"wmic bios get manufacturer/value"') do (set "bioszzs=%%a")
 echo BIOS制造商: 	%bioszzs%
 echo;
-for /f "delims== tokens=2" %%a in ('"wmic bios get smbiosbiosversion/value"') do set biosbb=%%a
+for /f "delims== tokens=2" %%a in ('"wmic bios get smbiosbiosversion/value"') do (set "biosbb=%%a")
 echo BIOS版本: 	%biosbb%
 echo;
-for /f "delims== tokens=2" %%a in ('"wmic bios get releasedate/value"') do set bioszzrq=%%a
+for /f "delims== tokens=2" %%a in ('"wmic bios get releasedate/value"') do (set "bioszzrq=%%a")
 echo BIOS制造日期: 	%bioszzrq:~0,4%年%bioszzrq:~4,2%月%bioszzrq:~6,2%日
 echo _______________________________________________________________________________
 set xsqxh=,xsqzzs=,fbl1=,fbl2=
-for /f "delims== tokens=2" %%a in ('"wmic desktopmonitor get name/value"') do set xsqxh=%%a
+for /f "delims== tokens=2" %%a in ('"wmic desktopmonitor get name/value"') do (set "xsqxh=%%a")
 echo 显示器型号: 	%xsqxh%
 echo;
-for /f "delims== tokens=2" %%a in ('"wmic desktopmonitor get monitormanufacturer/value"') do set xsqzzs=%%a
+for /f "delims== tokens=2" %%a in ('"wmic desktopmonitor get monitormanufacturer/value"') do (set "xsqzzs=%%a")
 echo 显示器制造商: 	%xsqzzs%
 echo;
-for /f "delims== tokens=2" %%a in ('"wmic path win32_videocontroller get currenthorizontalresolution/value"') do set fbl1=%%a
-for /f "delims== tokens=2" %%a in ('"wmic path win32_videocontroller get currentverticalresolution/value"') do set fbl2=%%a
+for /f "delims== tokens=2" %%a in ('"wmic path win32_videocontroller get currenthorizontalresolution/value"') do (set "fbl1=%%a")
+for /f "delims== tokens=2" %%a in ('"wmic path win32_videocontroller get currentverticalresolution/value"') do (set "fbl2=%%a")
 echo 分辨率: 	%fbl1% x %fbl2%
 echo _______________________________________________________________________________
-set xkxc=,xsms=,sxl=,qdrq=,qdbb=
-set /p =显卡: 		<nul&for /f "delims=" %%a in ('"wmic path win32_videocontroller get name|find /i /v "name""') do echo %%a|find /i /v "echo"
-for /f "delims== tokens=2" %%a in ('"wmic path win32_videocontroller get adapterram/value"') do set xkxc=%%a
+set xkxc=
+set xsms=
+set sxl=
+set qdrq=
+set qdbb=
+set /p =显卡: 		<nul&for /f "delims=" %%a in ('"wmic path win32_videocontroller get name|find /i /v "name""') do (echo %%a|find /i /v "echo")
+for /f "delims== tokens=2" %%a in ('"wmic path win32_videocontroller get adapterram/value"') do (set "xkxc=%%a")
 call :xdwjs %xkxc% b dw
 echo;
 echo 显存容量: 	%dw%
 echo;
-for /f "delims== tokens=2" %%a in ('"wmic path win32_videocontroller get videomodedescription/value"') do set xsms=%%a
+for /f "delims== tokens=2" %%a in ('"wmic path win32_videocontroller get videomodedescription/value"') do (set "xsms=%%a")
 echo 当前显示模式: 	%xsms%
 echo;
-for /f "delims== tokens=2" %%a in ('"wmic path win32_videocontroller get currentrefreshrate/value"') do set sxl=%%aHz
+for /f "delims== tokens=2" %%a in ('"wmic path win32_videocontroller get currentrefreshrate/value"') do (set "sxl=%%aHz")
 echo 当前刷新率: 	%sxl%
 echo;
-for /f "delims== tokens=2" %%a in ('"wmic path win32_videocontroller get driverdate/value"') do set qdrq=%%a
+for /f "delims== tokens=2" %%a in ('"wmic path win32_videocontroller get driverdate/value"') do (set "qdrq=%%a")
 echo 驱动日期: 	%qdrq:~0,4%年%qdrq:~4,2%月%qdrq:~6,2%日
 echo;
-for /f "delims== tokens=2" %%a in ('"wmic path win32_videocontroller get driverversion/value"') do set qdbb=%%a
+for /f "delims== tokens=2" %%a in ('"wmic path win32_videocontroller get driverversion/value"') do (set "qdbb=%%a")
 echo 驱动版本: 	%qdbb%
 echo _______________________________________________________________________________
 echo 硬盘型号:
-for /f "delims=" %%a in ('"wmic diskdrive get model|find /i /v "model""') do echo %%a|find /i /v "echo"
+for /f "delims=" %%a in ('"wmic diskdrive get model|find /i /v "model""') do (echo %%a|find /i /v "echo")
 echo;
 echo 接口类型:
-for /f "delims=" %%a in ('"wmic diskdrive get interfacetype|find /i /v "interfacetype""') do echo %%a|find /i /v "echo"
+for /f "delims=" %%a in ('"wmic diskdrive get interfacetype|find /i /v "interfacetype""') do (echo %%a|find /i /v "echo")
 echo;
 echo 硬盘容量:
-for /f "delims=" %%a in ('"wmic diskdrive get size|find /i /v "size""') do (call :xdwjs %%a b dw
-if "!dw!" neq "0" echo !dw!)
+for /f "delims=" %%a in ('"wmic diskdrive get size|find /i /v "size""') do (
+	call :xdwjs %%a b dw
+	if "!dw!" neq "0" echo !dw!
+)
 echo;
 echo 总扇区数:
-for /f "delims=" %%a in ('"wmic diskdrive get totalsectors|find /i /v "totalsectors""') do echo %%a|find /i /v "echo"
+for /f "delims=" %%a in ('"wmic diskdrive get totalsectors|find /i /v "totalsectors""') do (echo %%a|find /i /v "echo")
 echo;
 echo 分区数:
-for /f "delims=" %%a in ('"wmic diskdrive get partitions|find /i /v "partitions""') do echo %%a|find /i /v "echo"
+for /f "delims=" %%a in ('"wmic diskdrive get partitions|find /i /v "partitions""') do (echo %%a|find /i /v "echo")
 fsutil fsinfo drives
 wmic logicaldisk get name,volumename,description,filesystem,size,freespace
 echo _______________________________________________________________________________
@@ -2559,15 +2120,15 @@ echo 打印机型号:
 for /f "delims== tokens=2" %%a in ('"Wmic Printer where "Default^='TRUE'" get drivername /value"') do (echo %%a)
 echo;
 echo 声卡:
-for /f "delims=" %%a in ('"wmic sounddev get name|find /i /v "name""') do echo %%a|find /i /v "echo"
+for /f "delims=" %%a in ('"wmic sounddev get name|find /i /v "name""') do (echo %%a|find /i /v "echo")
 echo;
 echo 网卡:
 for /f "delims== tokens=2" %%a in ('"Wmic Path Win32_NetworkAdapterConfiguration WHERE "IPEnabled^='TRUE'" get description /value"') do (echo %%a)
 echo;
 set netspeed=
 for /f "skip=2 tokens=2 delims==" %%a in ('Wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get CurrentBandwidth /value') do (
-    set netspeed=%%a
-    set /a "netspeed=netspeed/1000000"
+    set "netspeed=%%a"
+    set /a "netspeed/=1000000"
     echo;当前网络连接速度:      !netspeed! Mbps
     echo;
 )
@@ -2583,28 +2144,42 @@ for /f "tokens=2 delims==" %%a in ('Wmic Path Win32_NetworkAdapterConfiguration 
 )
 echo;
 echo IP:
-if exist %systemroot%\system32\curl.exe (ping /n 1 www.baidu.com>nul&&curl 4.ipw.cn) else (for /f "skip=12 tokens=4 delims=: " %%a in ('"netsh interface Teredo show state"') do (echo %%a))
+if exist %systemroot%\system32\curl.exe (
+	ping /n 1 www.baidu.com>nul&&curl 4.ipw.cn
+) else (
+	for /f "skip=12 tokens=4 delims=: " %%a in ('"netsh interface Teredo show state"') do (
+		echo %%a
+	)
+)
 echo;
-for /f "delims== tokens=2" %%a in ('"Wmic Path Win32_NetworkAdapterConfiguration WHERE "IPEnabled^='TRUE'" get ipaddress /value"') do (set ipdz=%%a
-set ipdz=!ipdz:{=!
-set ipdz=!ipdz:}=!
-set ipdz=!ipdz:"=!
-set ipdz=!ipdz:,=	!
-echo !ipdz!)
+for /f "delims== tokens=2" %%a in ('"Wmic Path Win32_NetworkAdapterConfiguration WHERE "IPEnabled^='TRUE'" get ipaddress /value"') do (
+	set "ipdz=%%a"
+	set "ipdz=!ipdz:{=!"
+	set "ipdz=!ipdz:}=!"
+	set "ipdz=!ipdz:"=!"
+	set "ipdz=!ipdz:,=	!"
+	echo !ipdz!
+)
 echo;
 echo MAC:
-for /f "delims== tokens=2" %%a in ('"Wmic Path Win32_NetworkAdapterConfiguration WHERE "IPEnabled^='TRUE'" get macaddress /value"') do (set macdz=%%a
-set macdz=!macdz:{=!
-set macdz=!macdz:}=!
-set macdz=!macdz:"=!
-echo !macdz!)
+for /f "delims== tokens=2" %%a in ('"Wmic Path Win32_NetworkAdapterConfiguration WHERE "IPEnabled^='TRUE'" get macaddress /value"') do (
+	set "macdz=%%a"
+	set "macdz=!macdz:{=!"
+	set "macdz=!macdz:}=!"
+	set "macdz=!macdz:"=!"
+	echo !macdz!
+)
 echo _______________________________________________________________________________
 echo 内存容量:
-for /f "delims== tokens=2" %%a in ('"wmic memorychip get capacity /value"') do (call :xdwjs %%a b dw
-if "!dw!" neq "0" echo !dw!)
+for /f "delims== tokens=2" %%a in ('"wmic memorychip get capacity /value"') do (
+	call :xdwjs %%a b dw
+	if "!dw!" neq "0" (echo !dw!)
+)
 echo 内存频率:
-for /f "delims== tokens=2" %%a in ('"wmic memorychip get speed /value"') do (set ncpl=%%a
-echo !ncpl:~0,-1! MHz)
+for /f "delims== tokens=2" %%a in ('"wmic memorychip get speed /value"') do (
+	set "ncpl=%%a"
+	echo !ncpl:~0,-1! MHz
+)
 systeminfo|find /i "内存"
 echo _______________________________________________________________________________
 mode
@@ -2735,7 +2310,7 @@ set txnrrq=
 set/p txnrrq=请设置提醒日期(格式: yyyy/mm/dd 例如2015/08/05):
 echo _______________________________________________________________________________
 set txnrsj=
-set/p txnrsj=请设置提醒时间(格式: hh:mm:ss 例如09:03:05):
+set/p txnrsj=请设置提醒时间(格式: hh:mm:ss 例如09:3:5):
 cls
 md %systemdrive%\DOS工具箱临时目录>nul 2>nul
 echo 该文件夹是DOS工具箱的临时文件夹,删除后将无法提醒已有的内容！>%systemdrive%\DOS工具箱临时目录\说明.txt
@@ -2769,7 +2344,7 @@ set dsyxrq=
 set/p dsyxrq=请设置提醒日期(格式: yyyy/mm/dd 例如2015/08/05):
 echo _______________________________________________________________________________
 set dsyxsj=
-set/p dsyxsj=请设置提醒时间(格式: hh:mm:ss 例如09:03:05):
+set/p dsyxsj=请设置提醒时间(格式: hh:mm:ss 例如09:3:5):
 cls
 md %systemdrive%\DOS工具箱临时目录>nul 2>nul
 echo 该文件夹是DOS工具箱的临时文件夹,删除后将无法提醒已有的内容！>%systemdrive%\DOS工具箱临时目录\说明.txt
@@ -2807,10 +2382,10 @@ cls
 echo 计时器精确度0.01秒
 echo _______________________________________________________________________________
 echo 按任意键开始计时(不建议跨天计时)&pause>nul
-set kssjbk=%time%
+set "kssjbk=%time%"
 cls
 echo 计时器已开始计时,按任意键停止计时.&pause>nul
-set jssjbk=%time%
+set "jssjbk=%time%"
 call :sjc "%kssjbk%" "%jssjbk%"
 cls
 echo 计时开始时间:%kssjbk%
@@ -2829,10 +2404,12 @@ set mmjs=aA0bB1cC2dD3eE4fF5gG6hH7iI8jJ9kK0lL1mM2nN3oO4pP5qQ6rR7sS8tT9uU0vV1wW2xX
 set/p mmws=请输入生成的密码位数:
 :34(1)
 cls
-for /l %%a in (1,1,%mmws%) do (set/a mmxz=!random!%%63
-for %%b in (!mmxz!) do set mmjg=!mmjg!!mmjs:~%%b,1!)
+for /l %%a in (1,1,!mmws!) do (
+	set/a "mmxz=!random!%%63"
+	for %%b in (!mmxz!) do (set "mmjg=!mmjg!!mmjs:~%%b,1!")
+)
 echo 已生成的随机密码:
-echo %mmjg%
+echo !mmjg!
 echo _______________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
 goto memuv2
@@ -2991,21 +2568,20 @@ echo msgbox %vbsbds%,"65","VBS计算器">%systemdrive%\windows\temp.vbs
 del/f/q %systemdrive%\windows\temp.vbs
 goto vbsjsq
 :guanyu
-title 关于DOS工具箱%system%%gxflag%
-if %daxiao%==%versize% set daxiao1=%daxiao%字节
-if %daxiao% neq %versize% set daxiao1=%daxiao%字节  (文件大小异常,可能已被修改)
-set dosjssj=%time%
-call :sjc "%dosqssj%" "%dosjssj%"
+title 关于DOS工具箱%system%
+if "!daxiao!" equ "!versize!" (set "daxiao1=!daxiao!字节")
+if "!daxiao!" neq "!versize!" (set "daxiao1=!daxiao!字节  (文件大小异常,可能已被修改)")
+call :sjc "!dosqssj!" "!time!"
 cls
 echo 关于DOS工具箱
 echo _______________________________________________________________________________
-echo 版本: 		1.9.3 (%ver%.%versize%)
-echo 操作系统: 	%system:~3% %bit%位
-echo 版权所有 	2012-2024 Administrator 保留所有权利
+echo 版本: 		1.9.3 (!ver!.!versize!)
+echo 操作系统: 	!system:~3! !bit!位
+echo 版权所有 	2012-2025 Administrator 保留所有权利
 echo _______________________________________________________________________________
-echo 本次已运行:		%sjc:~0,2%时%sjc:~2,2%分%sjc:~4,2%.%sjc:~6,2%秒
-echo DOS工具箱所在路径:	%weizhi%
-echo 文件大小:		%daxiao1%
+echo 本次已运行:		!sjc:~0,2!时!sjc:~2,2!分!sjc:~4,2!.!sjc:~6,2!秒
+echo DOS工具箱所在路径:	!weizhi!
+echo 文件大小:		!daxiao1!
 echo _______________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
 if "!tzwz!" equ "!start!" (goto memuv2) else (goto !tzwz!)
@@ -3018,7 +2594,9 @@ echo F=显示下个文件,Q=退出,等号显示行数,空格显示下一页,回车显示下一行
 echo _______________________________________________________________________________
 set wenben=
 set/p wenben=拖动需要显示的文件到此窗口:
-if "%wenben:~0,1%%wenben:~-1%" neq """" for /f "delims=" %%a in ('"echo %wenben%"') do (set %wenben%="%%~a")
+if "%wenben:~0,1%%wenben:~-1%" neq """" (
+	for /f "delims=" %%a in ('"echo %wenben%"') do (set %wenben%="%%~a")
+)
 echo _______________________________________________________________________________
 more/e/p "%wenben%"
 echo _______________________________________________________________________________
@@ -3396,14 +2974,14 @@ set chmcglj=
 set chmcglj=%%~na
 copy/y "%chmlj%" %systemdrive%\windows\temp\tmp.chm
 hh -decompile %systemdrive%\windows\temp\chm %systemdrive%\windows\temp\tmp.chm
-md "%zmlj%%%~na"
-xcopy/c/e/y %systemdrive%\windows\temp\chm "%zmlj%%%~na"
+md "%zmlj%\%%~na"
+xcopy/c/e/y %systemdrive%\windows\temp\chm "%zmlj%\%%~na"
 rd/s/q %systemdrive%\windows\temp\chm
 del/f/q %systemdrive%\windows\temp\tmp.chm)
 :chmcg
 cls
 echo 反编译成功！
-echo 以保存到%zmlj%%chmcglj%
+echo 以保存到%zmlj%\%chmcglj%
 echo _______________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
 goto memuv2
@@ -3454,11 +3032,11 @@ goto memuv2
 title 将文字写入剪切板%system%
 set nz=
 cls
-set/p  nz=请输入要写入到剪切板的文字内容:
-mshta vbscript:clipboardData.SetData("text","%nz%")(window.close)
-if %errorlevel%==0 (set nz=0) else (set nz=1)
+set /p "nz=请输入要写入到剪切板的文字内容:"
+mshta vbscript:clipboardData.SetData("text","!nz!")(window.close)
+if "!errorlevel!" equ "0" (set nz=0) else (set nz=1)
 echo _______________________________________________________________________________
-if %nz%==0 (echo 写入成功) else (echo 写入失败)
+if "!nz!" equ "0" (echo 写入成功) else (echo 写入失败)
 set /p =按任意键返回菜单<nul&pause>nul
 goto memuv2
 :52
@@ -3469,42 +3047,52 @@ goto memuv2
 cls
 title 已知年月日计算星期%system%
 set jsxq=00000000
-set/p jsxq=请输入年月日(例如20150605):
-for /f "delims=0123456789" %%a in ('echo %jsxq%') do goto wstg3
-for /l %%a in (0,1,1000) do if "!jsxq:~%%a,1!"=="" set b=%%a&&goto wstg2
+set /p "jsxq=请输入年月日(例如20150605):"
+for /f "delims=0123456789" %%a in ('echo !jsxq!') do (goto wstg3)
+for /l %%a in (0,1,1000) do (if "!jsxq:~%%a,1!" equ "" (set "b=%%a"&&goto wstg2))
 :wstg2
-if %b%==8 goto jsxq
+if "!b!" equ "8" (goto jsxq)
 :wstg3
 echo 请输入正确的格式!
 ping/n 2 0.0>nul
 goto 53
 :jsxq
-set y=%jsxq:~0,4%
-if %y% lss 10 set/a y=0x%y%
-set m=%jsxq:~4,2%
-if %m% lss 10 set/a m=0x%m%
-if %m%==1 set m=13&set/a y=%y%-1
-if %m%==2 set m=14&set/a y=%y%-1
-set d=%jsxq:~6,2%
-if %d% lss 10 set/a d=0x%d%
-set/a d=%d%+1
-set/a w=%d%+2*%m%+3*(%m%+1)/5+%y%+%y%/4-%y%/100+%y%/400
-set/a w=%w%%%7
-set/a rn1=%y%%%4
-set/a rn2=%y%%%100
-set/a rn3=%y%%%400
+set "y=!jsxq:~0,4!"
+if !y! lss 10 (set /a "y=0x!y!")
+set "m=!jsxq:~4,2!"
+if !m! lss 10 (set /a "m=0x!m!")
+if "!m!" equ "1" (
+	set m=13
+	set /a "y-=1"
+)
+if "!m!" equ "2" (
+	set m=14
+	set /a "y-=1"
+)
+set "d=!jsxq:~6,2!"
+if !d! lss 10 (set /a "d=0x!d!")
+set /a "d+=1"
+set /a "w=d+2*m+3*(m+1)/5+y+y/4-y/100+y/400"
+set /a "w=w%%7"
+set /a "rn1=y%%4"
+set /a "rn2=y%%100"
+set /a "rn3=y%%400"
 set rn=平年
-if %rn1%==0 if %rn2% neq 0 set rn=闰年
-if %rn2%==0 if %rn3%==0 set rn=闰年
-if %w%==1 set w=一
-if %w%==2 set w=二
-if %w%==3 set w=三
-if %w%==4 set w=四
-if %w%==5 set w=五
-if %w%==6 set w=六
-if %w%==0 set w=天
+if "!rn1!" equ "0" (
+	if "!rn2!" neq "0" (set rn=闰年)
+)
+if "!rn2!" equ "0" (
+	if "!rn3!" equ "0" (set rn=闰年)
+)
+if "!w!" equ "1" (set w=一)
+if "!w!" equ "2" (set w=二)
+if "!w!" equ "3" (set w=三)
+if "!w!" equ "4" (set w=四)
+if "!w!" equ "5" (set w=五)
+if "!w!" equ "6" (set w=六)
+if "!w!" equ "0" (set w=天)
 echo;
-echo %rn% %jsxq:~0,4%年%jsxq:~4,2%月%jsxq:~6,2%日是星期%w%
+echo !rn! !jsxq:~0,4!年!jsxq:~4,2!月!jsxq:~6,2!日是星期!w!
 echo _______________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
 goto memuv2
@@ -3559,9 +3147,9 @@ goto memuv2
 cls
 title 字数统计%system%
 set zstj=
-set/p zstj=请输入文字:
-call :zfccd "%zstj%"
-echo 总计%zfcgs%个字(包含标点符号)
+set /p "zstj=请输入文字:"
+call :zfccd "!zstj!"
+echo 总计!zfcgs!个字(包含标点符号)
 echo _______________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
 goto memuv2
@@ -3659,9 +3247,11 @@ goto 61
 title 创建盘符(创建卷装入点)%system%
 cls
 set xx1=0
-for /f "delims=" %%a in ('"mountvol|find "\\?\Volume""') do (set/a xx1=!xx1!+1
-set b!xx1!=%%a
-echo [!xx1!]%%a)
+for /f "delims=" %%a in ('"mountvol|find "\\?\Volume""') do (
+	set /a "xx1+=1"
+	set "b!xx1!=%%a"
+	echo [!xx1!]%%a
+)
 echo [0]返回上级菜单
 echo _______________________________________________________________________________
 set cjpf=
@@ -4130,7 +3720,7 @@ for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\W
 	)
 )
 echo 下载汇率文件(总共13个文件)...
-if not exist "%temp%\down" ( md "%temp%\down" ) 
+if not exist "%temp%\down" (md "%temp%\down") 
 if exist "%systemroot%\system32\curl.exe" (
 	pushd "%temp%\down"
 	curl !proxy! !doh! -A "!ua!" -# -Z -C - --retry 2 --retry-delay 1 --connect-timeout 5 ^
@@ -4169,7 +3759,7 @@ echo 处理汇率文件...
 for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\cny.json") do (
 	set "cnytousd=%%a"
 )
-if not defined cnytousd ( set "cnytousd=1" )
+if not defined cnytousd (set "cnytousd=1")
 set "cnytousd=%cnytousd:"=%"
 for /f "usebackq delims=:, tokens=19,21" %%a in ("%temp%\down\doge.json") do (
 	set "dogetousd=%%a"
@@ -4231,26 +3821,26 @@ for /f "delims=. tokens=1,2" %%a in ('"echo;%file24h%"') do (
 	set "file24h2=%%b"
 )
 set "file24h=%file24h1%.%file24h2:~0,3%"
-for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\au.json") do ( set "autousd=%%a" )
-if not defined autousd ( set "autousd=1" )
+for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\au.json") do (set "autousd=%%a")
+if not defined autousd (set "autousd=1")
 set "autousd=%autousd:"=%"
-for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\ag.json") do ( set "agtousd=%%a" )
-if not defined agtousd ( set "agtousd=1" )
+for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\ag.json") do (set "agtousd=%%a")
+if not defined agtousd (set "agtousd=1")
 set "agtousd=%agtousd:"=%"
-for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\eur.json") do ( set "eurtousd=%%a" )
-if not defined eurtousd ( set "eurtousd=1" )
+for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\eur.json") do (set "eurtousd=%%a")
+if not defined eurtousd (set "eurtousd=1")
 set "eurtousd=%eurtousd:"=%"
-for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\gbp.json") do ( set "gbptousd=%%a" )
-if not defined gbptousd ( set "gbptousd=1" )
+for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\gbp.json") do (set "gbptousd=%%a")
+if not defined gbptousd (set "gbptousd=1")
 set "gbptousd=%gbptousd:"=%"
-for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\jpy.json") do ( set "jpytousd=%%a" )
-if not defined jpytousd ( set "jpytousd=1" )
+for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\jpy.json") do (set "jpytousd=%%a")
+if not defined jpytousd (set "jpytousd=1")
 set "jpytousd=%jpytousd:"=%"
-for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\hkd.json") do ( set "hkdtousd=%%a" )
-if not defined hkdtousd ( set "hkdtousd=1" )
+for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\hkd.json") do (set "hkdtousd=%%a")
+if not defined hkdtousd (set "hkdtousd=1")
 set "hkdtousd=%hkdtousd:"=%"
-for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\twd.json") do ( set "twdtousd=%%a" )
-if not defined twdtousd ( set "twdtousd=1" )
+for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\twd.json") do (set "twdtousd=%%a")
+if not defined twdtousd (set "twdtousd=1")
 set "hkdtousd=%hkdtousd:"=%"
 for /f "usebackq delims=:, tokens=19,21" %%a in ("%temp%\down\xmr.json") do (
 	set "xmrtousd=%%a"
@@ -4535,29 +4125,48 @@ goto memuv2
 :72
 title curl多进程下载%system%
 cls
-if not exist %systemroot%\system32\curl.exe (
-if not exist .\curl.exe (echo 没有找到curl.exe&timeout /t 2 /nobreak>nul&&goto memuv2))
+if not exist "%systemroot%\system32\curl.exe" (
+	if not exist .\curl.exe (
+		echo 没有找到curl.exe
+		timeout /t 2 /nobreak>nul
+		goto memuv2
+	)
+)
 :72.1
 cls
 set filename=
 set url=
-set /p url=输入下载链接(e=返回): 
-if not defined url echo 链接不能为空!&timeout /t 2 /nobreak>nul&&goto 72.1
-if "!url!" equ "e" goto memuv2
+set /p "url=输入下载链接(e=返回): "
+if not defined url (
+	echo 链接不能为空!
+	timeout /t 2 /nobreak>nul
+	goto 72.1
+)
+if "!url!" equ "e" (goto memuv2)
 set tr=
-set /p tr=输入下载进程数(默认16): 
-if not defined tr set tr=16
+set /p "tr=输入下载进程数(默认16): "
+if not defined tr (set tr=16)
 set tr|findstr "\<[0-9]*\>">nul
-if !errorlevel! neq 0 (echo 只能输入数字!&timeout /t 2 /nobreak>nul&&goto 72.1)
+if "!errorlevel!" neq "0" (
+	echo 只能输入数字!
+	timeout /t 2 /nobreak>nul
+	goto 72.1
+)
 set dir=
-set /p dir=输入保存路径(默认当前DOS工具箱所在路径): 
-if not defined dir (for /f "delims=" %%a in ("!weizhi!") do (set dir=%%~dpa))
-if not exist "!dir!" (echo 路径 !dir! 不存在&timeout /t 2 /nobreak>nul&goto 72.1)
+set /p "dir=输入保存路径(默认当前DOS工具箱所在路径): "
+if not defined dir (
+	for /f "delims=" %%a in ("!weizhi!") do (set "dir=%%~dpa")
+)
+if not exist "!dir!" (
+	echo 路径 !dir! 不存在
+	timeout /t 2 /nobreak>nul
+	goto 72.1
+)
 dir /ad !dir!>nul 2>nul||echo 路径 !dir! 不是一个文件夹&&timeout /t 2 /nobreak>nul&&goto 72.1
 cls
 echo 开始获取文件信息...
 set filename=
-if exist %temp%\tag (del /f /q tag)
+if exist "%temp%\tag" (del /f /q tag)
 for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
 	if "%%a" equ "0x1" (
 		for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
@@ -4568,31 +4177,31 @@ for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\W
 		set proxy=
 	)
 )
-curl !proxy! !doh! -A "!ua!" -I -# -L -o tag --connect-timeout 5 --output-dir %temp% "!url!"
-if not exist %temp%\tag (
+curl !proxy! !doh! -A "!ua!" -I -# -L -o tag --connect-timeout 5 --output-dir "%temp%" "!url!"
+if not exist "%temp%\tag" (
 echo;_______________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
 goto memuv2
 )
-for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Accept-Ranges:"') do (set trflag=%%a)
-for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Content-Length:"') do (set filesize=%%a)
-for /f "tokens=2 delims==" %%a in ('type %temp%\tag^|findstr /c:"filename="') do (set filename=%%a)
+for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Accept-Ranges:"') do (set "trflag=%%a")
+for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Content-Length:"') do (set "filesize=%%a")
+for /f "tokens=2 delims==" %%a in ('type %temp%\tag^|findstr /c:"filename="') do (set "filename=%%a")
 if "!trflag!" neq "bytes" (set tr=1)
-del /f /q %temp%\tag
+del /f /q "%temp%\tag"
 call :xdwjs !filesize! b dw
-if not defined filename (set /p filename=输入文件名: )
+if not defined filename (set /p "filename=输入文件名: ")
 if not defined filename (set filename=curl下载文件)
-set /a fd=!filesize!/!tr!
-set /a ys=%filesize%%%tr%
+set /a "fd=filesize/tr"
+set /a "ys=filesize%%tr"
 set oldfd=0
-set /a pdtr=!tr!-1
-set /a newfd=!fd!-1
-set /a pdfd=!fd!+!ys!
+set /a "pdtr=tr-1"
+set /a "newfd=fd-1"
+set /a "pdfd=fd+ys"
 set file=
-for /l %%a in (1,1,!tr!) do (set file=!file!%%a+)
+for /l %%a in (1,1,!tr!) do (set "file=!file!%%a+")
 set newtr=
-set /a newtr=!tr!+1
-set file=!file:~0,-1!
+set /a "newtr=tr+1"
+set "file=!file:~0,-1!"
 cls
 echo 文件名:		!filename!
 echo 文件大小:	!dw!
@@ -4605,9 +4214,9 @@ set /p =按任意键开始下载<nul&pause>nul
 cls
 echo;开始下载文件...
 title curl多进程下载 - 等待文件下载完成(按e返回菜单)%system%
-if exist %temp%\down (rd /s /q %temp%\down)
-md %temp%\down
-set kssj=%time%
+if exist "%temp%\down" (rd /s /q "%temp%\down")
+md "%temp%\down"
+set "kssj=%time%"
 for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
 	if "%%a" equ "0x1" (
 		for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
@@ -4619,15 +4228,15 @@ for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\W
 	)
 )
 for /l %%a in (1,1,!tr!) do (
-	start /b curl !proxy! !doh! -s -A "!ua!" -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir %temp%\down "!url!"
-	set /a oldfd=!newfd!+1
-	if %%a equ !pdtr! (
+	start /b curl !proxy! !doh! -s -A "!ua!" -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir "%temp%\down" "!url!"
+	set /a "oldfd=newfd+1"
+	if "%%a" equ "!pdtr!" (
 		set newfd=
 	) else (
-		set /a newfd=!oldfd!+!fd!-1
+		set /a "newfd=oldfd+fd-1"
 	)
 )
-pushd %temp%\down
+pushd "%temp%\down"
 cls
 :72.2
 (
@@ -4640,41 +4249,41 @@ call :colortxt a 等待文件下载完成^(按e返回菜单^)...
 set /p =!cswz!u<nul
 )
 for /l %%a in (1,1,!tr!) do (
-	set ssdx=%%~za
+	set "ssdx=%%~za"
 	if not defined ssdx (set ssdx=0)
-	if %%a equ !tr! (
-		if !ssdx! equ !pdfd! (
+	if "%%a" equ "!tr!" (
+		if "!ssdx!" equ "!pdfd!" (
 			echo;进程%%a完成
-			set /a jccs=!jccs!+1
+			set /a "jccs+=1"
 		) else (
 			set fhz=
 			call :cf !ssdx! !pdfd! 2 fhz
-			set jcjd=!fhz:~2,2!
+			set "jcjd=!fhz:~2,2!"
 			if "!jcjd:~0,1!" equ "0" (
-				set jcjd=!jcjd:~1,1!
+				set "jcjd=!jcjd:~1,1!"
 			)
 			set jdt=
 			for /l %%c in (1,2,!jcjd!) do (
-				set jdt=!jdt!:
+				set "jdt=!jdt!:"
 			)
 			set /p =进程%%a的进度:	[<nul
 			call :colortxt a !jdt!
 			echo;][!fhz!~1]
 		)
 	) else (
-		if !ssdx! equ !fd! (
+		if "!ssdx!" equ "!fd!" (
 			echo;进程%%a完成
-			set /a jccs=!jccs!+1
+			set /a "jccs+=1"
 		) else (
 			set fhz=
 			call :cf !ssdx! !fd! 2 fhz
-			set jcjd=!fhz:~2,2!
+			set "jcjd=!fhz:~2,2!"
 			if "!jcjd:~0,1!" equ "0" (
-				set jcjd=!jcjd:~1,1!
+				set "jcjd=!jcjd:~1,1!"
 			)
 			set jdt=
 			for /l %%c in (1,2,!jcjd!) do (
-				set jdt=!jdt!:
+				set "jdt=!jdt!:"
 			)
 			set /p =进程%%a的进度:	[<nul
 			call :colortxt a !jdt!
@@ -4686,62 +4295,68 @@ choice /c 1e /t 1 /d 1 >nul
 if "!errorlevel!" equ "2" (
 	taskkill /im curl.exe /f
 	popd
-	rd /s /q %temp%\down
+	rd /s /q "%temp%\down"
 	goto memuv2
 )
-if !jccs! neq !tr! goto 72.2
-set jssj=%time%
+if "!jccs!" neq "!tr!" (goto 72.2)
+set "jssj=%time%"
 cls
 echo;合并文件中...
-if "!dir:~-1!" neq "\" (set dir=!dir!\)
+if "!dir:~-1!" neq "\" (set "dir=!dir!\")
 copy /b /z !file! "!dir!!filename!"
 popd
-rd /s /q %temp%\down
+rd /s /q "%temp%\down"
 cls
 title curl多进程下载%system%
 if exist "!dir!!filename!" (
-for /f "delims=" %%a in ("!dir!!filename!") do (
-call :sjc %kssj% %jssj%
-set xzsd=
-if "!jgxs:~0,1!" equ "0" (
-	set jgxs=!jgxs:~1,1!
+	for /f "delims=" %%a in ("!dir!!filename!") do (
+		call :sjc !kssj! !jssj!
+		set xzsd=
+		if "!jgxs:~0,1!" equ "0" (
+			set "jgxs=!jgxs:~1,1!"
+		)
+		if "!jgfen:~0,1!" equ "0" (
+			set "jgfen=!jgfen:~1,1!"
+		)
+		if "!jgm:~0,1!" equ "0" (
+			set "jgm=!jgm:~1,1!"
+		)
+		set /a "xzsd=jgxs*3600+jgfen*60+jgm"
+		set "xzsd=!xzsd!.!jghm!"
+		echo;计算下载速度...
+		call :Division !filesize! !xzsd! 3 sd
+		call :xdwjs !sd! d dw
+		forfiles /p %~dp0 /m %~nx0 /c "%comspec% /c set /p =0x07<nul"
+		cls
+		echo;下载完成
+		echo;链接:		!url!
+		echo;用时:		!jgxs!小时!jgfen!分钟!jgm!.!jghm!秒
+		echo;平均下载速度:  !size! !dw!/s
+		echo;文件:		%%~nxa
+		if %%~za geq 1024 (
+			call :xdwjs %%~za b dw
+			echo;文件大小:	%%~za字节 约!dw!
+		) else (
+			echo 文件大小:	%%~za字节
+		)
+		echo;保存路径:	%%~dpa
+	)
+) else (
+	forfiles /p %~dp0 /m %~nx0 /c "%comspec% /c set /p =0x07<nul"
+	timeout /t 1 /nobreak>nul
+	forfiles /p %~dp0 /m %~nx0 /c "%comspec% /c set /p =0x07<nul"
+	cls
+	echo;链接:	!url!
+	echo;下载失败
 )
-if "!jgfen:~0,1!" equ "0" (
-	set jgfen=!jgfen:~1,1!
-)
-if "!jgm:~0,1!" equ "0" (
-	set jgm=!jgm:~1,1!
-)
-set /a xzsd=!jgxs!*3600+!jgfen!*60+!jgm!
-set xzsd=!xzsd!.!jghm!
-echo;计算下载速度...
-for /f "delims=" %%a in ('powershell !filesize!/!xzsd!') do (call :xdwjs %%a d dw)
-forfiles /p %~dp0 /m %~nx0 /c "%comspec% /c set /p =0x07<nul"
-cls
-echo;下载完成
-echo;链接:		!url!
-echo;用时:		!jgxs!小时!jgfen!分钟!jgm!.!jghm!秒
-echo;平均下载速度:  !size! !dw!/s
-echo;文件:		%%~nxa
-if %%~za geq 1024 (
-call :xdwjs %%~za b dw
-echo;文件大小:	%%~za字节 约!dw!) else (echo 文件大小:	%%~za字节)
-echo;保存路径:	%%~dpa
-)) else (
-forfiles /p %~dp0 /m %~nx0 /c "%comspec% /c set /p =0x07<nul"
-timeout /t 1 /nobreak>nul
-forfiles /p %~dp0 /m %~nx0 /c "%comspec% /c set /p =0x07<nul"
-cls
-echo;链接:	!url!
-echo;下载失败)
 echo;_______________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
 goto memuv2
 :hash
 setlocal
-for /f "delims=" %%a in ("%1") do ( set "url=%%~a" )
+for /f "delims=" %%a in ("%1") do (set "url=%%~a")
 set "shuanfa=%2"
-if "!shuanfa!" equ "" ( set "shuanfa=sha256" )
+if "!shuanfa!" equ "" (set "shuanfa=sha256")
 for /f "skip=1 eol=C" %%a in ('"certutil -hashfile "!url!" !shuanfa!"') do (
 	if "%3" neq "" (
 		endlocal&set "%3=%%a"
@@ -4761,12 +4376,11 @@ setlocal
 cls
 title 更新DOS工具箱 - 当前版本: %ver%%system%
 echo 检查最新版本...
-timeout /t 1 /nobreak>nul
-if exist %temp%\dostoolupdate (
-	del /f /q %temp%\dostoolupdate>nul 2>nul
+if exist "%temp%\dostoolupdate" (
+	del /f /q "%temp%\dostoolupdate">nul 2>nul
 )
-if exist %systemroot%\system32\curl.exe (
-	pushd %temp%
+if exist "%systemroot%\system32\curl.exe" (
+	pushd "%temp%"
 	for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
 		if "%%a" equ "0x1" (
 			for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
@@ -4781,7 +4395,7 @@ if exist %systemroot%\system32\curl.exe (
 	echo;Host域名:	!githost:~10,-1!
 	curl !proxy! !doh! !githost! -A "!ua!" -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 !resolve2! -o dostoolupdate !gxurlhost1!
 	if exist "%temp%\dostoolupdate" (
-		for /f "delims=: tokens=1,2" %%a in (%temp%\dostoolupdate) do (
+		for /f "usebackq delims=: tokens=1,2" %%a in ("%temp%\dostoolupdate") do (
 			set "gxver=%%a"
 			set "doshash=%%b"
 			set "host=!githost!"
@@ -4794,7 +4408,7 @@ if exist %systemroot%\system32\curl.exe (
 		echo;使用链接:	!gxurl1!
 		curl !proxy! !doh! -A "!ua!" -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o dostoolupdate !gxurl1!
 		if exist "%temp%\dostoolupdate" (
-			for /f "delims=: tokens=1,2" %%a in (%temp%\dostoolupdate) do (
+			for /f "usebackq delims=: tokens=1,2" %%a in ("%temp%\dostoolupdate") do (
 				set "gxver=%%a"
 				set "doshash=%%b"
 				set "host="
@@ -4808,7 +4422,7 @@ if exist %systemroot%\system32\curl.exe (
 			echo;Host域名:	!jshost:~10,-1!
 			curl !proxy! !doh! !jshost! -A "!ua!" -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 !resolve2! -o dostoolupdate !gxurlhost2!
 			if exist "%temp%\dostoolupdate" (
-				for /f "delims=: tokens=1,2" %%a in (%temp%\dostoolupdate) do (
+				for /f "usebackq delims=: tokens=1,2" %%a in ("%temp%\dostoolupdate") do (
 					set "gxver=%%a"
 					set "doshash=%%b"
 					set "host=!jshost!"
@@ -4821,7 +4435,7 @@ if exist %systemroot%\system32\curl.exe (
 				echo;使用链接:	!gxurl2!
 				curl !proxy! !doh! -A "!ua!" -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o dostoolupdate !gxurl2!
 				if exist "%temp%\dostoolupdate" (
-					for /f "delims=: tokens=1,2" %%a in (%temp%\dostoolupdate) do (
+					for /f "usebackq delims=: tokens=1,2" %%a in ("%temp%\dostoolupdate") do (
 						set "gxver=%%a"
 						set "doshash=%%b"
 						set "host="
@@ -4846,9 +4460,9 @@ if exist %systemroot%\system32\curl.exe (
 	)
 ) else (
 	echo;使用链接:	!gxurl1!
-	certutil -urlcache -split -f !gxurl1! %temp%\dostoolupdate
+	certutil -urlcache -split -f !gxurl1! "%temp%\dostoolupdate"
 	if exist "%temp%\dostoolupdate" (
-		for /f "delims=: tokens=1,2" %%a in (%temp%\dostoolupdate) do (
+		for /f "usebackq delims=: tokens=1,2" %%a in ("%temp%\dostoolupdate") do (
 			set "gxver=%%a"
 			set "doshash=%%b"
 			set "url=!gxdos1!"
@@ -4856,9 +4470,9 @@ if exist %systemroot%\system32\curl.exe (
 		goto updatecheck
 	) else (
 		echo;使用链接:	!gxurl2!
-		certutil -urlcache -split -f !gxurl2! %temp%\dostoolupdate
+		certutil -urlcache -split -f !gxurl2! "%temp%\dostoolupdate"
 		if exist "%temp%\dostoolupdate" (
-			for /f "delims=: tokens=1,2" %%a in (%temp%\dostoolupdate) do (
+			for /f "usebackq delims=: tokens=1,2" %%a in ("%temp%\dostoolupdate") do (
 				set "gxver=%%a"
 				set "doshash=%%b"
 				set "url=!gxdos2!"
@@ -4898,12 +4512,11 @@ if !checkver! gtr 0 (
 )
 :startupdate
 echo 正在下载更新...
-timeout /t 1 /nobreak>nul
-if exist %temp%\dostool (
-	del /f /q %temp%\dostool>nul 2>nul
+if exist "%temp%\dostool" (
+	del /f /q "%temp%\dostool">nul 2>nul
 )
-if exist %systemroot%\system32\curl.exe (
-	pushd %temp%
+if exist "%systemroot%\system32\curl.exe" (
+	pushd "%temp%"
 	for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
 		if "%%a" equ "0x1" (
 			for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
@@ -4915,15 +4528,13 @@ if exist %systemroot%\system32\curl.exe (
 		)
 	)
 	echo;使用链接:	!url!
-	if defined host (
-		echo;Host域名:	%host:~10,-1%
-	)
+	if defined host (echo;Host域名:	%host:~10,-1%)
 	curl !proxy! !doh! !host! -A "!ua!" -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 !resolve2! -o dostool !url!
 	popd
-	call :hash %temp%\dostool sha1 hash
+	call :hash "%temp%\dostool" sha1 hash
 	if /i "!hash!" equ "!doshash!" (
 		endlocal
-		copy /z /y %temp%\dostool %weizhi%&goto chushihua
+		copy /z /y "%temp%\dostool" "!weizhi!"&goto chushihua
 	) else (
 		call :colortxt c 文件无效
 		echo;
@@ -4935,11 +4546,11 @@ if exist %systemroot%\system32\curl.exe (
 		)
 	)
 ) else (
-	certutil -urlcache -split -f !url! %temp%\dostool
-	call :hash %temp%\dostool sha1 hash
+	certutil -urlcache -split -f !url! "%temp%\dostool"
+	call :hash "%temp%\dostool" sha1 hash
 	if /i "!hash!" equ "!doshash!" (
 		endlocal
-		copy /z /y %temp%\dostool %weizhi%&goto chushihua
+		copy /z /y "%temp%\dostool" "!weizhi!"&goto chushihua
 	) else (
 		call :colortxt c 文件无效
 		echo;
@@ -5032,7 +4643,7 @@ for /f "tokens=1,2,3,4 delims=:." %%a in ("!time!") do (
 for /f "tokens=1,2,3,4 delims=:." %%a in ("!time!") do (
 	set /a "sub=(1%%a*360000+1%%b*6000+1%%c*100+1%%d)-start"
 )
-if "!sub!" lss "0" (
+if !sub! lss 0 (
 	goto :eof
 ) else (
 	if !sub! geq %1 (
@@ -5058,7 +4669,7 @@ if "%errorlevel%" equ "0" (set /a dw=%dw%-1
 for /f "delims=" %%a in ('"powershell %size%*1024"') do (set size=%%a)
 goto next
 )
-if "%size%" geq "1024" goto renjs
+if !size! geq 1024 goto renjs
 :next
 if "%dw%" equ "0" set dw=字节
 if "%dw%" equ "1" set dw=KB
@@ -5153,19 +4764,24 @@ set a75=打开证书管理单元
 )
 goto :eof
 :colortxt
-if !winv! equ 0 goto colortxt2
-set bj=%1
-if "!bj:~1,1!" equ "" (set bj1=!color!&set bj2=!bj!) else (set bj1=!bj:~0,1!&set bj2=!bj:~1,1!)
-verify on
-pushd %temp%
-set /p =%cswz1%<nul>"%2"
+if "!winv!" equ "0" (goto colortxt2)
+set "bj=%1"
+if "!bj:~1,1!" equ "" (
+	set "bj1=!color!"
+	set "bj2=!bj!"
+) else (
+	set "bj1=!bj:~0,1!"
+	set "bj2=!bj:~1,1!"
+)
+pushd "%temp%"
+set /p =!cswz1!<nul>"%2"
 findstr /v /a:!bj1!!bj2! /r "^$" "%2" nul
 del /f "%2">nul 2>nul
 popd
 goto :eof
 :colortxt2
-set bj=%1
-set zt=%2
+set "bj=%1"
+set "zt=%2"
 if "!bj:~0,1!" equ "0" set bj1=40;
 if "!bj:~0,1!" equ "4" set bj1=41;
 if "!bj:~0,1!" equ "2" set bj1=42;
@@ -5190,19 +4806,18 @@ if "!bj:~1,1!" equ "9" set bj2=94m
 if "!bj:~1,1!" equ "d" set bj2=95m
 if "!bj:~1,1!" equ "b" set bj2=96m
 if "!bj:~1,1!" equ "f" set bj2=97m
-if "!bj:~1,1!" equ "" set bj1=!ysbak:~0,3!
+if "!bj:~1,1!" equ "" set "bj1=!ysbak:~0,3!"
 set /p =!cswz!!bj1!!bj2!!zt!!cswz!!ysbak!<nul
 goto :eof
 :rgb
-set brgb=%1
-set qrgb=%2
-set zt=%3
-set brgb=!brgb:.=;!
-set qrgb=!qrgb:.=;!
+set "brgb=%1"
+set "qrgb=%2"
+set "zt=%3"
+set "brgb=!brgb:.=;!"
+set "qrgb=!qrgb:.=;!"
 set /p =!cswz!48;2;!brgb!;38;2;!qrgb!m!zt!!cswz!!ysbak!<nul
 goto :eof
 :su
-for /f "delims=" %%a in ('"dir/a/b "%weizhi%""') do (set exe="%%~dpnxa")
 (
 echo IyBVQUMgQnlwYXNzIHBvYyB1c2luZyBTZW5kS2V5cw0KIyBWZXJzaW9uIDEuMA0K
 echo IyBBdXRob3I6IE9kZHZhciBNb2UNCiMgRnVuY3Rpb25zIGJvcnJvd2VkIGZyb206
@@ -5278,13 +4893,17 @@ echo LW5lIDApDQoNCg0KI0FjdGl2YXRlIHdpbmRvdw0KU2V0LVdpbmRvd0FjdGl2ZSBj
 echo bXN0cA0KDQojU2VuZCB0aGUgRW50ZXIga2V5DQpbU3lzdGVtLldpbmRvd3MuRm9y
 echo bXMuU2VuZEtleXNdOjpTZW5kV2FpdCgie0VOVEVSfSIpDQp9
 )>%temp%\2.base
-set /p =%comspec% /c %exe% -ks<nul>%temp%\su.bat
+set /p =%comspec% /c %0 -ks<nul>%temp%\su.bat
 set /p =%temp%\su.bat<nul>%temp%\su.txt
 certutil -decode -f "%temp%\1.base" %temp%\1.txt>nul
 certutil -decode -f "%temp%\2.base" %temp%\2.txt>nul
-copy /b "%temp%\1.txt"+"%temp%\su.txt"+"%temp%\2.txt" "%temp%\bypass.ps1">nul
-powershell -mta -nologo -noprofile -executionpolicy bypass -file "%temp%\bypass.ps1">nul
-timeout /t 2 /nobreak>nul
+copy /b "%temp%\1.txt"+"%temp%\su.txt"+"%temp%\2.txt" "%temp%\bypassps1">nul
+powershell -mta -nologo -noprofile -command "$command=[IO.File]::ReadAllText('%temp%\bypassps1'); iex ($command[1])"
+if exist "!systemroot!\system32\timeout.exe" (
+	timeout /t 2 /nobreak>nul
+) else (
+	ping /n 2 0.0>nul
+)
 del %temp%\su.txt;%temp%\1.base;%temp%\2.base;%temp%\1.txt;%temp%\2.txt;%temp%\bypass.ps1;%temp%\su.bat
 exit 0
 :xdwjs
@@ -5444,8 +5063,8 @@ for /f "tokens=1-8 delims=.:" %%I in ("%~2:%~1") do (
 set "sco=!n!"
 set /a "s=n/360000,n=n%%360000,f=n/6000,n=n%%6000,m=n/100,n=n*%%100"
 set /a "n*=10"
-if %F% equ 0 ( set "T=%M%秒%N%毫秒" ) else ( set "T=%F%分%M%秒%N%毫秒" )
-if %s% neq 0 ( set "t=%s%小时%F%分%M%秒%N%毫秒" )
+if %F% equ 0 (set "T=%M%秒%N%毫秒") else (set "T=%F%分%M%秒%N%毫秒")
+if %s% neq 0 (set "t=%s%小时%F%分%M%秒%N%毫秒")
 endlocal&set "%~3=%T%"
 Goto :eof
 :cf
@@ -5492,7 +5111,7 @@ powershell (Add-Type '[DllImport(\"user32.dll\")]^public static extern int SendM
 goto :eof
 :choice
 choice /c !cho! /n /m 请输入你的选择:
-set shuru=!errorlevel!
+set "shuru=!errorlevel!"
 goto :eof
 :set
 set shuru=
@@ -5502,21 +5121,21 @@ goto :eof
 setlocal
 set cs=0
 for /f "delims=: skip=2 tokens=2" %%a in ('"mode con"') do (
-	set /a cs+=1
-	if !cs! equ 1 (
-		set h=%%a
+	set /a "cs+=1"
+	if "!cs!" equ "1" (
+		set "h=%%a"
 	)
-	if !cs! equ 2 (
-		set l=%%a
+	if "!cs!" equ "2" (
+		set "l=%%a"
 	)
 )
-set /a h_1=h-1
-set /a l_1=l-1
-set /a l_4=l-4
+set /a "h_1=h-1"
+set /a "l_1=l-1"
+set /a "l_4=l-4"
 for /l %%a in (0,1,!l_4!) do (
-	set fh=!fh!-
+	set "fh=!fh!-"
 )
-set fh=+!fh!+
+set "fh=+!fh!+"
 set /p =!cswz!1;1H!fh!<nul
 for /l %%a in (2,1,!h_1!) do (
 	set /p =!cswz!%%a;1H^|!cswz!%%a;!l_1!H^|<nul
@@ -5525,17 +5144,17 @@ set /p =!cswz!!h_1!;1H!fh!<nul
 goto :eof
 :fk
 setlocal
-set h=%1
-set l=%2
-set /a h1=h+1
-set /a l1=%4-2
-set /a h2=h+%3-2
-set /a l2=l+%4-1
-set /a h3=h+%3-1
+set "h=%1"
+set "l=%2"
+set /a "h1=h+1"
+set /a "l1=%4-2"
+set /a "h2=h+%3-2"
+set /a "l2=l+%4-1"
+set /a "h3=h+%3-1"
 for /l %%a in (1,1,!l1!) do (
-	set fh=!fh!-
+	set "fh=!fh!-"
 )
-set fh=+!fh!+
+set "fh=+!fh!+"
 set /p =!cswz!!h!;!l!H!fh!<nul
 for /l %%a in (!h1!,1,!h2!) do (
 	set /p =!cswz!%%a;!l!H^|!cswz!%%a;!l2!H^|<nul
@@ -5544,29 +5163,29 @@ set /p =!cswz!!h3!;!l!H!fh!<nul
 goto :eof
 :hx
 setlocal
-set h=%1
-set l=%2
-set /a cd=%3-2
+set "h=%1"
+set "l=%2"
+set /a "cd=%3-2"
 for /l %%a in (1,1,!cd!) do (
-	set fh=!fh!-
+	set "fh=!fh!-"
 )
-set fh=+!fh!+
+set "fh=+!fh!+"
 set /p =!cswz!!h!;!l!H!fh!<nul
 goto :eof
 :sx
 setlocal
-set h=%1
-set l=%2
-set /a h1=h+1
-set /a h2=h+%3-1
-set /a cd=%3+h-2
+set "h=%1"
+set "l=%2"
+set /a "h1=h+1"
+set /a "h2=h+%3-1"
+set /a "cd=%3+h-2"
 set /p =!cswz!!h!;!l!H+<nul
 for /l %%a in (!h1!,1,!cd!) do (
 	set /p =!cswz!%%a;!l!H^|<nul
 )
 set /p =!cswz!!h2!;!l!H+<nul
 goto :eof
-:00
+:0
 exit 0
 :73
 :chrome
@@ -5697,7 +5316,7 @@ if not exist "!强制使用quic!" (
 		echo cloudflare-ipfs.com
 	)>"!强制使用quic!"
 )
-cd /d %~dp0
+cd /d "%~dp0"
 rem 忽略证书错误 0=禁用 1=启用
 set "pass_cert_error=0"
 rem 生成chrome-command-line文件 0=禁用 1=启用
@@ -5708,7 +5327,7 @@ if "!pass_cert_error!" equ "1" (
 	set "ignore-certificate-errors=--ignore-certificate-errors"
 )
 if exist "chrome.exe" (
-	set "chrome=chrome.exe"
+	set chrome=chrome.exe
 	goto startchrome
 ) else (
 	for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe" /v Path 2>nul"') do (
@@ -5778,6 +5397,7 @@ if "%1" neq "-chrome" (
 	goto :eof
 )
 :74
+setlocal
 title 逐一复制文件并压缩%system%
 cls
 rem 设置源目录和目标目录
@@ -5792,12 +5412,13 @@ for /r "%source_dir%" %%f in (*) do (
     set "relative_path=!relative_path:%source_dir%=!"
     set "target_path=%target_dir%!relative_path!"
     rem 创建目标子目录（如果不存在）
-    if not exist "!target_path!" ( mkdir "!target_path!" )
+    if not exist "!target_path!" (mkdir "!target_path!")
     rem 拷贝文件到目标目录
     copy /y /z "%%f" "!target_path!%%~nxf"
     rem 压缩文件
     call :74_2 "!target_path!%%~nxf" %%~zf %%~xf
 )
+endlocal
 set /p =按任意键返回菜单<nul&pause>nul
 goto memuv2
 :74_2
@@ -5840,10 +5461,10 @@ echo [2]certlm	[证书 - 本地计算机]
 echo [0]返回菜单
 echo _______________________________________________________________________________
 !sel!
-if "!shuru!" equ "1" ( start certmgr.msc & goto memuv2 )
-if "!shuru!" equ "2" ( start certlm.msc & goto memuv2 )
-if "!shuru!" equ "3" ( goto memuv2 )
-if "!shuru!" equ "0" ( goto memuv2 )
+if "!shuru!" equ "1" (start certmgr.msc&goto memuv2)
+if "!shuru!" equ "2" (start certlm.msc&goto memuv2)
+if "!shuru!" equ "3" (goto memuv2)
+if "!shuru!" equ "0" (goto memuv2)
 goto 75
 :checkvar
 setlocal
@@ -5852,12 +5473,12 @@ if "%1" equ "" (
 ) else (
 	set "val=!%1!"
 )
-if "%2" equ "num" ( goto checkvar_num )
-if "%2" equ "num." ( goto checkvar_num. )
-if "%2" equ "-num" ( goto checkvar_-num )
-if "%2" equ "-num." ( goto checkvar_-num. )
-if "%2" equ "az" ( goto checkvar_az )
-if "%2" equ "aznum" ( goto checkvar_aznum )
+if "%2" equ "num" (goto checkvar_num)
+if "%2" equ "num." (goto checkvar_num.)
+if "%2" equ "-num" (goto checkvar_-num)
+if "%2" equ "-num." (goto checkvar_-num.)
+if "%2" equ "az" (goto checkvar_az)
+if "%2" equ "aznum" (goto checkvar_aznum)
 goto :eof
 :checkvar_num
 if defined %1 (
@@ -6094,7 +5715,7 @@ set /a "b=3!j:~-%%j,8!-1!d:~-%%j,8!-!b:~,1!%%2"
 set "t=!b:~1!!t!"
 )
 for %%j in (!Len_i!) do set "j=!t:~-%%j!"
-set "j=!j:~1!" ) else set "x=0"
+set "j=!j:~1!") else set "x=0"
 set /a "Len_i-=1"
 if "!x!" neq "0" (
 if "!x!" geq "5" (
@@ -6280,7 +5901,7 @@ for /f "tokens=1,2 delims=." %%a in ("%s%") do (
 endlocal&set %~4=%s%&goto :eof
 :jian
 setlocal
-if "%~1" lss "%~2" (
+if %~1 lss %~2 (
     set a=%~2
     set b=%~1
 ) else (
@@ -6304,13 +5925,11 @@ for /f "tokens=1,2 delims=." %%a in ("%s%") do (
 )
 endlocal&set %~4=%s%&goto :eof
 :pdxp
-set zmlj=%zmlj:~19%\
 if /i "!system!" equ "Microsoft Windows XP Home" (set "system= - Windows XP 家庭版"&goto :eof)
 if /i "!system!" equ "Microsoft Windows XP Professional" (set "system= - Windows XP 专业版"&goto :eof)
 set "system= - !system:~10!"
 goto :eof
 :pd7
-set zmlj=%zmlj:~25%\
 if /i "!system!" equ "Microsoft Windows 7 Ultimate" (set "system= - Windows 7 旗舰版"&goto :eof)
 if /i "!system!" equ "Microsoft Windows 7 Home Basic" (set "system= - Windows 7 家庭普通版"&goto :eof)
 if /i "!system!" equ "Microsoft Windows 7 Home Premium" (set "system= - Windows 7 家庭高级版"&goto :eof)
@@ -6319,21 +5938,18 @@ if /i "!system!" equ "Microsoft Windows 7 Enterprise" (set "system= - Windows 7 
 set "system= - !system:~10!"
 goto :eof
 :pd8
-set zmlj=%zmlj:~25%\
 if /i "!system!" equ "Microsoft Windows 8 Pro" (set "system= - Windows 8 专业版"&goto :eof)
 if /i "!system!" equ "Microsoft Windows 8 China" (set "system= - Windows 8 中国版"&goto :eof)
 if /i "!system!" equ "Microsoft Windows 8 Enterprise" (set "system= - Windows 8 企业版"&goto :eof)
 set "system= - !system:~10!"
 goto :eof
 :pd8.1
-set zmlj=%zmlj:~25%\
 if /i "!system!" equ "Microsoft Windows 8.1 Pro" (set "system= - Windows 8.1 专业版"&goto :eof)
 if /i "!system!" equ "Microsoft Windows 8.1 China" (set "system= - Windows 8.1 中国版"&goto :eof)
 if /i "!system!" equ "Microsoft Windows 8.1 Enterprise" (set "system= - Windows 8.1 企业版"&goto :eof)
 set "system= - !system:~10!"
 goto :eof
 :pd10
-set zmlj=%zmlj:~25%\
 if /i "!system!" equ "Microsoft Windows 10 Home" (set "system= - Windows 10 家庭版"&goto :eof)
 if /i "!system!" equ "Microsoft Windows 10 Professional" (set "system= - Windows 10 专业版"&goto :eof)
 if /i "!system!" equ "Microsoft Windows 10 Education" (set "system= - Windows 10 教育版"&goto :eof)
@@ -6341,7 +5957,6 @@ if /i "!system!" equ "Microsoft Windows 10 Enterprise" (set "system= - Windows 1
 set "system= - !system:~10!"
 goto :eof
 :pd11
-set zmlj=%zmlj:~25%\
 if /i "!system!" equ "Microsoft Windows 11 Home" (set "system= - Windows 11 家庭版"&goto :eof)
 if /i "!system!" equ "Microsoft Windows 11 Professional" (set "system= - Windows 11 专业版"&goto :eof)
 if /i "!system!" equ "Microsoft Windows 11 Education" (set "system= - Windows 11 教育版"&goto :eof)
@@ -6370,9 +5985,9 @@ for %%i in (%%a) do set "p.ok=%%i !p.ok!")
 endlocal&set %~2=%p.ok%&goto :EOF
 :checkmem
 setlocal
-if "%1" equ "" ( goto :eof )
-if "%2" equ "" ( goto :eof )
-if "%3" equ "" ( goto :eof )
+if "%1" equ "" (goto :eof)
+if "%2" equ "" (goto :eof)
+if "%3" equ "" (goto :eof)
 for /f "tokens=2 delims==" %%a in ('"wmic OS get FreePhysicalMemory /Value"') do (
 	set "mem=%%a"
 	set "mem=!mem:~0,-1!"
@@ -6398,7 +6013,7 @@ if "!num1!" equ "" (
 		set "num1b=%%b"
 	)
 )
-if "!num1a!" equ "0" ( set "num1a=" )
+if "!num1a!" equ "0" (set "num1a=")
 :xcf_loop1
 if "!num1b:~-1!" equ "0" (
 	set "num1b=!num1b:~0,-1!"
@@ -6420,7 +6035,7 @@ if "!num2!" equ "0" (
 		set "num2b=%%b"
 	)
 )
-if "!num2a!" equ "0" ( set "num2a=" )
+if "!num2a!" equ "0" (set "num2a=")
 :xcf_loop2
 if "!num2b:~-1!" equ "0" (
 	set "num2b=!num2b:~0,-1!"
@@ -6440,10 +6055,10 @@ if "!numb:~-1!" equ "0" (
 	set "numb=!numb:~0,-1!"
 	goto xcf_loop
 )
-if "!dot!" neq "0" ( set "num=!numa!.!numb!" )
-if "!num:~-1!" equ "." ( set "num=!num:~0,-1!" )
-if "!num:~0,1!" equ "." ( set "num=!num:.=0.!" )
-if "!num:~0,2!" equ "-." ( set "num=-0.!num:~2!" )
+if "!dot!" neq "0" (set "num=!numa!.!numb!")
+if "!num:~-1!" equ "." (set "num=!num:~0,-1!")
+if "!num:~0,1!" equ "." (set "num=!num:.=0.!")
+if "!num:~0,2!" equ "-." (set "num=-0.!num:~2!")
 if "%3" neq "" (
 	endlocal&set "%3=%num%"
 	goto :eof
@@ -6473,7 +6088,7 @@ set "ji=!t!!ji:~1!"
 Endlocal&set %~3=%ji%&goto :EOF
 :convertu
 setlocal
-if "%1" equ "" ( goto :eof )
+if "%1" equ "" (goto :eof)
 set "tmp=%1"
 set "tmp=!tmp:a=A!"
 set "tmp=!tmp:b=B!"
@@ -6510,7 +6125,7 @@ if "%2" neq "" (
 )
 :convertl
 setlocal
-if "%1" equ "" ( goto :eof )
+if "%1" equ "" (goto :eof)
 set "tmp=%1"
 set "tmp=!tmp:A=a!"
 set "tmp=!tmp:B=b!"
@@ -6558,14 +6173,14 @@ set "tr=%2"
 set "filename=%3"
 set "dir=%4"
 set "par=%5"
-set "ua=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
+set "ua=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36"
 if not defined url (
 	echo;链接不能为空!
 	goto :eof
 )
-if not defined tr ( set "tr=8" )
+if not defined tr (set tr=8)
 set tr|findstr "\<[0-9]*\>">nul
-if !errorlevel! neq 0 (
+if "!errorlevel!" neq "0" (
 	echo;线程数只能输入数字!
 	goto :eof
 )
@@ -6579,7 +6194,7 @@ if not exist "!dir!" (
 	goto :eof
 )
 dir /ad "!dir!">nul 2>nul||echo 路径 !dir! 不是一个文件夹&&goto :eof
-if exist "%temp%\tag" ( del /f /q "%temp%\tag" )
+if exist "%temp%\tag" (del /f /q "%temp%\tag")
 for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
 	if "%%a" equ "0x1" (
 		for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
@@ -6590,29 +6205,29 @@ for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\W
 		set proxy=
 	)
 )
-curl !proxy! !doh! !par! -A "!ua!" -I -# -L -o tag --connect-timeout 5 --output-dir %temp% "!url!"
+curl !proxy! !doh! !par! -A "!ua!" -I -# -L -o tag --connect-timeout 5 --output-dir "%temp%" "!url!"
 if not exist "%temp%\tag" (
 	echo;没有获取到文件信息
 	goto :eof
 )
-for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Accept-Ranges:"') do ( set "trflag=%%a" )
-for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Content-Length:"') do ( set "filesize=%%a" )
-for /f "tokens=2 delims==" %%a in ('type %temp%\tag^|findstr /c:"filename="') do ( set "filename=%%a" )
-if "!trflag!" neq "bytes" ( set "tr=1" )
+for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Accept-Ranges:"') do (set "trflag=%%a")
+for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Content-Length:"') do (set "filesize=%%a")
+for /f "tokens=2 delims==" %%a in ('type %temp%\tag^|findstr /c:"filename="') do (set "filename=%%a")
+if "!trflag!" neq "bytes" (set tr=1)
 del /f /q "%temp%\tag"
-if not defined filename ( set "filename=%3" )
-set /a "fd=!filesize!/!tr!"
-set /a "ys=%filesize%%%tr%"
+if not defined filename (set "filename=%3")
+set /a "fd=filesize/tr"
+set /a "ys=filesize%%tr"
 set oldfd=0
-set /a "pdtr=!tr!-1"
-set /a "newfd=!fd!-1"
-set /a "pdfd=!fd!+!ys!"
+set /a "pdtr=tr-1"
+set /a "newfd=fd-1"
+set /a "pdfd=fd+ys"
 set file=
-for /l %%a in (1,1,!tr!) do ( set "file=!file!%%a+" )
+for /l %%a in (1,1,!tr!) do (set "file=!file!%%a+")
 set newtr=
-set /a "newtr=!tr!+1"
+set /a "newtr=tr+1"
 set "file=!file:~0,-1!"
-if exist "%temp%\down" ( rd /s /q "%temp%\down" )
+if exist "%temp%\down" (rd /s /q "%temp%\down")
 md "%temp%\down"
 for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
 	if "%%a" equ "0x1" (
@@ -6625,37 +6240,37 @@ for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\W
 	)
 )
 for /l %%a in (1,1,!tr!) do (
-	start /b curl !proxy! !doh! !par! -s -A "!ua!" -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir %temp%\down "!url!"
-	set /a "oldfd=!newfd!+1"
+	start /b curl !proxy! !doh! !par! -s -A "!ua!" -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir "%temp%\down" "!url!"
+	set /a "oldfd=newfd+1"
 	if %%a equ !pdtr! (
 		set newfd=
 	) else (
-		set /a "newfd=!oldfd!+!fd!-1"
+		set /a "newfd=oldfd+fd-1"
 	)
 )
 pushd "%temp%\down"
 :curldxc_2
 set 次数=
 for /l %%a in (1,1,!tr!) do (
-	if %%a equ !tr! (
-		if %%~za equ !pdfd! (
+	if "%%a" equ "!tr!" (
+		if "%%~za" equ "!pdfd!" (
 			echo;进程%%a完成
-			set /a "次数=!次数!+1"
+			set /a "次数+=1"
 		)
 	) else (
-		if %%~za equ !fd! (
+		if "%%~za" equ "!fd!" (
 			echo;进程%%a完成
-			set /a "次数=!次数!+1"
+			set /a "次数+=1"
 		)
 	)
 )
 timeout /t 1 /nobreak>nul
-if !次数! neq !tr! ( goto curldxc_2 )
-if "!dir:~-1!" neq "\" ( set "dir=!dir!\" )
+if "!次数!" neq "!tr!" (goto curldxc_2)
+if "!dir:~-1!" neq "\" (set "dir=!dir!\")
 copy /b /z !file! "!dir!!filename!"
 popd
 rd /s /q "%temp%\down"
 goto :eof
 :pwiex
-powershell -command "$command=[IO.File]::ReadAllText('%0') -split '#%1\#.*'; iex ($command[1])"
+powershell -mta -nologo -noprofile -command "$command=[IO.File]::ReadAllText('%0') -split '#%1\#.*'; iex ($command[1])"
 goto :eof
