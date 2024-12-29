@@ -19,11 +19,11 @@
 @echo off&cls&title °°&setlocal enabledelayedexpansion
 if /i "%1" equ "-ks" (goto ks)
 if /i "%1" equ "-chrome" (goto chrome)
-if /i "%systemdrive%" equ "x:" (goto ks)
+if /i "!systemdrive!" equ "x:" (goto ks)
 fltmc 1>nul 2>nul
 if "!errorlevel!" equ "0" (goto ks)
 for /f "delims=" %%a in ("%0") do (set "weizhi=%%~fa")
-if exist "%localappdata%\Microsoft\WindowsApps\wt.exe" (
+if exist "!localappdata!\Microsoft\WindowsApps\wt.exe" (
 	call :stwt
 ) else (
 	call :stcmd
@@ -44,10 +44,10 @@ if not exist "!temp!\dos_pre_reading_cache_os.tmp" (
 ::start /min %comspec% /c powershell -mta -nologo -noprofile start-process -filepath "wt" -argumentlist '"%0 -ks"' -verb runas>nul 2>nul
 exit 0
 :stwt
-start /min %comspec% /c mshta vbscript:createobject("shell.application").shellexecute("%localappdata%\Microsoft\WindowsApps\wt.exe","!weizhi!","-ks","runas",1)(window.close)
+start /min !comspec! /c mshta vbscript:createobject("shell.application").shellexecute("!localappdata!\Microsoft\WindowsApps\wt.exe","!weizhi!","-ks","runas",1)(window.close)
 goto :eof
 :stcmd
-start /min %comspec% /c mshta vbscript:createobject("shell.application").shellexecute("!weizhi!","-ks","","runas",1)(window.close)
+start /min !comspec! /c mshta vbscript:createobject("shell.application").shellexecute("!weizhi!","-ks","","runas",1)(window.close)
 goto :eof
 set qidongjd=0
 set qidongbz=®Ä®Ä®Ä®Ä®Ä®Ä®Ä®Ä®Ä®Ä®Ä®Ä®Ä®Ä®Ä®Ä®Ä
@@ -64,11 +64,11 @@ if "%qidongjd%"=="105" goto ks
 goto qidong
 :ks
 (
-set "dosqssj=%time%"
+set "dosqssj=!time!"
 color f1
 chcp 936>nul
 set ver=20240922
-set versize=210993
+set versize=210996
 set "doh=--doh-url https://101.101.101.101/dns-query"
 set resolve2=--resolve raw.github.io:443:^
 185.199.110.133,^
@@ -165,17 +165,17 @@ for /f "skip=2 tokens=2 delims==" %%a in (!wmicos!) do (
 		call :pd%%a 2>nul
 	)
 )
-if "%date:~11,1%" equ "÷‹" (
-	set "xingqi=%date:~11,2%"
+if "!date:~11,1!" equ "÷‹" (
+	set "xingqi=!date:~11,2!"
 ) else (
-	set "xingqi=%date:~11,3%"
+	set "xingqi=!date:~11,3!"
 )
 for /f %%a in ('"echo prompt $E^ |cmd"') do (
 	set "cswz=%%a["
 	set "cswz1=%%a"
 )
 call :list
-if /i "%processor_architecture%"=="x86" (set bit=32) else (set bit=64)
+if /i "!processor_architecture!" equ "x86" (set bit=32) else (set bit=64)
 if exist "!systemroot!\system32\choice.exe" (
 	set "sel=call :choice"
 ) else (
