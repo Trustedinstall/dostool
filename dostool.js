@@ -68,27 +68,8 @@ set "dosqssj=!time!"
 color f1
 chcp 936>nul
 set ver=20240922
-set versize=210996
+set versize=211294
 set "doh=--doh-url https://101.101.101.101/dns-query"
-set resolve2=--resolve raw.github.io:443:^
-185.199.110.133,^
-185.199.109.133,^
-185.199.111.133,^
-185.199.108.133,^
-2606:50c0:8001::154,^
-2606:50c0:8003::154,^
-2606:50c0:8000::154,^
-2606:50c0:8002::154
-set "jshost=-H "host: cdn.jsdelivr.net""
-set "githost=-H "host: raw.githubusercontent.com""
-set "gxurlhost1=https://raw.github.io/Trustedinstall/dostool/main/update.js"
-set "gxurlhost2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js"
-set "gxurl1=https://raw.githubusercontent.com/Trustedinstall/dostool/main/update.js"
-set "gxurl2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js"
-set "gxdoshost1=https://raw.github.io/Trustedinstall/dostool/main/dostool.js"
-set "gxdoshost2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js"
-set "gxdos1=https://raw.githubusercontent.com/Trustedinstall/dostool/main/dostool.js"
-set "gxdos2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js"
 rem if exist %temp%\dwnl.exe (set /a versize=versize+3194)
 set "baidu=start https://www.baidu.com/s?wd="
 set "google=start https://www.google.com.hk/search?q="
@@ -4166,7 +4147,7 @@ dir /ad !dir!>nul 2>nul||echo 路径 !dir! 不是一个文件夹&&timeout /t 2 /nobreak>n
 cls
 echo 开始获取文件信息...
 set filename=
-if exist "%temp%\tag" (del /f /q tag)
+if exist "%temp%\tag" (del /f /q "%temp%\tag")
 for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
 	if "%%a" equ "0x1" (
 		for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
@@ -4213,10 +4194,10 @@ echo;___________________________________________________________________________
 set /p =按任意键开始下载<nul&pause>nul
 cls
 echo;开始下载文件...
-title curl多进程下载 - 等待文件下载完成(按e返回菜单)%system%
+title curl多进程下载 - 等待文件下载完成(按e返回菜单)!system!
 if exist "%temp%\down" (rd /s /q "%temp%\down")
 md "%temp%\down"
-set "kssj=%time%"
+set "kssj=!time!"
 for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
 	if "%%a" equ "0x1" (
 		for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
@@ -4228,7 +4209,7 @@ for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\W
 	)
 )
 for /l %%a in (1,1,!tr!) do (
-	start /b curl !proxy! !doh! -s -A "!ua!" -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir "%temp%\down" "!url!"
+	start /min /low "curl多进程下载_!tr!" curl !proxy! !doh! -s -A "!ua!" -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir "%temp%\down" "!url!"
 	set /a "oldfd=newfd+1"
 	if "%%a" equ "!pdtr!" (
 		set newfd=
@@ -4293,13 +4274,13 @@ for /l %%a in (1,1,!tr!) do (
 )
 choice /c 1e /t 1 /d 1 >nul
 if "!errorlevel!" equ "2" (
-	taskkill /im curl.exe /f
+	taskkill /fi "windowtitle eq curl多进程下载_*" /fi "imagename eq curl.exe" /f
 	popd
 	rd /s /q "%temp%\down"
 	goto memuv2
 )
 if "!jccs!" neq "!tr!" (goto 72.2)
-set "jssj=%time%"
+set "jssj=!time!"
 cls
 echo;合并文件中...
 if "!dir:~-1!" neq "\" (set "dir=!dir!\")
@@ -4374,7 +4355,26 @@ goto :eof
 :update
 setlocal
 cls
-title 更新DOS工具箱 - 当前版本: %ver%%system%
+title 更新DOS工具箱 - 当前版本: !ver!!system!
+set resolve2=--resolve raw.github.io:443:^
+185.199.110.133,^
+185.199.109.133,^
+185.199.111.133,^
+185.199.108.133,^
+2606:50c0:8001::154,^
+2606:50c0:8003::154,^
+2606:50c0:8000::154,^
+2606:50c0:8002::154
+set "jshost=-H "host: cdn.jsdelivr.net""
+set "githost=-H "host: raw.githubusercontent.com""
+set "gxurlhost1=https://raw.github.io/Trustedinstall/dostool/main/update.js"
+set "gxurlhost2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js"
+set "gxurl1=https://raw.githubusercontent.com/Trustedinstall/dostool/main/update.js"
+set "gxurl2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js"
+set "gxdoshost1=https://raw.github.io/Trustedinstall/dostool/main/dostool.js"
+set "gxdoshost2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js"
+set "gxdos1=https://raw.githubusercontent.com/Trustedinstall/dostool/main/dostool.js"
+set "gxdos2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js"
 echo 检查最新版本...
 if exist "%temp%\dostoolupdate" (
 	del /f /q "%temp%\dostoolupdate">nul 2>nul
@@ -4539,6 +4539,7 @@ if exist "%systemroot%\system32\curl.exe" (
 		call :colortxt c 文件无效
 		echo;
 		timeout /t 2 /nobreak>nul
+		endlocal
 		if "!tzwz!" equ "!start!" (
 			goto memuv2
 		) else (
@@ -4555,6 +4556,7 @@ if exist "%systemroot%\system32\curl.exe" (
 		call :colortxt c 文件无效
 		echo;
 		timeout /t 2 /nobreak>nul
+		endlocal
 		if "!tzwz!" equ "!start!" (
 			goto memuv2
 		) else (
@@ -4607,7 +4609,7 @@ goto :eof
 :zfccda
 set zfcgs=0
 set zfc=
-set zfc=%1
+set "zfc=%1"
 :zfcxh
 if "!zfc:~%zfcgs%,1!" equ "" (
 	set /a "zfcgs-=2"
@@ -4619,7 +4621,7 @@ if "!zfc:~%zfcgs%,1!" equ "" (
 goto :eof
 :zfccd
 set zfc=
-set zfc=%1
+set "zfc=%1"
 for /l %%a in (1,1,1000) do (
 	if "!zfc:~%%a,1!" equ "" (
 		set /a "zfcgs=%%a-2"
@@ -4686,81 +4688,81 @@ goto :eof
 :list
 (
 set start=1
-set a1=清除U盘里的lpk.dll病毒
-set a2=清除U盘里的jwgkvsq.vmx病毒，并免疫该病毒
-set a3=清理系统垃圾
-set a4=显示系统信息
-set a5=解除任务管理器被禁用
-set a6=显示被隐藏文件^(中了该类病毒后^)
-set a7=解除注册表被禁用
-set a8=计算开平方
-set a9=切换到命令提示符
-set a10=将磁盘格式转换为NTFS
-set a11=磁盘错误修复
-set a12=格式化
-set a13=DOS计算器
-set a14=解除命令提示符被禁用
-set a15=随机数生成器
-set a16=清除KHATRA病毒
-set a17=打开注册表
-set a18=打开控制面板
-set a19=打开DirectX诊断工具
-set a20=打开计算机管理
-set a21=用户管理
-set a22=打开组策略
-set a23=DOS任务管理器
-set a24=文件系统信息查询
-set a25=创建指定大小的文件
-set a26=免疫U盘病毒
-set a27=磁盘碎片整理
-set a28=一键删除空文件夹
-set a29=ping测试网络延迟
-set a30=硬件检测
-set a31=读心术
-set a32=DOS闹钟
-set a33=计时器
-set a34=随机密码生成器
-set a35=删除每个盘符下的System Volume Information文件夹
-set a36=二进制转换器
-set a37=文本浏览
-set a38=显示计算机与用户的设置
-set a39=NTFS压缩
-set a40=修改文件权限
-set a41=显示开机启动项
-set a42=语音阅读器
-set a43=批处理文件风险分析
-set a44=文件搜索
-set a45=修复已损坏的文件
-set a46=暴力破解压缩包密码
-set a47=Wifi热点
-set a48=反编译chm文件
-set a49=关闭无响应进程
-set a50=文件比较器
-set a51=将文字写入剪切板
-set a52=打开系统服务设置
-set a53=已知年月日计算星期
-set a54=查询系统激活状态
-set a55=创建指定文件的快捷方式到桌面
-set a56=打开系统配置
-set a57=字数统计
-set a58=创建符号链接
-set a59=打开管理控制台
-set a60=解除Streams文件锁定
-set a61=创建、删除或列出卷装入点
-set a62=注册表搜索
-set a63=Base64编解码
-set a64=8.3短文件名管理
-set a65=智能NTFS压缩
-set a66=计算文件哈希值
-set a67=显示货币汇率
-set a68=创建虚拟盘符
-set a69=解压msi安装文件
-set a70=生成CMD控制台色彩表
-set a71=KMS激活Windows
-set a72=curl多进程下载
-set a73=用域前置参数开启Chromium类浏览器
-set a74=逐一复制文件并压缩
-set a75=打开证书管理单元
+set "a1=清除U盘里的lpk.dll病毒"
+set "a2=清除U盘里的jwgkvsq.vmx病毒，并免疫该病毒"
+set "a3=清理系统垃圾"
+set "a4=显示系统信息"
+set "a5=解除任务管理器被禁用"
+set "a6=显示被隐藏文件(中了该类病毒后)"
+set "a7=解除注册表被禁用"
+set "a8=计算开平方"
+set "a9=切换到命令提示符"
+set "a10=将磁盘格式转换为NTFS"
+set "a11=磁盘错误修复"
+set "a12=格式化"
+set "a13=DOS计算器"
+set "a14=解除命令提示符被禁用"
+set "a15=随机数生成器"
+set "a16=清除KHATRA病毒"
+set "a17=打开注册表"
+set "a18=打开控制面板"
+set "a19=打开DirectX诊断工具"
+set "a20=打开计算机管理"
+set "a21=用户管理"
+set "a22=打开组策略"
+set "a23=DOS任务管理器"
+set "a24=文件系统信息查询"
+set "a25=创建指定大小的文件"
+set "a26=免疫U盘病毒"
+set "a27=磁盘碎片整理"
+set "a28=一键删除空文件夹"
+set "a29=ping测试网络延迟"
+set "a30=硬件检测"
+set "a31=读心术"
+set "a32=DOS闹钟"
+set "a33=计时器"
+set "a34=随机密码生成器"
+set "a35=删除每个盘符下的System Volume Information文件夹"
+set "a36=二进制转换器"
+set "a37=文本浏览"
+set "a38=显示计算机与用户的设置"
+set "a39=NTFS压缩"
+set "a40=修改文件权限"
+set "a41=显示开机启动项"
+set "a42=语音阅读器"
+set "a43=批处理文件风险分析"
+set "a44=文件搜索"
+set "a45=修复已损坏的文件"
+set "a46=暴力破解压缩包密码"
+set "a47=Wifi热点"
+set "a48=反编译chm文件"
+set "a49=关闭无响应进程"
+set "a50=文件比较器"
+set "a51=将文字写入剪切板"
+set "a52=打开系统服务设置"
+set "a53=已知年月日计算星期"
+set "a54=查询系统激活状态"
+set "a55=创建指定文件的快捷方式到桌面"
+set "a56=打开系统配置"
+set "a57=字数统计"
+set "a58=创建符号链接"
+set "a59=打开管理控制台"
+set "a60=解除Streams文件锁定"
+set "a61=创建、删除或列出卷装入点"
+set "a62=注册表搜索"
+set "a63=Base64编解码"
+set "a64=8.3短文件名管理"
+set "a65=智能NTFS压缩"
+set "a66=计算文件哈希值"
+set "a67=显示货币汇率"
+set "a68=创建虚拟盘符"
+set "a69=解压msi安装文件"
+set "a70=生成CMD控制台色彩表"
+set "a71=KMS激活Windows"
+set "a72=curl多进程下载"
+set "a73=用域前置参数开启Chromium类浏览器"
+set "a74=逐一复制文件并压缩"
+set "a75=打开证书管理单元"
 )
 goto :eof
 :colortxt
@@ -6240,9 +6242,9 @@ for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\W
 	)
 )
 for /l %%a in (1,1,!tr!) do (
-	start /b curl !proxy! !doh! !par! -s -A "!ua!" -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir "%temp%\down" "!url!"
+	start /b /low "curl多进程下载_!tr!" curl !proxy! !doh! !par! -s -A "!ua!" -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir "%temp%\down" "!url!"
 	set /a "oldfd=newfd+1"
-	if %%a equ !pdtr! (
+	if "%%a" equ "!pdtr!" (
 		set newfd=
 	) else (
 		set /a "newfd=oldfd+fd-1"
