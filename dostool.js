@@ -27,7 +27,7 @@ if exist "!localappdata!\Microsoft\WindowsApps\wt.exe" (call :stwt) else (call :
 rem 在权限申请进程中预读命令提升后面初始化速度
 if not exist "!temp!\dos_pre_reading_cache_os.tmp" (
 	wmic os get caption /value>"!temp!\dos_pre_reading_cache_os.tmp"
-	wmic PATH Win32_SystemEnclosure get ChassisTypes/value>"!temp!\dos_pre_reading_cache_wmictype.tmp"
+	wmic PATH Win32_SystemEnclosure get ChassisTypes /value>"!temp!\dos_pre_reading_cache_wmictype.tmp"
 	reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v desktop>"!temp!\dos_pre_reading_cache_zmlj.tmp"
 ) else (
 	type "!temp!\dos_pre_reading_cache_os.tmp">nul
@@ -62,7 +62,8 @@ set "dosqssj=!time!"
 color f1
 chcp 936>nul
 set ver=20240922
-set versize=213389
+set versize=213448
+set fy1=___
 set "doh=--doh-url https://101.101.101.101/dns-query"
 for /f "delims=" %%a in ("%0") do (set "weizhi=%%~fa")
 set "ua=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36"
@@ -70,9 +71,9 @@ set "nx1=[+]下一页"
 set "nx=[-]上一页   [+]下一页"
 set "nx7=[-]上一页"
 if exist "!temp!\dos_pre_reading_cache_wmictype.tmp" (
-	set "wmictype='"type "!temp!\dos_pre_reading_cache_wmictype.tmp""'"
+	set "wmictype='type !temp!\dos_pre_reading_cache_wmictype.tmp'"
 ) else (
-	set "wmictype='"wmic PATH Win32_SystemEnclosure get ChassisTypes /value"'"
+	set "wmictype='wmic PATH Win32_SystemEnclosure get ChassisTypes /value'"
 )
 for /f "tokens=2 delims=={}" %%a in (!wmictype!) do (
 	if "%%a" equ "8" (
@@ -93,6 +94,7 @@ for /f "tokens=2 delims=={}" %%a in (!wmictype!) do (
 		)
 	)
 )
+set wmictype=
 if exist "!temp!\dos_pre_reading_cache_zmlj.tmp" (
 	set "zmlj=!temp!\dos_pre_reading_cache_zmlj.tmp"
 ) else (
@@ -106,21 +108,22 @@ for /f "tokens=3 delims=.]" %%a in ('ver') do (
 	if %%a lss 10586 (set winv=1) else (set winv=0)
 )
 if exist "!temp!\dos_pre_reading_cache_os.tmp" (
-	set "wmicos='"type "!temp!\dos_pre_reading_cache_os.tmp""'"
+	set "wmicos='type !temp!\dos_pre_reading_cache_os.tmp'"
 ) else (
-	set "wmicos='"wmic os get caption /value"'"
-	set comd=1
+	set "wmicos='wmic os get caption /value'"
+	set cm=1
 )
-for /f "skip=2 tokens=2 delims==" %%a in (!wmicos!) do (
+for /f "tokens=2 delims==" %%a in (!wmicos!) do (
 	set "system=%%a"
-	if "!comd!" equ "1" (
+	if "!cm!" equ "1" (
 		set "system=!system:~0,-1!"
-		set comd=
+		set cm=
 	)
 	for /f "tokens=3" %%a in ("!system!") do (
 		call :pd%%a 2>nul
 	)
 )
+set wmicos=
 if "!date:~11,1!" equ "周" (
 	set "xingqi=!date:~11,2!"
 ) else (
@@ -242,7 +245,6 @@ if "!color!" equ "0" (
 	)
 )
 set "fy=!cswz!!ysbak:~0,3!91m_!cswz!!ysbak!!cswz!!ysbak:~0,3!92m_!cswz!!ysbak!!cswz!!ysbak:~0,3!93m_!cswz!!ysbak!"
-set fy1=___
 color !color!!color1!
 if !start! lss 1 (set start=1)
 set /a "memuys=start/9+1"
@@ -361,21 +363,24 @@ if exist "!systemroot!\system32\timeout.exe" (
 goto memuv2
 :csfgf
 if "!winv!" equ "0" (
-	for /l %%a in (1,1,26) do (
-		if %%a lss 26 (
-			set /p =!fy!<nul
-		) else (
-			echo !fy!
-		)
+	if "!fyacs!" equ "" (
+    	set fya=
+    	for /l %%a in (1,1,26) do (
+    	    set "fya=!fya!!fy!"
+    	)
+		echo;!fya!
+		set /a "fyacs+=1"
+	) else (
+    	echo;!fya!
+    	set fyacs=
 	)
 ) else (
-	for /l %%a in (1,1,26) do (
-		if %%a lss 26 (
-			set /p =!fy1!<nul
-		) else (
-			echo !fy1!
+	if not defined fya (
+		for /l %%a in (1,1,26) do (
+			set "fya=!fya!!fy1!"
 		)
 	)
+	echo;!fya!
 )
 goto :eof
 :1
@@ -2279,36 +2284,38 @@ for /f "tokens=2 delims==" %%a in ('Wmic path Win32_PerfFormattedData_Tcpip_Netw
     echo;
 )
 echo;
-set /p=网关地址:<nul
+echo;网关地址:
 for /f "tokens=2 delims==" %%a in ('Wmic Path Win32_NetworkAdapterConfiguration WHERE "IPEnabled='TRUE'" get defaultipgateway /value') do (
 	set mrwg=
 	set "mrwg=%%a"
 	set "mrwg=!mrwg:{=!"
 	set "mrwg=!mrwg:}=!"
 	set "mrwg=!mrwg:"=!"
-	set "mrwg=!mrwg:,=	!"
 	set "mrwg=!mrwg:~0,-1!"
-	if defined mrwg (echo;	!mrwg!)
-)
-echo;
-echo;IP地址:
-if exist %systemroot%\system32\curl.exe (
-	ping /n 1 www.baidu.com>nul&&curl 4.ipw.cn
-) else (
-	for /f "skip=12 tokens=4 delims=: " %%a in ('"netsh interface Teredo show state"') do (
+	for %%a in (!mrwg!) do (
 		echo;		%%a
 	)
 )
 echo;
+echo;IP地址:
+if exist %systemroot%\system32\curl.exe (
+	ping /n 1 www.baidu.com>nul
+	if "!errorlevel!" equ "0" (
+		for /f "delims=" %%a in ('curl -s 4.ipw.cn') do (
+			echo;		%%a
+		)
+	)
+)
 for /f "tokens=2 delims==" %%a in ('Wmic Path Win32_NetworkAdapterConfiguration WHERE "IPEnabled='TRUE'" get ipaddress /value') do (
 	set ipdz=
 	set "ipdz=%%a"
 	set "ipdz=!ipdz:{=!"
 	set "ipdz=!ipdz:}=!"
 	set "ipdz=!ipdz:"=!"
-	set "ipdz=!ipdz:,=	!"
 	set "ipdz=!ipdz:~0,-1!"
-	if defined ipdz (echo;		!ipdz!)
+	for %%a in (!ipdz!) do (
+		echo;		%%a
+	)
 )
 echo;
 set /p=MAC地址:<nul
@@ -3137,6 +3144,7 @@ cls
 ipconfig /all
 netsh wlan show drivers
 netsh wlan show interface
+netsh interface Teredo show state
 echo _______________________________________________________________________________
 set /p =按任意键返回<nul&pause>nul
 goto 47
