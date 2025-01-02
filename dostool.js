@@ -62,7 +62,7 @@ set "dosqssj=!time!"
 color f1
 chcp 936>nul
 set ver=20240922
-set versize=213448
+set versize=213702
 set fy1=___
 set "doh=--doh-url https://101.101.101.101/dns-query"
 for /f "delims=" %%a in ("%0") do (set "weizhi=%%~fa")
@@ -2275,16 +2275,23 @@ for /f "tokens=2 delims==" %%a in ('Wmic Path Win32_NetworkAdapterConfiguration 
 	)
 )
 echo;
+set /p =网络连接速度:<nul
+set cs=
 for /f "tokens=2 delims==" %%a in ('Wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get CurrentBandwidth /value') do (
-    set netspeed=
+	set /a "cs+=1"
+	set netspeed=
 	set "netspeed=%%a"
 	set "netspeed=!netspeed:~0,-1!"
-    set /a "netspeed/=1000000"
-    echo;当前网络连接速度:      !netspeed! Mbps
-    echo;
+	set /a "netspeed/=1000000"
+	if "!cs!" equ "1" (
+		echo;	!netspeed! Mbps
+	) else (
+		echo;		!netspeed! Mbps
+	)
 )
 echo;
-echo;网关地址:
+set /p =网关地址:<nul
+set cs=
 for /f "tokens=2 delims==" %%a in ('Wmic Path Win32_NetworkAdapterConfiguration WHERE "IPEnabled='TRUE'" get defaultipgateway /value') do (
 	set mrwg=
 	set "mrwg=%%a"
@@ -2293,11 +2300,16 @@ for /f "tokens=2 delims==" %%a in ('Wmic Path Win32_NetworkAdapterConfiguration 
 	set "mrwg=!mrwg:"=!"
 	set "mrwg=!mrwg:~0,-1!"
 	for %%a in (!mrwg!) do (
-		echo;		%%a
+		set /a "cs+=1"
+		if "!cs!" equ "1" (
+			echo;	%%a
+		) else (
+			echo;		%%a
+		)
 	)
 )
 echo;
-echo;IP地址:
+set /p =IP地址:<nul
 if exist %systemroot%\system32\curl.exe (
 	ping /n 1 www.baidu.com>nul
 	if "!errorlevel!" equ "0" (
@@ -2306,6 +2318,7 @@ if exist %systemroot%\system32\curl.exe (
 		)
 	)
 )
+set cs=
 for /f "tokens=2 delims==" %%a in ('Wmic Path Win32_NetworkAdapterConfiguration WHERE "IPEnabled='TRUE'" get ipaddress /value') do (
 	set ipdz=
 	set "ipdz=%%a"
@@ -2314,7 +2327,12 @@ for /f "tokens=2 delims==" %%a in ('Wmic Path Win32_NetworkAdapterConfiguration 
 	set "ipdz=!ipdz:"=!"
 	set "ipdz=!ipdz:~0,-1!"
 	for %%a in (!ipdz!) do (
-		echo;		%%a
+		set /a "cs+=1"
+		if "!cs!" equ "1" (
+			echo;		%%a
+		) else (
+			echo;		%%a
+		)
 	)
 )
 echo;
