@@ -62,7 +62,7 @@ set "dosqssj=!time!"
 color f1
 chcp 936>nul
 set ver=20240922
-set versize=215257
+set versize=215297
 set fy1=___
 set "doh=--doh-url https://101.101.101.101/dns-query"
 for /f "delims=" %%a in ("%0") do (set "weizhi=%%~fa")
@@ -1438,9 +1438,10 @@ tasklist /fi "pid eq %jcxq%"|findstr /i "%jcxq%"||echo 没有此进程&&timeout /t 2 
 cls
 echo _______________________________________________________________________________
 setlocal
-for /f "skip=2 delims=" %%a in ('"wmic process where processid=!jcxq! get /format:value"') do (
-	set "tmp=%%a"
-	set "!tmp:~0,-1!">nul
+for /f "delims=" %%a in ('"wmic process where processid=!jcxq! get * /value"') do (
+	set "var=%%a"
+	set "var=!var:~0,-1!"
+	set "!var!">nul
 )
 if defined name (echo;名称:		!name!)
 if defined parentprocessid (echo;父系PID:	!parentprocessid!)
@@ -1497,6 +1498,7 @@ echo ___________________________________________________________________________
 set /p =按任意键返回<nul&pause>nul
 goto 23
 :23-1
+setlocal
 color 0f
 set ysbak=97;40m
 title 循环显示CPU占用率与网络速度%system%
@@ -1507,7 +1509,7 @@ for /f "tokens=2 delims==" %%a in ('Wmic path Win32_PerfFormattedData_Tcpip_Netw
 	set "netcard=!netcard:~0,-1!"
 )
 for /f "tokens=2 delims==" %%a in ('wmic cpu get numberOflogicalprocessors /value') do (
-    set corenum=%%a
+    set "corenum=%%a"
 	set "corenum=!corenum:~0,-1!"
     set /a "tghs=corenum*2+4+2"
 )
@@ -1563,7 +1565,10 @@ echo;___________________________________________________________________________
 echo;按e返回菜单
 set /p =!cswz!s!cswz!0;0H<nul
 choice /c 1e /t 1 /d 1 >nul
-if "!errorlevel!" equ "2" goto 23
+if "!errorlevel!" equ "2" (
+	endlocal
+	goto 23
+)
 goto 23-1-1
 )
 :24
@@ -2161,7 +2166,7 @@ for /f "delims=" %%a in ('wmic diskdrive get interfacetype^,size^,totalsectors^,
 	set "var=!var:~0,-1!"
 	if defined var (
 		set /a "cs+=1"
-		set "!var!"
+		set "!var!">nul
 		if "!cs!" equ "5" (
 			call :xdwjs !size! b size
 			call :strlen firmwarerevision cd
