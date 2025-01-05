@@ -62,7 +62,7 @@ set "dosqssj=!time!"
 color f1
 chcp 936>nul
 set ver=20240922
-set versize=215297
+set versize=214848
 set fy1=___
 set "doh=--doh-url https://101.101.101.101/dns-query"
 for /f "delims=" %%a in ("%0") do (set "weizhi=%%~fa")
@@ -140,7 +140,7 @@ if exist "!systemroot!\system32\choice.exe" (
 	set "sel=call :set"
 )
 if /i "%2" neq "" (goto %2)
-rem call :xsjc !dosqssj! !time! jg
+rem call :sjc !dosqssj! !time! jg
 goto memuv2
 )
 for /f "delims=" %%a in ('"wmic cpu get processorid|find /i /v "processorid""') do (
@@ -311,21 +311,17 @@ if /i "!caidan!" equ "go6" (set "start=46"&goto memuv2)
 if /i "!caidan!" equ "go7" (set "start=55"&goto memuv2)
 if /i "!caidan!" equ "go8" (set "start=64"&goto memuv2)
 if /i "!caidan!" equ "go9" (set "start=73"&goto memuv2)
-if /i "!caidan!" equ "vbsjsq" (set "tzwz=!start!"&goto vbsjsq)
-if /i "!caidan!" equ "guanji" (set "tzwz=!start!"&goto guanji)
-if /i "!caidan!" equ "guanyu" (set "tzwz=!start!"&goto guanyu)
-if "!caidan!" equ "BATJIAMI" (set "tzwz=!start!"&goto batjiami)
+if /i "!caidan!" equ "xz" (goto xz)
+if /i "!caidan!" equ "js" (goto 49)
+if /i "!caidan!" equ "kcd" (goto kcd)
+if /i "!caidan!" equ "gcd" (goto gcd)
+if /i "!caidan!" equ "gx" (goto update)
+if /i "!caidan!" equ "vbsjsq" (goto vbsjsq)
+if /i "!caidan!" equ "guanji" (goto guanji)
+if /i "!caidan!" equ "guanyu" (goto guanyu)
 if /i "!caidan!" equ "csh" (goto chushihua)
-if /i "!caidan!" equ "xz" (set "tzwz=!start!"&goto xz)
-if /i "!caidan!" equ "js" (set "tzwz=!start!"&goto 49)
-if /i "!caidan!" equ "kcd" (set "tzwz=!start!"&goto kcd)
-if /i "!caidan!" equ "gcd" (set "tzwz=!start!"&goto gcd)
-if /i "!caidan!" equ "gx" (set "tzwz=!start!"&goto update)
-if /i "!caidan!" equ "qzgx" (
-	set "tzwz=!start!"
-	set ver=0
-	goto update
-)
+if "!caidan!" equ "BATJIAMI" (goto batjiami)
+if /i "!caidan!" equ "qzgx" (set ver=0&goto update)
 if "!caidan!" equ "-" (
 	set /a "pd=start-1"
 	if !pd! geq 1 (
@@ -354,7 +350,7 @@ if /i "!caidan!" equ "s" (
 		goto memuv2
 	)
 )
-echo 请输入正确的选项！
+set /p =请输入正确的选项！<nul
 if exist "!systemroot!\system32\timeout.exe" (
 	timeout /t 2 /nobreak>nul
 ) else (
@@ -692,7 +688,7 @@ set/p batjmxx=请输入你的选择:
 if "!batjmxx!"=="1" goto batjiami(1)
 if "!batjmxx!"=="2" goto batjiami(2)
 if "!batjmxx!"=="3" goto batjiami(3)
-if "!batjmxx!"=="0" if "!tzwz!" equ "!start!" (goto memuv2) else (goto !tzwz!)
+if "!batjmxx!"=="0" goto memuv2
 echo 请输入正确的选项！
 ping/n 2 0.0>nul
 goto batjiami
@@ -1207,8 +1203,8 @@ if "!shuru!" equ "7" goto guanji(8)
 ::if "!shuru!%" equ "8" tsdiscon
 if "!shuru!" equ "8" rundll32.exe user32.dll LockWorkStation
 if "!shuru!" equ "9" goto guanji-9
-if "!shuru!" equ "10" if "!tzwz!" equ "!start!" (goto memuv2) else (goto !tzwz!)
-if "!shuru!" equ "0" if "!tzwz!" equ "!start!" (goto memuv2) else (goto !tzwz!)
+if "!shuru!" equ "10" goto memuv2
+if "!shuru!" equ "0" goto memuv2
 goto guanji
 set guanjixuanxiang=
 set/p guanjixuanxiang=请输入你的选择:
@@ -1220,7 +1216,7 @@ if !guanjixuanxiang!=="4" goto guanji(4)
 if !guanjixuanxiang!=="5" goto guanji(6)
 if !guanjixuanxiang!=="6" goto guanji(7)
 if !guanjixuanxiang!=="7" goto guanji(8)
-if !guanjixuanxiang!=="0" if "!tzwz!" equ "!start!" (goto memuv2) else (goto !tzwz!)
+if !guanjixuanxiang!=="0" goto memuv2
 echo 请输入正确的选项！
 ping/n 2 0.0>nul
 goto guanji
@@ -2640,22 +2636,24 @@ echo ___________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
 goto 32
 :33
+setlocal
 title 计时器%system%
 cls
 echo 计时器精确度0.01秒
 echo _______________________________________________________________________________
 echo 按任意键开始计时(不建议跨天计时)&pause>nul
-set "kssjbk=%time%"
+set "kssjbk=!time!"
 cls
 echo 计时器已开始计时,按任意键停止计时.&pause>nul
-set "jssjbk=%time%"
-call :sjc "%kssjbk%" "%jssjbk%"
+set "jssjbk=!time!"
+call :sjc "!kssjbk!" "!jssjbk!" jg format
 cls
-echo 计时开始时间:%kssjbk%
-echo 计时结束时间:%jssjbk%
+echo;计时开始时间: !kssjbk!
+echo;计时结束时间: !jssjbk!
+echo;用时: !jg!
 echo _______________________________________________________________________________
-echo 用时:%sjc:~0,2%时%sjc:~2,2%分%sjc:~4,2%.%sjc:~6,2%秒
 set /p =按任意键返回菜单<nul&pause>nul
+endlocal
 goto memuv2
 :34
 title 随机密码生成器%system%
@@ -2824,13 +2822,14 @@ cls
 echo e=返回菜单
 set/p vbsbds=请输入表达式:
 :for /f "delims=eE" %%a in ('echo %vbsbds%') do goto js
-if /i "%vbsbds%"=="e" if "!tzwz!" equ "!start!" (goto memuv2) else (goto !tzwz!)
+if /i "%vbsbds%"=="e" goto memuv2
 :js
 echo msgbox %vbsbds%,"65","VBS计算器">%systemdrive%\windows\temp.vbs
 %systemdrive%\windows\temp.vbs
 del/f/q %systemdrive%\windows\temp.vbs
 goto vbsjsq
 :guanyu
+setlocal
 title 关于DOS工具箱%system%
 for /f "delims=" %%a in ("%0") do (
 	if "%%~za" equ "!versize!" (
@@ -2840,7 +2839,7 @@ for /f "delims=" %%a in ("%0") do (
 	)
 )
 if /i "!processor_architecture!" equ "x86" (set bit=32) else (set bit=64)
-call :sjc "!dosqssj!" "!time!"
+call :sjc "!dosqssj!" "!time!" jg format
 cls
 echo 关于DOS工具箱
 echo _______________________________________________________________________________
@@ -2848,12 +2847,13 @@ echo 版本: 		1.9.3 (!ver!.!versize!)
 echo 操作系统: 	!system:~3! !bit!位
 echo 版权所有 	2012-2025 Administrator 保留所有权利
 echo _______________________________________________________________________________
-echo 本次已运行:		!sjc:~0,2!时!sjc:~2,2!分!sjc:~4,2!.!sjc:~6,2!秒
+echo 本次已运行:		!jg!
 echo DOS工具箱所在路径:	!weizhi!
 echo 文件大小:		!daxiao1!
 echo _______________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
-if "!tzwz!" equ "!start!" (goto memuv2) else (goto !tzwz!)
+endlocal
+goto memuv2
 :37
 title 文本浏览%system%
 cls
@@ -3004,10 +3004,10 @@ set /p =按任意键返回菜单<nul&pause>nul
 goto memuv2
 :kcd
 start mshta "javascript:new ActiveXObject('WMPlayer.OCX').cdromCollection.Item(0).Eject();window.close();"
-if "!tzwz!" equ "!start!" (goto memuv2) else (goto !tzwz!)
+goto memuv2
 :gcd
 start mshta "javascript:with (new ActiveXObject('WMPlayer.OCX').cdromCollection.Item(0)){Eject();Eject();}window.close();"
-if "!tzwz!" equ "!start!" (goto memuv2) else (goto !tzwz!)
+goto memuv2
 :42
 title 语音阅读器%system%
 cls
@@ -3267,7 +3267,7 @@ set xzgjx=
 set/p xzgjx=是否卸载工具箱(Y/N)?
 set xzgjx="%xzgjx:|=%"
 if /i !xzgjx!=="y" goto xzgjx
-if /i !xzgjx!=="n" if "!tzwz!" equ "!start!" (goto memuv2) else (goto !tzwz!)
+if /i !xzgjx!=="n" goto memuv2
 echo 请输入正确的选择
 ping/n 2 0.0>nul
 goto xz
@@ -3285,7 +3285,7 @@ cls
 taskkill /f /fi "status eq not responding"
 echo _______________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
-if "!tzwz!" equ "!start!" (goto memuv2) else (goto !tzwz!)
+goto memuv2
 :50
 title 文件比较器%system%
 cls
@@ -3882,15 +3882,15 @@ for /f "delims=" %%a in ('"dir/a/s/b "%url%""') do (call :listfile "%%a" %%~za %
 echo 清空缓存...
 call :pwiex clearcache
 echo 记录文件压缩前的读取时间...
-for /f "tokens=*" %%a in (%temp%\listfile.log) do (call :loadfile %%a)
+for /f "tokens=*" %%a in (%temp%\listfile.log) do (call :loadfile "%%a")
 echo 压缩文件...
-for /f "tokens=*" %%a in (%temp%\listfile.log) do (compact /c %%a)
+for /f "tokens=*" %%a in (%temp%\listfile.log) do (compact /c "%%a")
 echo 清空缓存...
 call :pwiex clearcache
 echo 比较压缩前后的读取时间...
-for /f "tokens=*" %%a in (%temp%\loadtime.log) do (call :ifloadfile %%a)
+for /f "tokens=*" %%a in (%temp%\loadtime.log) do (call :ifloadfile "%%a")
 echo 解压不适合压缩的文件...
-for /f "tokens=*" %%a in (%temp%\uncompact.log) do (compact /u %%a)
+for /f "tokens=*" %%a in (%temp%\uncompact.log) do (compact /u "%%a")
 net start sysmain>nul 2>nul
 del/f/q %temp%\listfile.log
 del/f/q %temp%\loadtime.log
@@ -3899,29 +3899,29 @@ echo ___________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
 goto memuv2
 :ifloadfile
-set file=%1
-set loadtime=%2
-call :copyfile %file%
-if 0x%sjc% geq 0x%loadtime% echo %file%>>%temp%\uncompact.log
+set "file=%1"
+set "loadtime=%2"
+call :copyfile "!file!"
+if !raw! geq !loadtime! echo %file%>>%temp%\uncompact.log
 goto :eof
 :loadfile
-set file=%1
-call :copyfile %file%
-echo %file% %sjc%>>%temp%\loadtime.log
+set "file=%1"
+call :copyfile "!file!"
+echo !file! !raw!>>%temp%\loadtime.log
 goto :eof
 :copyfile
-set file=%1
-set kssj=%time%
-copy /z %file% nul
-set jssj=%time%
-call :sjc %kssj% %jssj%
-echo 读取用时: %sjc:~4,2%.%sjc:~6,2%s
+set "file=%1"
+set "kssj=!time!"
+copy /z "!file!" nul
+set "jssj=!time!"
+call :sjc !kssj! !jssj! raw
+echo 读取用时: !raw!ms
 goto :eof
 :listfile
-set url=%1
-set size=%2
-set name=%3
-dir/ad %url%>nul 2>nul&&goto :eof
+set "url=%1"
+set "size=%2"
+set "name=%3"
+dir/ad "!url!">nul 2>nul&&goto :eof
 if "%name%" equ ".zip" goto :eof
 if "%name%" equ ".rar" goto :eof
 if "%name%" equ ".7z" goto :eof
@@ -3994,7 +3994,7 @@ echo 下载汇率文件(总共13个文件)...
 if not exist "%temp%\down" (md "%temp%\down") 
 if exist "%systemroot%\system32\curl.exe" (
 	pushd "%temp%\down"
-	curl !proxy! !doh! -A "!ua!" -# -Z -C - --retry 2 --retry-delay 1 --connect-timeout 5 ^
+	curl !proxy! !doh! -A "!ua!" -# -Z --compressed -C - --retry 2 --retry-delay 1 --connect-timeout 5 ^
 	-o cny.json			%mainurl1%chinese-yuan-renminbi ^
 	-o doge.json		%mainurl%dogecoin ^
 	-o btc.json			%mainurl%bitcoin ^
@@ -4144,19 +4144,6 @@ call :Division %autousd% 31.1034768 3 autocny
 call :Division %agtousd% 31.1034768 3 agtocny
 call :xcf !autocny! !usdtocny! autocny
 call :xcf !agtocny! !usdtocny! agtocny
-rem for /f "delims=" %%a in ('"powershell %dogetousd%/%cnytousd%"') do (set dogetocny=%%a)
-rem for /f "delims=" %%a in ('"powershell %btctousd%/%cnytousd%"') do (set btctocny=%%a)
-rem for /f "delims=" %%a in ('"powershell %ethtousd%/%cnytousd%"') do (set ethtocny=%%a)
-rem for /f "delims=" %%a in ('"powershell %eurtousd%/%cnytousd%"') do (set eurtocny=%%a)
-rem for /f "delims=" %%a in ('"powershell %gbptousd%/%cnytousd%"') do (set gbptocny=%%a)
-rem for /f "delims=" %%a in ('"powershell %jpytousd%/%cnytousd%"') do (set jpytocny=%%a)
-rem for /f "delims=" %%a in ('"powershell %hkdtousd%/%cnytousd%"') do (set hkdtocny=%%a)
-rem for /f "delims=" %%a in ('"powershell %twdtousd%/%cnytousd%"') do (set twdtocny=%%a)
-rem for /f "delims=" %%a in ('"powershell %xmrtousd%/%cnytousd%"') do (set xmrtocny=%%a)
-rem for /f "delims=" %%a in ('"powershell %filetousd%/%cnytousd%"') do (set filetocny=%%a)
-rem for /f "delims=" %%a in ('"powershell 1/%cnytousd%"') do (set usdtocny=%%a)
-rem for /f "delims=" %%a in ('"powershell %autousd%/31.1034768*%usdtocny%"') do (set autocny=%%a)
-rem for /f "delims=" %%a in ('"powershell %agtousd%/31.1034768*%usdtocny%"') do (set agtocny=%%a)
 cls
 echo 黄金XAU    → 人民币CNY
 echo 	1  → !autocny!
@@ -4396,12 +4383,14 @@ echo 如果显示激活失败[错误: 0xC004F074]，应更换KMS服务器.
 set /p =按任意键返回菜单<nul&pause>nul
 goto memuv2
 :72
+setlocal
 title curl多进程下载%system%
 cls
 if not exist "%systemroot%\system32\curl.exe" (
 	if not exist .\curl.exe (
 		echo 没有找到curl.exe
 		timeout /t 2 /nobreak>nul
+		setlocal
 		goto memuv2
 	)
 )
@@ -4415,7 +4404,10 @@ if not defined url (
 	timeout /t 2 /nobreak>nul
 	goto 72.1
 )
-if "!url!" equ "e" (goto memuv2)
+if "!url!" equ "e" (
+	endlocal
+	goto memuv2
+)
 set tr=
 set /p "tr=输入下载进程数(默认16): "
 if not defined tr (set tr=16)
@@ -4450,18 +4442,22 @@ for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\W
 		set proxy=
 	)
 )
-curl !proxy! !doh! -A "!ua!" -I -# -L -o tag --connect-timeout 5 --output-dir "%temp%" "!url!"
+curl !proxy! !doh! -A "!ua!" -I --compressed -# -L -o tag --connect-timeout 5 --output-dir "%temp%" "!url!"
 if not exist "%temp%\tag" (
 echo;_______________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
+endlocal
 goto memuv2
 )
 for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Accept-Ranges:"') do (set "trflag=%%a")
 for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Content-Length:"') do (set "filesize=%%a")
 for /f "tokens=2 delims==" %%a in ('type %temp%\tag^|findstr /c:"filename="') do (set "filename=%%a")
 if "!trflag!" neq "bytes" (set tr=1)
-del /f /q "%temp%\tag"
-call :xdwjs !filesize! b dw
+if defined filesize (
+	call :xdwjs !filesize! b dw
+) else (
+	set "dw=未知 (转为单进程下载)"
+)
 if not defined filename (set /p "filename=输入文件名: ")
 if not defined filename (set filename=curl下载文件)
 set /a "fd=filesize/tr"
@@ -4486,6 +4482,7 @@ echo;___________________________________________________________________________
 set /p =按任意键开始下载<nul&pause>nul
 cls
 echo;开始下载文件...
+if not defined filesize (goto 72.3)
 title curl多进程下载 - 等待文件下载完成(按e返回菜单)!system!
 if exist "%temp%\down" (rd /s /q "%temp%\down")
 md "%temp%\down"
@@ -4501,13 +4498,9 @@ for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\W
 	)
 )
 for /l %%a in (1,1,!tr!) do (
-	start /min /low "curl多进程下载_!tr!" curl !proxy! !doh! -s -A "!ua!" -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir "%temp%\down" "!url!"
+	start /min /low "curl多进程下载_!tr!" curl !proxy! !doh! -A "!ua!" --compressed -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir "%temp%\down" "!url!"
 	set /a "oldfd=newfd+1"
-	if "%%a" equ "!pdtr!" (
-		set newfd=
-	) else (
-		set /a "newfd=oldfd+fd-1"
-	)
+	if "%%a" equ "!pdtr!" (set newfd=) else (set /a "newfd=oldfd+fd-1")
 )
 pushd "%temp%\down"
 cls
@@ -4532,13 +4525,9 @@ for /l %%a in (1,1,!tr!) do (
 			set fhz=
 			call :cf !ssdx! !pdfd! 2 fhz
 			set "jcjd=!fhz:~2,2!"
-			if "!jcjd:~0,1!" equ "0" (
-				set "jcjd=!jcjd:~1,1!"
-			)
+			if "!jcjd:~0,1!" equ "0" (set "jcjd=!jcjd:~1,1!")
 			set jdt=
-			for /l %%c in (1,2,!jcjd!) do (
-				set "jdt=!jdt!:"
-			)
+			for /l %%c in (1,2,!jcjd!) do (set "jdt=!jdt!:")
 			set /p =进程%%a的进度:	[<nul
 			call :colortxt a !jdt!
 			echo;][!fhz!~1]
@@ -4551,13 +4540,9 @@ for /l %%a in (1,1,!tr!) do (
 			set fhz=
 			call :cf !ssdx! !fd! 2 fhz
 			set "jcjd=!fhz:~2,2!"
-			if "!jcjd:~0,1!" equ "0" (
-				set "jcjd=!jcjd:~1,1!"
-			)
+			if "!jcjd:~0,1!" equ "0" (set "jcjd=!jcjd:~1,1!")
 			set jdt=
-			for /l %%c in (1,2,!jcjd!) do (
-				set "jdt=!jdt!:"
-			)
+			for /l %%c in (1,2,!jcjd!) do (set "jdt=!jdt!:")
 			set /p =进程%%a的进度:	[<nul
 			call :colortxt a !jdt!
 			echo;][!fhz!~1]
@@ -4569,6 +4554,8 @@ if "!errorlevel!" equ "2" (
 	taskkill /fi "windowtitle eq curl多进程下载_*" /fi "imagename eq curl.exe" /f
 	popd
 	rd /s /q "%temp%\down"
+	del "%temp%\tag"
+	endlocal
 	goto memuv2
 )
 if "!jccs!" neq "!tr!" (goto 72.2)
@@ -4579,31 +4566,24 @@ if "!dir:~-1!" neq "\" (set "dir=!dir!\")
 copy /b /z !file! "!dir!!filename!"
 popd
 rd /s /q "%temp%\down"
+del /f /q "%temp%\tag"
+:72.4
 cls
 title curl多进程下载%system%
+if "!dir:~-1!" neq "\" (set "dir=!dir!\")
 if exist "!dir!!filename!" (
 	for /f "delims=" %%a in ("!dir!!filename!") do (
-		call :sjc !kssj! !jssj!
-		set xzsd=
-		if "!jgxs:~0,1!" equ "0" (
-			set "jgxs=!jgxs:~1,1!"
-		)
-		if "!jgfen:~0,1!" equ "0" (
-			set "jgfen=!jgfen:~1,1!"
-		)
-		if "!jgm:~0,1!" equ "0" (
-			set "jgm=!jgm:~1,1!"
-		)
-		set /a "xzsd=jgxs*3600+jgfen*60+jgm"
-		set "xzsd=!xzsd!.!jghm!"
 		echo;计算下载速度...
+		call :sjc !kssj! !jssj! raw
+		call :sjc !kssj! !jssj! xzys format
+		call :Division !raw! 1000 3 xzsd
 		call :Division !filesize! !xzsd! 3 sd
 		call :xdwjs !sd! d dw
 		forfiles /p %~dp0 /m %~nx0 /c "%comspec% /c set /p =0x07<nul"
 		cls
 		echo;下载完成
 		echo;链接:		!url!
-		echo;用时:		!jgxs!小时!jgfen!分钟!jgm!.!jghm!秒
+		echo;用时:		!xzys!
 		echo;平均下载速度:  !size! !dw!/s
 		echo;文件:		%%~nxa
 		if %%~za geq 1024 (
@@ -4624,7 +4604,25 @@ if exist "!dir!!filename!" (
 )
 echo;_______________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
+endlocal
 goto memuv2
+:72.3
+for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
+	if "%%a" equ "0x1" (
+		for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
+			set "proxy=-x %%b"
+			echo;使用代理:	%%b
+		)
+	) else (
+		set proxy=
+	)
+)
+if "!dir:~-1!" equ "\" (set "dir=!dir:~0,-1!")
+set "kssj=!time!"
+curl !proxy! !doh! -A "!ua!" --compressed -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o "!filename!" --output-dir "!dir!" "!url!"
+set "jssj=!time!"
+for /f "delims=" %%a in ("!dir!\!filename!") do (set "filesize=%%~za")
+goto 72.4
 :hash
 setlocal
 for /f "delims=" %%a in ("%1") do (set "url=%%~a")
@@ -4685,7 +4683,7 @@ if exist "%systemroot%\system32\curl.exe" (
 	)
 	echo;使用链接:	!gxurlhost1!
 	echo;Host域名:	!githost:~10,-1!
-	curl !proxy! !doh! !githost! -A "!ua!" -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 !resolve2! -o dostoolupdate !gxurlhost1!
+	curl !proxy! !doh! !githost! -A "!ua!" --compressed -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 !resolve2! -o dostoolupdate !gxurlhost1!
 	if exist "%temp%\dostoolupdate" (
 		for /f "usebackq delims=: tokens=1,2" %%a in ("%temp%\dostoolupdate") do (
 			set "gxver=%%a"
@@ -4698,7 +4696,7 @@ if exist "%systemroot%\system32\curl.exe" (
 		goto updatecheck
 	) else (
 		echo;使用链接:	!gxurl1!
-		curl !proxy! !doh! -A "!ua!" -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o dostoolupdate !gxurl1!
+		curl !proxy! !doh! -A "!ua!" --compressed -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o dostoolupdate !gxurl1!
 		if exist "%temp%\dostoolupdate" (
 			for /f "usebackq delims=: tokens=1,2" %%a in ("%temp%\dostoolupdate") do (
 				set "gxver=%%a"
@@ -4712,7 +4710,7 @@ if exist "%systemroot%\system32\curl.exe" (
 		) else (
 			echo;使用链接:	!gxurlhost2!
 			echo;Host域名:	!jshost:~10,-1!
-			curl !proxy! !doh! !jshost! -A "!ua!" -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 !resolve2! -o dostoolupdate !gxurlhost2!
+			curl !proxy! !doh! !jshost! -A "!ua!" --compressed -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 !resolve2! -o dostoolupdate !gxurlhost2!
 			if exist "%temp%\dostoolupdate" (
 				for /f "usebackq delims=: tokens=1,2" %%a in ("%temp%\dostoolupdate") do (
 					set "gxver=%%a"
@@ -4725,7 +4723,7 @@ if exist "%systemroot%\system32\curl.exe" (
 				goto updatecheck
 			) else (
 				echo;使用链接:	!gxurl2!
-				curl !proxy! !doh! -A "!ua!" -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o dostoolupdate !gxurl2!
+				curl !proxy! !doh! -A "!ua!" --compressed -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o dostoolupdate !gxurl2!
 				if exist "%temp%\dostoolupdate" (
 					for /f "usebackq delims=: tokens=1,2" %%a in ("%temp%\dostoolupdate") do (
 						set "gxver=%%a"
@@ -4741,11 +4739,7 @@ if exist "%systemroot%\system32\curl.exe" (
 					echo;没有检查到更新版本
 					echo;_______________________________________________________________________________
 					set /p =按任意键返回菜单<nul&pause>nul
-					if "!tzwz!" equ "!start!" (
-						goto memuv2
-					) else (
-						goto !tzwz!
-					)
+					goto memuv2
 				)
 			)
 		)
@@ -4775,11 +4769,7 @@ if exist "%systemroot%\system32\curl.exe" (
 			echo;没有检查到更新版本
 			echo;_______________________________________________________________________________
 			set /p =按任意键返回菜单<nul&pause>nul
-			if "!tzwz!" equ "!start!" (
-				goto memuv2
-			) else (
-				goto !tzwz!
-			)
+			goto memuv2
 		)
 	)
 )
@@ -4796,11 +4786,7 @@ if !checkver! gtr 0 (
 	echo;没有检查到更新版本
 	echo;_______________________________________________________________________________
 	set /p =按任意键返回菜单<nul&pause>nul
-	if "!tzwz!" equ "!start!" (
-		goto memuv2
-	) else (
-		goto !tzwz!
-	)
+	goto memuv2
 )
 :startupdate
 echo 正在下载更新...
@@ -4821,7 +4807,7 @@ if exist "%systemroot%\system32\curl.exe" (
 	)
 	echo;使用链接:	!url!
 	if defined host (echo;Host域名:	%host:~10,-1%)
-	curl !proxy! !doh! !host! -A "!ua!" -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 !resolve2! -o dostool !url!
+	curl !proxy! !doh! !host! -A "!ua!" --compressed -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 !resolve2! -o dostool !url!
 	popd
 	call :hash "%temp%\dostool" sha1 hash
 	if /i "!hash!" equ "!doshash!" (
@@ -4832,11 +4818,7 @@ if exist "%systemroot%\system32\curl.exe" (
 		echo;
 		timeout /t 2 /nobreak>nul
 		endlocal
-		if "!tzwz!" equ "!start!" (
-			goto memuv2
-		) else (
-			goto !tzwz!
-		)
+		goto memuv2
 	)
 ) else (
 	certutil -urlcache -split -f !url! "%temp%\dostool"
@@ -4849,54 +4831,72 @@ if exist "%systemroot%\system32\curl.exe" (
 		echo;
 		timeout /t 2 /nobreak>nul
 		endlocal
-		if "!tzwz!" equ "!start!" (
-			goto memuv2
-		) else (
-			goto !tzwz!
-		)
+		goto memuv2
 	)
 )
 ::bitsadmin /transfer 下载更新中... /priority FOREGROUND https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js %weizhi%&start %comspec% /c %0&exit 0
 :sjc
-set kssj=%1
-set jssj=%2
-set kssj=%kssj:"=%
-set kssj=%kssj: =0%
-set kssj=%kssj::=%
-set kssj=%kssj:.=%
-set jssj=%jssj:"=%
-set jssj=%jssj: =0%
-set jssj=%jssj::=%
-set jssj=%jssj:.=%
-set xs=%kssj:~0,2%
-set xs1=%jssj:~0,2%
-set fen=%kssj:~2,2%
-set fen1=%jssj:~2,2%
-set miao=%kssj:~4,2%
-set miao1=%jssj:~4,2%
-set hm=%kssj:~6,2%
-set hm1=%jssj:~6,2%
-if %xs% lss 10 if %xs% gtr 07 set xs=%xs:0=%
-if %xs1% lss 10 if %xs1% gtr 07 set xs1=%xs1:0=%
-if %fen% lss 10 if %fen% gtr 07 set fen=%fen:0=%
-if %fen1% lss 10 if %fen1% gtr 07 set fen1=%fen1:0=%
-if %miao% lss 10 if %miao% gtr 07 set miao=%miao:0=%
-if %miao1% lss 10 if %miao1% gtr 07 set miao1=%miao1:0=%
-if %hm% lss 10 if %hm% gtr 07 set hm=%hm:0=%
-if %hm1% lss 10 if %hm1% gtr 07 set hm1=%hm1:0=%
-if %hm1% lss %hm% set/a miao1=%miao1%-1&set/a hm1=%hm1%+100
-set/a jghm=%hm1%-%hm%
-if %miao1% lss %miao% set/a fen1=%fen1%-1&set/a miao1=%miao1%+60
-set/a jgm=%miao1%-%miao%
-if %fen1% lss %fen% set/a jgxs1=%jgxs1%-1&set/a fen1=%fen1%+60
-set/a jgfen=%fen1%-%fen%
-set/a jgxs=%xs1%-%xs%
-if %jghm% lss 10 set jghm=0%jghm%
-if %jgm% lss 10 set jgm=0%jgm%
-if %jgfen% lss 10 set jgfen=0%jgfen%
-if %jgxs% lss 10 set jgxs=0%jgxs%
-set sjc=
-set sjc=%jgxs%%jgfen%%jgm%%jghm%
+REM 参数: 开始时间和结束时间，格式为 HH:MM:SS.mm
+setlocal
+set "start_time=%1"
+set "end_time=%2"
+REM 解析开始时间
+for /f "tokens=1-4 delims=:. " %%a in ("!start_time!") do (
+    set "start_hour=%%a"
+    set "start_minute=%%b"
+    set "start_second=%%c"
+    set "start_millisecond=%%d"
+)
+REM 解析结束时间
+for /f "tokens=1-4 delims=:. " %%a in ("!end_time!") do (
+    set "end_hour=%%a"
+    set "end_minute=%%b"
+    set "end_second=%%c"
+    set "end_millisecond=%%d"
+)
+REM 去掉前导零并确保以十进制格式进行计算
+for %%i in (start_hour start_minute start_second start_millisecond end_hour end_minute end_second end_millisecond) do (
+    set "%%i=!%%i: =!"
+    set /a "%%i=1!%%i! - 100"
+)
+REM 计算时间差（毫秒）
+set /a "time_difference-=start_hour*3600000+start_minute*60000+start_second*1000+start_millisecond*10"
+set /a "time_difference+=end_hour*3600000+end_minute*60000+end_second*1000+end_millisecond*10"
+REM 处理跨天情况
+if !time_difference! lss 0 (set /a "time_difference+=86400000")
+REM 转换时间差为 HH:MM:SS.mm 格式
+set /a "diff_hours=time_difference/3600000"
+set /a "diff_minutes=(time_difference%%3600000)/60000"
+set /a "diff_seconds=(time_difference%%60000)/1000"
+set /a "diff_milliseconds=(time_difference%%1000)/10"
+REM 格式化输出
+if !diff_hours! lss 10 (set "diff_hours=0!diff_hours!")
+if !diff_minutes! lss 10 (set "diff_minutes=0!diff_minutes!")
+if !diff_seconds! lss 10 (set "diff_seconds=0!diff_seconds!")
+if !diff_milliseconds! lss 10 (set "diff_milliseconds=0!diff_milliseconds!")
+set "time_diff=!diff_hours!:!diff_minutes!:!diff_seconds!.!diff_milliseconds!"
+if "%4" equ "format" (
+	for /f "tokens=1-3 delims=:" %%a in ("!time_diff!") do (
+		if "%%a" equ "00" (
+			if "%%b" equ "00" (
+				set "time_diff=%%c秒"
+			) else (
+				set "time_diff=%%b分%%c秒"
+			)
+		) else (
+			set "time_diff=%%a小时%%b分%%c秒"
+		)
+	)
+)
+if "%3" equ "" (
+	echo;!time_diff!
+) else (
+	if "%3" equ "raw" (
+		endlocal&set "%3=%time_difference%"
+	) else (
+		endlocal&set "%3=%time_diff%"
+	)
+)
 goto :eof
 :zfccda
 set zfcgs=0
@@ -4940,11 +4940,7 @@ for /f "tokens=1,2,3,4 delims=:." %%a in ("!time!") do (
 if !sub! lss 0 (
 	goto :eof
 ) else (
-	if !sub! geq %1 (
-		goto :eof
-	) else (
-		goto ys_loop
-	)
+	if !sub! geq %1 (goto :eof) else (goto ys_loop)
 )
 goto :eof
 :dwjs
@@ -5347,20 +5343,6 @@ if "!Div.3:~0,1!"=="." set Div.3=0!Div.3!
 if "!Div.3!"=="" set Div.3=0
 endlocal&set %~4=%Div.3%
 goto :eof
-:xsjc
-setlocal
-set "n=0"
-for /f "tokens=1-8 delims=.:" %%I in ("%~2:%~1") do (
-	set /a "n+=10%%i%%100*360000+10%%j%%100*6000+10%%k%%100*100+10%%l%%100"
-	set /a "n-=10%%m%%100*360000+10%%n%%100*6000+10%%o%%100*100+10%%p%%100"
-)
-set "sco=!n!"
-set /a "s=n/360000,n=n%%360000,f=n/6000,n=n%%6000,m=n/100,n=n*%%100"
-set /a "n*=10"
-if %F% equ 0 (set "T=%M%秒%N%毫秒") else (set "T=%F%分%M%秒%N%毫秒")
-if %s% neq 0 (set "t=%s%小时%F%分%M%秒%N%毫秒")
-endlocal&set "%~3=%T%"
-Goto :eof
 :cf
 setlocal
 call :cf_1 %1 %2 %3 jg
@@ -5416,12 +5398,8 @@ setlocal
 set cs=0
 for /f "delims=: skip=2 tokens=2" %%a in ('"mode con"') do (
 	set /a "cs+=1"
-	if "!cs!" equ "1" (
-		set "h=%%a"
-	)
-	if "!cs!" equ "2" (
-		set "l=%%a"
-	)
+	if "!cs!" equ "1" (set "h=%%a")
+	if "!cs!" equ "2" (set "l=%%a")
 )
 set /a "h_1=h-1"
 set /a "l_1=l-1"
@@ -5685,11 +5663,7 @@ if "!chrome-command-line!" equ "1" (
 	set /p =chrome !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors!<nul>chrome-command-line
 )
 start /max "" "!chrome!" --profile-directory=Default --test-type !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors! %2
-if "%1" neq "-chrome" (
-	goto memuv2
-) else (
-	goto :eof
-)
+if "%1" neq "-chrome" (goto memuv2) else (goto :eof)
 :74
 setlocal
 title 逐一复制文件并压缩%system%
@@ -6479,9 +6453,7 @@ if "!errorlevel!" neq "0" (
 	goto :eof
 )
 if not defined dir (
-	for /f "delims=" %%a in ("%0") do (
-		set "dir=%%~dpa"
-	)
+	for /f "delims=" %%a in ("%0") do (set "dir=%%~dpa")
 )
 if not exist "!dir!" (
 	echo;路径 !dir! 不存在
@@ -6499,7 +6471,7 @@ for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\W
 		set proxy=
 	)
 )
-curl !proxy! !doh! !par! -A "!ua!" -I -# -L -o tag --connect-timeout 5 --output-dir "%temp%" "!url!"
+curl !proxy! !doh! !par! -A "!ua!" --compressed -I -# -L -o tag --connect-timeout 5 --output-dir "%temp%" "!url!"
 if not exist "%temp%\tag" (
 	echo;没有获取到文件信息
 	goto :eof
@@ -6508,8 +6480,8 @@ for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Accept-Ranges:"
 for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Content-Length:"') do (set "filesize=%%a")
 for /f "tokens=2 delims==" %%a in ('type %temp%\tag^|findstr /c:"filename="') do (set "filename=%%a")
 if "!trflag!" neq "bytes" (set tr=1)
-del /f /q "%temp%\tag"
 if not defined filename (set "filename=%3")
+if not defined filesize (goto curldxc_3)
 set /a "fd=filesize/tr"
 set /a "ys=filesize%%tr"
 set oldfd=0
@@ -6534,7 +6506,7 @@ for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\W
 	)
 )
 for /l %%a in (1,1,!tr!) do (
-	start /b /low "curl多进程下载_!tr!" curl !proxy! !doh! !par! -s -A "!ua!" -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir "%temp%\down" "!url!"
+	start /b /low "curl多进程下载_!tr!" curl !proxy! !doh! !par! -s -A "!ua!" --compressed -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir "%temp%\down" "!url!"
 	set /a "oldfd=newfd+1"
 	if "%%a" equ "!pdtr!" (
 		set newfd=
@@ -6564,6 +6536,21 @@ if "!dir:~-1!" neq "\" (set "dir=!dir!\")
 copy /b /z !file! "!dir!!filename!"
 popd
 rd /s /q "%temp%\down"
+del /f /q "%temp%\tag"
+goto :eof
+:curldxc_3
+for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
+	if "%%a" equ "0x1" (
+		for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
+			set "proxy=-x %%b"
+			echo;使用代理:	%%b
+		)
+	) else (
+		set proxy=
+	)
+)
+if "!dir:~-1!" equ "\" (set "dir=!dir:~0,-1!")
+curl !proxy! !doh! -A "!ua!" --compressed -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o "!filename!" --output-dir "!dir!" "!url!"
 goto :eof
 :pwiex
 powershell -mta -nologo -noprofile -command "$command=[IO.File]::ReadAllText('%0') -split '#%1\#.*'; iex ($command[1])"
