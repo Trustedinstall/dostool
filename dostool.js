@@ -62,7 +62,7 @@ set "dosqssj=!time!"
 color f1
 chcp 936>nul
 set ver=20240922
-set versize=215104
+set versize=215141
 set fy1=___
 set "doh=--doh-url https://101.101.101.101/dns-query"
 for /f "delims=" %%a in ("%0") do (set "weizhi=%%~fa")
@@ -3782,25 +3782,25 @@ goto :eof
 set "urld=%1"
 set "size=%2"
 set "name=%3"
-dir /ad !url!>nul 2>nul&&goto :eof
-if "!name!" equ ".zip" goto :eof
-if "!name!" equ ".rar" goto :eof
-if "!name!" equ ".7z" goto :eof
-if "!name!" equ ".png" goto :eof
-if "!name!" equ ".jpg" goto :eof
-if "!name!" equ ".mp3" goto :eof
-if "!name!" equ ".acc" goto :eof
-if "!name!" equ ".m4a" goto :eof
-if "!name!" equ ".flac" goto :eof
-if "!name!" equ ".ape" goto :eof
-if "!name!" equ ".mp4" goto :eof
-if "!name!" equ ".avi" goto :eof
-if "!name!" equ ".flv" goto :eof
-if "!name!" equ ".f4v" goto :eof
-if "!name!" equ ".mkv" goto :eof
-if "!name!" equ ".3gp" goto :eof
-if "!name!" equ ".cab" goto :eof
-if "!name!" equ ".pdf" goto :eof
+dir /ad !urld!>nul 2>nul&&goto :eof
+if "!name!" equ ".zip" (goto :eof)
+if "!name!" equ ".rar" (goto :eof)
+if "!name!" equ ".7z" (goto :eof)
+if "!name!" equ ".png" (goto :eof)
+if "!name!" equ ".jpg" (goto :eof)
+if "!name!" equ ".mp3" (goto :eof)
+if "!name!" equ ".acc" (goto :eof)
+if "!name!" equ ".m4a" (goto :eof)
+if "!name!" equ ".flac" (goto :eof)
+if "!name!" equ ".ape" (goto :eof)
+if "!name!" equ ".mp4" (goto :eof)
+if "!name!" equ ".avi" (goto :eof)
+if "!name!" equ ".flv" (goto :eof)
+if "!name!" equ ".f4v" (goto :eof)
+if "!name!" equ ".mkv" (goto :eof)
+if "!name!" equ ".3gp" (goto :eof)
+if "!name!" equ ".cab" (goto :eof)
+if "!name!" equ ".pdf" (goto :eof)
 if !size! gtr 4096 (
 	if !size! leq 104857600 (echo;!urld!>>"%temp%\listfile.log")
 )
