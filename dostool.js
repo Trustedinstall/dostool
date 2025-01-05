@@ -62,7 +62,7 @@ set "dosqssj=!time!"
 color f1
 chcp 936>nul
 set ver=20240922
-set versize=214848
+set versize=215104
 set fy1=___
 set "doh=--doh-url https://101.101.101.101/dns-query"
 for /f "delims=" %%a in ("%0") do (set "weizhi=%%~fa")
@@ -3715,12 +3715,96 @@ echo ___________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
 goto 64
 :65
+setlocal
 title 智能NTFS压缩%system%
 cls
 set url=
-set/p url=请输入要压缩的文件夹:
-set url="%url:|=%"
-dir /ad !url!>nul 2>nul||echo 路径 !url! 不是一个文件夹&&timeout /t 2 /nobreak>nul&&goto 65
+set /p "url=请输入要压缩的文件夹: "
+for /f "delims=" %%a in ("!url!") do (set "url=%%~fa")
+dir /ad "!url!">nul 2>nul||(
+	echo;路径 !url! 不是一个文件夹
+	timeout /t 2 /nobreak>nul
+	goto 65
+)
+if exist "%temp%\listfile.log" (del /f /q "%temp%\listfile.log")
+if exist "%temp%\loadtime.log" (del /f /q "%temp%\loadtime.log")
+if exist "%temp%\uncompact.log" (del /f /q "%temp%\uncompact.log")
+title 记录文件列表...
+for /f "delims=" %%a in ('"dir/a/s/b "!url!""') do (
+	echo;"%%a" %%~za %%~xa
+	call :listfile "%%a" %%~za %%~xa
+)
+title 整理碎片...
+defrag "!url!" /u /v
+echo;清空缓存...
+net stop sysmain>nul 2>nul
+call :pwiex clearcache
+title 记录文件压缩前的读取时间...
+for /f "tokens=*" %%a in (%temp%\listfile.log) do (call :loadfile %%a)
+title 压缩文件...
+for /f "tokens=*" %%a in (%temp%\listfile.log) do (compact /c %%a)
+title 整理碎片...
+defrag "!url!" /u /v
+echo;清空缓存...
+call :pwiex clearcache
+title 比较压缩前后的读取时间...
+for /f "tokens=*" %%a in (%temp%\loadtime.log) do (call :ifloadfile %%a)
+title 解压不适合压缩的文件...
+for /f "tokens=*" %%a in (%temp%\uncompact.log) do (compact /u %%a)
+title 智能NTFS压缩%system%
+net start sysmain>nul 2>nul
+del /f /q "%temp%\listfile.log";"%temp%\loadtime.log";"%temp%\uncompact.log"
+echo _______________________________________________________________________________
+set /p =按任意键返回菜单<nul&pause>nul
+endlocal
+goto memuv2
+:ifloadfile
+set "file=%1"
+set "loadtime=%2"
+call :copyfile !file!
+if !raw! geq !loadtime! (echo;!file!>>"%temp%\uncompact.log")
+goto :eof
+:loadfile
+set "file=%1"
+call :copyfile !file!
+echo;!file! !raw!>>"%temp%\loadtime.log"
+goto :eof
+:copyfile
+set "file=%1"
+echo;!file!
+set "kssj=!time!"
+copy /z !file! nul
+set "jssj=!time!"
+call :sjc !kssj! !jssj! raw
+echo;读取用时: !raw! ms
+goto :eof
+:listfile
+set "urld=%1"
+set "size=%2"
+set "name=%3"
+dir /ad !url!>nul 2>nul&&goto :eof
+if "!name!" equ ".zip" goto :eof
+if "!name!" equ ".rar" goto :eof
+if "!name!" equ ".7z" goto :eof
+if "!name!" equ ".png" goto :eof
+if "!name!" equ ".jpg" goto :eof
+if "!name!" equ ".mp3" goto :eof
+if "!name!" equ ".acc" goto :eof
+if "!name!" equ ".m4a" goto :eof
+if "!name!" equ ".flac" goto :eof
+if "!name!" equ ".ape" goto :eof
+if "!name!" equ ".mp4" goto :eof
+if "!name!" equ ".avi" goto :eof
+if "!name!" equ ".flv" goto :eof
+if "!name!" equ ".f4v" goto :eof
+if "!name!" equ ".mkv" goto :eof
+if "!name!" equ ".3gp" goto :eof
+if "!name!" equ ".cab" goto :eof
+if "!name!" equ ".pdf" goto :eof
+if !size! gtr 4096 (
+	if !size! leq 104857600 (echo;!urld!>>"%temp%\listfile.log")
+)
+goto :eof
 #clearcache#
 If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`
     [Security.Principal.WindowsBuiltInRole] "Administrator"))
@@ -3873,75 +3957,6 @@ Add-Type -TypeDefinition $Source -Language CSharp
 
 [ClearStandbyList.Program]::ClearFileSystemCache($true)
 #clearcache#
-net stop sysmain>nul 2>nul
-if exist %temp%\listfile.log del/f/q %temp%\listfile.log
-if exist %temp%\loadtime.log del/f/q %temp%\loadtime.log
-if exist %temp%\uncompact.log del/f/q %temp%\uncompact.log
-echo 记录文件列表...
-for /f "delims=" %%a in ('"dir/a/s/b "%url%""') do (call :listfile "%%a" %%~za %%~xa)
-echo 清空缓存...
-call :pwiex clearcache
-echo 记录文件压缩前的读取时间...
-for /f "tokens=*" %%a in (%temp%\listfile.log) do (call :loadfile "%%a")
-echo 压缩文件...
-for /f "tokens=*" %%a in (%temp%\listfile.log) do (compact /c "%%a")
-echo 清空缓存...
-call :pwiex clearcache
-echo 比较压缩前后的读取时间...
-for /f "tokens=*" %%a in (%temp%\loadtime.log) do (call :ifloadfile "%%a")
-echo 解压不适合压缩的文件...
-for /f "tokens=*" %%a in (%temp%\uncompact.log) do (compact /u "%%a")
-net start sysmain>nul 2>nul
-del/f/q %temp%\listfile.log
-del/f/q %temp%\loadtime.log
-del/f/q %temp%\uncompact.log
-echo _______________________________________________________________________________
-set /p =按任意键返回菜单<nul&pause>nul
-goto memuv2
-:ifloadfile
-set "file=%1"
-set "loadtime=%2"
-call :copyfile "!file!"
-if !raw! geq !loadtime! echo %file%>>%temp%\uncompact.log
-goto :eof
-:loadfile
-set "file=%1"
-call :copyfile "!file!"
-echo !file! !raw!>>%temp%\loadtime.log
-goto :eof
-:copyfile
-set "file=%1"
-set "kssj=!time!"
-copy /z "!file!" nul
-set "jssj=!time!"
-call :sjc !kssj! !jssj! raw
-echo 读取用时: !raw!ms
-goto :eof
-:listfile
-set "url=%1"
-set "size=%2"
-set "name=%3"
-dir/ad "!url!">nul 2>nul&&goto :eof
-if "%name%" equ ".zip" goto :eof
-if "%name%" equ ".rar" goto :eof
-if "%name%" equ ".7z" goto :eof
-if "%name%" equ ".png" goto :eof
-if "%name%" equ ".jpg" goto :eof
-if "%name%" equ ".mp3" goto :eof
-if "%name%" equ ".acc" goto :eof
-if "%name%" equ ".m4a" goto :eof
-if "%name%" equ ".flac" goto :eof
-if "%name%" equ ".ape" goto :eof
-if "%name%" equ ".mp4" goto :eof
-if "%name%" equ ".avi" goto :eof
-if "%name%" equ ".flv" goto :eof
-if "%name%" equ ".f4v" goto :eof
-if "%name%" equ ".mkv" goto :eof
-if "%name%" equ ".3gp" goto :eof
-if "%name%" equ ".cab" goto :eof
-if "%name%" equ ".pdf" goto :eof
-if %size% gtr 4096 if %size% leq 104857600 echo %url%>>%temp%\listfile.log
-goto :eof
 :66
 title 计算文件哈希值%system%
 cls
@@ -6553,5 +6568,5 @@ if "!dir:~-1!" equ "\" (set "dir=!dir:~0,-1!")
 curl !proxy! !doh! -A "!ua!" --compressed -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o "!filename!" --output-dir "!dir!" "!url!"
 goto :eof
 :pwiex
-powershell -mta -nologo -noprofile -command "$command=[IO.File]::ReadAllText('%0') -split '#%1\#.*'; iex ($command[1])"
+powershell -mta -nologo -noprofile -command "$command=[IO.File]::ReadAllText('"%weizhi%"') -split '#%1\#.*'; iex ($command[1])"
 goto :eof
