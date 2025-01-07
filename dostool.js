@@ -62,7 +62,7 @@ set "dosqssj=!time!"
 color f1
 chcp 936>nul
 set ver=20250101
-set versize=215417
+set versize=215399
 set fy1=___
 set "doh=--doh-url https://101.101.101.101/dns-query"
 for /f "delims=" %%a in ("%0") do (set "weizhi=%%~fa")
@@ -3248,7 +3248,7 @@ if /i "!pjzd!" equ "e" (
 	endlocal
 	goto memuv2
 )
-call :lj "!pjzd!" pjzd
+call :lj pjzd pjzd
 if not exist "!pjzd!" (
 	echo;路径不存在
 	call :out 2
@@ -3402,7 +3402,7 @@ if /i "!chmlj!" equ "e" (
 	endlocal
 	goto memuv2
 )
-call :lj "!chmlj!" chmlj
+call :lj chmlj chmlj
 if not exist "!chmlj!" (
 	echo;文件不存在！
 	call :out 2
@@ -4196,7 +4196,7 @@ if /i "!url!" equ "e" (
 	endlocal
 	goto memuv2
 )
-call :lj !url! url
+call :lj url url
 if not exist "!url!" (
 	echo;文件不存在
 	call :out 2
@@ -4534,7 +4534,7 @@ if /i "!msiurl!" equ "e" (
 	endlocal
 	goto memuv2
 )
-call :lj "!msiurl!" msiurl
+call :lj msiurl msiurl
 if not exist "!msiurl!" (
 	echo;路径不存在
 	call :out 2
@@ -4567,7 +4567,7 @@ if not defined msidir (
 		set "msidir=%%~dpna"
 	)
 )
-call :lj "!msidir!" msidir
+call :lj msidir msidir
 echo 开始解压...
 if not exist "!msidir!" (
 	msiexec /a "!msiurl!" /quiet /passive /qn targetdir="!msidir!"
