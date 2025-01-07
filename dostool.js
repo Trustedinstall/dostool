@@ -61,8 +61,8 @@ goto qidong
 set "dosqssj=!time!"
 color f1
 chcp 936>nul
-set ver=20240922
-set versize=215990
+set ver=20250101
+set versize=215417
 set fy1=___
 set "doh=--doh-url https://101.101.101.101/dns-query"
 for /f "delims=" %%a in ("%0") do (set "weizhi=%%~fa")
@@ -351,11 +351,7 @@ if /i "!caidan!" equ "s" (
 	)
 )
 set /p =请输入正确的选项！<nul
-if exist "!systemroot!\system32\timeout.exe" (
-	timeout /t 2 /nobreak>nul
-) else (
-	ping /n 2 0.0>nul
-)
+call :out 2
 goto memuv2
 :csfgf
 if "!winv!" equ "0" (
@@ -955,26 +951,26 @@ echo ___________________________________________________________________________
 echo 正在删除KHATRA病毒...
 echo _______________________________________________________________________________
 ping/n 2 0.0>nul
-rd/s/q "%systemdrive%\khatra.exe"
-rd/s/q "%systemdrive%\windows\xplorer.exe"
-rd/s/q "%systemdrive%\windows\system\ghost.exe"
-rd/s/q "%systemdrive%\windows\system32\khatra.exe"
-rd/s/q "%systemdrive%\windows\k.backup"
-rd/s/q "%systemdrive%\windows\system32\ntmsdata"
-del/f/q "%systemdrive%\windows\youtube.cab"
-del/f/q "%systemdrive%\windows\supermodels.cab"
-del/f/q "%systemdrive%\windows\new-screamsaver.com.cab"
-del/f/q "%systemdrive%\windows\New WinZip File.cab"
-del/f/q "%systemdrive%\windows\New WinRAR ZIP archive.cab"
-del/f/q "%systemdrive%\windows\New WinRAR archive.cab"
-del/f/q "%systemdrive%\windows\mario675.cab"
-del/f/q "%systemdrive%\windows\kavSetupEng3857.cab"
-del/f/q "%systemdrive%\windows\fh_antivirussetup6534.cab"
-del/f/q "%systemdrive%\windows\CyberWar.cab"
-del/f/q "%systemdrive%\windows\khatarnakh.exe"
-del/f/q "%systemdrive%\windows\tasks\at1.job"
-del/f/q "%systemdrive%\windows\system32\avphost.dll"
-del/f/q "%systemdrive%\windows\inf\autoplay.inf"
+rd /s /q "%systemdrive%\khatra.exe";^
+		"%systemdrive%\windows\xplorer.exe";^
+		"%systemdrive%\windows\system\ghost.exe";^
+		"%systemdrive%\windows\system32\khatra.exe";^
+		"%systemdrive%\windows\k.backup";^
+		"%systemdrive%\windows\system32\ntmsdata"
+del /f /q "%systemdrive%\windows\youtube.cab";^
+		"%systemdrive%\windows\supermodels.cab";^
+		"%systemdrive%\windows\new-screamsaver.com.cab";^
+		"%systemdrive%\windows\New WinZip File.cab";^
+		"%systemdrive%\windows\New WinRAR ZIP archive.cab";^
+		"%systemdrive%\windows\New WinRAR archive.cab";^
+		"%systemdrive%\windows\mario675.cab";^
+		"%systemdrive%\windows\kavSetupEng3857.cab";^
+		"%systemdrive%\windows\fh_antivirussetup6534.cab";^
+		"%systemdrive%\windows\CyberWar.cab";^
+		"%systemdrive%\windows\khatarnakh.exe";^
+		"%systemdrive%\windows\tasks\at1.job";^
+		"%systemdrive%\windows\system32\avphost.dll";^
+		"%systemdrive%\windows\inf\autoplay.inf";^
 echo _______________________________________________________________________________
 echo 正在全盘扫描...
 echo _______________________________________________________________________________
@@ -1538,7 +1534,7 @@ echo (e=返回)(f=刷新)
 set 字符串=
 set /p 字符串=输入要查找的字符串: 
 if not defined 字符串 (goto 23.1)
-if "!字符串!" equ "e" (endlocal&goto 23)
+if /i "!字符串!" equ "e" (endlocal&goto 23)
 if "!字符串!" equ "f" (goto 23.1)
 cls
 netstat -aon|findstr /i /c:"!字符串!"
@@ -1881,7 +1877,7 @@ goto 27(3)
 cls
 for /f "delims=" %%a in ('"fsutil fsinfo drives"') do (set sypf=%%a)
 set sypf=%sypf:~5%
-if /i "%system:~18,2%"=="XP" for %%n in (%sypf%) do defrag/v/x %%n
+if /i "%system:~11,2%"=="XP" for %%n in (%sypf%) do defrag/v/x %%n
 for %%n in (%sypf%) do defrag/u/v/x %%n
 echo _______________________________________________________________________________
 set /p =按任意键返回<nul&pause>nul
@@ -1933,12 +1929,11 @@ if exist "!EverythingInstallPath!\Everything.exe" (
 			cls
 			echo;正在搜索空文件夹...     文件越多搜索时间越长
 			goto loop1
-		) else (
-			cls
-			echo;正在搜索空文件夹...     文件越多搜索时间越长
-			goto loop2
 		)
 	)
+	cls
+	echo;正在搜索空文件夹...     文件越多搜索时间越长
+	goto loop2
 )
 :loop1
 set empty=0
@@ -1950,14 +1945,14 @@ for /f "delims=" %%o in ('""!EverythingInstallPath!\es.exe" "!caozuo!" empty: ^!
 )
 timeout /t 2 /nobreak>nul
 if "!empty!" equ "1" (goto loop1)
-goto 28(2)
+goto 28.1
 :loop2
 for /f "delims=" %%o in ('"dir /a /s /b /ad-l "!caozuo!"|sort /r"') do (
 	rd /q "%%o"2>nul&&(
 		echo;已删除空文件夹 "%%o"
 	)
 )
-:28(2)
+:28.1
 echo _______________________________________________________________________________
 echo;空文件夹删除完成
 set /p =按任意键返回菜单<nul&pause>nul
@@ -2769,6 +2764,7 @@ cls
 for /f "delims=" %%a in ('"fsutil fsinfo drives"') do (set sypf=%%a)
 set sypf=%sypf:~5%
 for %%a in (%sypf%) do (
+attrib -s -h -r "%%aSystem Volume Information" 2>nul
 takeown/f "%%aSystem Volume Information" 2>nul
 echo y|cacls "%%aSystem Volume Information" /t /c /p everyone:f 2>nul
 rd/s/q "%%aSystem Volume Information"2>nul)
@@ -3071,10 +3067,7 @@ if "%ntfswjqx:~0,1%%ntfsjqx:~-1%" neq """" for /f "delims=" %%a in ('"echo %ntfs
 echo _______________________________________________________________________________
 attrib -s -h -r "%ntfswjqx%" 2>nul
 takeown/f "%ntfswjqx%" 2>nul
-takeown/f "%ntfswjqx%" 2>nul
-attrib -s -h -r "%ntfswjqx%" 2>nul
 echo y|cacls "%ntfswjqx%" /t /c /g %username%:f 2>nul
-attrib -s -h -r "%ntfswjqx%" 2>nul
 echo _______________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
 endlocal
@@ -3083,10 +3076,10 @@ goto memuv2
 title 显示开机启动项%system%
 cls
 echo _______________________________________________________________________________
-if /i "%system:~18,1%"=="x" dir/a/s/b "%systemdrive%\Documents and Settings\%username%\「开始」菜单\程序\启动" 2>nul
-if /i "%system:~18,1%"=="x" dir/a/s/b "%systemdrive%\Documents and Settings\all users\「开始」菜单\程序\启动" 2>nul
-if /i "%system:~18,1%" neq "x" dir/a/s/b "%systemdrive%\Users\%username%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup" 2>nul
-if /i "%system:~18,1%" neq "x" dir/a/s/b "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp" 2>nul
+if /i "%system:~11,1%" equ "x" dir/a/s/b "%systemdrive%\Documents and Settings\%username%\「开始」菜单\程序\启动" 2>nul
+if /i "%system:~11,1%" equ "x" dir/a/s/b "%systemdrive%\Documents and Settings\all users\「开始」菜单\程序\启动" 2>nul
+if /i "%system:~11,1%" neq "x" dir/a/s/b "%systemdrive%\Users\%username%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup" 2>nul
+if /i "%system:~11,1%" neq "x" dir/a/s/b "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp" 2>nul
 echo;
 for /f "delims=" %%a in ('"reg query HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run 2>nul"') do if not "%%a"=="" echo %%a&echo;
 for /f "delims=" %%a in ('"reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run 2>nul"') do if not "%%a"=="" echo %%a&echo;
@@ -3189,104 +3182,141 @@ setlocal
 title 暴力破解压缩包密码%system%
 cls
 set rarazlj=
+for /f "skip=2 tokens=3 delims= " %%a in ('reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\WinRAR.exe" /v path') do (set "rarazlj=%%a")
+set "rarpd=!rarazlj!\Rar.exe"
+set "rarpd7z=!rarazlj!\winrar.exe"
+cls
+if not exist "!rarpd!" (
+	echo;没有安装WinRAR.
+	set /p =按任意键返回菜单<nul&pause>nul
+	endlocal
+	goto memuv2
+)
 set yswjlj=
-set pjzd=
-set ppjm=
-for /f "delims=" %%a in ('"reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\WinRAR.exe" /v path|find "path""') do (set rarazlj=%%a)
-if "%system:~8,2%"=="XP" (set rarpd=%rarazlj:~16%\Rar.exe&set rarpd7z=%rarazlj:~16%\winrar.exe) else (set rarpd=%rarazlj:~22%\Rar.exe&set rarpd7z=%rarazlj:~22%\winrar.exe)
-cls
-if exist "%rarpd%" (goto rarjs) else (echo 没有安装WinRAR.按任意键返回菜单&pause>nul&endlocal&goto memuv2)
-:rarjs
-cls
-set/p yswjlj=拖动要破解的压缩包到此窗口(e=返回菜单):
-if "%yswjlj:~0,1%%yswjlj:~-1%" neq """" for /f "delims=" %%a in ('"echo %yswjlj%"') do (set %yswjlj%="%%~a")
-for /f "delims=" %%a in ("%yswjlj%") do if %%~xa==.7z goto rarwjok1
-for /f "delims=" %%a in ("%yswjlj%") do if %%~xa==.rar goto rarwjok
-for /f "delims=" %%a in ("%yswjlj%") do if %%~xa==.zip goto rarwjok1
-if /i "%yswjlj%"=="e" endlocal&goto memuv2
-echo 无效的文件格式！&ping/n 2 0.0>nul
-endlocal
-goto 46
+set /p "yswjlj=拖动要破解的压缩包到此窗口(e=返回菜单): "
+if not defined yswjlj (
+	echo;路径不能为空
+	call :out 2
+	endlocal
+	goto 46
+)
+if /i "!yswjlj!" equ "e" (
+	endlocal
+	goto memuv2
+)
+call :lj yswjlj yswjlj
+if not exist "!yswjlj!" (
+	echo;路径不存在
+	call :out 2
+	endlocal
+	goto 46
+)
+call :ford "!yswjlj!" jg
+if "!jg!" equ "dir" (
+	echo;不是文件
+	call :out 2
+	endlocal
+	goto 46
+)
+for /f "delims=" %%a in ("!yswjlj!") do (
+	if /i "%%~xa" equ ".rar" (
+		set "ysbkzm=.rar"
+		goto rarwjok
+	)
+	if /i "%%~xa" equ ".7z" (
+		set "ysbkzm=.7z"
+		goto rarwjok
+	)
+	if /i "%%~xa" equ ".zip" (
+		set "ysbkzm=.zip"
+		goto rarwjok
+	)
+	echo;无效的文件格式！
+	call :out 2
+	endlocal
+	goto 46
+)
 :rarwjok
-set/p pjzd=拖动字典文件到此窗口(e=返回菜单):
-if "%pjzd:~0,1%%pjzd:~-1%" neq """" for /f "delims=" %%a in ('"echo %pjzd%"') do (set %pjzd%="%%~a")
-for /f "delims=" %%a in ("%pjzd%") do if %%~xa==.txt goto kspj
-if /i "%pjzd%"=="e" endlocal&goto memuv2
-echo 不是txt文件！&ping/n 2 0.0>nul
-endlocal
-goto 46
-:rarwjok1
-set/p pjzd=拖动字典文件到此窗口(e=返回菜单):
-if "%pjzd:~0,1%%pjzd:~-1%" neq """" for /f "delims=" %%a in ('"echo %pjzd%"') do (set %pjzd%="%%~a")
-for /f "delims=" %%a in ("%pjzd%") do if %%~xa==.txt goto kspj1
-if /i "%pjzd%"=="e" endlocal&goto memuv2
-echo 不是txt文件！&ping/n 2 0.0>nul
-endlocal
-goto 46
+set pjzd=
+set /p "pjzd=拖动字典文件到此窗口(e=返回菜单): "
+if not defined pjzd (
+	echo;路径不能为空
+	call :out 2
+	goto rarwjok
+)
+if /i "!pjzd!" equ "e" (
+	endlocal
+	goto memuv2
+)
+call :lj "!pjzd!" pjzd
+if not exist "!pjzd!" (
+	echo;路径不存在
+	call :out 2
+	goto rarwjok
+)
+call :ford "!pjzd!" jg
+if "!jg!" equ "dir" (
+	echo;不是文件
+	call :out 2
+	goto rarwjok
+)
+for /f "delims=" %%a in ("!pjzd!") do (
+	if /i "%%~xa" equ ".txt" (
+		if /i "!ysbkzm!" equ ".rar" (goto kspj)
+		if /i "!ysbkzm!" equ ".7z" (goto kspj1)
+		if /i "!ysbkzm!" equ ".zip" (goto kspj1)
+	)
+	echo;不是txt文件！
+	call :out 2
+	goto rarwjok
+)
 :kspj
 echo _______________________________________________________________________________
-rd/s/q %systemdrive%windows\temp\DOS工具箱临时解压路径>nul 2>nul
-md %systemdrive%windows\temp\DOS工具箱临时解压路径
-for /f "delims=" %%a in ('type "%pjzd%"') do (
-cls
-echo 正在破解的压缩包:%yswjlj%
-echo;
-echo 正在使用的字典文件:%pjzd%
-echo;
-set pjmm=%%a
-echo 正在尝试密码:%%a
-"%rarpd%" x -y -inul -p%%a "%yswjlj%" "%systemdrive%windows\temp\DOS工具箱临时解压路径"
-dir/s/b %systemdrive%windows\temp\DOS工具箱临时解压路径|find  /v "找不到文件"&&goto pjcg)
+for /f "usebackq delims=" %%a in ("!pjzd!") do (
+	cls
+	echo;正在破解的压缩包: "!yswjlj!"
+	echo;
+	echo;正在使用的字典文件: "!pjzd!"
+	echo;
+	set "pjmm=%%a"
+	echo;正在尝试密码:%%a
+	"!rarpd!" t -y -inul -p%%a "!yswjlj!"
+	if "!errorlevel!" equ "0" (goto pjcg)
+)
+:pjsb
 echo _______________________________________________________________________________
-echo 破解失败！
+echo;破解失败！
 echo;
-echo 字典里没有正确的密码.
+echo;字典里没有正确的密码
 echo _______________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
 endlocal
 goto memuv2
 :pjcg
 echo _______________________________________________________________________________
-echo 破解成功！
+forfiles /p %~dp0 /m %~nx0 /c "%comspec% /c set /p =0x07<nul"
+echo;破解成功！
 echo;
-echo 压缩包%yswjlj%
-echo 解压密码是:%pjmm%
+echo;压缩包: "!yswjlj!"
+echo;解压密码是:!pjmm!
 echo _______________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
 endlocal
 goto memuv2
 :kspj1
 echo _______________________________________________________________________________
-rd/s/q %systemdrive%windows\temp\DOS工具箱临时解压路径>nul 2>nul
-md %systemdrive%windows\temp\DOS工具箱临时解压路径
-for /f "delims=" %%a in ('type "%pjzd%"') do (
-cls
-echo 正在破解的压缩包:%yswjlj%
-echo;
-echo 正在使用的字典文件:%pjzd%
-echo;
-set pjmm=%%a
-echo 正在尝试密码:%%a
-"%rarpd7z%" x -y -inul -p%%a "%yswjlj%" "%systemdrive%windows\temp\DOS工具箱临时解压路径"
-dir/s/b %systemdrive%windows\temp\DOS工具箱临时解压路径|find  /v "找不到文件"&&goto pjcg1)
-echo _______________________________________________________________________________
-echo 破解失败！
-echo;
-echo 字典里没有正确的密码.
-echo _______________________________________________________________________________
-set /p =按任意键返回菜单<nul&pause>nul
-endlocal
-goto memuv2
-:pjcg1
-echo _______________________________________________________________________________
-echo 破解成功！
-echo;
-echo 压缩包%yswjlj%
-echo 解压密码是:%pjmm%
-echo _______________________________________________________________________________
-set /p =按任意键返回菜单<nul&pause>nul
-endlocal
-goto memuv2
+for /f "usebackq delims=" %%a in ("!pjzd!") do (
+	cls
+	echo;正在破解的压缩包: "!yswjlj!"
+	echo;
+	echo;正在使用的字典文件: "!pjzd!"
+	echo;
+	set "pjmm=%%a"
+	echo;正在尝试密码:%%a
+	"!rarpd7z!" t -y -inul -p%%a "!yswjlj!"
+	if "!errorlevel!" equ "0" (goto pjcg)
+)
+goto pjsb
 :47
 setlocal
 title Wifi热点%system%
@@ -3363,34 +3393,53 @@ title 反编译chm文件%system%
 cls
 set chmlj=
 echo 拖动要反编译的chm文件到此窗口
-set/p chmlj=反编译后的文件保存在桌面(e=返回):
-set chmlj="%chmlj:|=%"
-if /i !chmlj!=="e" endlocal&goto memuv2
-if "%chmlj:~0,1%%chmlj:~-1%" neq """" for /f "delims=" %%a in ('"echo %chmlj%"') do (set %chmlj%="%%~a")
-for /f "delims=" %%a in ("%chmlj%") do (
-if /i not %%~xa==.chm goto nochm
-set chmcglj=
-set chmcglj=%%~na
-copy/y "%chmlj%" %systemdrive%\windows\temp\tmp.chm
-hh -decompile %systemdrive%\windows\temp\chm %systemdrive%\windows\temp\tmp.chm
-md "%zmlj%\%%~na"
-xcopy/c/e/y %systemdrive%\windows\temp\chm "%zmlj%\%%~na"
-rd/s/q %systemdrive%\windows\temp\chm
-del/f/q %systemdrive%\windows\temp\tmp.chm)
-:chmcg
+set /p "chmlj=反编译后的文件保存在桌面(e=返回): "
+if not defined chmlj (
+	endlocal
+	goto 48
+)
+if /i "!chmlj!" equ "e" (
+	endlocal
+	goto memuv2
+)
+call :lj "!chmlj!" chmlj
+if not exist "!chmlj!" (
+	echo;文件不存在！
+	call :out 2
+	endlocal
+	goto 48
+)
+call :ford "!chmlj!" jg
+if "!jg!" equ "dir" (
+	echo;不是文件！
+	call :out 2
+	endlocal
+	goto 48
+)
+for /f "delims=" %%a in ("!chmlj!") do (
+	if /i "%%~xa" neq ".chm" (
+		echo;_______________________________________________________________________________
+		echo;不是chm文件！
+		call :out 2
+		endlocal
+		goto 48
+	)
+	set chmcglj=
+	set "chmcglj=%%~na"
+	copy /y "!chmlj!" %systemdrive%\windows\temp\tmp.chm
+	hh -decompile %systemdrive%\windows\temp\chm %systemdrive%\windows\temp\tmp.chm
+	md "!zmlj!\%%~na"
+	xcopy /c /e /y %systemdrive%\windows\temp\chm "!zmlj!\%%~na"
+	rd /s /q %systemdrive%\windows\temp\chm
+	del /f /q %systemdrive%\windows\temp\tmp.chm
+	)
 cls
 echo 反编译成功！
-echo 以保存到%zmlj%\%chmcglj%
+echo 以保存到"!zmlj!\!chmcglj!"
 echo _______________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
 endlocal
 goto memuv2
-:nochm
-echo _______________________________________________________________________________
-echo 不是chm文件！
-ping/n 2 0.0>nul
-endlocal
-goto 48
 :xz
 setlocal
 title 卸载DOS工具箱%system%
@@ -3513,7 +3562,7 @@ cls
 title 查询系统激活状态%system%
 set "cho=1230"
 echo 操作系统: %system:~3% %bit%位
-if "!system:~8,2!"=="XP" echo Windows XP系统无法使用此功能查询
+if "!system:~11,2!"=="XP" echo Windows XP系统无法使用此功能查询
 echo _______________________________________________________________________________
 echo [1]显示许可信息
 echo [2]显示详细的许可信息
@@ -4136,21 +4185,40 @@ setlocal
 title 计算文件哈希值%system%
 cls
 set url=
-set /p url=输入文件路径(e=返回菜单):
-if not defined url endlocal&goto 66
-if "%url:~0,1%%url:~-1%" neq """" for /f "delims=" %%a in ('"echo %url%"') do (set url="%%~a")
-if /i !url! equ "e" endlocal&goto memuv2 
-if not exist "!url!" echo 文件不存在&timeout /t 2 /nobreak>nul&endlocal&goto 66
-dir /ad !url!>nul 2>nul&&echo 路径 !url! 不是一个文件&&timeout /t 2 /nobreak>nul&&endlocal&&goto 66
-cls
-echo 文件: 		%url%
-for /f "delims=" %%a in ("!url!") do (
-if %%~za gtr 1024 (
-call :xdwjs %%~za b dw
-echo;文件大小: 	!dw! %%~za字节
-) else (
-echo;文件大小: 	%%~za字节
+set /p "url=输入文件路径(e=返回菜单): "
+if "!url!" equ "" (
+	echo;文件路径不能为空
+	call :out 2
+	endlocal
+	goto 66
 )
+if /i "!url!" equ "e" (
+	endlocal
+	goto memuv2
+)
+call :lj !url! url
+if not exist "!url!" (
+	echo;文件不存在
+	call :out 2
+	endlocal
+	goto 66
+)
+call :ford "!url!" jg
+if "!jg!" equ "dir" (
+	echo;不能计算文件夹的哈希值
+	call :out 2
+	endlocal
+	goto 66
+)
+cls
+echo 文件: 		"!url!"
+for /f "delims=" %%a in ("!url!") do (
+	if %%~za gtr 1024 (
+		call :xdwjs %%~za b dw
+		echo;文件大小: 	!dw! %%~za字节
+	) else (
+		echo;文件大小: 	%%~za字节
+	)
 )
 call :hash %url% md5 hash
 call :convertu !hash! hash
@@ -4457,21 +4525,56 @@ setlocal
 title 解压msi安装文件%system%
 cls
 set msiurl=
-set /p msiurl=输入msi文件路径(e=返回菜单):
-if not defined msiurl endlocal&goto memuv2
-if "%msiurl:~0,1%%msiurl:~-1%" neq """" for /f "delims=" %%a in ('"echo %msiurl%"') do (set msiurl="%%~a")
-if /i !msiurl! equ "e" endlocal&goto memuv2
-if not exist "!msiurl!" echo 文件不存在&timeout /t 2 /nobreak>nul&endlocal&goto memuv2
-dir /ad !msiurl!>nul 2>nul&&echo 路径 !msiurl! 不是一个文件&&timeout /t 2 /nobreak>nul&&endlocal&&goto memuv2
-for /f "delims=" %%a in ('"echo !msiurl!"') do (if /i "%%~xa" neq ".msi" echo 不是msi文件&&timeout /t 2 /nobreak>nul&&endlocal&&goto memuv2)
+set /p "msiurl=输入msi文件路径(e=返回菜单): "
+if not defined msiurl (
+	endlocal
+	goto memuv2
+)
+if /i "!msiurl!" equ "e" (
+	endlocal
+	goto memuv2
+)
+call :lj "!msiurl!" msiurl
+if not exist "!msiurl!" (
+	echo;路径不存在
+	call :out 2
+	endlocal
+	goto 69
+)
+call :ford "!msiurl!" jg
+if "!jg!" neq "file" (
+	echo;路径不是文件
+	call :out 2
+	endlocal
+	goto 69
+)
+for /f "delims=" %%a in ("!msiurl!") do (
+	if /i "%%~xa" neq ".msi" (
+		echo;不是msi文件
+		call :out 2
+		endlocal
+		goto 69
+	)
+)
 set msidir=
-set /p msidir=输入msi文件解压路径(默认路径为msi文件所在路径)(e=返回菜单):
-if not defined msidir for /f "delims=" %%a in ('"echo !msiurl!"') do (set msidir="%%~dpna")
-if "%msidir:~0,1%%msidir:~-1%" neq """" for /f "delims=" %%a in ('"echo %msidir%"') do (set msidir="%%~a")
-if /i !msidir! equ "e" endlocal&goto memuv2
+set /p "msidir=输入msi文件解压路径(不能解压到已存在的文件夹, 默认路径为msi文件所在路径)(e=返回菜单): "
+if /i "!msidir!" equ "e" (
+	endlocal
+	goto memuv2
+)
+if not defined msidir (
+	for /f "delims=" %%a in ("!msiurl!") do (
+		set "msidir=%%~dpna"
+	)
+)
+call :lj "!msidir!" msidir
 echo 开始解压...
-if not exist "!msidir!" (msiexec /a !msiurl! /quiet /passive /qn targetdir=!msidir!) else (echo 不能解压到已存在的文件夹&&timeout /t 2 /nobreak>nul)
-rd /s /q %systemdriver%\config.msi>nul 2>nul
+if not exist "!msidir!" (
+	msiexec /a "!msiurl!" /quiet /passive /qn targetdir="!msidir!"
+) else (
+	echo;不能解压到已存在的文件夹
+	call :out 2
+)
 echo _______________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
 endlocal
@@ -4605,7 +4708,7 @@ if not defined url (
 	timeout /t 2 /nobreak>nul
 	goto 72.1
 )
-if "!url!" equ "e" (
+if /i "!url!" equ "e" (
 	endlocal
 	goto memuv2
 )
@@ -6719,4 +6822,27 @@ curl !proxy! !doh! -A "!ua!" --compressed -# -L -C - --retry 2 --retry-delay 1 -
 goto :eof
 :pwiex
 powershell -mta -nologo -noprofile -command "$command=[IO.File]::ReadAllText('"%weizhi%"') -split '#%1\#.*'; iex ($command[1])"
+goto :eof
+:out
+if exist "!systemroot!\system32\timeout.exe" (
+	timeout /t %1 /nobreak>nul
+) else (
+	ping /n %1 0.0>nul
+)
+goto :eof
+:lj
+setlocal
+for /f "delims=" %%a in ("!%1!") do (
+	set "var=%%~fa"
+	if "!var:~-1!" equ "\" (set "var=!var:~0,-1!")
+)
+endlocal&set "%2=%var%"
+goto :eof
+:ford
+setlocal
+dir /ad %1>nul 2>nul||(
+	endlocal&set "%2=file"
+	goto :eof
+)
+endlocal&set "%2=dir"
 goto :eof
