@@ -62,7 +62,7 @@ set "dosqssj=!time!"
 color f1
 chcp 936>nul
 set ver=20250101
-set versize=215399
+set versize=214054
 set fy1=___
 set "doh=--doh-url https://101.101.101.101/dns-query"
 for /f "delims=" %%a in ("%0") do (set "weizhi=%%~fa")
@@ -1998,13 +1998,13 @@ for /f "tokens=2 delims==" %%a in ('Wmic OS Get InstallDate /value') do (
     echo;系统安装日期:	!systeminstalltime:~0,4!年!systeminstalltime:~4,2!月!systeminstalltime:~6,2!日 !systeminstalltime:~8,2!:!systeminstalltime:~10,2!:!systeminstalltime:~12,2!
     echo;
 )
-set /p =CPU:<nul
 set cs=
 for /f "tokens=2 delims==" %%a in ('wmic cpu get name /value') do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
 		if "!cs!" equ "1" (
+			set /p =CPU:<nul
 			echo;		!var:~0,-1!
 		) else (
 			echo;			!var:~0,-1!
@@ -2020,9 +2020,9 @@ for /f "tokens=2 delims==" %%a in ('wmic cpu get numberofcores /value') do (
 		echo;
 	)
 )
-set /p =CPUID:<nul
 set cs=
-for /f "tokens=2 delims==" %%a in ('wmic cpu get processorid /value') do (
+set /p =CPUID:<nul
+for /f "tokens=2 delims==" %%a in ('"wmic cpu get processorid /value 2>nul"') do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
@@ -2062,13 +2062,13 @@ for /f "tokens=2 delims==" %%a in ('wmic path win32_cachememory get maxcachesize
 		)
 	)
 )
-set /p =CPU主频:<nul
 set cs=
 for /f "tokens=2 delims==" %%a in ('wmic cpu get currentclockspeed /value') do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
 		if "!cs!" equ "1" (
+			set /p =CPU主频:<nul
 			echo;	!var:~0,-1! MHz
 		) else (
 			echo;		!var:~0,-1! MHz
@@ -2121,13 +2121,13 @@ for /f "tokens=2 delims==" %%a in ('wmic bios get releasedate /value') do (
 	echo BIOS制造日期: 	!bioszzrq:~0,4!年!bioszzrq:~4,2!月!bioszzrq:~6,2!日
 )
 echo _______________________________________________________________________________
-set /p =显示器型号:<nul
 set cs=
 for /f "tokens=2 delims==" %%a in ('wmic desktopmonitor get name /value') do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
 		if "!cs!" equ "1" (
+			set /p =显示器型号:<nul
 			echo;	!var:~0,-1!
 		) else (
 			echo;		!var:~0,-1!
@@ -2135,13 +2135,13 @@ for /f "tokens=2 delims==" %%a in ('wmic desktopmonitor get name /value') do (
 	)
 )
 echo;
-set /p =显示器制造商:<nul
 set cs=
 for /f "tokens=2 delims==" %%a in ('wmic desktopmonitor get monitormanufacturer /value') do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
 		if "!cs!" equ "1" (
+			set /p =显示器制造商:<nul
 			echo;	!var:~0,-1!
 		) else (
 			echo;		!var:~0,-1!
@@ -2149,7 +2149,6 @@ for /f "tokens=2 delims==" %%a in ('wmic desktopmonitor get monitormanufacturer 
 	)
 )
 echo;
-set /p =分辨率:<nul
 set cs=
 for /f "tokens=2 delims==" %%a in ('wmic path win32_videocontroller get currenthorizontalresolution /value') do (
 	for /f "tokens=2 delims==" %%b in ('wmic path win32_videocontroller get currentverticalresolution /value') do (
@@ -2157,6 +2156,7 @@ for /f "tokens=2 delims==" %%a in ('wmic path win32_videocontroller get currenth
 		set "var1=%%a"
 		set "var2=%%b"
 		if "!cs!" equ "1" (
+			set /p =分辨率:<nul
 			echo;		!var1:~0,-1! x !var2:~0,-1!
 		) else (
 			echo;			!var1:~0,-1! x !var2:~0,-1!
@@ -2164,13 +2164,13 @@ for /f "tokens=2 delims==" %%a in ('wmic path win32_videocontroller get currenth
 	)
 )
 echo _______________________________________________________________________________
-set /p =显卡:<nul
 set cs=
 for /f "tokens=2 delims==" %%a in ('wmic path win32_videocontroller get name /value') do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
 		if "!cs!" equ "1" (
+			set /p =显卡:<nul
 			echo;		!var:~0,-1!
 		) else (
 			echo;			!var:~0,-1!
@@ -2178,13 +2178,13 @@ for /f "tokens=2 delims==" %%a in ('wmic path win32_videocontroller get name /va
 	)
 )
 echo;
-set /p =显存容量:<nul
 set cs=
 for /f "tokens=2 delims==" %%a in ('wmic path win32_videocontroller get adapterram /value') do (
 	set /a "cs+=1"
 	set dw=0
 	if "!cs!" equ "1" (
 		call :xdwjs %%a b dw
+		set /p =显存容量:<nul
 		echo;	!dw!
 	) else (
 		call :xdwjs %%a b dw
@@ -2212,13 +2212,13 @@ for /f "tokens=2 delims==" %%a in ('wmic path win32_videocontroller get driverve
 	echo 驱动版本: 	!var:~0,-1!
 )
 echo _______________________________________________________________________________
-set /p =硬盘型号:<nul
 set cs=
 for /f "tokens=2 delims==" %%a in ('wmic diskdrive get model /value') do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
 		if "!cs!" equ "1" (
+			set /p =硬盘型号:<nul
 			echo;	!var:~0,-1!
 		) else (
 			echo;		!var:~0,-1!
@@ -2226,12 +2226,12 @@ for /f "tokens=2 delims==" %%a in ('wmic diskdrive get model /value') do (
 	)
 )
 echo;
-echo;固件版本	接口类型	硬盘容量	总扇区数	分区数
 set cs=0
-for /f "delims=" %%a in ('wmic diskdrive get interfacetype^,size^,totalsectors^,partitions^,firmwarerevision /value') do (
+for /f "delims=" %%a in ('"wmic diskdrive get interfacetype^,size^,totalsectors^,partitions^,firmwarerevision /value 2>nul"') do (
 	set "var=%%a"
 	set "var=!var:~0,-1!"
 	if defined var (
+		if "!cs!" equ "0" (echo;固件版本	接口类型	硬盘容量	总扇区数	分区数)
 		set /a "cs+=1"
 		set "!var!">nul
 		if "!cs!" equ "5" (
@@ -2271,75 +2271,6 @@ for /f "delims=" %%a in ('wmic diskdrive get interfacetype^,size^,totalsectors^,
 		)
 	)
 )
-:: set /p =固件版本:<nul
-:: set cs=
-:: for /f "tokens=2 delims==" %%a in ('wmic diskdrive get firmwarerevision /value') do (
-:: 	set /a "cs+=1"
-:: 	set "var=%%a"
-:: 	if "!var:~0,-1!" neq "" (
-:: 		if "!cs!" equ "1" (
-:: 			echo;	!var:~0,-1!
-:: 		) else (
-:: 			echo;		!var:~0,-1!
-:: 		)
-:: 	)
-:: )
-:: echo;
-:: set /p =接口类型:<nul
-:: set cs=
-:: for /f "tokens=2 delims==" %%a in ('wmic diskdrive get interfacetype /value') do (
-:: 	set /a "cs+=1"
-:: 	set "var=%%a"
-:: 	if "!var:~0,-1!" neq "" (
-:: 		if "!cs!" equ "1" (
-:: 			echo;	!var:~0,-1!
-:: 		) else (
-:: 			echo;		!var:~0,-1!
-:: 		)
-:: 	)
-:: )
-:: echo;
-:: set /p =硬盘容量:<nul
-:: set cs=
-:: for /f "tokens=2 delims==" %%a in ('wmic diskdrive get size /value') do (
-:: 	set /a "cs+=1"
-:: 	set dw=0
-:: 	if "!cs!" equ "1" (
-:: 		call :xdwjs %%a b dw
-:: 		echo;	!dw!
-:: 	) else (
-:: 		call :xdwjs %%a b dw
-:: 		echo;		!dw!
-:: 	)
-:: )
-:: echo;
-:: set /p =总扇区数:<nul
-:: set cs=
-:: for /f "tokens=2 delims==" %%a in ('wmic diskdrive get totalsectors /value') do (
-:: 	set /a "cs+=1"
-:: 	set "var=%%a"
-:: 	if "!var:~0,-1!" neq "" (
-:: 		if "!cs!" equ "1" (
-:: 			echo;	!var:~0,-1!
-:: 		) else (
-:: 			echo;		!var:~0,-1!
-:: 		)
-:: 	)
-:: )
-:: echo;
-:: set /p =分区数:<nul
-:: set cs=
-:: for /f "tokens=2 delims==" %%a in ('wmic diskdrive get partitions /value') do (
-:: 	set /a "cs+=1"
-:: 	set "var=%%a"
-:: 	if "!var:~0,-1!" neq "" (
-:: 		if "!cs!" equ "1" (
-:: 			echo;		!var:~0,-1!
-:: 		) else (
-:: 			echo;		!var:~0,-1!
-:: 		)
-:: 	)
-:: )
 fsutil fsinfo drives
 echo;
 for /f "delims=" %%a in ('wmic logicaldisk get name^,volumename^,description^,filesystem^,size^,freespace') do (
@@ -2349,8 +2280,8 @@ for /f "delims=" %%a in ('wmic logicaldisk get name^,volumename^,description^,fi
 	)
 )
 echo _______________________________________________________________________________
-set /p =打印机制造商:<nul
 set cs=
+set /p =打印机制造商:<nul
 for /f "tokens=2 delims==" %%a in ('Wmic Printer where "Default='TRUE'" get caption /value') do (
 	set /a "cs+=1"
 	set "var=%%a"
@@ -2363,8 +2294,8 @@ for /f "tokens=2 delims==" %%a in ('Wmic Printer where "Default='TRUE'" get capt
 	)
 )
 echo;
-set /p =打印机型号:<nul
 set cs=
+set /p =打印机型号:<nul
 for /f "tokens=2 delims==" %%a in ('Wmic Printer where "Default='TRUE'" get drivername /value') do (
 	set /a "cs+=1"
 	set "var=%%a"
@@ -2377,13 +2308,13 @@ for /f "tokens=2 delims==" %%a in ('Wmic Printer where "Default='TRUE'" get driv
 	)
 )
 echo;
-set /p =声卡:<nul
 set cs=
 for /f "tokens=2 delims==" %%a in ('wmic sounddev get name /value') do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
 		if "!cs!" equ "1" (
+			set /p =声卡:<nul
 			echo;		!var:~0,-1!
 		) else (
 			echo;		!var:~0,-1!
@@ -2391,13 +2322,13 @@ for /f "tokens=2 delims==" %%a in ('wmic sounddev get name /value') do (
 	)
 )
 echo;
-set /p =网卡:<nul
 set cs=
 for /f "tokens=2 delims=]" %%a in ('Wmic Path Win32_NetworkAdapterConfiguration WHERE "IPEnabled='TRUE'" get caption /value') do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
 		if "!cs!" equ "1" (
+			set /p =网卡:<nul
 			echo;		!var:~1,-1!
 		) else (
 			echo;		!var:~1,-1!
@@ -2405,22 +2336,22 @@ for /f "tokens=2 delims=]" %%a in ('Wmic Path Win32_NetworkAdapterConfiguration 
 	)
 )
 echo;
-set /p =网络连接速度:<nul
 set cs=
-for /f "tokens=2 delims==" %%a in ('Wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get CurrentBandwidth /value') do (
+for /f "tokens=2 delims==" %%a in ('"Wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get CurrentBandwidth /value 2>nul"') do (
 	set /a "cs+=1"
 	set netspeed=
 	set "netspeed=%%a"
 	set "netspeed=!netspeed:~0,-1!"
 	set /a "netspeed/=1000000"
 	if "!cs!" equ "1" (
+		set /p =网络连接速度:<nul
 		echo;	!netspeed! Mbps
+		echo;
 	) else (
 		echo;		!netspeed! Mbps
+		echo;
 	)
 )
-echo;
-set /p =网关地址:<nul
 set cs=
 for /f "tokens=2 delims==" %%a in ('Wmic Path Win32_NetworkAdapterConfiguration WHERE "IPEnabled='TRUE'" get defaultipgateway /value') do (
 	set mrwg=
@@ -2432,6 +2363,7 @@ for /f "tokens=2 delims==" %%a in ('Wmic Path Win32_NetworkAdapterConfiguration 
 	for %%a in (!mrwg!) do (
 		set /a "cs+=1"
 		if "!cs!" equ "1" (
+			set /p =网关地址:<nul
 			echo;	%%a
 		) else (
 			echo;		%%a
@@ -2439,12 +2371,13 @@ for /f "tokens=2 delims==" %%a in ('Wmic Path Win32_NetworkAdapterConfiguration 
 	)
 )
 echo;
-set /p =IP地址:<nul
 if exist %systemroot%\system32\curl.exe (
 	ping /n 1 www.baidu.com>nul
 	if "!errorlevel!" equ "0" (
 		for /f "delims=" %%a in ('curl -s 4.ipw.cn') do (
-			echo;		%%a
+			set /p =外部IP地址:<nul
+			echo;	%%a
+			echo;
 		)
 	)
 )
@@ -2459,6 +2392,7 @@ for /f "tokens=2 delims==" %%a in ('Wmic Path Win32_NetworkAdapterConfiguration 
 	for %%a in (!ipdz!) do (
 		set /a "cs+=1"
 		if "!cs!" equ "1" (
+			set /p =IP地址:<nul
 			echo;		%%a
 		) else (
 			echo;		%%a
@@ -2466,7 +2400,7 @@ for /f "tokens=2 delims==" %%a in ('Wmic Path Win32_NetworkAdapterConfiguration 
 	)
 )
 echo;
-set /p =MAC地址:<nul
+
 set cs=
 for /f "tokens=2 delims==" %%a in ('Wmic Path Win32_NetworkAdapterConfiguration WHERE "IPEnabled='TRUE'" get macaddress /value') do (
 	set /a "cs+=1"
@@ -2477,18 +2411,21 @@ for /f "tokens=2 delims==" %%a in ('Wmic Path Win32_NetworkAdapterConfiguration 
 	set "macdz=!macdz:"=!"
 	set "macdz=!macdz:~0,-1!"
 	if "!cs!" equ "1" (
-		if defined macdz (echo;	!macdz!)
+		if defined macdz (
+			set /p =网卡MAC地址:<nul
+			echo;	!macdz!
+		)
 	) else (
 		if defined macdz (echo;		!macdz!)
 	)
 )
 echo _______________________________________________________________________________
-set /p =内存容量:<nul
 set cs=
-for /f "tokens=2 delims==" %%a in ('wmic memorychip get capacity /value') do (
+for /f "tokens=2 delims==" %%a in ('"wmic memorychip get capacity /value 2>nul"') do (
 	set /a "cs+=1"
 	set dw=0
 	if "!cs!" equ "1" (
+		set /p =内存容量:<nul
 		call :xdwjs %%a b dw
 		echo;	!dw!
 	) else (
@@ -2496,13 +2433,13 @@ for /f "tokens=2 delims==" %%a in ('wmic memorychip get capacity /value') do (
 		if "!dw!" neq "0" (echo;		!dw!)
 	)
 )
-set /p =内存频率:<nul
 set cs=
-for /f "tokens=2 delims==" %%a in ('wmic memorychip get speed /value') do (
+for /f "tokens=2 delims==" %%a in ('"wmic memorychip get speed /value 2>nul"') do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
 		if "!cs!" equ "1" (
+			set /p =内存频率:<nul
 			echo;	!var:~0,-1! MHz
 		) else (
 			echo;		!var:~0,-1! MHz
@@ -5877,6 +5814,8 @@ if exist "chrome.exe" (
 			goto startchrome
 		) else (
 			if "%1" neq "-chrome" (
+				echo;没有找到浏览器路径
+				call :out 2
 				endlocal
 				goto memuv2
 			) else (
