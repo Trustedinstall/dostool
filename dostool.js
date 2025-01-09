@@ -17,6 +17,7 @@
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
 :chushihua
 @echo off&cls&title 　&setlocal enabledelayedexpansion
+setlocal
 if /i "%1" equ "-ks" (goto ks)
 if /i "%1" equ "-chrome" (goto chrome)
 if /i "!systemdrive!" equ "x:" (goto ks)
@@ -26,9 +27,9 @@ for /f "delims=" %%a in ("%0") do (set "weizhi=%%~fa")
 if exist "!localappdata!\Microsoft\WindowsApps\wt.exe" (call :stwt) else (call :stcmd)
 rem 在权限申请进程中预读命令提升后面初始化速度
 if not exist "!temp!\dos_pre_reading_cache_os.tmp" (
-	wmic os get caption /value>"!temp!\dos_pre_reading_cache_os.tmp"
-	wmic PATH Win32_SystemEnclosure get ChassisTypes /value>"!temp!\dos_pre_reading_cache_wmictype.tmp"
-	reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v desktop>"!temp!\dos_pre_reading_cache_zmlj.tmp"
+	start /b wmic os get caption /value>"!temp!\dos_pre_reading_cache_os.tmp"
+	start /b wmic PATH Win32_SystemEnclosure get ChassisTypes /value>"!temp!\dos_pre_reading_cache_wmictype.tmp"
+	start /b reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v desktop>"!temp!\dos_pre_reading_cache_zmlj.tmp"
 ) else (
 	type "!temp!\dos_pre_reading_cache_os.tmp">nul
 	type "!temp!\dos_pre_reading_cache_wmictype.tmp">nul
@@ -62,7 +63,7 @@ set "dosqssj=!time!"
 color f1
 chcp 936>nul
 set ver=20250101
-set versize=214054
+set versize=209059
 set fy1=___
 set "doh=--doh-url https://101.101.101.101/dns-query"
 for /f "delims=" %%a in ("%0") do (set "weizhi=%%~fa")
@@ -694,58 +695,68 @@ setlocal
 color 0a
 title bat加密%system%
 cls
-echo 此工具只可以用于纯文本文件加密
-echo _______________________________________________________________________________
-echo [1]文件加密(方法1)
-echo [2]文件解密
-echo [3]文件加密(方法2)(推荐使用)
-echo [0]返回菜单
-echo _______________________________________________________________________________
-set batjmxx=
-set/p batjmxx=请输入你的选择:
-if "!batjmxx!"=="1" goto batjiami(1)
-if "!batjmxx!"=="2" goto batjiami(2)
-if "!batjmxx!"=="3" goto batjiami(3)
-if "!batjmxx!"=="0" endlocal&goto memuv2
-echo 请输入正确的选项！
-ping/n 2 0.0>nul
+echo;此工具只可以用于纯文本文件加密
+echo;_______________________________________________________________________________
+echo;[1]bat文件加密(方法1)
+echo;[2]bat文件解密
+echo;[3]bat文件加密(方法2)(推荐使用)
+echo;[0]返回菜单
+echo;_______________________________________________________________________________
+set cho=1230
+set shuru=
+!sel!
+if "!shuru!" equ "1" (goto batjiami.1)
+if "!shuru!" equ "2" (goto batjiami.2)
+if "!shuru!" equ "3" (goto batjiami.3)
+if "!shuru!" equ "4" (
+	endlocal
+	goto memuv2
+)
+if "!shuru!" equ "0" (
+	endlocal
+	goto memuv2
+)
+echo;请输入正确的选项！
+call :out 2
 endlocal
 goto batjiami
-:batjiami(1)
-title 文件加密(方法1)%system%
-del/f/q %systemdrive%linshiwenjian.tmp>nul
+:batjiami.1
+title bat文件加密(方法1)%system%
 cls
-echo 文件加密(方法1)
-echo _______________________________________________________________________________
-echo 加密文件会在桌面生成(e=返回):
-echo _______________________________________________________________________________
 set jiami=
-set/p jiami=拖动需要加密的文件到此窗口:
-if /i "!jiami!"=="e" goto endlocal&batjiami
-if "!jiami:~0,1!!jiami:~-1!" neq """" for /f "delims=" %%a in ('"echo !jiami!"') do (set !jiami!="%%~a")
-:batpd
+set /p "jiami=拖动需要加密的文件到此窗口(e=返回): "
+if not defined jiami (
+	echo;路径不能为空
+	call :out 2
+	goto batjiami.1
+)
+
+if /i "!jiami!" equ "e" (
+	endlocal
+	goto batjiami
+)
+call :lj jiami jiami
+if not exist "!jiami!" (
+	echo;路径不存在
+	call :out 2
+	goto batjiami.1
+)
+call :ford "!jiami!" jg
+if "!jg!" equ "dir" (
+	echo;不能加密文件夹
+	call :out 2
+	goto batjiami.1
+)
 cls
-for /f "delims=" %%a in ("!jiami!") do set jmdx=%%~za
-set/a batpdjg=!jmdx!%%2
-if "!batpdjg!"=="1" goto jiamipause
-if "!batpdjg!"=="0" goto beiyongjiamipause
-echo 请输入正确的选项！
-ping/n 2 0.0>nul
-goto batjiami(1)
-:jiamipause
-for /f "delims=" %%e in ("!jiami!") do if %%~xe==.bat set geshi=bat&set wjm=%%~ne&goto batjiami(1)(1)
-for /f "delims=" %%e in ("!jiami!") do if %%~xe==.txt set geshi=txt&set wjm=%%~ne&goto batjiami(1)(1)
-for /f "delims=" %%e in ("!jiami!") do if %%~xe==.log set geshi=log&set wjm=%%~ne&goto batjiami(1)(1)
-for /f "delims=" %%e in ("!jiami!") do if %%~xe==.inf set geshi=inf&set wjm=%%~ne&goto batjiami(1)(1)
-for /f "delims=" %%e in ("!jiami!") do if %%~xe==.cmd set geshi=cmd&set wjm=%%~ne&goto batjiami(1)(1)
-for /f "delims=" %%e in ("!jiami!") do if %%~xe==.ini set geshi=ini&set wjm=%%~ne&goto batjiami(1)(1)
-for /f "delims=" %%e in ("!jiami!") do if %%~xe==.lrc set geshi=lrc&set wjm=%%~ne&goto batjiami(1)(1)
-echo 无效的文件格式！
-ping/n 2 0.0>nul
-goto batjiami(1)
-:batjiami(1)(1)
-copy/y "!jiami!" %systemdrive%linshiwenjian.tmp
-echo %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
+for /f "delims=" %%b in ("!jiami!") do (
+	set /a "batpdjg=%%~zb%%2"
+	if "!batpdjg!" equ "1" (
+		set "batpdjg= "
+	) else (
+		set "batpdjg="
+	)
+	(
+		echo;%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
 %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
 %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
 %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
@@ -753,121 +764,92 @@ echo %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%
 %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
 %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
 %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
-%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a >%systemdrive%1.tmp
-echo cls>%systemdrive%2.tmp
-copy/b %systemdrive%1.tmp+%systemdrive%2.tmp+%systemdrive%linshiwenjian.tmp "%zmlj%\已加密的%wjm%.%geshi%"
-del/f/q %systemdrive%1.tmp
-del/f/q %systemdrive%2.tmp
-del/f/q %systemdrive%linshiwenjian.tmp
+%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a!batpdjg!
+		echo;cls
+	)>"%temp%\1.tmp"
+	copy /b /y "%temp%\1.tmp"+"%%b" "%%~dpb加密_%%~nb%%~xb">nul
+	del /f /q "%temp%\1.tmp"
+)
 cls
-echo _______________________________________________________________________________
-echo 加密完成
-ping/n 2 0.0>nul
+echo;加密完成
+call :out 2
 endlocal
 goto batjiami
-:batjiami(2)
-title 文件解密%system%
-del/f/q %systemdrive%linshiwenjian.tmp>nul
+:batjiami.2
+title bat文件解密%system%
 cls
-echo 文件解密
-echo _______________________________________________________________________________
-echo 解密文件会在桌面生成(e=返回)
-echo _______________________________________________________________________________
 set jiemi=
-set/p jiemi=拖动需要解密的文件到此窗口:
-if /i "!jiemi!"=="e" goto endlocal&batjiami
-if "!jiemi:~0,1!!jiemi:-1!" neq """" for /f "delims=" %%a in ('"echo !jiemi!"') do (set !jiemi!="%%~a")
-:jiemipause
-for /f "delims=" %%f in ("!jiemi!") do if %%~xf==.bat set geshi=bat&set wjm=%%~nf&goto batjiami(2)(1)
-for /f "delims=" %%f in ("!jiemi!") do if %%~xf==.txt set geshi=txt&set wjm=%%~nf&goto batjiami(2)(1)
-for /f "delims=" %%f in ("!jiemi!") do if %%~xf==.log set geshi=log&set wjm=%%~nf&goto batjiami(2)(1)
-for /f "delims=" %%f in ("!jiemi!") do if %%~xf==.inf set geshi=inf&set wjm=%%~nf&goto batjiami(2)(1)
-for /f "delims=" %%f in ("!jiemi!") do if %%~xf==.cmd set geshi=cmd&set wjm=%%~nf&goto batjiami(2)(1)
-for /f "delims=" %%f in ("!jiemi!") do if %%~xf==.ini set geshi=ini&set wjm=%%~nf&goto batjiami(2)(1)
-for /f "delims=" %%f in ("!jiemi!") do if %%~xf==.lrc set geshi=lrc&set wjm=%%~nf&goto batjiami(2)(1)
-echo 无效的文件格式！
-ping/n 2 0.0>nul
-goto batjiami(2)
-:batjiami(2)(1)
-copy/y "!jiemi!" %systemdrive%linshiwenjian.tmp
-echo;>%systemdrive%3.tmp
-copy/b %systemdrive%3.tmp+%systemdrive%linshiwenjian.tmp "%zmlj%\已解密的%wjm%.%geshi%"
-del/f/q 3.tmp
-del/f/q %systemdrive%linshiwenjian.tmp
+set /p "jiemi=拖动需要解密的文件到此窗口(e=返回): "
+if not defined jiemi (
+	echo;路径不能为空
+	call :out 2
+	goto batjiami.2
+)
+
+if /i "!jiemi!" equ "e" (
+	endlocal
+	goto batjiami
+)
+call :lj jiemi jiemi
+if not exist "!jiemi!" (
+	echo;路径不存在
+	call :out 2
+	goto batjiami.2
+)
+call :ford "!jiemi!" jg
+if "!jg!" equ "dir" (
+	echo;不能解密文件夹
+	call :out 2
+	goto batjiami.2
+)
 cls
-echo _______________________________________________________________________________
-echo 解密完成
-ping/n 2 0.0>nul
+for /f "delims=" %%a in ("!jiemi!") do (
+	echo;>"%temp%\1.tmp"
+	copy /b /y "%temp%\1.tmp"+"%%a" "%%~dpa解密_%%~na%%~xa">nul
+	del /f /q "%temp%\1.tmp"
+)
+cls
+echo;解密完成
+call :out 2
 endlocal
 goto batjiami
-:beiyongjiamipause
-del/f/q %systemdrive%linshiwenjian.tmp>nul
-for /f "delims=" %%g in ("!jiami!") do if %%~xg==.bat set geshi=bat&set wjm=%%~ng&goto beiyongjiami(1)
-for /f "delims=" %%g in ("!jiami!") do if %%~xg==.txt set geshi=txt&set wjm=%%~ng&goto beiyongjiami(1)
-for /f "delims=" %%g in ("!jiami!") do if %%~xg==.log set geshi=log&set wjm=%%~ng&goto beiyongjiami(1)
-for /f "delims=" %%g in ("!jiami!") do if %%~xg==.inf set geshi=inf&set wjm=%%~ng&goto beiyongjiami(1)
-for /f "delims=" %%g in ("!jiami!") do if %%~xg==.cmd set geshi=cmd&set wjm=%%~ng&goto beiyongjiami(1)
-for /f "delims=" %%g in ("!jiami!") do if %%~xg==.ini set geshi=ini&set wjm=%%~ng&goto beiyongjiami(1)
-for /f "delims=" %%g in ("!jiami!") do if %%~xg==.lrc set geshi=lrc&set wjm=%%~ng&goto beiyongjiami(1)
-echo 无效的文件格式！
-ping/n 2 0.0>nul
-goto batjiami(1)
-:beiyongjiami(1)
-copy/y "!jiami!" %systemdrive%linshiwenjian.tmp
-echo %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
-%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
-%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
-%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
-%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
-%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
-%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
-%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
-%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a>%systemdrive%4.tmp
-echo cls>%systemdrive%5.tmp
-copy/b %systemdrive%4.tmp+%systemdrive%5.tmp+%systemdrive%linshiwenjian.tmp "%zmlj%\已加密的%wjm%.%geshi%"
-del/f/q %systemdrive%4.tmp
-del/f/q %systemdrive%5.tmp
-del/f/q %systemdrive%linshiwenjian.tmp
+:batjiami.3
 cls
-echo _______________________________________________________________________________
-echo 加密完成
-ping/n 2 0.0>nul
-endlocal
-goto batjiami
-:batjiami(3)
+title bat文件加密(方法2)%system%
+set jiami=
+set /p "jiami=拖动需要加密的文件到此窗口(e=返回): "
+if not defined jiami (
+	echo;路径不能为空
+	call :out 2
+	goto batjiami.3
+)
+
+if /i "!jiami!" equ "e" (
+	endlocal
+	goto batjiami
+)
+call :lj jiami jiami
+if not exist "!jiami!" (
+	echo;路径不存在
+	call :out 2
+	goto batjiami.3
+)
+call :ford "!jiami!" jg
+if "!jg!" equ "dir" (
+	echo;不能加密文件夹
+	call :out 2
+	goto batjiami.3
+)
 cls
-title 文件加密(方法2)%system%
-echo 文件加密(方法2)
-echo _______________________________________________________________________________
-echo 加密文件会在桌面生成(e=返回)
-echo _______________________________________________________________________________
-set jiami2=
-set/p jiami2=拖动需要加密的文件到此窗口:
-if /i "!jiami2!"=="e" endlocal&goto batjiami
-if "!jiami2:~0,1!!jiami2:-1!" neq """" for /f "delims=" %%a in ('"echo !jiami2!"') do (set !jiami2!="%%~a")
-:jiami2pause
-for /f "delims=" %%g in ("!jiami2!") do if %%~xg==.bat set geshi=bat&set wjm=%%~ng&goto jiami2(1)
-for /f "delims=" %%g in ("!jiami2!") do if %%~xg==.txt set geshi=txt&set wjm=%%~ng&goto jiami2(1)
-for /f "delims=" %%g in ("!jiami2!") do if %%~xg==.log set geshi=log&set wjm=%%~ng&goto jiami2(1)
-for /f "delims=" %%g in ("!jiami2!") do if %%~xg==.inf set geshi=inf&set wjm=%%~ng&goto jiami2(1)
-for /f "delims=" %%g in ("!jiami2!") do if %%~xg==.cmd set geshi=cmd&set wjm=%%~ng&goto jiami2(1)
-for /f "delims=" %%g in ("!jiami2!") do if %%~xg==.ini set geshi=ini&set wjm=%%~ng&goto jiami2(1)
-for /f "delims=" %%g in ("!jiami2!") do if %%~xg==.lrc set geshi=lrc&set wjm=%%~ng&goto jiami2(1)
-echo 无效的文件格式！
-ping/n 2 0.0>nul
-goto batjiami(3)
-:jiami2(1)
+for /f "delims=" %%a in ("!jiami!") do (
+	set /p =//4NCg==<nul>"%temp%\1.tmp"
+	certutil -decode -f "%temp%\1.tmp" "%temp%\2.tmp">nul
+	copy /b /y "%temp%\2.tmp"+"%%a" "%%~dpa加密_%%~na%%~xa">nul
+	del /f /q "%temp%\1.tmp";"%temp%\2.tmp"
+)
 cls
-copy/y "!jiami2!" %systemdrive%temp.0
-set /p =//4NCg==<nul>%temp%\tmpcode
-certutil -decode -f %temp%\tmpcode %systemdrive%temp>nul
-copy/b %systemdrive%temp+%systemdrive%temp.0 "%zmlj%\已加密的%wjm%.%geshi%"
-del/f/q %systemdrive%temp
-del/f/q %systemdrive%temp.0
-cls
-echo _______________________________________________________________________________
-echo 加密完成
-ping/n 2 0.0>nul
+echo;加密完成
+call :out 2
 endlocal
 goto batjiami
 :13
@@ -2851,9 +2833,9 @@ set/p vbsbds=请输入表达式:
 :for /f "delims=eE" %%a in ('echo %vbsbds%') do goto js
 if /i "%vbsbds%"=="e" endlocal&goto memuv2
 :js
-echo msgbox %vbsbds%,"65","VBS计算器">%systemdrive%\windows\temp.vbs
-%systemdrive%\windows\temp.vbs
-del/f/q %systemdrive%\windows\temp.vbs
+echo msgbox %vbsbds%,"65","VBS计算器">%temp%\temp.vbs
+%temp%\temp.vbs
+del/f/q %temp%\temp.vbs
 endlocal
 goto vbsjsq
 :guanyu
@@ -3779,6 +3761,8 @@ set bxz=
 set/p bxz=输入"y"保存编码,其他输入返回上级菜单:
 set bxz="%bxz:|=%"
 if !bxz!=="y" goto 63(1)(2)
+del /f /q "%temp%\tmp"
+del /f /q "%temp%\codetmp"
 endlocal
 goto 63
 :63(1)(2)
@@ -3789,6 +3773,8 @@ copy/y/z %temp%\codetmp !basebc!
 if %errorlevel% neq 0 (echo 保存失败) else (echo 保存成功)
 echo _______________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
+del /f /q "%temp%\tmp"
+del /f /q "%temp%\codetmp"
 endlocal
 goto 63
 :63-2
@@ -3817,6 +3803,8 @@ set bxz=
 set/p bxz=输入"y"保存编码,其他输入返回上级菜单:
 set bxz="%bxz:|=%"
 if !bxz!=="y" goto 63(2)(2)
+del /f /q "%temp%\tmp"
+del /f /q "%temp%\codetmp"
 endlocal
 goto 63
 :63(2)(2)
@@ -3827,6 +3815,8 @@ copy/y/z %temp%\codetmp !basebc!
 if %errorlevel% neq 0 (echo 保存失败) else (echo 保存成功)
 echo _______________________________________________________________________________
 set /p =按任意键返回菜单<nul&pause>nul
+del /f /q "%temp%\tmp"
+del /f /q "%temp%\codetmp"
 endlocal
 goto 63
 :64
@@ -5053,6 +5043,7 @@ if exist "%systemroot%\system32\curl.exe" (
 	call :hash "%temp%\dostool" sha1 hash
 	if /i "!hash!" equ "!doshash!" (
 		endlocal
+		endlocal
 		copy /z /y "%temp%\dostool" "!weizhi!"&goto chushihua
 	) else (
 		call :colortxt c 文件无效
@@ -5065,6 +5056,7 @@ if exist "%systemroot%\system32\curl.exe" (
 	certutil -urlcache -split -f !url! "%temp%\dostool"
 	call :hash "%temp%\dostool" sha1 hash
 	if /i "!hash!" equ "!doshash!" (
+		endlocal
 		endlocal
 		copy /z /y "%temp%\dostool" "!weizhi!"&goto chushihua
 	) else (
@@ -5578,13 +5570,13 @@ powershell (Add-Type '[DllImport(\"user32.dll\")]^public static extern int SendM
 goto :eof
 :choice
 setlocal
-choice /c !cho! /n /m 请输入你的选择:
+choice /c !cho! /n /m "输入选项: "
 endlocal&set "shuru=%errorlevel%"
 goto :eof
 :set
 setlocal
 set shurux=
-set /p "shurux=输入你的选择:"
+set /p "shurux=输入选项: "
 endlocal&set "shuru=%shurux%"
 goto :eof
 :bk
