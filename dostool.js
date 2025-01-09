@@ -63,7 +63,7 @@ set "dosqssj=!time!"
 color f1
 chcp 936>nul
 set ver=20250101
-set versize=209059
+set versize=207901
 set fy1=___
 set "doh=--doh-url https://101.101.101.101/dns-query"
 for /f "delims=" %%a in ("%0") do (set "weizhi=%%~fa")
@@ -725,25 +725,13 @@ title bat文件加密(方法1)%system%
 cls
 set jiami=
 set /p "jiami=拖动需要加密的文件到此窗口(e=返回): "
-if not defined jiami (
-	echo;路径不能为空
-	call :out 2
-	goto batjiami.1
-)
-
 if /i "!jiami!" equ "e" (
 	endlocal
 	goto batjiami
 )
-call :lj jiami jiami
-if not exist "!jiami!" (
-	echo;路径不存在
-	call :out 2
-	goto batjiami.1
-)
-call :ford "!jiami!" jg
-if "!jg!" equ "dir" (
-	echo;不能加密文件夹
+call :ljjc jiami
+if "!errorlevel!" equ "0" (
+	echo;无效路径
 	call :out 2
 	goto batjiami.1
 )
@@ -780,28 +768,16 @@ title bat文件解密%system%
 cls
 set jiemi=
 set /p "jiemi=拖动需要解密的文件到此窗口(e=返回): "
-if not defined jiemi (
-	echo;路径不能为空
-	call :out 2
-	goto batjiami.2
-)
-
 if /i "!jiemi!" equ "e" (
 	endlocal
 	goto batjiami
 )
-call :lj jiemi jiemi
-if not exist "!jiemi!" (
-	echo;路径不存在
+call :ljjc jiemi
+if "!errorlevel!" equ "0" (
+	echo;无效路径
 	call :out 2
 	goto batjiami.2
-)
-call :ford "!jiemi!" jg
-if "!jg!" equ "dir" (
-	echo;不能解密文件夹
-	call :out 2
-	goto batjiami.2
-)
+) 
 cls
 for /f "delims=" %%a in ("!jiemi!") do (
 	echo;>"%temp%\1.tmp"
@@ -818,25 +794,13 @@ cls
 title bat文件加密(方法2)%system%
 set jiami=
 set /p "jiami=拖动需要加密的文件到此窗口(e=返回): "
-if not defined jiami (
-	echo;路径不能为空
-	call :out 2
-	goto batjiami.3
-)
-
 if /i "!jiami!" equ "e" (
 	endlocal
 	goto batjiami
 )
-call :lj jiami jiami
-if not exist "!jiami!" (
-	echo;路径不存在
-	call :out 2
-	goto batjiami.3
-)
-call :ford "!jiami!" jg
-if "!jg!" equ "dir" (
-	echo;不能加密文件夹
+call :ljjc jiami
+if "!errorlevel!" equ "0" (
+	echo;无效路径
 	call :out 2
 	goto batjiami.3
 )
@@ -3113,26 +3077,13 @@ if not exist "!rarpd!" (
 )
 set yswjlj=
 set /p "yswjlj=拖动要破解的压缩包到此窗口(e=返回菜单): "
-if not defined yswjlj (
-	echo;路径不能为空
-	call :out 2
-	endlocal
-	goto 46
-)
 if /i "!yswjlj!" equ "e" (
 	endlocal
 	goto memuv2
 )
-call :lj yswjlj yswjlj
-if not exist "!yswjlj!" (
-	echo;路径不存在
-	call :out 2
-	endlocal
-	goto 46
-)
-call :ford "!yswjlj!" jg
-if "!jg!" equ "dir" (
-	echo;不是文件
+call :ljjc yswjlj
+if "!errorlevel!" equ "0" (
+	echo;无效路径
 	call :out 2
 	endlocal
 	goto 46
@@ -3158,24 +3109,13 @@ for /f "delims=" %%a in ("!yswjlj!") do (
 :rarwjok
 set pjzd=
 set /p "pjzd=拖动字典文件到此窗口(e=返回菜单): "
-if not defined pjzd (
-	echo;路径不能为空
-	call :out 2
-	goto rarwjok
-)
 if /i "!pjzd!" equ "e" (
 	endlocal
 	goto memuv2
 )
-call :lj pjzd pjzd
-if not exist "!pjzd!" (
-	echo;路径不存在
-	call :out 2
-	goto rarwjok
-)
-call :ford "!pjzd!" jg
-if "!jg!" equ "dir" (
-	echo;不是文件
+call :ljjc pjzd
+if "!errorlevel!" equ "0" (
+	echo;无效路径
 	call :out 2
 	goto rarwjok
 )
@@ -3313,24 +3253,13 @@ cls
 set chmlj=
 echo 拖动要反编译的chm文件到此窗口
 set /p "chmlj=反编译后的文件保存在桌面(e=返回): "
-if not defined chmlj (
-	endlocal
-	goto 48
-)
 if /i "!chmlj!" equ "e" (
 	endlocal
 	goto memuv2
 )
-call :lj chmlj chmlj
-if not exist "!chmlj!" (
-	echo;文件不存在！
-	call :out 2
-	endlocal
-	goto 48
-)
-call :ford "!chmlj!" jg
-if "!jg!" equ "dir" (
-	echo;不是文件！
+call :ljjc chmlj
+if "!errorlevel!" equ "0" (
+	echo;无效路径
 	call :out 2
 	endlocal
 	goto 48
@@ -4113,26 +4042,13 @@ title 计算文件哈希值%system%
 cls
 set url=
 set /p "url=输入文件路径(e=返回菜单): "
-if "!url!" equ "" (
-	echo;文件路径不能为空
-	call :out 2
-	endlocal
-	goto 66
-)
 if /i "!url!" equ "e" (
 	endlocal
 	goto memuv2
 )
-call :lj url url
-if not exist "!url!" (
-	echo;文件不存在
-	call :out 2
-	endlocal
-	goto 66
-)
-call :ford "!url!" jg
-if "!jg!" equ "dir" (
-	echo;不能计算文件夹的哈希值
+call :ljjc url
+if "!errorlevel!" equ "0" (
+	echo;无效路径
 	call :out 2
 	endlocal
 	goto 66
@@ -4453,24 +4369,13 @@ title 解压msi安装文件%system%
 cls
 set msiurl=
 set /p "msiurl=输入msi文件路径(e=返回菜单): "
-if not defined msiurl (
-	endlocal
-	goto memuv2
-)
 if /i "!msiurl!" equ "e" (
 	endlocal
 	goto memuv2
 )
-call :lj msiurl msiurl
-if not exist "!msiurl!" (
-	echo;路径不存在
-	call :out 2
-	endlocal
-	goto 69
-)
-call :ford "!msiurl!" jg
-if "!jg!" neq "file" (
-	echo;路径不是文件
+call :ljjc msiurl
+if "!errorlevel!" equ "0" (
+	echo;无效路径
 	call :out 2
 	endlocal
 	goto 69
@@ -4495,7 +4400,7 @@ if not defined msidir (
 	)
 )
 call :lj msidir msidir
-echo 开始解压...
+echo;开始解压...
 if not exist "!msidir!" (
 	msiexec /a "!msiurl!" /quiet /passive /qn targetdir="!msidir!"
 ) else (
@@ -6769,11 +6674,26 @@ for /f "delims=" %%a in ("!%1!") do (
 )
 endlocal&set "%2=%var%"
 goto :eof
-:ford
+:ljjc
 setlocal
-dir /ad %1>nul 2>nul||(
-	endlocal&set "%2=file"
-	goto :eof
+if "!%1!" equ "" (exit /b 0)
+for /f "delims=" %%a in ("!%1!") do (
+	set "var=%%~fa"
+	if "!var:~-1!" equ "\" (set "var=!var:~0,-1!")
+	if not exist "!var!" (exit /b 0)
 )
-endlocal&set "%2=dir"
-goto :eof
+if "%2" equ "dir" (
+	if exist "!var!\" (
+		endlocal&set "%1=%var%"
+		exit /b 1
+	) else (
+		exit /b 0
+	)
+) else (
+	if exist "!var!\" (
+		exit /b 0
+	) else (
+		endlocal&set "%1=%var%"
+		exit /b 1
+	)
+)
