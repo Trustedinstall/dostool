@@ -35,43 +35,29 @@ if not exist "!temp!\dos_pre_reading_cache_os.tmp" (
 	type "!temp!\dos_pre_reading_cache_wmictype.tmp">nul
 	type "!temp!\dos_pre_reading_cache_zmlj.tmp">nul
 )
-::start /min %comspec% /c powershell -mta -nologo -noprofile start-process -filepath "%comspec%" -argumentlist '"/c %0 -ks"' -verb runas
-::start /min %comspec% /c powershell -mta -nologo -noprofile start-process -filepath "wt" -argumentlist '"%0 -ks"' -verb runas>nul 2>nul
 exit 0
 :stwt
 start /min !comspec! /c mshta vbscript:createobject("shell.application").shellexecute("!localappdata!\Microsoft\WindowsApps\wt.exe","!weizhi!","-ks","runas",1)(window.close)
+rem start /min !comspec! /c powershell -mta -nologo -noprofile start-process -filepath "wt" -argumentlist '"%0 -ks"' -verb runas>nul 2>nul
 goto :eof
 :stcmd
 start /min !comspec! /c mshta vbscript:createobject("shell.application").shellexecute("!weizhi!","-ks","","runas",1)(window.close)
+rem start /min !comspec! /c powershell -mta -nologo -noprofile start-process -filepath "!comspec!" -argumentlist '"/c %0 -ks"' -verb runas>nul 2>nul
 goto :eof
-set qidongjd=0
-set qidongbz=█████████████████
-:qidong
-cls
-echo;正在加载环境变量...
-echo;                               当前进度:%qidongjd%%%
-echo; ----------------------------------------------------------------------------
-echo;│%qidongbz%│
-echo; ----------------------------------------------------------------------------
-set qidongbz=%qidongbz%█
-set/a qidongjd+=5
-if "%qidongjd%"=="105" goto ks
-goto qidong
 :ks
 (
 set "dosqssj=!time!"
 color f1
 chcp 936>nul
 set ver=20250101
-set versize=177512
+set versize=175066
 set fy1=___
-set "xz0=0
+set xz0=0
 set "doh=--doh-url https://101.101.101.101/dns-query"
 for /f "delims=" %%a in ("%0") do (set "weizhi=%%~fa")
 set "ua=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36"
 set "nx1=[+]下一页"
-set "nx=[-]上一页   [+]下一页"
-set "nx7=[-]上一页"
+set "nx2=[-]上一页"
 set hx=echo;_______________________________________________________________________________
 if exist "!temp!\dos_pre_reading_cache_wmictype.tmp" (
 	set "wmictype='type !temp!\dos_pre_reading_cache_wmictype.tmp'"
@@ -81,18 +67,15 @@ if exist "!temp!\dos_pre_reading_cache_wmictype.tmp" (
 for /f "tokens=2 delims=={}" %%a in (!wmictype!) do (
 	if "%%a" equ "8" (
 		set "nx1=[S]下一页"
-		set "nx=[A]上一页   [S]下一页"
-		set "nx7=[A]上一页"
+		set "nx2=[A]上一页"
 	) else (
 		if "%%a" equ "9" (
 			set "nx1=[S]下一页"
-			set "nx=[A]上一页   [S]下一页"
-			set "nx7=[A]上一页"
+			set "nx2=[A]上一页"
 		) else (
 			if "%%a" equ "10" (
 				set "nx1=[S]下一页"
-				set "nx=[A]上一页   [S]下一页"
-				set "nx7=[A]上一页"
+				set "nx2=[A]上一页"
 			)
 		)
 	)
@@ -128,97 +111,23 @@ for /f "tokens=2 delims==" %%a in (!wmicos!) do (
 )
 set wmicos=
 if "!date:~11,1!" equ "周" (
-	set "xingqi=!date:~11,2!"
+	set "xingqi=!date:~11,2! "
 ) else (
-	set "xingqi=!date:~11,3!"
+	set "xingqi=!date:~11,3! "
 )
 for /f %%a in ('"echo;prompt $E^ |cmd"') do (
 	set "cswz=%%a["
 	set "cswz1=%%a"
 )
-call :list
 if exist "!systemroot!\system32\choice.exe" (
 	set "sel=call :choice"
 ) else (
 	set "sel=call :set"
 )
+call :list
 if /i "%2" neq "" (goto %2)
 rem call :sjc !dosqssj! !time! jg
-goto memuv2
 )
-for /f "delims=" %%a in ('"wmic cpu get processorid|find /i /v "processorid""') do (
-	for /f "delims=" %%b in ('"echo;%%a|find /i /v "echo""') do (set "a=%%b")
-)
-for /f "delims=" %%a in ('"wmic bios get smbiosbiosversion|find /i /v "smbiosbiosversion""') do (
-	for /f "delims=" %%b in ('"echo;%%a|find /i /v "echo""') do (set "b=%%b")
-)
-set "jqm=%a: =%%b: =%"
-for /l %%a in (1,1,1000) do (if "!jqm:~%%a,1!"=="" set ws=%%a&goto jqmzh)
-:jqmzh
-set cs=0
-set/a ws=%ws%-1
-:zhcl
-set/a zjzcm=0x!jqm:~%cs%,1!*2+3>nul 2>nul
-set zh=%zh%%zjzcm%
-set/a cs=%cs%+1
-if %cs%==%ws% goto zcm
-goto zhcl
-:zcm
-for /f "delims=" %%a in ('"reg query HKEY_CURRENT_USER\System\DOS工具箱 /v 机器码 2>nul|find "机器码""') do (set sfzc=%%a)
-set sfzc=%sfzc:~21%
-for /f "delims=" %%a in ('"reg query HKEY_CURRENT_USER\System\DOS工具箱 /v 注册码 2>nul|find "注册码""') do (set sfzcm=%%a)
-set sfzcm=%sfzcm:~21%
-if /i %sfzc%==%jqm% if /i %sfzcm%==%zh% goto memuv2
-:ks1
-color f1
-title 注册码验证!system!
-cls
-echo;                                    菜单
-echo;现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
-!hx!
-echo;机器码:%jqm%
-set mima=
-set/p mima=请输入注册码:
-if /i "!mima!"=="!zh!" goto yes
-echo;注册码错误
-call :out 2
-goto ks
-:yes
-cls
-echo;                                    菜单
-echo;现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
-!hx!
-reg add HKEY_CURRENT_USER\System\DOS工具箱 /v 机器码 /d %jqm% /f>nul 2>nul
-reg add HKEY_CURRENT_USER\System\DOS工具箱 /v 注册码 /d %mima% /f>nul 2>nul
-echo;注册成功
-call :out 2
-goto memuv2
-rem set cishu=3
-:mima
-color f1
-title 密码验证!system!
-cls
-echo;                                    菜单
-echo;现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
-!hx!
-set mima=
-set/p mima=请输入密码:
-set /p ="!mima!"<nul>%temp%\mima.tmp
-call :hash %temp%\mima.tmp hash
-del /f /q %temp%\mima.tmp
-if /i "%hash%"=="DCA9A6E6D000573FDC4DF6FEBA6035B87A8CE07C" goto mima1
-set/a cishu-=1
-echo;密码错误！你还有%cishu%次机会
-call :out 2
-if %cishu%==0 exit 0
-goto mima
-:mima1
-cls
-echo;                                    菜单
-echo;现在是%date:~0,4%年%date:~5,2%月%date:~8,2%日 %xingqi% %time:~0,8%
-!hx!
-echo;密码正确！
-call :out 2
 :memuv2
 title DOS工具箱!system!
 cls
@@ -250,8 +159,15 @@ if "!color!" equ "0" (
 set "fy=!cswz!!ysbak:~0,3!91m_!cswz!!ysbak!!cswz!!ysbak:~0,3!92m_!cswz!!ysbak!!cswz!!ysbak:~0,3!93m_!cswz!!ysbak!"
 color !color!!color1!
 if !start! lss 1 (set start=1)
+if not defined a!start! (
+	set /a "start=maxa-maxa/9*9"
+	if "!start!" equ "0" (
+		set /a "start=maxa-8"
+	) else (
+		set /a "start=maxa/9*9+1"
+	)
+)
 set /a "memuys=start/9+1"
-if not defined a!start! (set /a "start-=9")
 set /a "end=start+8"
 set /a "pd=end+1"
 set /a "pd1=start-1"
@@ -261,7 +177,7 @@ if "!winv!" equ "0" (
 ) else (
 	echo;　　　　　　　　　　　　　　　　　　菜单 - 第!memuys!页
 )
-echo;现在是!date:~0,4!年!date:~5,2!月!date:~8,2!日 !xingqi! !time:~0,8!
+echo;现在是!date:~0,4!年!date:~5,2!月!date:~8,2!日 !xingqi!!time:~0,8!
 call :csfgf
 set xx=0
 for /l %%a in (!start!,1,!end!) do (
@@ -273,9 +189,9 @@ for /l %%a in (!start!,1,!end!) do (
 )
 if not defined a!pd! (
     if "!winv!" equ "0" (
-        echo;[0]退出                                             !cswz!42;97m!nx7!!cswz!!ysbak!
+        echo;[0]退出                                             !cswz!42;97m!nx2!!cswz!!ysbak!
     ) else (
-        echo;[0]退出                                             !nx7!
+        echo;[0]退出                                             !nx2!
     )
 ) else (
     if !pd1! lss 1 (
@@ -286,9 +202,9 @@ if not defined a!pd! (
         )
     ) else (
         if "!winv!" equ "0" (
-            echo;[0]退出                                             !cswz!42;97m!nx1!   !nx7!!cswz!!ysbak!
+            echo;[0]退出                                             !cswz!42;97m!nx1!   !nx2!!cswz!!ysbak!
         ) else (
-            echo;[0]退出                                             !nx1!　　　!nx7!
+            echo;[0]退出                                             !nx1!　　　!nx2!
         )
     )
 )
@@ -300,12 +216,50 @@ if "!jg!" equ "1" (
 	call :checkvar caidan num jg
 	if "!jg!" equ "1" (goto !xz%caidan%!)
 )
+if "!caidan!" equ "-" (
+	set /a "pd=start-1"
+	if !pd! geq 1 (
+		set /a "start-=9"
+		goto memuv2
+	) else (
+		goto memuv2.1
+	)
+)
+if "!caidan!" equ "+" (
+	set /a "pd=end+1"
+	if defined a!pd! (
+		set /a "start+=9"
+		goto memuv2
+	) else (
+		goto memuv2.1
+	)
+)
+if /i "!caidan!" equ "a" (
+	set /a "pd=start-1"
+	if !pd! geq 1 (
+		set /a "start-=9"
+		goto memuv2
+	) else (
+		goto memuv2.1
+	)
+)
+if /i "!caidan!" equ "s" (
+	set /a "pd=end+1"
+	if defined a!pd! (
+		set /a "start+=9"
+		goto memuv2
+	) else (
+		goto memuv2.1
+	)
+)
 if /i "!caidan:~0,2!" equ "go" (
 	set "caidan=!caidan:~2!"
 	call :checkvar caidan num jg
 	if "!jg!" equ "1" (
 		set /a "start=caidan*9-8"
 		goto memuv2
+	) else (
+		goto memuv2.1
 	)
 )
 if /i "!caidan!" equ "js" (goto 49)
@@ -316,34 +270,7 @@ if /i "!caidan!" equ "guanji" (goto guanji)
 if /i "!caidan!" equ "guanyu" (goto guanyu)
 if /i "!caidan!" equ "csh" (endlocal&goto chushihua)
 if /i "!caidan!" equ "qzgx" (set ver=0&goto update)
-if "!caidan!" equ "-" (
-	set /a "pd=start-1"
-	if !pd! geq 1 (
-		set /a "start-=9"
-		goto memuv2
-	)
-)
-if "!caidan!" equ "+" (
-	set /a "pd=end+1"
-	if defined a!pd! (
-		set /a "start+=9"
-		goto memuv2
-	)
-)
-if /i "!caidan!" equ "a" (
-	set /a "pd=start-1"
-	if !pd! geq 1 (
-		set /a "start-=9"
-		goto memuv2
-	)
-)
-if /i "!caidan!" equ "s" (
-	set /a "pd=end+1"
-	if defined a!pd! (
-		set /a "start+=9"
-		goto memuv2
-	)
-)
+:memuv2.1
 set /p =请输入正确的选项！<nul
 call :out 2
 goto memuv2
@@ -2824,28 +2751,31 @@ goto memuv2
 title 显示开机启动项!system!
 cls
 !hx!
-if /i "!system:~11,1!" equ "x" dir/a/s/b "%systemdrive%\Documents and Settings\%username%\「开始」菜单\程序\启动" 2>nul
-if /i "!system:~11,1!" equ "x" dir/a/s/b "%systemdrive%\Documents and Settings\all users\「开始」菜单\程序\启动" 2>nul
-if /i "!system:~11,1!" neq "x" dir/a/s/b "%systemdrive%\Users\%username%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup" 2>nul
-if /i "!system:~11,1!" neq "x" dir/a/s/b "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp" 2>nul
+if /i "!system:~11,1!" equ "x" (
+	dir /a /s /b "%systemdrive%\Documents and Settings\%username%\「开始」菜单\程序\启动" 2>nul
+	dir /a /s /b "%systemdrive%\Documents and Settings\all users\「开始」菜单\程序\启动" 2>nul
+) else (
+	dir /a /s /b "%systemdrive%\Users\%username%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup" 2>nul
+	dir /a /s /b "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp" 2>nul
+) 
 echo;
-for /f "delims=" %%a in ('"reg query HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run 2>nul"') do if not "%%a"=="" echo;%%a&echo;
-for /f "delims=" %%a in ('"reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run 2>nul"') do if not "%%a"=="" echo;%%a&echo;
-for /f "delims=" %%a in ('"reg query HKEY_CURRENT_USER\Software\Microsoft\WindowsNT\CurrentVersion\Windows\load 2>nul"') do if not "%%a"=="" echo;%%a&echo;
-for /f "delims=" %%a in ('"reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsNT\CurrentVersion\Winlogon\Userinit 2>nul"') do if not "%%a"=="" echo;%%a&echo;
-for /f "delims=" %%a in ('"reg query HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run 2>nul"') do if not "%%a"=="" echo;%%a&echo;
-for /f "delims=" %%a in ('"reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run 2>nul"') do if not "%%a"=="" echo;%%a&echo;
-for /f "delims=" %%a in ('"reg query HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunServicesOnce 2>nul"') do if not "%%a"=="" echo;%%a&echo;
-for /f "delims=" %%a in ('"reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunServicesOnce 2>nul"') do if not "%%a"=="" echo;%%a&echo;
-for /f "delims=" %%a in ('"reg query HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunServices 2>nul"') do if not "%%a"=="" echo;%%a&echo;
-for /f "delims=" %%a in ('"reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunServices 2>nul"') do if not "%%a"=="" echo;%%a&echo;
-for /f "delims=" %%a in ('"reg query HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce\Setup 2>nul"') do if not "%%a"=="" echo;%%a&echo;
-for /f "delims=" %%a in ('"reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce\Setup 2>nul"') do if not "%%a"=="" echo;%%a&echo;
-for /f "delims=" %%a in ('"reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce 2>nul"') do if not "%%a"=="" echo;%%a&echo;
-for /f "delims=" %%a in ('"reg query HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce 2>nul"') do if not "%%a"=="" echo;%%a&echo;
-for /f "delims=" %%a in ('"reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnceEx 2>nul"') do if not "%%a"=="" echo;%%a&echo;
-for /f "delims=" %%a in ('"reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v taskman 2>nul"') do if not "%%a"=="" echo;%%a&echo;
-for /f "delims=" %%a in ('"reg query HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run 2>nul"') do if not "%%a"=="" echo;%%a&echo;
+for /f "delims=" %%a in ('"reg query HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run 2>nul"') do (if not "%%a" equ "" (echo;%%a&echo;))
+for /f "delims=" %%a in ('"reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run 2>nul"') do (if not "%%a" equ "" (echo;%%a&echo;))
+for /f "delims=" %%a in ('"reg query HKEY_CURRENT_USER\Software\Microsoft\WindowsNT\CurrentVersion\Windows\load 2>nul"') do (if not "%%a" equ "" (echo;%%a&echo;))
+for /f "delims=" %%a in ('"reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsNT\CurrentVersion\Winlogon\Userinit 2>nul"') do (if not "%%a" equ "" (echo;%%a&echo;))
+for /f "delims=" %%a in ('"reg query HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run 2>nul"') do (if not "%%a" equ "" (echo;%%a&echo;))
+for /f "delims=" %%a in ('"reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run 2>nul"') do (if not "%%a" equ "" (echo;%%a&echo;))
+for /f "delims=" %%a in ('"reg query HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunServicesOnce 2>nul"') do (if not "%%a" equ "" (echo;%%a&echo;))
+for /f "delims=" %%a in ('"reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunServicesOnce 2>nul"') do (if not "%%a" equ "" (echo;%%a&echo;))
+for /f "delims=" %%a in ('"reg query HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunServices 2>nul"') do (if not "%%a" equ "" (echo;%%a&echo;))
+for /f "delims=" %%a in ('"reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunServices 2>nul"') do (if not "%%a" equ "" (echo;%%a&echo;))
+for /f "delims=" %%a in ('"reg query HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce\Setup 2>nul"') do (if not "%%a" equ "" (echo;%%a&echo;))
+for /f "delims=" %%a in ('"reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce\Setup 2>nul"') do (if not "%%a" equ "" (echo;%%a&echo;))
+for /f "delims=" %%a in ('"reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce 2>nul"') do (if not "%%a" equ "" (echo;%%a&echo;))
+for /f "delims=" %%a in ('"reg query HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce 2>nul"') do (if not "%%a" equ "" (echo;%%a&echo;))
+for /f "delims=" %%a in ('"reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnceEx 2>nul"') do (if not "%%a" equ "" (echo;%%a&echo;))
+for /f "delims=" %%a in ('"reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v taskman 2>nul"') do (if not "%%a" equ "" (echo;%%a&echo;))
+for /f "delims=" %%a in ('"reg query HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run 2>nul"') do (if not "%%a" equ "" (echo;%%a&echo;))
 !hx!
 set /p =按任意键返回菜单<nul&pause>nul
 goto memuv2
@@ -3273,7 +3203,7 @@ cls
 title 查询系统激活状态!system!
 set "cho=1230"
 echo;操作系统: !system:~3! !bit!位
-if "!system:~11,2!"=="XP" (echo;Windows XP系统无法使用此功能查询)
+if "!system:~11,2!" equ "XP" (echo;Windows XP系统无法使用此功能查询)
 !hx!
 echo;[1]显示许可信息
 echo;[2]显示详细的许可信息
@@ -5096,6 +5026,7 @@ set "a74=逐一复制文件并压缩"
 set "a75=打开证书管理单元"
 set "a76=BAT文本混淆"
 set "a77=VBS计算器"
+set maxa=77
 )
 goto :eof
 :colortxt
@@ -5250,29 +5181,29 @@ set danwei=%~2
 if /i "!danwei!" equ "kb" (set /a bytes*=1024)
 if /i "!danwei!" equ "mb" (set /a bytes*=1048576)
 if /i "!danwei!" equ "gb" (set /a bytes*=1073741824)
-if "%~3" == "" Goto :eof
+if "%~3" equ "" Goto :eof
 call :Division !Bytes! 1152921504606846976 2 OK
-if not "%OK:~0,2%"=="0." (
+if not "%OK:~0,2%" equ "0." (
 	endlocal&set %~3=%OK% EB
 	Goto :eof
 ) else (call :Division !Bytes! 1125899906842624 2 OK)
-if not "%OK:~0,2%"=="0." (
+if not "%OK:~0,2%" equ "0." (
 	endlocal&set %~3=%OK% PB
 	Goto :eof
 ) else (call :Division !Bytes! 1099511627776 2 OK)
-if not "%OK:~0,2%"=="0." (
+if not "%OK:~0,2%" equ "0." (
 	endlocal&set %~3=%OK% TB
 	Goto :eof
 ) else (call :Division !Bytes! 1073741824 2 OK)
-if not "%OK:~0,2%"=="0." (
+if not "%OK:~0,2%" equ "0." (
 	endlocal&set %~3=%OK% GB
 	Goto :eof
 ) else (call :Division !Bytes! 1048576 2 OK)
-if not "%OK:~0,2%"=="0." (
+if not "%OK:~0,2%" equ "0." (
 	endlocal&set %~3=%OK% MB
 	Goto :eof
 ) else (call :Division !Bytes! 1024 2 OK)
-if not "%OK:~0,2%"=="0." (
+if not "%OK:~0,2%" equ "0." (
 	endlocal&set %~3=%OK% KB
 	Goto :eof
 ) else (
@@ -5281,7 +5212,7 @@ if not "%OK:~0,2%"=="0." (
 )
 :Division
 setlocal
-if "%~4" == "" Goto :eof
+if "%~4" equ "" Goto :eof
 set Div.1=%~1
 set Div.2=%~2
 set Div.3=
@@ -5386,8 +5317,8 @@ for /l %%l in (!Div.2.Len.0! 1 !Div.1.Len.0!) do (
 )
 if defined Div.D if %Div.D% gtr 0 set Div.3=!Div.3:~,-%Div.D%!.!Div.3:~-%Div.D%!
 for /f "tokens=* delims=0" %%i in ("!Div.3!") do set Div.3=%%i
-if "!Div.3:~0,1!"=="." set Div.3=0!Div.3!
-if "!Div.3!"=="" set Div.3=0
+if "!Div.3:~0,1!" equ "." set Div.3=0!Div.3!
+if "!Div.3!" equ "" set Div.3=0
 endlocal&set %~4=%Div.3%
 goto :eof
 :cf
@@ -6409,8 +6340,8 @@ if "%3" neq "" (
 )
 :scf
 setlocal
-if "%~1"=="0" Endlocal&set %~3=0&goto :EOF
-if "%~2"=="0" Endlocal&set %~3=0&goto :EOF
+if "%~1" equ "0" Endlocal&set %~3=0&goto :EOF
+if "%~2" equ "0" Endlocal&set %~3=0&goto :EOF
 set f=&set jia=&set ji=&set /a n1=0,n2=0
 set vard1=&set "vard2="&set var1=%~1&set "var2=%~2"
 for /l %%a in (0 1 9) do (
@@ -6419,13 +6350,13 @@ for %%a in (!var1!)do (set /a n1+=1&set vard1=%%a !vard1!)
 for %%a in (!var2!)do (set /a n2+=1&set vard2=%%a !vard2!)
 if !n1! gtr !n2! (set vard1=%vard2%&set vard2=%vard1%)
 for %%a in (!vard1!) do (set "t="&set /a j=0
-for %%b in (!vard2!) do (if "!jia!"=="" set /a jia=0
+for %%b in (!vard2!) do (if "!jia!" equ "" set /a jia=0
 set /a a=%%a*%%b+j+!jia:~-1!&set "t=!a:~-1!!t!"
 set a=0!a!&set "j=!a:~-2,1!"&set jia=!jia:~0,-1!)
 set "ji=!t:~-1!!ji!"
-if "!j:~0,1!"=="0" (set ss=) else set "ss=!j:~0,1!"
+if "!j:~0,1!" equ "0" (set ss=) else set "ss=!j:~0,1!"
 set jia=!ss!!t:~0,-1!)
-if not "!j:~0,1!"=="0" set "t=!j:~0,1!!t!"
+if not "!j:~0,1!" equ "0" set "t=!j:~0,1!!t!"
 set "ji=!t!!ji:~1!"
 Endlocal&set %~3=%ji%&goto :EOF
 :convertu
