@@ -50,7 +50,7 @@ set "dosqssj=!time!"
 color f1
 chcp 936>nul
 set ver=20250101
-set versize=175644
+set versize=175607
 set fy1=___
 set xz0=0
 set "doh=--doh-url https://101.101.101.101/dns-query"
@@ -4814,10 +4814,8 @@ if !checkver! gtr 0 (
 	call :xdwjs !dossize! b new
 	echo;
 	echo;文件变化
-	echo;旧版本	→	新版本
-	echo;!ver!	→	!gxver!
-	echo;旧文件大小	→	新文件大小
-	echo;!old! (%~z0 字节)	→	!new! (!dossiez! 字节)
+	echo;版本:		!ver!		→	!gxver!
+	echo;文件大小:	!old!（%~z0 字节）	→	!new!（!dossize 字节）
 	!hx!
 	set shuru=
 	set /p "shuru=按回车键更新，按e返回菜单:"
