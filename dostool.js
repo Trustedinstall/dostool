@@ -50,7 +50,7 @@ set "dosqssj=!time!"
 color f1
 chcp 936>nul
 set ver=20250101
-set versize=175603
+set versize=175628
 set fy1=___
 set xz0=0
 set "doh=--doh-url https://101.101.101.101/dns-query"
@@ -4334,12 +4334,12 @@ for /l %%a in (90,1,97) do (
 set /p =!cswz!s!cswz!27;0H<nul
 for /l %%b in (1,1,4) do (
 	echo;
-	for /l %%a in (255,-11,0) do (set /p =!cswz!48;2;255;0;%%am !cswz!0m<nul)
-	for /l %%a in (0,11,255) do (set /p =!cswz!48;2;255;%%a;0m !cswz!0m<nul)
-	for /l %%a in (255,-11,0) do (set /p =!cswz!48;2;%%a;255;0m !cswz!0m<nul)
-	for /l %%a in (0,11,255) do (set /p =!cswz!48;2;0;255;%%am !cswz!0m<nul)
-	for /l %%a in (255,-11,0) do (set /p =!cswz!48;2;0;%%a;255m !cswz!0m<nul)
-	for /l %%a in (0,11,255) do (set /p =!cswz!48;2;%%a;0;255m !cswz!0m<nul)
+	for /l %%a in (255,-13,0) do (set /p =!cswz!48;2;255;0;%%am !cswz!0m<nul)
+	for /l %%a in (0,13,255) do (set /p =!cswz!48;2;255;%%a;0m !cswz!0m<nul)
+	for /l %%a in (255,-13,0) do (set /p =!cswz!48;2;%%a;255;0m !cswz!0m<nul)
+	for /l %%a in (0,13,255) do (set /p =!cswz!48;2;0;255;%%am !cswz!0m<nul)
+	for /l %%a in (255,-13,0) do (set /p =!cswz!48;2;0;%%a;255m !cswz!0m<nul)
+	for /l %%a in (0,13,255) do (set /p =!cswz!48;2;%%a;0;255m !cswz!0m<nul)
 )
 set /p =!cswz!u<nul
 !hx!
@@ -4813,10 +4813,10 @@ if !checkver! gtr 0 (
 	call :colortxt a !gxver!
 	call :xdwjs %~z0 b old
 	call :xdwjs !dossize! b new
+	call :hash "!weizhi!" sha1 oldhash
 	echo;
-	echo;文件变化
-	echo;版本:		!ver!		→	!gxver!
-	echo;文件大小:	!old!（%~z0 字节）	→	!new!（!dossize 字节）
+	echo;文件大小: !old!（%~z0 字节）→ !new!（!dossize! 字节）
+	echo;SHA1: !oldhash! → !doshash!
 	!hx!
 	set shuru=
 	set /p "shuru=按回车键更新，按e返回菜单:"
