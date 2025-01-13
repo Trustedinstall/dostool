@@ -50,7 +50,7 @@ set "dosqssj=!time!"
 color f1
 chcp 936>nul
 set ver=20250101
-set versize=175628
+set versize=175752
 set fy1=___
 set xz0=0
 set "doh=--doh-url https://101.101.101.101/dns-query"
@@ -262,14 +262,20 @@ if /i "!caidan:~0,2!" equ "go" (
 		goto memuv2.1
 	)
 )
+if /i "!caidan!" equ "gx" (
+	set "verbak=!ver!"
+	goto update
+)
+if /i "!caidan!" equ "qzgx" (
+	set verbak=0
+	goto update
+)
 if /i "!caidan!" equ "js" (goto 49)
 if /i "!caidan!" equ "kcd" (goto kcd)
 if /i "!caidan!" equ "gcd" (goto gcd)
-if /i "!caidan!" equ "gx" (goto update)
 if /i "!caidan!" equ "guanji" (goto guanji)
 if /i "!caidan!" equ "guanyu" (goto guanyu)
 if /i "!caidan!" equ "csh" (endlocal&goto chushihua)
-if /i "!caidan!" equ "qzgx" (set ver=0&goto update)
 :memuv2.1
 set /p =请输入正确的选项！<nul
 call :out 2
@@ -4729,8 +4735,8 @@ if exist "%systemroot%\system32\curl.exe" (
 				set "gxver=%%a"
 				set "doshash=%%b"
 				set "dossize=%%c"
-				set "host="
-				set "resolve="
+				set host=
+				set resolve=
 				set "url=!gxdos1!"
 			)
 			popd
@@ -4758,8 +4764,8 @@ if exist "%systemroot%\system32\curl.exe" (
 						set "gxver=%%a"
 						set "doshash=%%b"
 						set "dossize=%%c"
-						set "host="
-						set "resolve="
+						set host=
+						set resolve=
 						set "url=!gxdos2!"
 					)
 					popd
@@ -4769,6 +4775,7 @@ if exist "%systemroot%\system32\curl.exe" (
 					!hx!
 					set /p =按任意键返回菜单<nul&pause>nul
 					endlocal
+					set verbak=
 					goto memuv2
 				)
 			)
@@ -4801,13 +4808,14 @@ if exist "%systemroot%\system32\curl.exe" (
 			!hx!
 			set /p =按任意键返回菜单<nul&pause>nul
 			endlocal
+			set verbak=
 			goto memuv2
 		)
 	)
 )
 :updatecheck
 cls
-set /a "checkver=gxver-ver"
+set /a "checkver=gxver-verbak"
 if !checkver! gtr 0 (
 	set /p =检查到更新版本: <nul
 	call :colortxt a !gxver!
@@ -4824,6 +4832,7 @@ if !checkver! gtr 0 (
 	if /i "!shuru!" equ "e" (
 		del /f /q "%temp%\dostoolupdate"
 		endlocal
+		set verbak=
 		goto memuv2
 	)
 	set /p =输入无效<nul
@@ -4835,6 +4844,7 @@ if !checkver! gtr 0 (
 	!hx!
 	set /p =按任意键返回菜单<nul&pause>nul
 	endlocal
+	set verbak=
 	goto memuv2
 )
 :startupdate
@@ -4866,6 +4876,7 @@ if exist "%systemroot%\system32\curl.exe" (
 		echo;
 		call :out 2
 		endlocal
+		set verbak=
 		goto memuv2
 	)
 ) else (
@@ -4880,6 +4891,7 @@ if exist "%systemroot%\system32\curl.exe" (
 		echo;
 		call :out 2
 		endlocal
+		set verbak=
 		goto memuv2
 	)
 )
