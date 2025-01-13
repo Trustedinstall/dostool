@@ -50,7 +50,7 @@ set "dosqssj=!time!"
 color f1
 chcp 936>nul
 set ver=20250101
-set versize=175607
+set versize=175603
 set fy1=___
 set xz0=0
 set "doh=--doh-url https://101.101.101.101/dns-query"
@@ -2885,13 +2885,14 @@ if not exist "!rarpd!" (
 		set "7zlj=!7zlj!7z.exe"
 		set "rarpd=!7zlj!"
 		set "rarpd7z=!7zlj!"
-		if not exist "!7zlj!" (
-			echo;没有找到7-Zip
-			set /p =按任意键返回菜单<nul&pause>nul
-			endlocal
-			goto memuv2
-		)
 	)
+)
+if not exist "!rarpd!" (
+	echo;没有找到7-Zip
+	!hx!
+	set /p =按任意键返回菜单<nul&pause>nul
+	endlocal
+	goto memuv2
 )
 set yswjlj=
 set /p "yswjlj=拖动要破解的压缩包到此窗口(e=返回菜单): "
