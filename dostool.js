@@ -50,7 +50,7 @@ set "dosqssj=!time!"
 color f1
 chcp 936>nul
 set ver=20250101
-set versize=175752
+set versize=175741
 set fy1=___
 set xz0=0
 set "doh=--doh-url https://101.101.101.101/dns-query"
@@ -4848,6 +4848,7 @@ if !checkver! gtr 0 (
 	goto memuv2
 )
 :startupdate
+cls
 echo;正在下载更新...
 if exist "%temp%\dostool" (del /f /q "%temp%\dostool")
 if exist "%systemroot%\system32\curl.exe" (
@@ -4870,7 +4871,7 @@ if exist "%systemroot%\system32\curl.exe" (
 	if /i "!hash!" equ "!doshash!" (
 		endlocal
 		endlocal
-		copy /z /y "%temp%\dostool" "!weizhi!"&goto chushihua
+		copy /z /y "%temp%\dostool" %0&goto chushihua
 	) else (
 		call :colortxt c 文件无效
 		echo;
@@ -4885,7 +4886,7 @@ if exist "%systemroot%\system32\curl.exe" (
 	if /i "!hash!" equ "!doshash!" (
 		endlocal
 		endlocal
-		copy /z /y "%temp%\dostool" "!weizhi!"&goto chushihua
+		copy /z /y "%temp%\dostool" %0&goto chushihua
 	) else (
 		call :colortxt c 文件无效
 		echo;
