@@ -50,7 +50,7 @@ set "dosqssj=!time!"
 color f1
 chcp 936>nul
 set ver=20250101
-set versize=175066
+set versize=175644
 set fy1=___
 set xz0=0
 set "doh=--doh-url https://101.101.101.101/dns-query"
@@ -4710,9 +4710,10 @@ if exist "%systemroot%\system32\curl.exe" (
 	echo;Host域名:	!githost:~10,-1!
 	curl !proxy! !doh! !githost! -A "!ua!" --compressed -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 !resolve2! -o dostoolupdate !gxurlhost1!
 	if exist "%temp%\dostoolupdate" (
-		for /f "usebackq delims=: tokens=1,2" %%a in ("%temp%\dostoolupdate") do (
+		for /f "usebackq delims=: tokens=1-3" %%a in ("%temp%\dostoolupdate") do (
 			set "gxver=%%a"
 			set "doshash=%%b"
+			set "dossize=%%c"
 			set "host=!githost!"
 			set "resolve=!doh! !resolve2!"
 			set "url=!gxdoshost1!"
@@ -4723,9 +4724,10 @@ if exist "%systemroot%\system32\curl.exe" (
 		echo;使用链接:	!gxurl1!
 		curl !proxy! !doh! -A "!ua!" --compressed -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o dostoolupdate !gxurl1!
 		if exist "%temp%\dostoolupdate" (
-			for /f "usebackq delims=: tokens=1,2" %%a in ("%temp%\dostoolupdate") do (
+			for /f "usebackq delims=: tokens=1-3" %%a in ("%temp%\dostoolupdate") do (
 				set "gxver=%%a"
 				set "doshash=%%b"
+				set "dossize=%%c"
 				set "host="
 				set "resolve="
 				set "url=!gxdos1!"
@@ -4737,9 +4739,10 @@ if exist "%systemroot%\system32\curl.exe" (
 			echo;Host域名:	!jshost:~10,-1!
 			curl !proxy! !doh! !jshost! -A "!ua!" --compressed -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 !resolve2! -o dostoolupdate !gxurlhost2!
 			if exist "%temp%\dostoolupdate" (
-				for /f "usebackq delims=: tokens=1,2" %%a in ("%temp%\dostoolupdate") do (
+				for /f "usebackq delims=: tokens=1-3" %%a in ("%temp%\dostoolupdate") do (
 					set "gxver=%%a"
 					set "doshash=%%b"
+					set "dossize=%%c"
 					set "host=!jshost!"
 					set "resolve=!doh! !resolve2!"
 					set "url=!gxdoshost2!"
@@ -4750,9 +4753,10 @@ if exist "%systemroot%\system32\curl.exe" (
 				echo;使用链接:	!gxurl2!
 				curl !proxy! !doh! -A "!ua!" --compressed -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o dostoolupdate !gxurl2!
 				if exist "%temp%\dostoolupdate" (
-					for /f "usebackq delims=: tokens=1,2" %%a in ("%temp%\dostoolupdate") do (
+					for /f "usebackq delims=: tokens=1-3" %%a in ("%temp%\dostoolupdate") do (
 						set "gxver=%%a"
 						set "doshash=%%b"
+						set "dossize=%%c"
 						set "host="
 						set "resolve="
 						set "url=!gxdos2!"
@@ -4773,9 +4777,10 @@ if exist "%systemroot%\system32\curl.exe" (
 	echo;使用链接:	!gxurl1!
 	certutil -urlcache -split -f !gxurl1! "%temp%\dostoolupdate"
 	if exist "%temp%\dostoolupdate" (
-		for /f "usebackq delims=: tokens=1,2" %%a in ("%temp%\dostoolupdate") do (
+		for /f "usebackq delims=: tokens=1-3" %%a in ("%temp%\dostoolupdate") do (
 			set "gxver=%%a"
 			set "doshash=%%b"
+			set "dossize=%%c"
 			set "url=!gxdos1!"
 		)
 		goto updatecheck
@@ -4783,9 +4788,10 @@ if exist "%systemroot%\system32\curl.exe" (
 		echo;使用链接:	!gxurl2!
 		certutil -urlcache -split -f !gxurl2! "%temp%\dostoolupdate"
 		if exist "%temp%\dostoolupdate" (
-			for /f "usebackq delims=: tokens=1,2" %%a in ("%temp%\dostoolupdate") do (
+			for /f "usebackq delims=: tokens=1-3" %%a in ("%temp%\dostoolupdate") do (
 				set "gxver=%%a"
 				set "doshash=%%b"
+				set "dossize=%%c"
 				set "url=!gxdos2!"
 			)
 			goto updatecheck
@@ -4804,8 +4810,26 @@ set /a "checkver=gxver-ver"
 if !checkver! gtr 0 (
 	set /p =检查到更新版本: <nul
 	call :colortxt a !gxver!
+	call :xdwjs %~z0 b old
+	call :xdwjs !dossize! b new
 	echo;
-	goto startupdate
+	echo;文件变化
+	echo;旧版本	→	新版本
+	echo;!ver!	→	!gxver!
+	echo;旧文件大小	→	新文件大小
+	echo;!old! (%~z0 字节)	→	!new! (!dossiez! 字节)
+	!hx!
+	set shuru=
+	set /p "shuru=按回车键更新，按e返回菜单:"
+	if "!shuru!" equ "" (goto startupdate)
+	if /i "!shuru!" equ "e" (
+		del /f /q "%temp%\dostoolupdate"
+		endlocal
+		goto memuv2
+	)
+	set /p =输入无效<nul
+	call :out 2
+	goto updatecheck
 ) else (
 	del /f /q "%temp%\dostoolupdate"
 	echo;没有检查到更新版本
