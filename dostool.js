@@ -49,7 +49,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250101
-set versize=172289
+set versize=173227
 set fy1=___
 set xz0=0
 set "pause=set /p =按任意键返回菜单<nul&pause>nul"
@@ -478,7 +478,7 @@ title 命令提示符!system!
 for /f "delims=" %%a in ('hostname') do (set "hostname=%%a")
 cls
 ver
-if !winv! equ 0 (
+if "!winv!" equ "0" (
 	cmd /k prompt !cswz!!ysbak:~0,3!92m%username%!cswz!!ysbak!@%hostname%:$p#$s
 ) else (
 	cmd /k prompt %username%@%hostname%:$p#$s
@@ -550,125 +550,6 @@ format !geshihua!: /x /q /v:format /y
 %pause%
 endlocal
 goto memuv2
-:76
-setlocal
-color 0a
-title bat加密!system!
-cls
-echo;此工具只可以用于纯文本文件加密
-%hx%
-echo;[1]bat文件加密(方法1)
-echo;[2]bat文件解密
-echo;[3]bat文件加密(方法2)(推荐使用)
-echo;[0]返回菜单
-%hx%
-set cho=1230
-!sel!
-if "!shuru!" equ "1" (goto 76.1)
-if "!shuru!" equ "2" (goto 76.2)
-if "!shuru!" equ "3" (goto 76.3)
-if "!shuru!" equ "4" (endlocal&goto memuv2)
-if "!shuru!" equ "0" (endlocal&goto memuv2)
-set /p =请输入正确的选项！<nul
-call :out 2
-endlocal
-goto 76
-:76.1
-title bat文件加密(方法1)!system!
-cls
-set jiami=
-set /p "jiami=拖动需要加密的文件到此窗口(e=返回): "
-if /i "!jiami!" equ "e" (
-	endlocal
-	goto 76
-)
-call :ljjc jiami
-if "!errorlevel!" equ "0" (
-	set /p =无效路径<nul
-	call :out 2
-	goto 76.1
-)
-cls
-for /f "delims=" %%b in ("!jiami!") do (
-	set /a "batpdjg=%%~zb%%2"
-	if "!batpdjg!" equ "1" (
-		set "batpdjg= "
-	) else (
-		set "batpdjg="
-	)
-	(
-	echo;%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
-%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
-%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
-%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
-%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
-%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
-%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
-%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
-%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a!batpdjg!
-	echo;cls
-	)>"%temp%\1.tmp"
-	copy /b /y "%temp%\1.tmp"+"%%b" "%%~dpb加密_%%~nb%%~xb">nul
-	del /f /q "%temp%\1.tmp"
-)
-cls
-set /p =加密完成<nul
-call :out 2
-endlocal
-goto 76
-:76.2
-title bat文件解密!system!
-cls
-set jiemi=
-set /p "jiemi=拖动需要解密的文件到此窗口(e=返回): "
-if /i "!jiemi!" equ "e" (
-	endlocal
-	goto 76
-)
-call :ljjc jiemi
-if "!errorlevel!" equ "0" (
-	set /p =无效路径<nul
-	call :out 2
-	goto 76.2
-) 
-cls
-for /f "delims=" %%a in ("!jiemi!") do (
-	echo;>"%temp%\1.tmp"
-	copy /b /y "%temp%\1.tmp"+"%%a" "%%~dpa解密_%%~na%%~xa">nul
-	del /f /q "%temp%\1.tmp"
-)
-cls
-set /p =解密完成<nul
-call :out 2
-endlocal
-goto 76
-:76.3
-cls
-title bat文件加密(方法2)!system!
-set jiami=
-set /p "jiami=拖动需要加密的文件到此窗口(e=返回): "
-if /i "!jiami!" equ "e" (
-	endlocal
-	goto 76
-)
-call :ljjc jiami
-if "!errorlevel!" equ "0" (
-	set /p =无效路径<nul
-	call :out 2
-	goto 76.3
-)
-cls
-for /f "delims=" %%a in ("!jiami!") do (
-	set /p =//4NCg==<nul>"%temp%\1.tmp"
-	certutil -decode -f "%temp%\1.tmp" "%temp%\2.tmp">nul
-	copy /b /y "%temp%\2.tmp"+"%%a" "%%~dpa加密_%%~na%%~xa">nul
-	del /f /q "%temp%\1.tmp";"%temp%\2.tmp"
-)
-cls
-set /p =加密完成<nul
-call :out 2
-endlocal
-goto 76
 :13
 setlocal
 title DOS计算器!system!
@@ -2528,20 +2409,6 @@ echo;十六进制: !shilioujinzhi!
 set /p =按任意键返回<nul&pause>nul
 endlocal
 goto 36
-:77
-setlocal
-title vbs计算器!system!
-set vbsbds=
-set vbsjieguo=
-cls
-set /p "vbsbds=请输入表达式(e=返回菜单): "
-if not defined vbsbds (endlocal&goto 77)
-if /i "!vbsbds!" equ "e" (endlocal&goto memuv2)
-echo;msgbox !vbsbds!,"65","VBS计算器">"%temp%\temp.vbs"
-"%temp%\temp.vbs"
-del /f /q "%temp%\temp.vbs"
-endlocal
-goto 77
 :guanyu
 setlocal
 title 关于DOS工具箱!system!
@@ -2555,7 +2422,7 @@ call :sjc "!dosqssj!" "!time!" jg format
 cls
 echo;关于DOS工具箱
 %hx%
-echo;版本: 		1.9.5 (!ver!.!versize!)
+echo;版本: 		1.9.6 (!ver!.!versize!)
 echo;操作系统: 	!system:~3! !bit!位
 echo;版权所有 	2012-2025 Administrator 保留所有权利
 %hx%
@@ -2807,7 +2674,7 @@ cls
 set sswjm=
 set /p "sswjm=输入你要搜索的文件名(默认在%systemdrive%\中搜索): "
 %hx%
-dir /a /s !sswjm!
+dir /a /s "!sswjm!"
 %hx%
 %pause%
 endlocal
@@ -3116,44 +2983,45 @@ cls
 title 已知年月日计算星期!system!
 set jsxq=00000000
 set /p "jsxq=请输入年月日(例如20150605): "
-call :checkvar jsxq num jg
+call :checkvar jsxq year jg
 if "!jg!" equ "0" (goto 53.1)
-call :strlen jsxq jg
-if "!jg!" neq "8" (goto 53.1)
 set "y=!jsxq:~0,4!"
-if !y! lss 10 (set /a "y=0x!y!")
 set "m=!jsxq:~4,2!"
-if !m! lss 10 (set /a "m=0x!m!")
-if "!m!" equ "1" (
-	set m=13
-	set /a "y-=1"
-)
-if "!m!" equ "2" (
-	set m=14
-	set /a "y-=1"
-)
 set "d=!jsxq:~6,2!"
-if !d! lss 10 (set /a "d=0x!d!")
-set /a "d+=1"
-set /a "w=d+2*m+3*(m+1)/5+y+y/4-y/100+y/400"
-set /a "w=w%%7"
-set /a "rn1=y%%4"
-set /a "rn2=y%%100"
-set /a "rn3=y%%400"
-set rn=平年
-if "!rn1!" equ "0" (
-	if "!rn2!" neq "0" (set rn=闰年)
+if 1!m! lss 110 (set "m=!m:~1!")
+if 1!d! lss 110 (set "d=!d:~1!")
+set /a "leap=y%%4"
+set /a "leap100=y%%100"
+set /a "leap400=y%%400"
+if "!leap!" equ "0" (
+	if "!leap100!" neq "0" (
+		set rn=闰年
+	)
+) else (
+	set rn=平年
 )
-if "!rn2!" equ "0" (
-	if "!rn3!" equ "0" (set rn=闰年)
+if "!leap100!" equ "0" (
+	if "!leap400!" neq "0" (
+		set rn=平年
+	)
 )
-if "!w!" equ "1" (set w=一)
-if "!w!" equ "2" (set w=二)
-if "!w!" equ "3" (set w=三)
-if "!w!" equ "4" (set w=四)
-if "!w!" equ "5" (set w=五)
-if "!w!" equ "6" (set w=六)
-if "!w!" equ "0" (set w=天)
+if "!leap400!" equ "0" (
+	set rn=闰年
+)
+if !m! lss 3 (
+	set /a "m+=12"
+	set /a "y-=1"
+)
+set /a "k=y%%100"
+set /a "j=y/100"
+set /a "w=(d+13*(m+1)/5+k+k/4+j/4+5*j)%%7"
+if "!w!" equ "1" (set w=天)
+if "!w!" equ "2" (set w=一)
+if "!w!" equ "3" (set w=二)
+if "!w!" equ "4" (set w=三)
+if "!w!" equ "5" (set w=四)
+if "!w!" equ "6" (set w=五)
+if "!w!" equ "0" (set w=六)
 echo;
 echo;!rn! !jsxq:~0,4!年!jsxq:~4,2!月!jsxq:~6,2!日是星期!w!
 %hx%
@@ -3241,7 +3109,7 @@ set /p "swjj=输入要链接的文件夹路径: "
 set /p "cwjj=输入链接文件夹的输出路径: "
 call :lj swjj swjj
 call :lj cwjj cwjj
-mklink /d !cwjj! !swjj!
+mklink /d "!cwjj!" "!swjj!"
 %hx%
 %pause%
 endlocal
@@ -3275,6 +3143,7 @@ setlocal
 title 创建、删除或列出卷装入点!system!
 cls
 %hx%
+rem 管理员权限创建的盘符只对有管理员权限的进程可见
 echo;[1]列出卷装入点
 echo;[2]删除不在系统中的、卷的装入点目录和注册表设置
 echo;[3]列出指定目录的已装入的卷名称
@@ -3461,8 +3330,9 @@ set /p "bxz=输入y保存编码,其他输入返回上级菜单: "
 if "!bxz!" equ "y" (
 	set basebc=
 	set /p "basebc=输入保存路径:"
+	call :lj basebc basebc
 	%hx%
-	copy /y /z "%temp%\codetmp" !basebc!
+	copy /y /z "%temp%\codetmp" "!basebc!"
 	if "!errorlevel!" neq "0" (echo;保存失败) else (echo;保存成功)
 	%hx%
 	%pause%
@@ -3506,8 +3376,9 @@ set /p "bxz=输入y保存编码,其他输入返回上级菜单: "
 if "!bxz!" equ "y" (
 	set basebc=
 	set /p "basebc=输入保存路径: "
+	call :lj basebc basebc
 	%hx%
-	copy /y /z "%temp%\codetmp" !basebc!
+	copy /y /z "%temp%\codetmp" "!basebc!"
 	if "!errorlevel!" neq "0" (echo;保存失败) else (echo;保存成功)
 	%hx%
 	%pause%
@@ -4105,15 +3976,6 @@ subst
 %hx%
 set newpf=
 set /p "newpf=输入要创建的新盘符:"
-call :checkvar newpf az jg
-if "!jg!" neq "0" (
-	call :strlen newpf jg
-	if "!jg!" neq "1" (
-		set /p =无效输入<nul
-		call :out 2
-		goto 68.1
-	)
-)
 set gllj=
 set /p "gllj=输入要关联的路径: "
 call :ljjc gllj dir
@@ -4143,15 +4005,6 @@ subst
 %hx%
 set xzxnp=
 set /p "xzxnp=输入要卸载的盘符: "
-call :checkvar xzxnp az jg
-if "!jg!" neq "0" (
-	call :strlen xzxnp jg
-	if "!jg!" neq "1" (
-		set /p =无效输入<nul
-		call :out 2
-		goto 68.2
-	)
-)
 subst !xzxnp!: /d
 if "!errorlevel!" equ "0" (
 	set /p =卸载成功<nul
@@ -4638,6 +4491,474 @@ curl !proxy! !doh! !ua! --compressed -# -L -C - --retry 2 --retry-delay 1 --conn
 set "jssj=!time!"
 for /f "delims=" %%a in ("!dir!\!filename!") do (set "filesize=%%~za")
 goto 72.4
+:73
+setlocal
+:chrome
+@echo off&setlocal enabledelayedexpansion&chcp 936>nul
+set "域名重定向=!temp!\域名重定向.txt"
+set "域名重解析=!temp!\域名重解析.txt"
+set "强制使用quic=!temp!\强制使用quic.txt"
+if not exist "!域名重定向!" (
+	(
+		echo #wikipedia
+		echo *.wikipedia.org=wikidata.org
+		echo *.wikiquote.org=wikidata.org
+		echo *.wikinews.org=wikidata.org
+		echo *.wikibooks.org=wikidata.org
+		echo *.wiktionary.org=wikidata.org
+		echo *.wikisource.org=wikidata.org
+		echo *.wikivoyage.org=wikidata.org
+		echo *.wikiversity.org=wikidata.org
+		echo;
+		echo #pixiv
+		echo pixiv.net=pixiv.me
+		echo *.pixiv.net=pixiv.me
+		echo *.pximg.net=pximg.net
+		echo;
+		echo #protonmail
+		echo proton.me=pr.tn
+		echo account.proton.me=a.pr.tn
+		echo account-api.proton.me=b.pr.tn
+		echo mail.proton.me=c.pr.tn
+		echo;
+		echo #youtube
+		echo *.youtube.com=google-analytics.com
+		echo *.ytimg.com=googleadservices.com
+		echo *.ggpht.com=static.doubleclick.net
+		echo youtube.com=static.doubleclick.net
+		echo youtu.be=mt7.gstatic.com
+		echo;
+		echo #google
+		echo *.google.com=googleadservices.com
+		echo *.google.com.hk=googleadservices.com
+		echo *.google.com.tw=googleadservices.com
+		echo *.googleapis.com=static.doubleclick.net
+		echo *.googleusercontent.com=static.doubleclick.net
+		echo *.gstatic.com=alt6.gstatic.com
+		echo *.cloudfunctions.net=alt6.gstatic.com
+		echo *.blogspot.com=google-analytics.com
+		echo;
+		echo #github
+		echo github.com=octocaptcha.com
+		echo *.github.com=octocaptcha.com
+		echo raw.githubusercontent.com=avatars.githubusercontent.com
+		echo *.github.io=octocaptcha.com
+		echo github.io=octocaptcha.com
+		echo;
+		echo #steam
+		echo login.steampowered.com=login.steampowered.com
+		echo help.steampowered.com=help.steampowered.com
+		echo *.steampowered.com=steamuserimages-a.akamaihd.net
+		echo steamcommunity.com=underlords.com
+		echo *.steamcommunity.com=underlords.com
+		echo;
+		echo #onedrive
+		echo onedrive.live.com=od0.live.com
+		echo skyapi.onedrive.live.com=storage.live.com
+		echo;
+		echo #nyaa
+		echo nyaa.si=nyaa.ddos-guard.net
+		echo;
+		echo #vercel.app
+		echo vercel.app=no-sni.vercel-infra.com
+		echo *.vercel.app=no-sni.vercel-infra.com
+		echo;
+		echo #lain.la
+		echo *.lain.la=lain.la
+		echo;
+		echo pkuanvil.com=gcore.com
+		echo *.pkuanvil.com=gcore.com
+		echo;
+		echo #quora
+		echo quora.com=qr.ae
+		echo *.quora.com=qr.ae
+	)>"!域名重定向!"
+)
+if not exist "!域名重解析!" (
+	(
+		echo #wikipedia
+		echo #wikidata.org=[2620:0:863:ed1a::1]
+		echo wikidata.org=208.80.153.224
+		echo;
+		echo #protonmail
+		echo pr.tn=proton.me
+		echo a.pr.tn=account.proton.me
+		echo b.pr.tn=account-api.proton.me
+		echo c.pr.tn=mail.proton.me
+		echo;
+		echo #youtube google
+		echo #mt7.gstatic.com=[2404:6800:4008:c07::5a]
+		echo mt7.gstatic.com=39.106.25.252
+		echo #alt6.gstatic.com=[2404:6800:4008:c07::5a]
+		echo alt6.gstatic.com=39.106.25.252
+		echo #google-analytics.com=[2404:6800:4008:c07::5a]
+		echo google-analytics.com=39.106.25.252
+		echo #googleadservices.com=[2404:6800:4008:c07::5a]
+		echo googleadservices.com=39.106.25.252
+		echo #static.doubleclick.net=[2404:6800:4008:c07::5a]
+		echo static.doubleclick.net=39.106.25.252
+		echo;
+		echo #nyaa
+		echo nyaa.ddos-guard.net=nyaa.si
+	)>"!域名重解析!"
+)
+if not exist "!强制使用quic!" (
+	(
+		echo #不支持通配符
+		echo www.google.com.hk
+		echo www.google.com.tw
+		echo www.google.com
+		echo www.quora.com
+		echo quora.com
+		echo qsbr.cf2.quoracdn.net
+		echo v2ex.com
+		echo cdn.v2ex.com
+		echo www.v2ex.com
+		echo challenges.cloudflare.com
+		echo www.openstreetmap.org
+		echo tile.openstreetmap.org
+		echo ipfs.io
+		echo cloudflare-ipfs.com
+	)>"!强制使用quic!"
+)
+cd /d "%~dp0"
+rem 忽略证书错误 0=禁用 1=启用
+set "pass_cert_error=0"
+rem 生成chrome-command-line文件 0=禁用 1=启用
+set "chrome-command-line=0"
+rem 设置支持chrome命令行的浏览器的路径
+set "chromium="C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe""
+if "!pass_cert_error!" equ "1" (
+	set "ignore-certificate-errors=--ignore-certificate-errors"
+)
+if exist "chrome.exe" (
+	set chrome=chrome.exe
+	goto startchrome
+) else (
+	for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe" /v Path 2>nul"') do (
+		set "chrome=%%a"
+	)
+	for /f "delims=" %%a in ("!chrome!") do (
+		set "chrome=%%~fa"
+	)
+	if exist "!chrome!\Chrome.exe" (
+		set "chrome=!chrome!\Chrome.exe"
+		goto startchrome
+	) else (
+		for /f "delims=" %%a in ("!chromium!") do (
+			set "chrome=%%~fa"
+		)
+		if exist "!chrome!" (
+			goto startchrome
+		) else (
+			if "%1" neq "-chrome" (
+				set /p =没有找到浏览器路径<nul
+				call :out 2
+				endlocal
+				goto memuv2
+			) else (
+				msg %username% 没有找到浏览器路径
+				exit 0
+			)
+		)
+	)
+)
+:startchrome
+for /f "delims=" %%a in ("!chrome!") do (
+	tasklist /fi "IMAGENAME eq %%~nxa"|findstr /i /c:"%%~nxa">nul
+	if "!errorlevel!" equ "0" (
+		cls
+		echo;%%~nxa正在运行,请关闭浏览器后重试.
+		set /p =按任意键退出<nul&pause>nul
+		if "%1" neq "-chrome" (
+			endlocal
+			goto memuv2
+		) else (
+			exit 0
+		)
+	)
+)
+if exist "!域名重定向!" (
+	for /f "eol=# tokens=1,2 delims== " %%a in (!域名重定向!) do (
+		set "host-rules=!host-rules!MAP %%a %%b, "
+	)
+	set "host-rules=--host-rules="!host-rules!""
+)
+if exist "!域名重解析!" (
+	for /f "eol=# tokens=1,2 delims== " %%a in (!域名重解析!) do (
+		set "host-resolver-rules=!host-resolver-rules!MAP %%a %%b, "
+	)
+	set "host-resolver-rules=--host-resolver-rules="!host-resolver-rules!""
+)
+if exist "!强制使用quic!" (
+	for /f "eol=# tokens=1,2 delims=:" %%a in (!强制使用quic!) do (
+		if "%%b" equ "" (
+			set "origin-to-force-quic-on=!origin-to-force-quic-on!%%a:443, "
+		) else (
+			set "origin-to-force-quic-on=!origin-to-force-quic-on!%%a:%%b, "
+		)
+	)
+	set "origin-to-force-quic-on=--enable-quic --origin-to-force-quic-on="!origin-to-force-quic-on!""
+)
+if "!chrome-command-line!" equ "1" (
+	set /p =chrome !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors!<nul>chrome-command-line
+)
+start /max "" "!chrome!" --profile-directory=Default --test-type !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors! %2
+if "%1" neq "-chrome" (endlocal&goto memuv2) else (exit 0)
+:74
+setlocal
+title 逐一复制文件并压缩!system!
+cls
+rem 设置源目录和目标目录
+set source_dir=
+set target_dir=
+set /p "source_dir=输入源目录: "
+call :ljjc source_dir dir
+if "!errorlevel!" equ "0" (goto 74.3)
+set /p "target_dir=输入目标目录: "
+call :ljjc target_dir dir
+if "!errorlevel!" equ "0" (goto 74.3)
+rem 创建目标目录结构%source_dir%不能替换成!source_dir!
+for /r "%source_dir%" %%f in (*) do (
+	cls
+    set "relative_path=%%~pf"
+    set "relative_path=!relative_path:%source_dir%=!"
+    set "target_path=!target_dir!!relative_path!"
+    rem 创建目标子目录（如果不存在）
+    if not exist "!target_path!" (mkdir "!target_path!")
+    rem 拷贝文件到目标目录
+	echo;"%%f" → "!target_path!%%~nxf"
+    copy /y /z "%%f" "!target_path!%%~nxf"
+    rem 压缩文件
+    call :74_2 "!target_path!%%~nxf" %%~zf %%~xf
+)
+%hx%
+%pause%
+endlocal
+goto memuv2
+:74_2
+if "%3" equ ".ogg" (goto :eof)
+if "%3" equ ".mpg" (goto :eof)
+if "%3" equ ".gif" (goto :eof)
+if "%3" equ ".zip" (goto :eof)
+if "%3" equ ".rar" (goto :eof)
+if "%3" equ ".7z" (goto :eof)
+if "%3" equ ".png" (goto :eof)
+if "%3" equ ".jpg" (goto :eof)
+if "%3" equ ".jpeg" (goto :eof)
+if "%3" equ ".wmf" (goto :eof)
+if "%3" equ ".wmv" (goto :eof)
+if "%3" equ ".bik" (goto :eof)
+if "%3" equ ".bk2" (goto :eof)
+if "%3" equ ".mp3" (goto :eof)
+if "%3" equ ".acc" (goto :eof)
+if "%3" equ ".m4a" (goto :eof)
+if "%3" equ ".flac" (goto :eof)
+if "%3" equ ".ape" (goto :eof)
+if "%3" equ ".mp4" (goto :eof)
+if "%3" equ ".avi" (goto :eof)
+if "%3" equ ".flv" (goto :eof)
+if "%3" equ ".f4v" (goto :eof)
+if "%3" equ ".mkv" (goto :eof)
+if "%3" equ ".3gp" (goto :eof)
+if "%3" equ ".cab" (goto :eof)
+if "%3" equ ".pdf" (goto :eof)
+if %2 lss 4096 goto :eof
+compact /c /exe:lzx %1
+goto :eof
+:74.3
+set /p =无效输入<nul
+call :out 2
+endlocal
+goto 74
+:75
+setlocal
+cls
+title 打开证书管理单元!system!
+%hx%
+echo;[1]certmgr	[证书 - 当前用户]
+echo;[2]certlm	[证书 - 本地计算机]
+echo;[0]返回菜单
+%hx%
+set cho=120
+!sel!
+if "!shuru!" equ "1" (start certmgr.msc&goto memuv2)
+if "!shuru!" equ "2" (start certlm.msc&goto memuv2)
+if "!shuru!" equ "3" (endlocal&goto memuv2)
+if "!shuru!" equ "0" (endlocal&goto memuv2)
+endlocal
+goto 75
+:76
+setlocal
+color 0a
+title bat加密!system!
+cls
+echo;此工具只可以用于纯文本文件加密
+%hx%
+echo;[1]bat文件加密(方法1)
+echo;[2]bat文件解密
+echo;[3]bat文件加密(方法2)(推荐使用)
+echo;[0]返回菜单
+%hx%
+set cho=1230
+!sel!
+if "!shuru!" equ "1" (goto 76.1)
+if "!shuru!" equ "2" (goto 76.2)
+if "!shuru!" equ "3" (goto 76.3)
+if "!shuru!" equ "4" (endlocal&goto memuv2)
+if "!shuru!" equ "0" (endlocal&goto memuv2)
+set /p =请输入正确的选项！<nul
+call :out 2
+endlocal
+goto 76
+:76.1
+title bat文件加密(方法1)!system!
+cls
+set jiami=
+set /p "jiami=拖动需要加密的文件到此窗口(e=返回): "
+if /i "!jiami!" equ "e" (
+	endlocal
+	goto 76
+)
+call :ljjc jiami
+if "!errorlevel!" equ "0" (
+	set /p =无效路径<nul
+	call :out 2
+	goto 76.1
+)
+cls
+for /f "delims=" %%b in ("!jiami!") do (
+	set /a "batpdjg=%%~zb%%2"
+	if "!batpdjg!" equ "1" (
+		set "batpdjg= "
+	) else (
+		set "batpdjg="
+	)
+	(
+	echo;%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
+%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
+%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
+%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
+%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
+%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
+%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
+%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
+%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a!batpdjg!
+	echo;cls
+	)>"%temp%\1.tmp"
+	copy /b /y "%temp%\1.tmp"+"%%b" "%%~dpb加密_%%~nb%%~xb">nul
+	del /f /q "%temp%\1.tmp"
+)
+cls
+set /p =加密完成<nul
+call :out 2
+endlocal
+goto 76
+:76.2
+title bat文件解密!system!
+cls
+set jiemi=
+set /p "jiemi=拖动需要解密的文件到此窗口(e=返回): "
+if /i "!jiemi!" equ "e" (
+	endlocal
+	goto 76
+)
+call :ljjc jiemi
+if "!errorlevel!" equ "0" (
+	set /p =无效路径<nul
+	call :out 2
+	goto 76.2
+) 
+cls
+for /f "delims=" %%a in ("!jiemi!") do (
+	echo;>"%temp%\1.tmp"
+	copy /b /y "%temp%\1.tmp"+"%%a" "%%~dpa解密_%%~na%%~xa">nul
+	del /f /q "%temp%\1.tmp"
+)
+cls
+set /p =解密完成<nul
+call :out 2
+endlocal
+goto 76
+:76.3
+cls
+title bat文件加密(方法2)!system!
+set jiami=
+set /p "jiami=拖动需要加密的文件到此窗口(e=返回): "
+if /i "!jiami!" equ "e" (
+	endlocal
+	goto 76
+)
+call :ljjc jiami
+if "!errorlevel!" equ "0" (
+	set /p =无效路径<nul
+	call :out 2
+	goto 76.3
+)
+cls
+for /f "delims=" %%a in ("!jiami!") do (
+	set /p =//4NCg==<nul>"%temp%\1.tmp"
+	certutil -decode -f "%temp%\1.tmp" "%temp%\2.tmp">nul
+	copy /b /y "%temp%\2.tmp"+"%%a" "%%~dpa加密_%%~na%%~xa">nul
+	del /f /q "%temp%\1.tmp";"%temp%\2.tmp"
+)
+cls
+set /p =加密完成<nul
+call :out 2
+endlocal
+goto 76
+:77
+setlocal
+title vbs计算器!system!
+set vbsbds=
+set vbsjieguo=
+cls
+set /p "vbsbds=请输入表达式(e=返回菜单): "
+if not defined vbsbds (endlocal&goto 77)
+if /i "!vbsbds!" equ "e" (endlocal&goto memuv2)
+echo;msgbox !vbsbds!,"65","VBS计算器">"%temp%\temp.vbs"
+"%temp%\temp.vbs"
+del /f /q "%temp%\temp.vbs"
+endlocal
+goto 77
+:78
+setlocal
+title 执行w32tm /resync对时!system!
+cls
+sc query w32time|find "RUNNING">nul 2>nul
+if "!errorlevel!" neq "0" (
+    echo;w32time服务未运行，正在启动...
+    sc start w32time
+    if "!errorlevel!" equ "0" (
+        echo;w32time服务已成功启动
+    ) else (
+        echo;无法启动w32time服务
+    )
+) else (
+    echo;w32time服务正在运行
+)
+set attempts=0
+for /f "tokens=2 delims=: " %%a in ('"w32tm /query /configuration|findstr /i "NtpServer: ""') do (
+	echo;当前在使用的NTP服务器:%%a
+)
+:78.1
+w32tm /resync
+if "!errorlevel!" neq "0" (
+	set /a "attempts+=1"
+	if !attempts! lss 3 (
+		echo;第 !attempts! 次尝试同步时间失败
+		echo;
+		goto 78.1
+	) else (
+		echo;第 !attempts! 次尝试同步时间失败，已达到最大重试次数。
+	)
+) else (
+	echo 时间同步成功。
+)
+%hx%
+%pause%
+endlocal
+goto memuv2
 :hash
 setlocal
 for /f "delims=" %%a in ("%1") do (set "url=%%~fa")
@@ -5031,7 +5352,8 @@ set "a74=逐一复制文件并压缩"
 set "a75=打开证书管理单元"
 set "a76=BAT文本混淆"
 set "a77=VBS计算器"
-set maxa=77
+set "a78=执行w32tm /resync对时"
+set maxa=78
 )
 goto :eof
 :colortxt
@@ -5091,6 +5413,7 @@ set "qrgb=!qrgb:.=;!"
 set /p =!cswz!48;2;!brgb!;38;2;!qrgb!m!zt!!cswz!!ysbak!<nul
 goto :eof
 :su
+rem 使用goto调用:su
 (
 echo;IyBVQUMgQnlwYXNzIHBvYyB1c2luZyBTZW5kS2V5cw0KIyBWZXJzaW9uIDEuMA0K
 echo;IyBBdXRob3I6IE9kZHZhciBNb2UNCiMgRnVuY3Rpb25zIGJvcnJvd2VkIGZyb206
@@ -5166,12 +5489,14 @@ echo;LW5lIDApDQoNCg0KI0FjdGl2YXRlIHdpbmRvdw0KU2V0LVdpbmRvd0FjdGl2ZSBj
 echo;bXN0cA0KDQojU2VuZCB0aGUgRW50ZXIga2V5DQpbU3lzdGVtLldpbmRvd3MuRm9y
 echo;bXMuU2VuZEtleXNdOjpTZW5kV2FpdCgie0VOVEVSfSIpDQp9
 )>%temp%\2.base
+rem su.txt的内容不支持中文路径
 set /p =%comspec% /c %0 -ks<nul>%temp%\su.bat
 set /p =%temp%\su.bat<nul>%temp%\su.txt
 certutil -decode -f "%temp%\1.base" %temp%\1.txt>nul
 certutil -decode -f "%temp%\2.base" %temp%\2.txt>nul
 copy /b "%temp%\1.txt"+"%temp%\su.txt"+"%temp%\2.txt" "%temp%\bypassps1">nul
 powershell -mta -nologo -noprofile -command "$command=[IO.File]::ReadAllText('"%temp%\bypassps1"'); iex ($command)"
+rem 延时删除文件确保能被上一条指令读取
 call :out 1
 del /f /q %temp%\su.txt;^
 		%temp%\1.base;^
@@ -5446,303 +5771,6 @@ for /l %%a in (!h1!,1,!cd!) do (
 )
 set /p =!cswz!!h2!;!l!H+<nul
 goto :eof
-:73
-setlocal
-:chrome
-@echo off&setlocal enabledelayedexpansion&chcp 936>nul
-set "域名重定向=!temp!\域名重定向.txt"
-set "域名重解析=!temp!\域名重解析.txt"
-set "强制使用quic=!temp!\强制使用quic.txt"
-if not exist "!域名重定向!" (
-	(
-		echo #wikipedia
-		echo *.wikipedia.org=wikidata.org
-		echo *.wikiquote.org=wikidata.org
-		echo *.wikinews.org=wikidata.org
-		echo *.wikibooks.org=wikidata.org
-		echo *.wiktionary.org=wikidata.org
-		echo *.wikisource.org=wikidata.org
-		echo *.wikivoyage.org=wikidata.org
-		echo *.wikiversity.org=wikidata.org
-		echo;
-		echo #pixiv
-		echo pixiv.net=pixiv.me
-		echo *.pixiv.net=pixiv.me
-		echo *.pximg.net=pximg.net
-		echo;
-		echo #protonmail
-		echo proton.me=pr.tn
-		echo account.proton.me=a.pr.tn
-		echo account-api.proton.me=b.pr.tn
-		echo mail.proton.me=c.pr.tn
-		echo;
-		echo #youtube
-		echo *.youtube.com=google-analytics.com
-		echo *.ytimg.com=googleadservices.com
-		echo *.ggpht.com=static.doubleclick.net
-		echo youtube.com=static.doubleclick.net
-		echo youtu.be=mt7.gstatic.com
-		echo;
-		echo #google
-		echo *.google.com=googleadservices.com
-		echo *.google.com.hk=googleadservices.com
-		echo *.google.com.tw=googleadservices.com
-		echo *.googleapis.com=static.doubleclick.net
-		echo *.googleusercontent.com=static.doubleclick.net
-		echo *.gstatic.com=alt6.gstatic.com
-		echo *.cloudfunctions.net=alt6.gstatic.com
-		echo *.blogspot.com=google-analytics.com
-		echo;
-		echo #github
-		echo github.com=octocaptcha.com
-		echo *.github.com=octocaptcha.com
-		echo raw.githubusercontent.com=avatars.githubusercontent.com
-		echo *.github.io=octocaptcha.com
-		echo github.io=octocaptcha.com
-		echo;
-		echo #steam
-		echo login.steampowered.com=login.steampowered.com
-		echo help.steampowered.com=help.steampowered.com
-		echo *.steampowered.com=steamuserimages-a.akamaihd.net
-		echo steamcommunity.com=underlords.com
-		echo *.steamcommunity.com=underlords.com
-		echo;
-		echo #onedrive
-		echo onedrive.live.com=od0.live.com
-		echo skyapi.onedrive.live.com=storage.live.com
-		echo;
-		echo #nyaa
-		echo nyaa.si=nyaa.ddos-guard.net
-		echo;
-		echo #vercel.app
-		echo vercel.app=no-sni.vercel-infra.com
-		echo *.vercel.app=no-sni.vercel-infra.com
-		echo;
-		echo #lain.la
-		echo *.lain.la=lain.la
-		echo;
-		echo pkuanvil.com=gcore.com
-		echo *.pkuanvil.com=gcore.com
-		echo;
-		echo #quora
-		echo quora.com=qr.ae
-		echo *.quora.com=qr.ae
-	)>"!域名重定向!"
-)
-if not exist "!域名重解析!" (
-	(
-		echo #wikipedia
-		echo #wikidata.org=[2620:0:863:ed1a::1]
-		echo wikidata.org=208.80.153.224
-		echo;
-		echo #protonmail
-		echo pr.tn=proton.me
-		echo a.pr.tn=account.proton.me
-		echo b.pr.tn=account-api.proton.me
-		echo c.pr.tn=mail.proton.me
-		echo;
-		echo #youtube google
-		echo #mt7.gstatic.com=[2404:6800:4008:c07::5a]
-		echo mt7.gstatic.com=39.106.25.252
-		echo #alt6.gstatic.com=[2404:6800:4008:c07::5a]
-		echo alt6.gstatic.com=39.106.25.252
-		echo #google-analytics.com=[2404:6800:4008:c07::5a]
-		echo google-analytics.com=39.106.25.252
-		echo #googleadservices.com=[2404:6800:4008:c07::5a]
-		echo googleadservices.com=39.106.25.252
-		echo #static.doubleclick.net=[2404:6800:4008:c07::5a]
-		echo static.doubleclick.net=39.106.25.252
-		echo;
-		echo #nyaa
-		echo nyaa.ddos-guard.net=nyaa.si
-	)>"!域名重解析!"
-)
-if not exist "!强制使用quic!" (
-	(
-		echo #不支持通配符
-		echo www.google.com.hk
-		echo www.google.com.tw
-		echo www.google.com
-		echo www.quora.com
-		echo quora.com
-		echo qsbr.cf2.quoracdn.net
-		echo v2ex.com
-		echo cdn.v2ex.com
-		echo www.v2ex.com
-		echo challenges.cloudflare.com
-		echo www.openstreetmap.org
-		echo tile.openstreetmap.org
-		echo ipfs.io
-		echo cloudflare-ipfs.com
-	)>"!强制使用quic!"
-)
-cd /d "%~dp0"
-rem 忽略证书错误 0=禁用 1=启用
-set "pass_cert_error=0"
-rem 生成chrome-command-line文件 0=禁用 1=启用
-set "chrome-command-line=0"
-rem 设置支持chrome命令行的浏览器的路径
-set "chromium="C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe""
-if "!pass_cert_error!" equ "1" (
-	set "ignore-certificate-errors=--ignore-certificate-errors"
-)
-if exist "chrome.exe" (
-	set chrome=chrome.exe
-	goto startchrome
-) else (
-	for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe" /v Path 2>nul"') do (
-		set "chrome=%%a"
-	)
-	for /f "delims=" %%a in ("!chrome!") do (
-		set "chrome=%%~fa"
-	)
-	if exist "!chrome!\Chrome.exe" (
-		set "chrome=!chrome!\Chrome.exe"
-		goto startchrome
-	) else (
-		for /f "delims=" %%a in ("!chromium!") do (
-			set "chrome=%%~fa"
-		)
-		if exist "!chrome!" (
-			goto startchrome
-		) else (
-			if "%1" neq "-chrome" (
-				set /p =没有找到浏览器路径<nul
-				call :out 2
-				endlocal
-				goto memuv2
-			) else (
-				msg %username% 没有找到浏览器路径
-				exit 0
-			)
-		)
-	)
-)
-:startchrome
-for /f "delims=" %%a in ("!chrome!") do (
-	tasklist /fi "IMAGENAME eq %%~nxa"|findstr /i /c:"%%~nxa">nul
-	if "!errorlevel!" equ "0" (
-		cls
-		echo;%%~nxa正在运行,请关闭浏览器后重试.
-		set /p =按任意键退出<nul&pause>nul
-		if "%1" neq "-chrome" (
-			endlocal
-			goto memuv2
-		) else (
-			exit 0
-		)
-	)
-)
-if exist "!域名重定向!" (
-	for /f "eol=# tokens=1,2 delims== " %%a in (!域名重定向!) do (
-		set "host-rules=!host-rules!MAP %%a %%b, "
-	)
-	set "host-rules=--host-rules="!host-rules!""
-)
-if exist "!域名重解析!" (
-	for /f "eol=# tokens=1,2 delims== " %%a in (!域名重解析!) do (
-		set "host-resolver-rules=!host-resolver-rules!MAP %%a %%b, "
-	)
-	set "host-resolver-rules=--host-resolver-rules="!host-resolver-rules!""
-)
-if exist "!强制使用quic!" (
-	for /f "eol=# tokens=1,2 delims=:" %%a in (!强制使用quic!) do (
-		if "%%b" equ "" (
-			set "origin-to-force-quic-on=!origin-to-force-quic-on!%%a:443, "
-		) else (
-			set "origin-to-force-quic-on=!origin-to-force-quic-on!%%a:%%b, "
-		)
-	)
-	set "origin-to-force-quic-on=--enable-quic --origin-to-force-quic-on="!origin-to-force-quic-on!""
-)
-if "!chrome-command-line!" equ "1" (
-	set /p =chrome !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors!<nul>chrome-command-line
-)
-start /max "" "!chrome!" --profile-directory=Default --test-type !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors! %2
-if "%1" neq "-chrome" (endlocal&goto memuv2) else (exit 0)
-:74
-setlocal
-title 逐一复制文件并压缩!system!
-cls
-rem 设置源目录和目标目录
-set source_dir=
-set target_dir=
-set /p "source_dir=输入源目录: "
-call :ljjc source_dir dir
-if "!errorlevel!" equ "0" (goto 74.3)
-set /p "target_dir=输入目标目录: "
-call :ljjc target_dir dir
-if "!errorlevel!" equ "0" (goto 74.3)
-rem 创建目标目录结构
-for /r "%source_dir%" %%f in (*) do (
-	cls
-    set "relative_path=%%~pf"
-    set "relative_path=!relative_path:%source_dir%=!"
-    set "target_path=!target_dir!!relative_path!"
-    rem 创建目标子目录（如果不存在）
-    if not exist "!target_path!" (mkdir "!target_path!")
-    rem 拷贝文件到目标目录
-	echo;"%%f" → "!target_path!%%~nxf"
-    copy /y /z "%%f" "!target_path!%%~nxf"
-    rem 压缩文件
-    call :74_2 "!target_path!%%~nxf" %%~zf %%~xf
-)
-%hx%
-%pause%
-endlocal
-goto memuv2
-:74_2
-if "%3" equ ".ogg" (goto :eof)
-if "%3" equ ".mpg" (goto :eof)
-if "%3" equ ".gif" (goto :eof)
-if "%3" equ ".zip" (goto :eof)
-if "%3" equ ".rar" (goto :eof)
-if "%3" equ ".7z" (goto :eof)
-if "%3" equ ".png" (goto :eof)
-if "%3" equ ".jpg" (goto :eof)
-if "%3" equ ".jpeg" (goto :eof)
-if "%3" equ ".wmf" (goto :eof)
-if "%3" equ ".wmv" (goto :eof)
-if "%3" equ ".bik" (goto :eof)
-if "%3" equ ".bk2" (goto :eof)
-if "%3" equ ".mp3" (goto :eof)
-if "%3" equ ".acc" (goto :eof)
-if "%3" equ ".m4a" (goto :eof)
-if "%3" equ ".flac" (goto :eof)
-if "%3" equ ".ape" (goto :eof)
-if "%3" equ ".mp4" (goto :eof)
-if "%3" equ ".avi" (goto :eof)
-if "%3" equ ".flv" (goto :eof)
-if "%3" equ ".f4v" (goto :eof)
-if "%3" equ ".mkv" (goto :eof)
-if "%3" equ ".3gp" (goto :eof)
-if "%3" equ ".cab" (goto :eof)
-if "%3" equ ".pdf" (goto :eof)
-if %2 lss 4096 goto :eof
-compact /c /exe:lzx %1
-goto :eof
-:74.3
-set /p =无效输入<nul
-call :out 2
-endlocal
-goto 74
-:75
-setlocal
-cls
-title 打开证书管理单元!system!
-%hx%
-echo;[1]certmgr	[证书 - 当前用户]
-echo;[2]certlm	[证书 - 本地计算机]
-echo;[0]返回菜单
-%hx%
-set cho=120
-!sel!
-if "!shuru!" equ "1" (start certmgr.msc&goto memuv2)
-if "!shuru!" equ "2" (start certlm.msc&goto memuv2)
-if "!shuru!" equ "3" (endlocal&goto memuv2)
-if "!shuru!" equ "0" (endlocal&goto memuv2)
-endlocal
-goto 75
 :checkvar
 setlocal
 if "%1" equ "" (
@@ -5756,54 +5784,24 @@ if "%2" equ "-num" (goto checkvar_-num)
 if "%2" equ "-num." (goto checkvar_-num.)
 if "%2" equ "az" (goto checkvar_az)
 if "%2" equ "aznum" (goto checkvar_aznum)
+if "%2" equ "year" (goto checkvar_year)
 goto :eof
 :checkvar_num
 if defined %1 (
 	for /f "delims=0123456789" %%a in ("!%1!") do (
-		if "%3" neq "" (
-			endlocal&set "%3=0"
-			goto :eof
-		) else (
-			echo;0
-			goto :eof
-		)
+		goto checkvar_exit0
 	)
 ) else (
-	if "%3" neq "" (
-		endlocal&set "%3=0"
-		goto :eof
-	) else (
-		echo;0
-		goto :eof
-	)
+	goto checkvar_exit0
 )
-if "%3" neq "" (
-	endlocal&set "%3=1"
-	goto :eof
-) else (
-	echo;1
-	goto :eof
-)
-goto :eof
+goto checkvar_exit1
 :checkvar_num.
 if defined %1 (
 	for /f "delims=.0123456789" %%a in ("!%1!") do (
-		if "%3" neq "" (
-			endlocal&set "%3=0"
-			goto :eof
-		) else (
-			echo;0
-			goto :eof
-		)
+		goto checkvar_exit0
 	)
 ) else (
-	if "%3" neq "" (
-		endlocal&set "%3=0"
-		goto :eof
-	) else (
-		echo;0
-		goto :eof
-	)
+	goto checkvar_exit0
 )
 for /f "tokens=1,2 delims=." %%a in ("!%1!") do (
 	if "%%a" neq "" (
@@ -5814,70 +5812,28 @@ for /f "tokens=1,2 delims=." %%a in ("!%1!") do (
 	if "%%b" neq "" (
 		set "val2=%%b"
 	) else (
-		if "%3" neq "" (
-			endlocal&set "%3=0"
-			goto :eof
-		) else (
-			echo;0
-			goto :eof
-		)
+		goto checkvar_exit0
 	)
 )
 if "!val1!!val2!" neq "" (
-	if "%3" neq "" (
-		endlocal&set "%3=1"
-		goto :eof
-	) else (
-		echo;1
-		goto :eof
-	)
+	goto checkvar_exit1
 ) else (
-	if "%3" neq "" (
-		endlocal&set "%3=0"
-		goto :eof
-	) else (
-		echo;0
-		goto :eof
-	)
+	goto checkvar_exit0
 )
 goto :eof
 :checkvar_-num
 if defined %1 (
 	for /f "delims=0123456789-" %%a in ("!%1!") do (
-		if "%3" neq "" (
-			endlocal&set "%3=0"
-			goto :eof
-		) else (
-			echo;0
-			goto :eof
-		)
+		goto checkvar_exit0
 	)
 ) else (
-	if "%3" neq "" (
-		endlocal&set "%3=0"
-		goto :eof
-	) else (
-		echo;0
-		goto :eof
-	)
+	goto checkvar_exit0
 )
 for /f "tokens=1 delims=-" %%a in ("!%1!") do (
 	if "!%1:~0,1!" equ "-" (
-		if "%3" neq "" (
-			endlocal&set "%3=1"
-			goto :eof
-		) else (
-			echo;1
-			goto :eof
-		)
+		goto checkvar_exit1
 	) else (
-		if "%3" neq "" (
-			endlocal&set "%3=0"
-			goto :eof
-		) else (
-			echo;0
-			goto :eof
-		)
+		goto checkvar_exit0
 	)
 )
 goto :eof
@@ -5889,63 +5845,104 @@ if defined val1 (
 	if "!jg!" equ "1" (
 		call :checkvar val2 -num jg
 		if "!jg!" equ "1" (
-			if "%3" neq "" (
-				endlocal&set "%3=1"
-				goto :eof
-			) else (
-				echo;1
-				goto :eof
-			)
+			goto checkvar_exit1
 		)
 	)
 )
-if "%3" neq "" (
-	endlocal&set "%3=0"
-	goto :eof
-) else (
-	echo;0
-	goto :eof
-)
-goto :eof
+goto checkvar_exit0
 :checkvar_az
 if defined %1 (
 	for /f "delims=aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ" %%a in ("!%1!") do (
-		if "%3" neq "" (
-			endlocal&set "%3=0"
-			goto :eof
-		) else (
-			echo;0
-			goto :eof
-		)
+		goto checkvar_exit0
 	)
-	if "%3" neq "" (
-		endlocal&set "%3=1"
-		goto :eof
-	) else (
-		echo;1
-		goto :eof
-	)
+	goto checkvar_exit1
 )
 goto :eof
 :checkvar_aznum
 if defined %1 (
 	for /f "delims=0123456789aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ" %%a in ("!%1!") do (
-		if "%3" neq "" (
-			endlocal&set "%3=0"
-			goto :eof
-		) else (
-			echo;0
-			goto :eof
+		goto checkvar_exit0
+	)
+	goto checkvar_exit1
+)
+goto checkvar_exit0
+:checkvar_year
+if defined %1 (
+	for /f "delims=0123456789" %%a in ("!%1!") do (
+		goto checkvar_exit0
+	)
+	call :strlen %1 jg
+	if "!jg!" neq "8" (
+		goto checkvar_exit0
+	)
+	set "year=!%1:~0,4!"
+	set "month=!%1:~4,2!"
+	set "day=!%1:~6,2!"
+	if 1!month! lss 101 (
+		goto checkvar_exit0
+	)
+	if 1!month! gtr 112 (
+		goto checkvar_exit0
+	)
+	if 1!day! lss 101 (
+		goto checkvar_exit0
+	)
+	if 1!day! gtr 131 (
+		goto checkvar_exit0
+	)
+	if "!month!" equ "04" (
+		if 1!day! gtr 130 (
+			goto checkvar_exit0
 		)
 	)
-	if "%3" neq "" (
-		endlocal&set "%3=1"
-		goto :eof
-	) else (
-		echo;1
-		goto :eof
+	if "!month!" equ "06" (
+		if 1!day! gtr 130 (
+			goto checkvar_exit0
+		)
 	)
+	if "!month!" equ "09" (
+		if 1!day! gtr 130 (
+			goto checkvar_exit0
+		)
+	)
+	if "!month!" equ "11" (
+		if 1!day! gtr 130 (
+			goto checkvar_exit0
+		)
+	)
+	if "!month!" equ "02" (
+		set /a "leap=year%%4"
+		set /a "leap100=year%%100"
+		set /a "leap400=year%%400"
+		if "!leap!" equ "0" (
+			if "!leap100!" neq "0" (
+				if 1!day! gtr 129 (
+					goto checkvar_exit0
+				)
+			)
+		) else (
+			if 1!day! gtr 128 (
+				goto checkvar_exit0
+			)
+		)
+		if "!leap100!" equ "0" (
+			if "!leap400!" neq "0" (
+				if 1!day! gtr 128 (
+					goto checkvar_exit0
+				)
+			)
+		)
+		if "!leap400!" equ "0" (
+			if 1!day! gtr 129 (
+				goto checkvar_exit0
+			)
+		)
+	)
+	goto checkvar_exit1
+) else (
+	goto checkvar_exit0
 )
+:checkvar_exit0
 if "%3" neq "" (
 	endlocal&set "%3=0"
 	goto :eof
@@ -5953,7 +5950,14 @@ if "%3" neq "" (
 	echo;0
 	goto :eof
 )
-goto :eof
+:checkvar_exit1
+if "%3" neq "" (
+	endlocal&set "%3=1"
+	goto :eof
+) else (
+	echo;1
+	goto :eof
+)
 :sqrt
 setlocal
 set s=%1
@@ -6028,7 +6032,7 @@ if "!s!" equ "15" (set "s=F"&goto 10to16_3)
 :10to16_3
 set "jg=!s!!jg!"
 set /a "ran/=16"
-if !ran! neq 0 (goto 10to16_1)
+if "!ran!" neq "0" (goto 10to16_1)
 if "%2" neq "" (
 	endlocal&set "%2=%jg%"
 ) else (
@@ -6042,7 +6046,7 @@ set "num=%1"
 set /a "e=num%%2"
 set /a "num/=2"
 set "num1=!e!!num1!"
-if !num! neq 0 (goto 10to2_1)
+if "!num!" neq "0" (goto 10to2_1)
 if "%2" neq "" (
 	endlocal&set "%2=%num1%"
 ) else (
@@ -6056,7 +6060,7 @@ set "num=%1"
 set /a "b=num%%8"
 set /a "num/=8"
 set "num1=!b!!num1!"
-if !num! neq 0 (goto 10to8_2)
+if "!num!" neq "0" (goto 10to8_2)
 if "%2" neq "" (
 	endlocal&set "%2=%num1%"
 ) else (
