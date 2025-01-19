@@ -4280,7 +4280,7 @@ set tr=
 set /p "tr=输入下载进程数(默认16): "
 if not defined tr (set tr=16)
 call :checkvar tr num jg
-if "!jg!" neq "0" (
+if "!jg!" equ "0" (
 	set /p =只能输入正整数!<nul
 	call :out 2
 	goto 72.1
