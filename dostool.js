@@ -4953,7 +4953,7 @@ if "!errorlevel!" neq "0" (
 	echo;w32time服务正在运行
 )
 set attempts=0
-for /f "tokens=2 delims=: " %%a in ('"w32tm /query /configuration|findstr /i "NtpServer: ""') do (
+for /f "tokens=2 delims=:," %%a in ('"w32tm /query /configuration|findstr /i "NtpServer: ""') do (
 	echo;当前在使用的NTP服务器:%%a
 )
 :78.1
