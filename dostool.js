@@ -49,7 +49,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250101
-set versize=173227
+set versize=171272
 set fy1=___
 set xz0=0
 set "pause=set /p =按任意键返回菜单<nul&pause>nul"
@@ -130,8 +130,8 @@ if "!color!" equ "0" (
 		set ysbak=44;97m
 	) else (
 		if "!color!" equ "2" (
-		set color=5
-		set ysbak=45;97m
+			set color=5
+			set ysbak=45;97m
 		) else (
 			if "!color!" equ "3" (
 				set ysbak=46;97m
@@ -160,9 +160,9 @@ set /a "end=start+8"
 set /a "memuys=start/9+1"
 rem echo;初始化用时: !jg!
 if "!winv!" equ "0" (
-	echo;                                    菜单 - 第!cswz!!ysbak:~0,3!92m!memuys!!cswz!!ysbak!页
+	echo;				菜单 - 第!cswz!!ysbak:~0,3!92m!memuys!!cswz!!ysbak!页
 ) else (
-	echo;　　　　　　　　　　　　　　　　　　菜单 - 第!memuys!页
+	echo;				菜单 - 第!memuys!页
 )
 echo;现在是!date:~0,4!年!date:~5,2!月!date:~8,2!日 !xingqi!!time:~0,8!
 call :memuv2.2
@@ -176,26 +176,26 @@ for /l %%a in (!start!,1,!end!) do (
 )
 set /a "pd=end+1"
 if not defined a!pd! (
-    if "!winv!" equ "0" (
-        echo;[0]退出                                             !cswz!42;97m!nx2!!cswz!!ysbak!
-    ) else (
-        echo;[0]退出                                             !nx2!
-    )
+	if "!winv!" equ "0" (
+		echo;[0]退出								!cswz!42;97m!nx2!!cswz!!ysbak!
+	) else (
+		echo;[0]退出								!nx2!
+	)
 ) else (
 	set /a "pd=start-1"
-    if !pd! lss 1 (
-        if "!winv!" equ "0" (
-            echo;[0]退出                                                         !cswz!42;97m!nx1!!cswz!!ysbak!
-        ) else (
-            echo;[0]退出                                             !nx1!
-        )
-    ) else (
-        if "!winv!" equ "0" (
-            echo;[0]退出                                             !cswz!42;97m!nx1!   !nx2!!cswz!!ysbak!
-        ) else (
-            echo;[0]退出                                             !nx1!　　　!nx2!
-        )
-    )
+	if !pd! lss 1 (
+		if "!winv!" equ "0" (
+			echo;[0]退出								!cswz!42;97m!nx1!!cswz!!ysbak!
+		) else (
+			echo;[0]退出								!nx1!
+		)
+	) else (
+		if "!winv!" equ "0" (
+			echo;[0]退出						!cswz!42;97m!nx1!	!nx2!!cswz!!ysbak!
+		) else (
+			echo;[0]退出						!nx1!	!nx2!
+		)
+	)
 )
 call :memuv2.2
 set caidan=
@@ -272,15 +272,15 @@ goto memuv2
 :memuv2.2
 if "!winv!" equ "0" (
 	if not defined fyacs (
-    	set fya=
-    	for /l %%a in (1,1,26) do (
-    	    set "fya=!fya!!fy!"
-    	)
+		set fya=
+		for /l %%a in (1,1,26) do (
+			set "fya=!fya!!fy!"
+		)
 		echo;!fya!
 		set /a "fyacs+=1"
 	) else (
-    	echo;!fya!
-    	set fyacs=
+		echo;!fya!
+		set fyacs=
 	)
 ) else (
 	%hx%
@@ -1172,16 +1172,16 @@ title 循环显示CPU占用率与网络速度!system!
 cls
 echo;正在获取网络信息...
 for /f "tokens=2 delims==" %%a in ('Wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get name /value') do (
-    set "netcard=%%a"
+	set "netcard=%%a"
 	set "netcard=!netcard:~0,-1!"
 )
 for /f "tokens=2 delims==" %%a in ('wmic cpu get numberOflogicalprocessors /value') do (
-    set "corenum=%%a"
+	set "corenum=%%a"
 	set "corenum=!corenum:~0,-1!"
-    set /a "tghs=corenum*2+4+2"
+	set /a "tghs=corenum*2+4+2"
 )
 for /f "tokens=2 delims==" %%a in ('wmic cpu get name /value') do (
-    set "cpu=%%a"
+	set "cpu=%%a"
 	set "cpu=!cpu:~0,-1!"
 )
 cls
@@ -1189,16 +1189,16 @@ cls
 (
 set xh=
 for /f "tokens=2 delims==" %%a in ('Wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get BytesReceivedPersec^,BytesSentPersec /value') do (
-    set /a "xh+=1"
-    if "!xh!" equ "1" (
-        set "downspeed=%%a"
+	set /a "xh+=1"
+	if "!xh!" equ "1" (
+		set "downspeed=%%a"
 		set "downspeed=!downspeed:~0,-1!"
 	)
-    if "!xh!" equ "2" (
-        set "upspeed=%%a"
+	if "!xh!" equ "2" (
+		set "upspeed=%%a"
 		set "upspeed=!upspeed:~0,-1!"
-        for /f "skip=%tghs% tokens=2 delims==" %%a in ('Wmic Path Win32_PerfFormattedData_PerfOS_Processor Get PercentIdleTime /value') do (
-            set "bfb=%%a"
+		for /f "skip=%tghs% tokens=2 delims==" %%a in ('Wmic Path Win32_PerfFormattedData_PerfOS_Processor Get PercentIdleTime /value') do (
+			set "bfb=%%a"
 			set "bfb=!bfb:~0,-1!"
 			set /a "lyl=100-bfb"
 		)
@@ -1212,17 +1212,17 @@ echo;上传速度:	!upspeed!/s	下载速度:	!downspeed!/s
 echo;
 echo;!cpu!
 echo;
-set /p =CPU总体利用率:  <nul
+set /p =CPU总体利用率: <nul
 if !lyl! leq 25 (
-    call :rgb 12.12.12 0.255.0 !lyl!
+	call :rgb 12.12.12 0.255.0 !lyl!
 ) else (
-    if !lyl! leq 50 (
-        call :rgb 12.12.12 255.255.0 !lyl!
+	if !lyl! leq 50 (
+		call :rgb 12.12.12 255.255.0 !lyl!
 	) else (
-        if !lyl! leq 75 (
-            call :rgb 12.12.12 255.127.0 !lyl!
+		if !lyl! leq 75 (
+			call :rgb 12.12.12 255.127.0 !lyl!
 		) else (
-            call :rgb 12.12.12 255.0.0 !lyl!
+			call :rgb 12.12.12 255.0.0 !lyl!
 		)
 	)
 )
@@ -1543,7 +1543,7 @@ echo;检测Everything的安装路径与运行状态...
 for /f "skip=2 tokens=3 delims= " %%a in ('reg query "HKEY_LOCAL_MACHINE\SOFTWARE\voidtools\Everything" /v InstallLocation') do (
 	set "EverythingInstallPath=%%a"
 )
-echo;正在搜索空文件夹...     文件越多搜索时间越长
+echo;正在搜索空文件夹...	文件越多搜索时间越长
 if exist "!EverythingInstallPath!\Everything.exe" (
 	tasklist /fi "status eq running" /fi "username eq "%username%"" /fi "imagename eq everything.exe"|find /i "Everything.exe"&&(
 		if exist "!EverythingInstallPath!\es.exe" (goto loop1)
@@ -1612,14 +1612,14 @@ setlocal
 title 硬件检测!system!
 cls
 for /f "tokens=2 delims==" %%a in ('Wmic OS Get LastBootUpTime /value') do (
-    set "systemstarttime=%%a"
-    echo;系统启动时间:	!systemstarttime:~0,4!年!systemstarttime:~4,2!月!systemstarttime:~6,2!日 !systemstarttime:~8,2!:!systemstarttime:~10,2!:!systemstarttime:~12,2!
-    echo;
+	set "systemstarttime=%%a"
+	echo;系统启动时间:	!systemstarttime:~0,4!年!systemstarttime:~4,2!月!systemstarttime:~6,2!日 !systemstarttime:~8,2!:!systemstarttime:~10,2!:!systemstarttime:~12,2!
+	echo;
 )
 for /f "tokens=2 delims==" %%a in ('Wmic OS Get InstallDate /value') do (
-    set "systeminstalltime=%%a"
-    echo;系统安装日期:	!systeminstalltime:~0,4!年!systeminstalltime:~4,2!月!systeminstalltime:~6,2!日 !systeminstalltime:~8,2!:!systeminstalltime:~10,2!:!systeminstalltime:~12,2!
-    echo;
+	set "systeminstalltime=%%a"
+	echo;系统安装日期:	!systeminstalltime:~0,4!年!systeminstalltime:~4,2!月!systeminstalltime:~6,2!日 !systeminstalltime:~8,2!:!systeminstalltime:~10,2!:!systeminstalltime:~12,2!
+	echo;
 )
 set cs=
 for /f "tokens=2 delims==" %%a in ('wmic cpu get name /value') do (
@@ -1659,27 +1659,27 @@ for /f "tokens=2 delims==" %%a in ('"wmic cpu get processorid /value 2>nul"') do
 echo;
 set ch=
 for /f "tokens=2 delims==" %%a in ('wmic path win32_cachememory get maxcachesize /value') do (
-    set /a "ch+=1"
+	set /a "ch+=1"
 	set dw=0
-    if "!ch!" equ "1" (
+	if "!ch!" equ "1" (
 		call :xdwjs %%a kb dw
 		echo;一级缓存:	!dw!
 		echo;
 	) else (
-        if "!ch!" equ "2" (
-            call :xdwjs %%a kb dw
+		if "!ch!" equ "2" (
+			call :xdwjs %%a kb dw
 			echo;二级缓存:	!dw!
 			echo;
 		) else (
-            if "!ch!" equ "3" (
-	    		call :xdwjs %%a kb dw
-	    		echo;三级缓存:	!dw!
-	    		echo;
+			if "!ch!" equ "3" (
+				call :xdwjs %%a kb dw
+				echo;三级缓存:	!dw!
+				echo;
 			) else (
-                if "!ch!" equ "4" (
-                    call :xdwjs %%a kb dw
-	    			echo;四级缓存:	!dw!
-	    			echo;
+				if "!ch!" equ "4" (
+					call :xdwjs %%a kb dw
+					echo;四级缓存:	!dw!
+					echo;
 				)
 			)
 		)
@@ -2083,7 +2083,7 @@ echo;想一个大于0且小于128的数(不包括128)
 pause
 cls
 :d0c
-for /l %%a in (1,2,127) do (set /p =%%a   <nul)
+for /l %%a in (1,2,127) do (set /p =%%a	<nul)
 echo;
 choice /c YN /n /m 请问这里有你想的数吗?(Y=有,N=没有)[1\7]
 if "!errorlevel!" equ "1" set num=1
@@ -2093,7 +2093,7 @@ set b=3
 cls
 :d1c
 for /l %%a in (!a!,1,!b!) do (
-	set /p =%%a   <nul
+	set /p =%%a	<nul
 	set /a "a+=2"
 	set /a "b+=2"
 )
@@ -2107,7 +2107,7 @@ set d=7
 cls
 :d2c
 for /l %%a in (!c!,1,!d!) do (
-	set /p =%%a   <nul
+	set /p =%%a	<nul
 	set /a "c+=2"
 	set /a "d+=2"
 )
@@ -2121,7 +2121,7 @@ set f=15
 cls
 :d3c
 for /l %%a in (!e!,1,!f!) do (
-	set /p =%%a   <nul
+	set /p =%%a	<nul
 	set /a "e+=2"
 	set /a "f+=2"
 )
@@ -2135,7 +2135,7 @@ set h=31
 cls
 :d4c
 for /l %%a in (!g!,1,!h!) do (
-	set /p =%%a   <nul
+	set /p =%%a	<nul
 	set /a "g+=2"
 	set /a "h+=2"
 )
@@ -2149,7 +2149,7 @@ set j=63
 cls
 :d5c
 for /l %%a in (!i!,1,!j!) do (
-	set /p =%%a   <nul
+	set /p =%%a	<nul
 	set /a "i+=2"
 	set /a "j+=2"
 )
@@ -2163,7 +2163,7 @@ set l=127
 cls
 :d6c
 for /l %%a in (!k!,1,!l!) do (
-	set /p =%%a   <nul
+	set /p =%%a	<nul
 	set /a "k+=2"
 	set /a "l+=2"
 )
@@ -2428,7 +2428,7 @@ echo;版权所有 	2012-2025 Administrator 保留所有权利
 %hx%
 echo;本次已运行:		!jg!
 echo;DOS工具箱所在路径:	!weizhi!
-echo;文件大小:		%~z0字节 !daxiao1!
+echo;文件大小:		%~z0 字节 !daxiao1!
 %hx%
 %pause%
 endlocal
@@ -3517,10 +3517,10 @@ if !size! gtr 4096 (
 goto :eof
 #clearcache#
 If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`
-    [Security.Principal.WindowsBuiltInRole] "Administrator"))
+	[Security.Principal.WindowsBuiltInRole] "Administrator"))
 {
-    Write-Warning “You do not have Administrator rights to run this script!`nPlease re-run this script as an Administrator!”
-    Break
+	Write-Warning “You do not have Administrator rights to run this script!`nPlease re-run this script as an Administrator!”
+	Break
 }
 $Source = @"
 using System;
@@ -3529,125 +3529,125 @@ using System.Runtime.InteropServices;
 using System.Security.Principal;
 namespace ClearStandbyList
 {
-    public class Program
-    {
-        const int SE_PRIVILEGE_ENABLED = 2;
-        const string SE_INCREASE_QUOTA_NAME = "SeIncreaseQuotaPrivilege";
-        const string SE_PROFILE_SINGLE_PROCESS_NAME = "SeProfileSingleProcessPrivilege";
-        const int SystemFileCacheInformation = 0x0015;
-        const int SystemMemoryListInformation = 0x0050;
-        const int MemoryPurgeStandbyList = 4;
-        [DllImport("advapi32.dll", SetLastError = true)]
-        internal static extern bool LookupPrivilegeValue(string host, string name, ref long pluid);
-        [DllImport("advapi32.dll", SetLastError = true)]
-        internal static extern bool AdjustTokenPrivileges(IntPtr htok, bool disall, ref TokPriv1Luid newst, int len, IntPtr prev, IntPtr relen);
-        [DllImport("ntdll.dll")]
-        public static extern UInt32 NtSetSystemInformation(int InfoClass, IntPtr Info, int Length);
-        public static bool Is64BitMode()
-        {
-            return Marshal.SizeOf(typeof(IntPtr)) == 8;
-        }
-        static void Main(string[] args)
-        {
-            ClearFileSystemCache(true);
-        }
-        public static void ClearFileSystemCache(bool ClearStandbyCache)
-        {
-            try
-            {
-                if (SetIncreasePrivilege(SE_INCREASE_QUOTA_NAME))
-                {
-                    uint num1;
-                    int SystemInfoLength;
-                    GCHandle gcHandle;
-                    if (!Is64BitMode())
-                    {
-                        SYSTEM_CACHE_INFORMATION cacheInformation = new SYSTEM_CACHE_INFORMATION();
-                        cacheInformation.MinimumWorkingSet = uint.MaxValue;
-                        cacheInformation.MaximumWorkingSet = uint.MaxValue;
-                        SystemInfoLength = Marshal.SizeOf(cacheInformation);
-                        gcHandle = GCHandle.Alloc(cacheInformation, GCHandleType.Pinned);
-                        num1 = NtSetSystemInformation(SystemFileCacheInformation, gcHandle.AddrOfPinnedObject(), SystemInfoLength);
-                        gcHandle.Free();
-                    }
-                    else
-                    {
-                        SYSTEM_CACHE_INFORMATION_64_BIT information64Bit = new SYSTEM_CACHE_INFORMATION_64_BIT();
-                        information64Bit.MinimumWorkingSet = -1L;
-                        information64Bit.MaximumWorkingSet = -1L;
-                        SystemInfoLength = Marshal.SizeOf(information64Bit);
-                        gcHandle = GCHandle.Alloc(information64Bit, GCHandleType.Pinned);
-                        num1 = NtSetSystemInformation(SystemFileCacheInformation, gcHandle.AddrOfPinnedObject(), SystemInfoLength);
-                        gcHandle.Free();
-                    }
-                    if (num1 != 0)
-                        throw new Exception("NtSetSystemInformation(SYSTEMCACHEINFORMATION) error: ", new Win32Exception(Marshal.GetLastWin32Error()));
-                }
-                if (ClearStandbyCache && SetIncreasePrivilege(SE_PROFILE_SINGLE_PROCESS_NAME))
-                {
-                    int SystemInfoLength = Marshal.SizeOf(MemoryPurgeStandbyList);
-                    GCHandle gcHandle = GCHandle.Alloc(MemoryPurgeStandbyList, GCHandleType.Pinned);
-                    uint num2 = NtSetSystemInformation(SystemMemoryListInformation, gcHandle.AddrOfPinnedObject(), SystemInfoLength);
-                    gcHandle.Free();
-                    if (num2 != 0)
-                        throw new Exception("NtSetSystemInformation(SYSTEMMEMORYLISTINFORMATION) error: ", new Win32Exception(Marshal.GetLastWin32Error()));
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.Write(ex.ToString());
-            }
-        }
-        private static bool SetIncreasePrivilege(string privilegeName)
-        {
-            using (WindowsIdentity current = WindowsIdentity.GetCurrent(TokenAccessLevels.Query | TokenAccessLevels.AdjustPrivileges))
-            {
-                TokPriv1Luid newst;
-                newst.Count = 1;
-                newst.Luid = 0L;
-                newst.Attr = SE_PRIVILEGE_ENABLED;
-                if (!LookupPrivilegeValue(null, privilegeName, ref newst.Luid))
-                    throw new Exception("Error in LookupPrivilegeValue: ", new Win32Exception(Marshal.GetLastWin32Error()));
-                int num = AdjustTokenPrivileges(current.Token, false, ref newst, 0, IntPtr.Zero, IntPtr.Zero) ? 1 : 0;
-                if (num == 0)
-                    throw new Exception("Error in AdjustTokenPrivileges: ", new Win32Exception(Marshal.GetLastWin32Error()));
-                return num != 0;
-            }
-        }
-    }
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    struct SYSTEM_CACHE_INFORMATION
-    {
-        public uint CurrentSize;
-        public uint PeakSize;
-        public uint PageFaultCount;
-        public uint MinimumWorkingSet;
-        public uint MaximumWorkingSet;
-        public uint Unused1;
-        public uint Unused2;
-        public uint Unused3;
-        public uint Unused4;
-    }
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    struct SYSTEM_CACHE_INFORMATION_64_BIT
-    {
-        public long CurrentSize;
-        public long PeakSize;
-        public long PageFaultCount;
-        public long MinimumWorkingSet;
-        public long MaximumWorkingSet;
-        public long Unused1;
-        public long Unused2;
-        public long Unused3;
-        public long Unused4;
-    }
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal struct TokPriv1Luid
-    {
-        public int Count;
-        public long Luid;
-        public int Attr;
-    }
+	public class Program
+	{
+		const int SE_PRIVILEGE_ENABLED = 2;
+		const string SE_INCREASE_QUOTA_NAME = "SeIncreaseQuotaPrivilege";
+		const string SE_PROFILE_SINGLE_PROCESS_NAME = "SeProfileSingleProcessPrivilege";
+		const int SystemFileCacheInformation = 0x0015;
+		const int SystemMemoryListInformation = 0x0050;
+		const int MemoryPurgeStandbyList = 4;
+		[DllImport("advapi32.dll", SetLastError = true)]
+		internal static extern bool LookupPrivilegeValue(string host, string name, ref long pluid);
+		[DllImport("advapi32.dll", SetLastError = true)]
+		internal static extern bool AdjustTokenPrivileges(IntPtr htok, bool disall, ref TokPriv1Luid newst, int len, IntPtr prev, IntPtr relen);
+		[DllImport("ntdll.dll")]
+		public static extern UInt32 NtSetSystemInformation(int InfoClass, IntPtr Info, int Length);
+		public static bool Is64BitMode()
+		{
+			return Marshal.SizeOf(typeof(IntPtr)) == 8;
+		}
+		static void Main(string[] args)
+		{
+			ClearFileSystemCache(true);
+		}
+		public static void ClearFileSystemCache(bool ClearStandbyCache)
+		{
+			try
+			{
+				if (SetIncreasePrivilege(SE_INCREASE_QUOTA_NAME))
+				{
+					uint num1;
+					int SystemInfoLength;
+					GCHandle gcHandle;
+					if (!Is64BitMode())
+					{
+						SYSTEM_CACHE_INFORMATION cacheInformation = new SYSTEM_CACHE_INFORMATION();
+						cacheInformation.MinimumWorkingSet = uint.MaxValue;
+						cacheInformation.MaximumWorkingSet = uint.MaxValue;
+						SystemInfoLength = Marshal.SizeOf(cacheInformation);
+						gcHandle = GCHandle.Alloc(cacheInformation, GCHandleType.Pinned);
+						num1 = NtSetSystemInformation(SystemFileCacheInformation, gcHandle.AddrOfPinnedObject(), SystemInfoLength);
+						gcHandle.Free();
+					}
+					else
+					{
+						SYSTEM_CACHE_INFORMATION_64_BIT information64Bit = new SYSTEM_CACHE_INFORMATION_64_BIT();
+						information64Bit.MinimumWorkingSet = -1L;
+						information64Bit.MaximumWorkingSet = -1L;
+						SystemInfoLength = Marshal.SizeOf(information64Bit);
+						gcHandle = GCHandle.Alloc(information64Bit, GCHandleType.Pinned);
+						num1 = NtSetSystemInformation(SystemFileCacheInformation, gcHandle.AddrOfPinnedObject(), SystemInfoLength);
+						gcHandle.Free();
+					}
+					if (num1 != 0)
+						throw new Exception("NtSetSystemInformation(SYSTEMCACHEINFORMATION) error: ", new Win32Exception(Marshal.GetLastWin32Error()));
+				}
+				if (ClearStandbyCache && SetIncreasePrivilege(SE_PROFILE_SINGLE_PROCESS_NAME))
+				{
+					int SystemInfoLength = Marshal.SizeOf(MemoryPurgeStandbyList);
+					GCHandle gcHandle = GCHandle.Alloc(MemoryPurgeStandbyList, GCHandleType.Pinned);
+					uint num2 = NtSetSystemInformation(SystemMemoryListInformation, gcHandle.AddrOfPinnedObject(), SystemInfoLength);
+					gcHandle.Free();
+					if (num2 != 0)
+						throw new Exception("NtSetSystemInformation(SYSTEMMEMORYLISTINFORMATION) error: ", new Win32Exception(Marshal.GetLastWin32Error()));
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.Write(ex.ToString());
+			}
+		}
+		private static bool SetIncreasePrivilege(string privilegeName)
+		{
+			using (WindowsIdentity current = WindowsIdentity.GetCurrent(TokenAccessLevels.Query | TokenAccessLevels.AdjustPrivileges))
+			{
+				TokPriv1Luid newst;
+				newst.Count = 1;
+				newst.Luid = 0L;
+				newst.Attr = SE_PRIVILEGE_ENABLED;
+				if (!LookupPrivilegeValue(null, privilegeName, ref newst.Luid))
+					throw new Exception("Error in LookupPrivilegeValue: ", new Win32Exception(Marshal.GetLastWin32Error()));
+				int num = AdjustTokenPrivileges(current.Token, false, ref newst, 0, IntPtr.Zero, IntPtr.Zero) ? 1 : 0;
+				if (num == 0)
+					throw new Exception("Error in AdjustTokenPrivileges: ", new Win32Exception(Marshal.GetLastWin32Error()));
+				return num != 0;
+			}
+		}
+	}
+	[StructLayout(LayoutKind.Sequential, Pack = 1)]
+	struct SYSTEM_CACHE_INFORMATION
+	{
+		public uint CurrentSize;
+		public uint PeakSize;
+		public uint PageFaultCount;
+		public uint MinimumWorkingSet;
+		public uint MaximumWorkingSet;
+		public uint Unused1;
+		public uint Unused2;
+		public uint Unused3;
+		public uint Unused4;
+	}
+	[StructLayout(LayoutKind.Sequential, Pack = 1)]
+	struct SYSTEM_CACHE_INFORMATION_64_BIT
+	{
+		public long CurrentSize;
+		public long PeakSize;
+		public long PageFaultCount;
+		public long MinimumWorkingSet;
+		public long MaximumWorkingSet;
+		public long Unused1;
+		public long Unused2;
+		public long Unused3;
+		public long Unused4;
+	}
+	[StructLayout(LayoutKind.Sequential, Pack = 1)]
+	internal struct TokPriv1Luid
+	{
+		public int Count;
+		public long Luid;
+		public int Attr;
+	}
 }
 "@
 Add-Type -TypeDefinition $Source -Language CSharp 
@@ -3675,9 +3675,9 @@ echo;文件: 		"!url!"
 for /f "delims=" %%a in ("!url!") do (
 	if %%~za gtr 1024 (
 		call :xdwjs %%~za b dw
-		echo;文件大小: 	!dw! %%~za字节
+		echo;文件大小: 	!dw! %%~za 字节
 	) else (
-		echo;文件大小: 	%%~za字节
+		echo;文件大小: 	%%~za 字节
 	)
 )
 call :hash %url% md5 hash
@@ -3865,80 +3865,80 @@ for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\twd.json") do (
 	if not defined twdtousd (set twdtousd=1)
 )
 rd /s /q "%temp%\down">nul
-call :Division !dogetousd! !cnytousd! 8 dogetocny
-call :Division !btctousd! !cnytousd! 8 btctocny
-call :Division !ethtousd! !cnytousd! 8 ethtocny
-call :Division !eurtousd! !cnytousd! 8 eurtocny
-call :Division !gbptousd! !cnytousd! 8 gbptocny
-call :Division !jpytousd! !cnytousd! 8 jpytocny
-call :Division !hkdtousd! !cnytousd! 8 hkdtocny
-call :Division !twdtousd! !cnytousd! 8 twdtocny
-call :Division !xmrtousd! !cnytousd! 8 xmrtocny
-call :Division !filetousd! !cnytousd! 8 filetocny
+call :Division !dogetousd! !cnytousd! 9 dogetocny
+call :Division !btctousd! !cnytousd! 9 btctocny
+call :Division !ethtousd! !cnytousd! 9 ethtocny
+call :Division !eurtousd! !cnytousd! 9 eurtocny
+call :Division !gbptousd! !cnytousd! 9 gbptocny
+call :Division !jpytousd! !cnytousd! 9 jpytocny
+call :Division !hkdtousd! !cnytousd! 9 hkdtocny
+call :Division !twdtousd! !cnytousd! 9 twdtocny
+call :Division !xmrtousd! !cnytousd! 9 xmrtocny
+call :Division !filetousd! !cnytousd! 9 filetocny
 call :Division 1 !cnytousd! 3 usdtocny
 call :Division !autousd! 31.1034768 3 autocny
 call :Division !agtousd! 31.1034768 3 agtocny
 call :xcf !autocny! !usdtocny! autocny
 call :xcf !agtocny! !usdtocny! agtocny
 cls
-echo;黄金XAU    → 人民币CNY
-echo;	1  → !autocny!
+echo;黄金XAU	→ 人民币CNY
+echo;	1 → !autocny!
 echo;
-echo;白银XAG    → 人民币CNY
-echo;	1  → !agtocny!
+echo;白银XAG	→ 人民币CNY
+echo;	1 → !agtocny!
+echo;
+echo;美元USD	→ 人民币CNY
+echo;	1 → !usdtocny!
+echo;
+echo;欧元EUR	→ 人民币CNY
+echo;	1 → !eurtocny!
+echo;
+echo;英镑GBP	→ 人民币CNY
+echo;	1 → !gbptocny!
+echo;
+echo;日元JPY	→ 人民币CNY
+echo;	1 → !jpytocny!
+echo;
+echo;港币HKD	→ 人民币CNY
+echo;	1 → !hkdtocny!
+echo;
+echo;新台币TWD → 人民币CNY
+echo; 	1 → !twdtocny!
 echo;
 echo;以太坊ETH  → 人民币CNY
 set /p =!cswz1![]	<nul
-set /p =1  → !ethtocny!		24小时涨跌幅: <nul
+set /p =1  → !ethtocny!	24小时涨跌幅: <nul
 if "!eth24h:~0,1!" equ "-" (call :colortxt a !eth24h!) else (call :colortxt c +!eth24h!)
 set /p =%% <nul
 echo;
 echo;
 echo;比特币BTC  → 人民币CNY
 set /p =!cswz1![]	<nul
-set /p =1  → !btctocny!		24小时涨跌幅: <nul
+set /p =1  → !btctocny!	24小时涨跌幅: <nul
 if "!btc24h:~0,1!" equ "-" (call :colortxt a !btc24h!) else (call :colortxt c +!btc24h!)
 set /p =%% <nul
 echo;
 echo;
 echo;门罗币XMR  → 人民币CNY
 set /p =!cswz1![]	<nul
-set /p =1  → !xmrtocny!		24小时涨跌幅: <nul
+set /p =1  → !xmrtocny!	24小时涨跌幅: <nul
 if "!xmr24h:~0,1!" equ "-" (call :colortxt a !xmr24h!) else (call :colortxt c +!xmr24h!)
 set /p =%% <nul
 echo;
 echo;
 echo;文件币FILE → 人民币CNY
 set /p =!cswz1![]	<nul
-set /p =1  → !filetocny!		24小时涨跌幅: <nul
+set /p =1  → !filetocny!	24小时涨跌幅: <nul
 if "!file24h:~0,1!" equ "-" (call :colortxt a !file24h!) else (call :colortxt c +!file24h!)
 set /p =%% <nul
 echo;
 echo;
 echo;狗狗币DOGE → 人民币CNY
 set /p =!cswz1![]	<nul
-set /p =1  → !dogetocny!			24小时涨跌幅: <nul
+set /p =1  → !dogetocny!	24小时涨跌幅: <nul
 if "!doge24h:~0,1!" equ "-" (call :colortxt a !doge24h!) else (call :colortxt c +!doge24h!)
 set /p =%% <nul
 echo;
-echo;
-echo;美元USD    → 人民币CNY
-echo;	1  → !usdtocny!
-echo;
-echo;欧元EUR    → 人民币CNY
-echo;	1  → !eurtocny!
-echo;
-echo;英镑GBP    → 人民币CNY
-echo;	1  → !gbptocny!
-echo;
-echo;日元JPY    → 人民币CNY
-echo;	1  → !jpytocny!
-echo;
-echo;港币HKD    → 人民币CNY
-echo;	1  → !hkdtocny!
-echo;
-echo;新台币TWD  → 人民币CNY
-echo;	1  → !twdtocny!
 %hx%
 %pause%
 endlocal
@@ -4323,29 +4323,44 @@ for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Content-Length:
 for /f "tokens=2 delims==" %%a in ('type %temp%\tag^|findstr /c:"filename="') do (set "filename=%%a")
 if "!trflag!" neq "bytes" (set tr=1)
 if defined filesize (
-	call :xdwjs !filesize! b dw
+	if !filesize! geq 1024 (
+		call :xdwjs !filesize! b dw
+		set "dw=!filesize! 字节 约!dw!"
+	) else (
+		set "dw=!filesize! 字节"
+	)
 ) else (
 	set "dw=未知 (转为单进程下载)"
 )
 if not defined filename (set /p "filename=输入文件名: ")
 if not defined filename (set filename=curl下载文件)
 set /a "fd=filesize/tr"
+set xfd=
+if !fd! geq 1024 (
+	call :xdwjs !fd! b xfd
+	set "xfd=!fd! 字节 约!xfd!"
+) else (
+	set "xfd=!fd! 字节"
+)
 set /a "ys=filesize%%tr"
+set xys=
+if "!ys!" neq "0" (
+	set "xys= + !ys! 字节"
+)
 set oldfd=0
 set /a "pdtr=tr-1"
 set /a "newfd=fd-1"
 set /a "pdfd=fd+ys"
+set /a "newtr=tr+1"
 set file=
 for /l %%a in (1,1,!tr!) do (set "file=!file!%%a+")
-set newtr=
-set /a "newtr=tr+1"
 set "file=!file:~0,-1!"
 cls
 echo;文件名:		!filename!
 echo;文件大小:	!dw!
 if "!trflag!" neq "bytes" (echo;该链接不支持多线程传输,进程数自动设置为1)
 echo;进程数:		!tr!
-echo;传输片段大小:	!fd!+!ys!
+echo;传输片段大小:	!xfd!!xys!
 echo;保存路径:	!dir!
 %hx%
 set /p =按任意键开始下载<nul&pause>nul
@@ -4454,13 +4469,13 @@ if exist "!dir!!filename!" (
 		echo;下载完成
 		echo;链接:		!url!
 		echo;用时:		!xzys!
-		echo;平均下载速度:  !size! !dw!/s
+		echo;平均下载速度:	!dw!/s
 		echo;文件:		%%~nxa
 		if %%~za geq 1024 (
 			call :xdwjs %%~za b dw
-			echo;文件大小:	%%~za字节 约!dw!
+			echo;文件大小:	%%~za 字节 约!dw!
 		) else (
-			echo;文件大小:	%%~za字节
+			echo;文件大小:	%%~za 字节
 		)
 		echo;保存路径:	%%~dpa
 	)
@@ -4721,16 +4736,16 @@ if "!errorlevel!" equ "0" (goto 74.3)
 rem 创建目标目录结构%source_dir%不能替换成!source_dir!
 for /r "%source_dir%" %%f in (*) do (
 	cls
-    set "relative_path=%%~pf"
-    set "relative_path=!relative_path:%source_dir%=!"
-    set "target_path=!target_dir!!relative_path!"
-    rem 创建目标子目录（如果不存在）
-    if not exist "!target_path!" (mkdir "!target_path!")
-    rem 拷贝文件到目标目录
+	set "relative_path=%%~pf"
+	set "relative_path=!relative_path:%source_dir%=!"
+	set "target_path=!target_dir!!relative_path!"
+	rem 创建目标子目录（如果不存在）
+	if not exist "!target_path!" (mkdir "!target_path!")
+	rem 拷贝文件到目标目录
 	echo;"%%f" → "!target_path!%%~nxf"
-    copy /y /z "%%f" "!target_path!%%~nxf"
-    rem 压缩文件
-    call :74_2 "!target_path!%%~nxf" %%~zf %%~xf
+	copy /y /z "%%f" "!target_path!%%~nxf"
+	rem 压缩文件
+	call :74_2 "!target_path!%%~nxf" %%~zf %%~xf
 )
 %hx%
 %pause%
@@ -4927,15 +4942,15 @@ title 执行w32tm /resync对时!system!
 cls
 sc query w32time|find "RUNNING">nul 2>nul
 if "!errorlevel!" neq "0" (
-    echo;w32time服务未运行，正在启动...
-    sc start w32time
-    if "!errorlevel!" equ "0" (
-        echo;w32time服务已成功启动
-    ) else (
-        echo;无法启动w32time服务
-    )
+	echo;w32time服务未运行，正在启动...
+	sc start w32time
+	if "!errorlevel!" equ "0" (
+		echo;w32time服务已成功启动
+	) else (
+		echo;无法启动w32time服务
+	)
 ) else (
-    echo;w32time服务正在运行
+	echo;w32time服务正在运行
 )
 set attempts=0
 for /f "tokens=2 delims=: " %%a in ('"w32tm /query /configuration|findstr /i "NtpServer: ""') do (
@@ -5194,22 +5209,22 @@ set "start_time=%1"
 set "end_time=%2"
 REM 解析开始时间
 for /f "tokens=1-4 delims=:. " %%a in ("!start_time!") do (
-    set "start_hour=%%a"
-    set "start_minute=%%b"
-    set "start_second=%%c"
-    set "start_millisecond=%%d"
+	set "start_hour=%%a"
+	set "start_minute=%%b"
+	set "start_second=%%c"
+	set "start_millisecond=%%d"
 )
 REM 解析结束时间
 for /f "tokens=1-4 delims=:. " %%a in ("!end_time!") do (
-    set "end_hour=%%a"
-    set "end_minute=%%b"
-    set "end_second=%%c"
-    set "end_millisecond=%%d"
+	set "end_hour=%%a"
+	set "end_minute=%%b"
+	set "end_second=%%c"
+	set "end_millisecond=%%d"
 )
 REM 去掉前导零并确保以十进制格式进行计算
 for %%i in (start_hour start_minute start_second start_millisecond end_hour end_minute end_second end_millisecond) do (
-    set "%%i=!%%i: =!"
-    set /a "%%i=1!%%i! - 100"
+	set "%%i=!%%i: =!"
+	set /a "%%i=1!%%i! - 100"
 )
 REM 计算时间差（毫秒）
 set /a "time_difference-=start_hour*3600000+start_minute*60000+start_second*1000+start_millisecond*10"
@@ -5571,7 +5586,7 @@ for /l %%i in (1 1 2) do (
 		)
 		set /a Div.%%i.Len.0+=Div.%%i.Len.!Div.N!
 	)
-        set Div.%%i=!Div.%%i:.=!
+		set Div.%%i=!Div.%%i:.=!
 )
 if !Div.1.Len.2! gtr !Div.2.Len.2! (
 	set /a Div.2.Len.0+=Div.1.Len.2-Div.2.Len.2
@@ -5614,7 +5629,7 @@ for /l %%i in (1 1 9) do (
 	set Div.V=0
 	for /l %%j in (8 8 !Div.Tem.Len!) do (
 		set /a Div.V=1!Div.T:~-%%j,8!*%%i+Div.V
-        	set Div.Num.%%i=!Div.V:~-8!!Div.Num.%%i!
+			set Div.Num.%%i=!Div.V:~-8!!Div.Num.%%i!
 		set /a Div.V=!Div.V:~,-8!-%%i
 	)
 	set Div.Num.%%i=!Div.V!!Div.Num.%%i!
@@ -5669,12 +5684,12 @@ if %mod% equ 0 goto end
 :count_dec
 set mod=%mod%0
 if %mod% lss %2 (
-    set dec_str=!dec_str!0
-    goto count_dec
+	set dec_str=!dec_str!0
+	goto count_dec
 ) else (
-    set /a dec=%mod%/%2
-    set dec_str=!dec_str!!dec!
-    set /a mod=%mod%%%%2
+	set /a dec=%mod%/%2
+	set dec_str=!dec_str!!dec!
+	set /a mod=%mod%%%%2
 )
 set /a num+=1
 if %mod% neq 0 if %num% lss %3 goto count_dec
@@ -6097,56 +6112,56 @@ call :strlenx %a_2% L1_2
 call :strlenx %b_1% L2_1
 call :strlenx %b_2% L2_2
 for %%i in (1 2) do (
-    set "zero="&set m=0
-    if !L1_%%i! leq !L2_%%i! (
-        set /a m=L2_%%i-L1_%%i
-        if !m! neq 0 (
-            for /l %%a in (1 1 !m!) do set zero=!zero!0
+	set "zero="&set m=0
+	if !L1_%%i! leq !L2_%%i! (
+		set /a m=L2_%%i-L1_%%i
+		if !m! neq 0 (
+			for /l %%a in (1 1 !m!) do set zero=!zero!0
 		)
-        if "%%i" equ "1" (set a_%%i=!zero!!a_%%i!) else set a_%%i=!a_%%i!!zero!
-        set Len_%%i=!L2_%%i!
+		if "%%i" equ "1" (set a_%%i=!zero!!a_%%i!) else set a_%%i=!a_%%i!!zero!
+		set Len_%%i=!L2_%%i!
 	) else (
-        set /a m=L1_%%i-L2_%%i
-        for /l %%a in (1 1 !m!) do set zero=!zero!0
-        if "%%i" equ "1" (set b_%%i=!zero!!b_%%i!) else set b_%%i=!b_%%i!!zero!
-        set Len_%%i=!L1_%%i!
+		set /a m=L1_%%i-L2_%%i
+		for /l %%a in (1 1 !m!) do set zero=!zero!0
+		if "%%i" equ "1" (set b_%%i=!zero!!b_%%i!) else set b_%%i=!b_%%i!!zero!
+		set Len_%%i=!L1_%%i!
 	)
 )
 set /a Len=Len_1+Len_2+1
 if "%~2" equ "+" (
-    if "!a:~,1!" neq "-" (
-        if "!b:~,1!" neq "-" (
-            call :jia %a_1%.%a_2% %b_1%.%b_2% %Len% s
-            set "%~4=!s!"
+	if "!a:~,1!" neq "-" (
+		if "!b:~,1!" neq "-" (
+			call :jia %a_1%.%a_2% %b_1%.%b_2% %Len% s
+			set "%~4=!s!"
 		) else (
-            call :jian %a_1%.%a_2% %b_1%.%b_2% %Len% s
-            if "%a_1%.%a_2%" gtr "%b_1%.%b_2%" (set "%~4=!s!") else set "%~4=-!s!"
+			call :jian %a_1%.%a_2% %b_1%.%b_2% %Len% s
+			if "%a_1%.%a_2%" gtr "%b_1%.%b_2%" (set "%~4=!s!") else set "%~4=-!s!"
 		)
 	) else (
-        if "!b:~,1!" neq "-" (
-            call :jian %a_1%.%a_2% %b_1%.%b_2% %Len% s
-            if "%a_1%.%a_2%" gtr "%b_1%.%b_2%" (set "%~4=-!s!") else set "%~4=!s!"
+		if "!b:~,1!" neq "-" (
+			call :jian %a_1%.%a_2% %b_1%.%b_2% %Len% s
+			if "%a_1%.%a_2%" gtr "%b_1%.%b_2%" (set "%~4=-!s!") else set "%~4=!s!"
 		) else (
-            call :jia %a_1%.%a_2% %b_1%.%b_2% %Len% s
-            set "%~4=-!s!"
+			call :jia %a_1%.%a_2% %b_1%.%b_2% %Len% s
+			set "%~4=-!s!"
 		)
 	)
 ) else (
-    if "!a:~,1!" neq "-" (
-        if "!b:~,1!" neq "-" (
-            call :jian %a_1%.%a_2% %b_1%.%b_2% %Len% s
-            if "%a_1%.%a_2%" lss "%b_1%.%b_2%" (set "%~4=-!s!") else set "%~4=!s!"
+	if "!a:~,1!" neq "-" (
+		if "!b:~,1!" neq "-" (
+			call :jian %a_1%.%a_2% %b_1%.%b_2% %Len% s
+			if "%a_1%.%a_2%" lss "%b_1%.%b_2%" (set "%~4=-!s!") else set "%~4=!s!"
 		) else (
-            call :jia %a_1%.%a_2% %b_1%.%b_2% %Len% s
-            set "%~4=!s!"
+			call :jia %a_1%.%a_2% %b_1%.%b_2% %Len% s
+			set "%~4=!s!"
 		)
 	) else (
-        if "!b:~,1!" neq "-" (
-            call :jia %a_1%.%a_2% %b_1%.%b_2% %Len% s
-            set "%~4=-!s!"
+		if "!b:~,1!" neq "-" (
+			call :jia %a_1%.%a_2% %b_1%.%b_2% %Len% s
+			set "%~4=-!s!"
 		) else (
-            call :jian %a_1%.%a_2% %b_1%.%b_2% %Len% s
-            if "%a_1%.%a_2%" lss "%b_1%.%b_2%" (set "%~4=!s!") else set "%~4=-!s!"
+			call :jian %a_1%.%a_2% %b_1%.%b_2% %Len% s
+			if "%a_1%.%a_2%" lss "%b_1%.%b_2%" (set "%~4=!s!") else set "%~4=-!s!"
 		)
 	)
 )
@@ -6164,42 +6179,42 @@ set b=%~2
 set t=0
 set "s="
 for /l %%a in (-1 -1 -%~3) do (
-    if "!a:~%%a,1!" equ "." (
-      set s=.!s!
+	if "!a:~%%a,1!" equ "." (
+		set s=.!s!
 	) else (
-        set /a "c=t+!a:~%%a,1!+!b:~%%a,1!"
-        if !c! geq 10 (set t=1) else set t=0
-        set s=!c:~-1!!s!
+		set /a "c=t+!a:~%%a,1!+!b:~%%a,1!"
+		if !c! geq 10 (set t=1) else set t=0
+		set s=!c:~-1!!s!
 	)
 )
 if %t% equ 1 (set s=1!s!)
 for /f "tokens=1,2 delims=." %%a in ("%s%") do (
-    for /f "tokens=1* delims=0" %%c in (".%%b") do if "%%c%%d" equ "." set s=%%a
+	for /f "tokens=1* delims=0" %%c in (".%%b") do if "%%c%%d" equ "." set s=%%a
 )
 endlocal&set %~4=%s%&goto :eof
 :jian
 setlocal
 if %~1 lss %~2 (
-    set a=%~2
-    set b=%~1
+	set a=%~2
+	set b=%~1
 ) else (
-    set a=%~1
-    set b=%~2
+	set a=%~1
+	set b=%~2
 )
 set t=0
 set "s="
 for /l %%a in (-1 -1 -%~3) do (
-    if "!a:~%%a,1!" equ "." (
-      set s=.!s!
+	if "!a:~%%a,1!" equ "." (
+		set s=.!s!
 	) else (
-        set /a "c=10+!a:~%%a,1!-!b:~%%a,1!-t"
-        if !c! lss 10 (set t=1) else set t=0
-        set s=!c:~-1!!s!
+		set /a "c=10+!a:~%%a,1!-!b:~%%a,1!-t"
+		if !c! lss 10 (set t=1) else set t=0
+		set s=!c:~-1!!s!
 	)
 )
 for /f "tokens=1,2 delims=." %%a in ("%s%") do (
-    for /f "tokens=* delims=0" %%c in ("%%a") do if "%%c" equ "" (set pre=0) else set pre=%%c
-    for /f "tokens=* delims=0" %%c in ("%%b") do if "%%c" equ "" (set s=!pre!) else set s=!pre!.%%b
+	for /f "tokens=* delims=0" %%c in ("%%a") do if "%%c" equ "" (set pre=0) else set pre=%%c
+	for /f "tokens=* delims=0" %%c in ("%%b") do if "%%c" equ "" (set s=!pre!) else set s=!pre!.%%b
 )
 endlocal&set %~4=%s%&goto :eof
 :pdxp
@@ -6503,10 +6518,10 @@ set oldfd=0
 set /a "pdtr=tr-1"
 set /a "newfd=fd-1"
 set /a "pdfd=fd+ys"
-set file=
-for /l %%a in (1,1,!tr!) do (set "file=!file!%%a+")
 set newtr=
 set /a "newtr=tr+1"
+set file=
+for /l %%a in (1,1,!tr!) do (set "file=!file!%%a+")
 set "file=!file:~0,-1!"
 if exist "%temp%\down" (rd /s /q "%temp%\down")
 md "%temp%\down"
