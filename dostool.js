@@ -49,7 +49,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250101
-set versize=171272
+set versize=171294
 set fy1=___
 set xz0=0
 set "pause=set /p =按任意键返回菜单<nul&pause>nul"
@@ -4946,6 +4946,7 @@ if "!errorlevel!" neq "0" (
 	sc start w32time
 	if "!errorlevel!" equ "0" (
 		echo;w32time服务已成功启动
+		set stop=1
 	) else (
 		echo;无法启动w32time服务
 	)
@@ -4968,7 +4969,8 @@ if "!errorlevel!" neq "0" (
 		echo;第 !attempts! 次尝试同步时间失败，已达到最大重试次数。
 	)
 ) else (
-	echo 时间同步成功。
+	echo;时间同步成功
+	if "!stop!" equ "1" (sc stop w32time>nul 2>nul)
 )
 %hx%
 %pause%
@@ -5182,12 +5184,9 @@ if exist "%systemroot%\system32\curl.exe" (
 	if defined host (echo;Host域名:	!host:~10,-1!)
 	curl !proxy! !doh! !host! !ua! --compressed -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 !resolve! -o dostool !url!
 	popd
-	goto starttx
 ) else (
 	certutil -urlcache -split -f !url! "%temp%\dostool"
-	goto starttx
 )
-:starttx
 call :hash "%temp%\dostool" sha1 hash
 if /i "!hash!" equ "!doshash!" (
 	endlocal
