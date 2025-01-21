@@ -49,7 +49,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250101
-set versize=171294
+set versize=171278
 set fy1=___
 set xz0=0
 set "pause=set /p =按任意键返回菜单<nul&pause>nul"
@@ -94,9 +94,7 @@ for /f "tokens=2 delims==" %%a in (!wmicos!) do (
 		set "system=!system:~0,-1!"
 		set cm=
 	)
-	for /f "tokens=3" %%a in ("!system!") do (
-		call :pd%%a 2>nul
-	)
+	for /f "tokens=3" %%a in ("!system!") do (call :pd%%a 2>nul)
 )
 set wmicos=
 if "!date:~11,1!" equ "周" (
@@ -273,9 +271,7 @@ goto memuv2
 if "!winv!" equ "0" (
 	if not defined fyacs (
 		set fya=
-		for /l %%a in (1,1,26) do (
-			set "fya=!fya!!fy!"
-		)
+		for /l %%a in (1,1,26) do (set "fya=!fya!!fy!")
 		echo;!fya!
 		set /a "fyacs+=1"
 	) else (
