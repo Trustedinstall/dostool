@@ -49,7 +49,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250101
-set versize=168565
+set versize=168555
 set fy1=___
 set xz0=0
 set "pause=set /p =按任意键返回菜单<nul&pause>nul"
@@ -5411,7 +5411,6 @@ Function Set-INFFile {
 	Param (
 		[Parameter(HelpMessage="Specify the INF file location")]
 		$InfFileLocation = "$env:temp\CMSTP.inf",
-		
 		[Parameter(HelpMessage="Specify the command to launch in a UAC-privileged window")]
 		[String]$CommandToExecute = "$env:temp\su.bat"
 	)
@@ -5456,7 +5455,7 @@ Function Get-Hwnd {
 		}
 		$hash = @{
 			ProcessName = $ProcessName
-			Hwnd        = $hwnd
+			Hwnd		= $hwnd
 		}
 		New-Object -TypeName PsObject -Property $hash
 	}
