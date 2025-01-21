@@ -49,7 +49,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250101
-set versize=171278
+set versize=170819
 set fy1=___
 set xz0=0
 set "pause=set /p =按任意键返回菜单<nul&pause>nul"
@@ -1182,7 +1182,6 @@ for /f "tokens=2 delims==" %%a in ('wmic cpu get name /value') do (
 )
 cls
 :23.4.1
-(
 set xh=
 for /f "tokens=2 delims==" %%a in ('Wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get BytesReceivedPersec^,BytesSentPersec /value') do (
 	set /a "xh+=1"
@@ -1233,7 +1232,6 @@ if "!errorlevel!" equ "2" (
 	goto 23
 )
 goto 23.4.1
-)
 :24
 setlocal
 title 文件系统信息查询!system!
@@ -1559,9 +1557,7 @@ if "!empty!" equ "1" (goto loop1)
 goto 28.1
 :loop2
 for /f "delims=" %%o in ('"dir /a /s /b /ad-l "!caozuo!"|sort /r"') do (
-	rd /q "%%o"2>nul&&(
-		echo;已删除空文件夹 "%%o"
-	)
+	rd /q "%%o"2>nul&&echo;已删除空文件夹 "%%o"
 )
 :28.1
 %hx%
@@ -1645,11 +1641,7 @@ for /f "tokens=2 delims==" %%a in ('"wmic cpu get processorid /value 2>nul"') do
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
-		if "!cs!" equ "1" (
-			echo;		!var:~0,-1!
-		) else (
-			echo;			!var:~0,-1!
-		)
+		if "!cs!" equ "1" (echo;		!var:~0,-1!) else (echo;			!var:~0,-1!)
 	)
 )
 echo;
@@ -1893,9 +1885,7 @@ fsutil fsinfo drives
 echo;
 for /f "delims=" %%a in ('wmic logicaldisk get name^,volumename^,description^,filesystem^,size^,freespace') do (
 	set "var=%%a"
-	if "!var:~0,-1!" neq "" (
-		echo;!var:~0,-1!
-	)
+	if "!var:~0,-1!" neq "" (echo;!var:~0,-1!)
 )
 %hx%
 set cs=
@@ -1904,11 +1894,7 @@ for /f "tokens=2 delims==" %%a in ('Wmic Printer where "Default='TRUE'" get capt
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
-		if "!cs!" equ "1" (
-			echo;	!var:~0,-1!
-		) else (
-			echo;		!var:~0,-1!
-		)
+		if "!cs!" equ "1" (echo;	!var:~0,-1!) else (echo;		!var:~0,-1!)
 	)
 )
 echo;
@@ -1918,11 +1904,7 @@ for /f "tokens=2 delims==" %%a in ('Wmic Printer where "Default='TRUE'" get driv
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
-		if "!cs!" equ "1" (
-			echo;	!var:~0,-1!
-		) else (
-			echo;		!var:~0,-1!
-		)
+		if "!cs!" equ "1" (echo;	!var:~0,-1!) else (echo;		!var:~0,-1!)
 	)
 )
 echo;
@@ -2082,8 +2064,8 @@ cls
 for /l %%a in (1,2,127) do (set /p =%%a	<nul)
 echo;
 choice /c YN /n /m 请问这里有你想的数吗?(Y=有,N=没有)[1\7]
-if "!errorlevel!" equ "1" set num=1
-if "!errorlevel!" equ "2" set num=0
+if "!errorlevel!" equ "1" (set num=1)
+if "!errorlevel!" equ "2" (set num=0)
 set a=2
 set b=3
 cls
@@ -2096,8 +2078,8 @@ for /l %%a in (!a!,1,!b!) do (
 if !b! lss 128 (goto d1c)
 echo;
 choice /c YN /n /m 请问这里有你想的数吗?(Y=有,N=没有)[2\7]
-if "!errorlevel!" equ "1" set /a "num+=2"
-if "!errorlevel!" equ "2" set /a "num=num"
+if "!errorlevel!" equ "1" (set /a "num+=2")
+if "!errorlevel!" equ "2" (set /a "num=num")
 set c=4
 set d=7
 cls
@@ -2110,8 +2092,8 @@ for /l %%a in (!c!,1,!d!) do (
 if !d! lss 128 (goto d2c)
 echo;
 choice /c YN /n /m 请问这里有你想的数吗?(Y=有,N=没有)[3\7]
-if "!errorlevel!" equ "1" set /a "num+=4"
-if "!errorlevel!" equ "2" set /a "num=num"
+if "!errorlevel!" equ "1" (set /a "num+=4")
+if "!errorlevel!" equ "2" (set /a "num=num")
 set e=8
 set f=15
 cls
@@ -2124,8 +2106,8 @@ for /l %%a in (!e!,1,!f!) do (
 if !f! lss 128 (goto d3c)
 echo;
 choice /c YN /n /m 请问这里有你想的数吗?(Y=有,N=没有)[4\7]
-if "!errorlevel!" equ "1" set /a "num+=8"
-if "!errorlevel!" equ "2" set /a "num=num"
+if "!errorlevel!" equ "1" (set /a "num+=8")
+if "!errorlevel!" equ "2" (set /a "num=num")
 set g=16
 set h=31
 cls
@@ -2138,8 +2120,8 @@ for /l %%a in (!g!,1,!h!) do (
 if !g! lss 128 (goto d4c)
 echo;
 choice /c YN /n /m 请问这里有你想的数吗?(Y=有,N=没有)[5\7]
-if "!errorlevel!" equ "1" set /a "num+=16"
-if "!errorlevel!" equ "2" set /a "num=num"
+if "!errorlevel!" equ "1" (set /a "num+=16")
+if "!errorlevel!" equ "2" (set /a "num=num")
 set i=32
 set j=63
 cls
@@ -2152,8 +2134,8 @@ for /l %%a in (!i!,1,!j!) do (
 if !j! lss 128 (goto d5c)
 echo;
 choice /c YN /n /m 请问这里有你想的数吗?(Y=有,N=没有)[6\7]
-if "!errorlevel!" equ "1" set /a "num+=32"
-if "!errorlevel!" equ "2" set /a "num=num"
+if "!errorlevel!" equ "1" (set /a "num+=32")
+if "!errorlevel!" equ "2" (set /a "num=num")
 set k=64
 set l=127
 cls
@@ -2166,8 +2148,8 @@ for /l %%a in (!k!,1,!l!) do (
 if !l! lss 128 (goto d6c)
 echo;
 choice /c YN /n /m 请问这里有你想的数吗?(Y=有,N=没有)[7\7]
-if "!errorlevel!" equ "1" set /a "num+=64"
-if "!errorlevel!" equ "2" set /a "num=num"
+if "!errorlevel!" equ "1" (set /a "num+=64")
+if "!errorlevel!" equ "2" (set /a "num=num")
 cls
 echo;经过电脑复杂的计算后,得出你大脑里想的那个数是:!cswz!41;92m !num! !cswz!!ysbak!
 %hx%
@@ -2990,20 +2972,14 @@ set /a "leap=y%%4"
 set /a "leap100=y%%100"
 set /a "leap400=y%%400"
 if "!leap!" equ "0" (
-	if "!leap100!" neq "0" (
-		set rn=闰年
-	)
+	if "!leap100!" neq "0" (set rn=闰年)
 ) else (
 	set rn=平年
 )
 if "!leap100!" equ "0" (
-	if "!leap400!" neq "0" (
-		set rn=平年
-	)
+	if "!leap400!" neq "0" (set rn=平年)
 )
-if "!leap400!" equ "0" (
-	set rn=闰年
-)
+if "!leap400!" equ "0" (set rn=闰年)
 if !m! lss 3 (
 	set /a "m+=12"
 	set /a "y-=1"
@@ -4340,9 +4316,7 @@ if !fd! geq 1024 (
 )
 set /a "ys=filesize%%tr"
 set xys=
-if "!ys!" neq "0" (
-	set "xys= + !ys! 字节"
-)
+if "!ys!" neq "0" (set "xys= + !ys! 字节")
 set oldfd=0
 set /a "pdtr=tr-1"
 set /a "newfd=fd-1"
@@ -4435,7 +4409,7 @@ if "!errorlevel!" equ "2" (
 	taskkill /fi "windowtitle eq curl多进程下载_*" /fi "imagename eq curl.exe" /f
 	popd
 	rd /s /q "%temp%\down"
-	del "%temp%\tag"
+	del /f /q "%temp%\tag"
 	endlocal
 	goto memuv2
 )
@@ -4840,11 +4814,7 @@ if "!errorlevel!" equ "0" (
 cls
 for /f "delims=" %%b in ("!jiami!") do (
 	set /a "batpdjg=%%~zb%%2"
-	if "!batpdjg!" equ "1" (
-		set "batpdjg= "
-	) else (
-		set "batpdjg="
-	)
+	if "!batpdjg!" equ "1" (set "batpdjg= ") else (set "batpdjg=")
 	(
 	echo;%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
 %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
@@ -5281,7 +5251,6 @@ if !sub! lss 0 (
 ) else (
 	if !sub! geq %1 (goto :eof) else (goto ys_loop)
 )
-goto :eof
 :list
 (
 set start=1
@@ -5380,7 +5349,7 @@ if "!bj:~1,1!" equ "" (
 pushd "%temp%"
 set /p =!cswz1!<nul>"%2"
 findstr /v /a:!bj1!!bj2! /r "^$" "%2" nul
-del /f "%2">nul 2>nul
+del /f /q "%2">nul 2>nul
 popd
 goto :eof
 :colortxt2
@@ -5728,14 +5697,10 @@ for /f "delims=: skip=2 tokens=2" %%a in ('mode con') do (
 set /a "h_1=h-1"
 set /a "l_1=l-1"
 set /a "l_4=l-4"
-for /l %%a in (0,1,!l_4!) do (
-	set "fh=!fh!-"
-)
+for /l %%a in (0,1,!l_4!) do (set "fh=!fh!-")
 set "fh=+!fh!+"
 set /p =!cswz!1;1H!fh!<nul
-for /l %%a in (2,1,!h_1!) do (
-	set /p =!cswz!%%a;1H^|!cswz!%%a;!l_1!H^|<nul
-)
+for /l %%a in (2,1,!h_1!) do (set /p =!cswz!%%a;1H^|!cswz!%%a;!l_1!H^|<nul)
 set /p =!cswz!!h_1!;1H!fh!<nul
 goto :eof
 :fk
@@ -5747,14 +5712,10 @@ set /a "l1=%4-2"
 set /a "h2=h+%3-2"
 set /a "l2=l+%4-1"
 set /a "h3=h+%3-1"
-for /l %%a in (1,1,!l1!) do (
-	set "fh=!fh!-"
-)
+for /l %%a in (1,1,!l1!) do (set "fh=!fh!-")
 set "fh=+!fh!+"
 set /p =!cswz!!h!;!l!H!fh!<nul
-for /l %%a in (!h1!,1,!h2!) do (
-	set /p =!cswz!%%a;!l!H^|!cswz!%%a;!l2!H^|<nul
-)
+for /l %%a in (!h1!,1,!h2!) do (set /p =!cswz!%%a;!l!H^|!cswz!%%a;!l2!H^|<nul)
 set /p =!cswz!!h3!;!l!H!fh!<nul
 goto :eof
 :hx
@@ -5762,9 +5723,7 @@ setlocal
 set "h=%1"
 set "l=%2"
 set /a "cd=%3-2"
-for /l %%a in (1,1,!cd!) do (
-	set "fh=!fh!-"
-)
+for /l %%a in (1,1,!cd!) do (set "fh=!fh!-")
 set "fh=+!fh!+"
 set /p =!cswz!!h!;!l!H!fh!<nul
 goto :eof
@@ -5776,18 +5735,12 @@ set /a "h1=h+1"
 set /a "h2=h+%3-1"
 set /a "cd=%3+h-2"
 set /p =!cswz!!h!;!l!H+<nul
-for /l %%a in (!h1!,1,!cd!) do (
-	set /p =!cswz!%%a;!l!H^|<nul
-)
+for /l %%a in (!h1!,1,!cd!) do (set /p =!cswz!%%a;!l!H^|<nul)
 set /p =!cswz!!h2!;!l!H+<nul
 goto :eof
 :checkvar
 setlocal
-if "%1" equ "" (
-	goto :eof
-) else (
-	set "val=!%1!"
-)
+if "%1" equ "" (goto :eof) else (set "val=!%1!")
 if "%2" equ "num" (goto checkvar_num)
 if "%2" equ "num." (goto checkvar_num.)
 if "%2" equ "-num" (goto checkvar_-num)
@@ -5798,53 +5751,31 @@ if "%2" equ "year" (goto checkvar_year)
 goto :eof
 :checkvar_num
 if defined %1 (
-	for /f "delims=0123456789" %%a in ("!%1!") do (
-		goto checkvar_exit0
-	)
+	for /f "delims=0123456789" %%a in ("!%1!") do (goto checkvar_exit0)
 ) else (
 	goto checkvar_exit0
 )
 goto checkvar_exit1
 :checkvar_num.
 if defined %1 (
-	for /f "delims=.0123456789" %%a in ("!%1!") do (
-		goto checkvar_exit0
-	)
+	for /f "delims=.0123456789" %%a in ("!%1!") do (goto checkvar_exit0)
 ) else (
 	goto checkvar_exit0
 )
 for /f "tokens=1,2 delims=." %%a in ("!%1!") do (
-	if "%%a" neq "" (
-		set "val1=%%a"
-	) else (
-		set "val1=0"
-	)
-	if "%%b" neq "" (
-		set "val2=%%b"
-	) else (
-		goto checkvar_exit0
-	)
+	if "%%a" neq "" (set "val1=%%a") else (set "val1=0")
+	if "%%b" neq "" (set "val2=%%b") else (goto checkvar_exit0)
 )
-if "!val1!!val2!" neq "" (
-	goto checkvar_exit1
-) else (
-	goto checkvar_exit0
-)
+if "!val1!!val2!" neq "" (goto checkvar_exit1) else (goto checkvar_exit0)
 goto :eof
 :checkvar_-num
 if defined %1 (
-	for /f "delims=0123456789-" %%a in ("!%1!") do (
-		goto checkvar_exit0
-	)
+	for /f "delims=0123456789-" %%a in ("!%1!") do (goto checkvar_exit0)
 ) else (
 	goto checkvar_exit0
 )
 for /f "tokens=1 delims=-" %%a in ("!%1!") do (
-	if "!%1:~0,1!" equ "-" (
-		goto checkvar_exit1
-	) else (
-		goto checkvar_exit0
-	)
+	if "!%1:~0,1!" equ "-" (goto checkvar_exit1) else (goto checkvar_exit0)
 )
 goto :eof
 :checkvar_-num.
@@ -5854,71 +5785,45 @@ if defined val1 (
 	call :checkvar val1 num. jg
 	if "!jg!" equ "1" (
 		call :checkvar val2 -num jg
-		if "!jg!" equ "1" (
-			goto checkvar_exit1
-		)
+		if "!jg!" equ "1" (goto checkvar_exit1)
 	)
 )
 goto checkvar_exit0
 :checkvar_az
 if defined %1 (
-	for /f "delims=aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ" %%a in ("!%1!") do (
-		goto checkvar_exit0
-	)
+	for /f "delims=aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ" %%a in ("!%1!") do (goto checkvar_exit0)
 	goto checkvar_exit1
 )
 goto :eof
 :checkvar_aznum
 if defined %1 (
-	for /f "delims=0123456789aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ" %%a in ("!%1!") do (
-		goto checkvar_exit0
-	)
+	for /f "delims=0123456789aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ" %%a in ("!%1!") do (goto checkvar_exit0)
 	goto checkvar_exit1
 )
 goto checkvar_exit0
 :checkvar_year
 if defined %1 (
-	for /f "delims=0123456789" %%a in ("!%1!") do (
-		goto checkvar_exit0
-	)
+	for /f "delims=0123456789" %%a in ("!%1!") do (goto checkvar_exit0)
 	call :strlen %1 jg
-	if "!jg!" neq "8" (
-		goto checkvar_exit0
-	)
+	if "!jg!" neq "8" (goto checkvar_exit0)
 	set "year=!%1:~0,4!"
 	set "month=!%1:~4,2!"
 	set "day=!%1:~6,2!"
-	if 1!month! lss 101 (
-		goto checkvar_exit0
-	)
-	if 1!month! gtr 112 (
-		goto checkvar_exit0
-	)
-	if 1!day! lss 101 (
-		goto checkvar_exit0
-	)
-	if 1!day! gtr 131 (
-		goto checkvar_exit0
-	)
+	if 1!month! lss 101 (goto checkvar_exit0)
+	if 1!month! gtr 112 (goto checkvar_exit0)
+	if 1!day! lss 101 (goto checkvar_exit0)
+	if 1!day! gtr 131 (goto checkvar_exit0)
 	if "!month!" equ "04" (
-		if 1!day! gtr 130 (
-			goto checkvar_exit0
-		)
+		if 1!day! gtr 130 (goto checkvar_exit0)
 	)
 	if "!month!" equ "06" (
-		if 1!day! gtr 130 (
-			goto checkvar_exit0
-		)
+		if 1!day! gtr 130 (goto checkvar_exit0)
 	)
 	if "!month!" equ "09" (
-		if 1!day! gtr 130 (
-			goto checkvar_exit0
-		)
+		if 1!day! gtr 130 (goto checkvar_exit0)
 	)
 	if "!month!" equ "11" (
-		if 1!day! gtr 130 (
-			goto checkvar_exit0
-		)
+		if 1!day! gtr 130 (goto checkvar_exit0)
 	)
 	if "!month!" equ "02" (
 		set /a "leap=year%%4"
@@ -5926,26 +5831,18 @@ if defined %1 (
 		set /a "leap400=year%%400"
 		if "!leap!" equ "0" (
 			if "!leap100!" neq "0" (
-				if 1!day! gtr 129 (
-					goto checkvar_exit0
-				)
+				if 1!day! gtr 129 (goto checkvar_exit0)
 			)
 		) else (
-			if 1!day! gtr 128 (
-				goto checkvar_exit0
-			)
+			if 1!day! gtr 128 (goto checkvar_exit0)
 		)
 		if "!leap100!" equ "0" (
 			if "!leap400!" neq "0" (
-				if 1!day! gtr 128 (
-					goto checkvar_exit0
-				)
+				if 1!day! gtr 128 (goto checkvar_exit0)
 			)
 		)
 		if "!leap400!" equ "0" (
-			if 1!day! gtr 129 (
-				goto checkvar_exit0
-			)
+			if 1!day! gtr 129 (goto checkvar_exit0)
 		)
 	)
 	goto checkvar_exit1
@@ -5955,19 +5852,17 @@ if defined %1 (
 :checkvar_exit0
 if "%3" neq "" (
 	endlocal&set "%3=0"
-	goto :eof
 ) else (
 	echo;0
-	goto :eof
 )
+goto :eof
 :checkvar_exit1
 if "%3" neq "" (
 	endlocal&set "%3=1"
-	goto :eof
 ) else (
 	echo;1
-	goto :eof
 )
+goto :eof
 :sqrt
 setlocal
 set s=%1
@@ -6084,12 +5979,8 @@ set "nnn=1"
 set "n=%1"
 set "n=!n:0= 0!"
 set "n=!n:1= 1!"
-for %%a in (!n!) do (
-	set "nn=%%a !nn!"
-)
-for %%a in (!nn!) do (
-	set /a "num+=%%a*nnn,nnn*=2"
-)
+for %%a in (!n!) do (set "nn=%%a !nn!")
+for %%a in (!nn!) do (set /a "num+=%%a*nnn,nnn*=2")
 if "%2" neq "" (
 	endlocal&set "%2=%num%"
 ) else (
@@ -6293,9 +6184,7 @@ set "num2=%2"
 if not defined num1 (
 	goto :eof
 ) else (
-	for /f "delims=-.0123456789" %%a in ("!num1!") do (
-		goto :eof
-	)
+	for /f "delims=-.0123456789" %%a in ("!num1!") do (goto :eof)
 	for /f "tokens=1,2 delims=." %%a in ("!num1!") do (
 		set "num1a=%%a"
 		set "num1b=%%b"
@@ -6307,17 +6196,11 @@ if "!num1b:~-1!" equ "0" (
 	set "num1b=!num1b:~0,-1!"
 	goto xcf_loop1
 )
-if not defined num1b (
-	set dot1=0
-) else (
-	call :strlen num1b dot1
-)
+if not defined num1b (set dot1=0) else (call :strlen num1b dot1)
 if "!num2!" equ "0" (
 	goto :eof
 ) else (
-	for /f "delims=-.0123456789" %%a in ("!num2!") do (
-		goto :eof
-	)
+	for /f "delims=-.0123456789" %%a in ("!num2!") do (goto :eof)
 	for /f "tokens=1,2 delims=." %%a in ("!num2!") do (
 		set "num2a=%%a"
 		set "num2b=%%b"
@@ -6329,11 +6212,7 @@ if "!num2b:~-1!" equ "0" (
 	set "num2b=!num2b:~0,-1!"
 	goto xcf_loop2
 )
-if not defined num2b (
-	set dot2=0
-) else (
-	call :strlen num2b dot2
-)
+if not defined num2b (set dot2=0) else (call :strlen num2b dot2)
 set /a "dot=dot1+dot2"
 set /a "num=!num1a!!num1b!*!num2a!!num2b!"
 set "numa=!num:~0,-%dot%!"
@@ -6349,11 +6228,10 @@ if "!num:~0,1!" equ "." (set "num=!num:.=0.!")
 if "!num:~0,2!" equ "-." (set "num=-0.!num:~2!")
 if "%3" neq "" (
 	endlocal&set "%3=%num%"
-	goto :eof
 ) else (
 	echo;!num!
-	goto :eof
 )
+goto :eof
 :scf
 setlocal
 if "%~1" equ "0" Endlocal&set %~3=0&goto :EOF
@@ -6407,11 +6285,10 @@ set "tmp=!tmp:y=Y!"
 set "tmp=!tmp:z=Z!"
 if "%2" neq "" (
 	endlocal&set "%2=%tmp%"
-	goto :eof
 ) else (
 	echo;!tmp!
-	goto :eof
 )
+goto :eof
 :convertl
 setlocal
 if "%1" equ "" (goto :eof)
@@ -6444,11 +6321,10 @@ set "tmp=!tmp:Y=y!"
 set "tmp=!tmp:Z=z!"
 if "%2" neq "" (
 	endlocal&set "%2=%tmp%"
-	goto :eof
 ) else (
 	echo;!tmp!
-	goto :eof
 )
+goto :eof
 :curldxc
 setlocal
 if not exist "%systemroot%\system32\curl.exe" (
