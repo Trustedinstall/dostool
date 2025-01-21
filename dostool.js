@@ -49,7 +49,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250101
-set versize=168555
+set versize=168570
 set fy1=___
 set xz0=0
 set "pause=set /p =按任意键返回菜单<nul&pause>nul"
@@ -4930,6 +4930,7 @@ if "!errorlevel!" neq "0" (
 	if !attempts! lss 3 (
 		echo;第 !attempts! 次尝试同步时间失败
 		echo;
+		call :out 1
 		goto 78.1
 	) else (
 		echo;第 !attempts! 次尝试同步时间失败，已达到最大重试次数。
