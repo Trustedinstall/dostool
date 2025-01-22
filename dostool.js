@@ -49,7 +49,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250101
-set versize=168337
+set versize=168284
 set fy1=___
 set xz0=0
 set "pause=set /p =按任意键返回菜单<nul&pause>nul"
@@ -3689,155 +3689,154 @@ set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,
 if exist "%systemroot%\system32\curl.exe" (
 	pushd "%temp%\down"
 	curl !proxy! !doh! !ua! -# -Z --compressed -C - --retry 2 --retry-delay 1 --connect-timeout 5 ^
-	-o cny.json			%mainurl1%chinese-yuan-renminbi ^
-	-o doge.json		%mainurl%dogecoin ^
-	-o btc.json			%mainurl%bitcoin ^
-	-o eth.json			%mainurl%ethereum ^
 	-o au.json			%mainurl1%gold-ounce ^
 	-o ag.json			%mainurl1%silver-ounce ^
 	-o eur.json			%mainurl1%euro ^
-	-o gbp.json			%mainurl1%british-pound-sterling ^
 	-o jpy.json			%mainurl1%japanese-yen ^
 	-o hkd.json			%mainurl1%hong-kong-dollar ^
 	-o twd.json			%mainurl1%new-taiwan-dollar ^
+	-o cny.json			%mainurl1%chinese-yuan-renminbi ^
+	-o gbp.json			%mainurl1%british-pound-sterling ^
 	-o xmr.json			%mainurl%monero ^
+	-o btc.json			%mainurl%bitcoin ^
+	-o eth.json			%mainurl%ethereum ^
+	-o doge.json		%mainurl%dogecoin ^
 	-o filecoin.json	%mainurl%filecoin
 	popd
 ) else (
 	bitsadmin /transfer 下载汇率文件... /priority FOREGROUND ^
-	%mainurl1%chinese-yuan-renminbi		"%temp%\down\cny.json" ^
-	%mainurl%dogecoin					"%temp%\down\doge.json" ^
-	%mainurl%bitcoin					"%temp%\down\btc.json" ^
-	%mainurl%ethereum					"%temp%\down\eth.json" ^
 	%mainurl1%gold-ounce				"%temp%\down\au.json" ^
 	%mainurl1%silver-ounce				"%temp%\down\ag.json" ^
 	%mainurl1%euro						"%temp%\down\eur.json" ^
-	%mainurl1%british-pound-sterling	"%temp%\down\gbp.json" ^
 	%mainurl1%japanese-yen				"%temp%\down\jpy.json" ^
 	%mainurl1%hong-kong-dollar			"%temp%\down\hkd.json" ^
 	%mainurl1%new-taiwan-dollar			"%temp%\down\twd.json" ^
+	%mainurl1%chinese-yuan-renminbi		"%temp%\down\cny.json" ^
+	%mainurl1%british-pound-sterling	"%temp%\down\gbp.json" ^
 	%mainurl%monero						"%temp%\down\xmr.json" ^
+	%mainurl%bitcoin					"%temp%\down\btc.json" ^
+	%mainurl%ethereum					"%temp%\down\eth.json" ^
+	%mainurl%dogecoin					"%temp%\down\doge.json" ^
 	%mainurl%filecoin					"%temp%\down\filecoin.json"
 )
 cls
 echo;处理汇率文件...
-for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\cny.json") do (
+for /f "usebackq tokens=7 delims=:}" %%a in ("%temp%\down\cny.json") do (
 	set "cnytousd=%%a"
 	set "cnytousd=!cnytousd:"=!"
-	if not defined cnytousd (set cnytousd=1)
 )
-for /f "usebackq delims=:, tokens=19,21" %%a in ("%temp%\down\doge.json") do (
+if not defined cnytousd (set cnytousd=1)
+for /f "usebackq tokens=19,21 delims=:," %%a in ("%temp%\down\doge.json") do (
 	set "dogetousd=%%a"
 	set "doge24h=%%b"
 	set "dogetousd=!dogetousd:"=!"
 	set "doge24h=!doge24h:"=!"
-	if not defined dogetousd (
-		set dogetousd=1
-		set doge24h=0
-	)
-	for /f "delims=. tokens=1,2" %%a in ("!doge24h!") do (
-		set "doge24h1=%%a"
-		set "doge24h2=%%b"
-	)
-	set "doge24h=!doge24h1!.!doge24h2:~0,3!"
 )
-for /f "usebackq delims=:, tokens=19,21" %%a in ("%temp%\down\btc.json") do (
+if not defined dogetousd (
+	set dogetousd=1
+	set doge24h=0
+)
+for /f "tokens=1,2 delims=." %%a in ("!doge24h!") do (
+	set "doge24h1=%%a"
+	set "doge24h2=%%b"
+)
+set "doge24h=!doge24h1!.!doge24h2:~0,3!"
+for /f "usebackq tokens=19,21 delims=:," %%a in ("%temp%\down\btc.json") do (
 	set "btctousd=%%a"
 	set "btc24h=%%b"
 	set "btctousd=!btctousd:"=!"
 	set "btc24h=!btc24h:"=!"
-	if not defined btctousd (
-		set btctousd=1
-		set btc24h=0
-	)
-	for /f "delims=. tokens=1,2" %%a in ("!btc24h!") do (
-		set "btc24h1=%%a"
-		set "btc24h2=%%b"
-	)
-	set "btc24h=!btc24h1!.!btc24h2:~0,3!"
 )
-for /f "usebackq delims=:, tokens=19,21" %%a in ("%temp%\down\eth.json") do (
+if not defined btctousd (
+	set btctousd=1
+	set btc24h=0
+)
+for /f "tokens=1,2 delims=." %%a in ("!btc24h!") do (
+	set "btc24h1=%%a"
+	set "btc24h2=%%b"
+)
+set "btc24h=!btc24h1!.!btc24h2:~0,3!"
+for /f "usebackq tokens=19,21 delims=:," %%a in ("%temp%\down\eth.json") do (
 	set "ethtousd=%%a"
 	set "eth24h=%%b"
 	set "ethtousd=!ethtousd:"=!"
 	set "eth24h=!eth24h:"=!"
-	if not defined ethtousd (
-		set ethtousd=1
-		set eth24h=0
-	)
-	for /f "delims=. tokens=1,2" %%a in ("!eth24h!") do (
-		set "eth24h1=%%a"
-		set "eth24h2=%%b"
-	)
-	set "eth24h=!eth24h1!.!eth24h2:~0,3!"
 )
-for /f "usebackq delims=:, tokens=19,21" %%a in ("%temp%\down\filecoin.json") do (
+if not defined ethtousd (
+	set ethtousd=1
+	set eth24h=0
+)
+for /f "tokens=1,2 delims=." %%a in ("!eth24h!") do (
+	set "eth24h1=%%a"
+	set "eth24h2=%%b"
+)
+set "eth24h=!eth24h1!.!eth24h2:~0,3!"
+for /f "usebackq tokens=19,21 delims=:," %%a in ("%temp%\down\filecoin.json") do (
 	set "filetousd=%%a"
 	set "file24h=%%b"
 	set "filetousd=!filetousd:"=!"
 	set "file24h=!file24h:"=!"
-	if not defined filetousd (
-		set filetousd=1
-		file24h=0
-	)
-	for /f "delims=. tokens=1,2" %%a in ("!file24h!") do (
-		set "file24h1=%%a"
-		set "file24h2=%%b"
-	)
-	set "file24h=!file24h1!.!file24h2:~0,3!"
 )
-for /f "usebackq delims=:, tokens=19,21" %%a in ("%temp%\down\xmr.json") do (
+if not defined filetousd (
+	set filetousd=1
+	file24h=0
+)
+for /f "tokens=1,2 delims=." %%a in ("!file24h!") do (
+	set "file24h1=%%a"
+	set "file24h2=%%b"
+)
+set "file24h=!file24h1!.!file24h2:~0,3!"
+for /f "usebackq tokens=19,21 delims=:," %%a in ("%temp%\down\xmr.json") do (
 	set "xmrtousd=%%a"
 	set "xmr24h=%%b"
 	set "xmrtousd=!xmrtousd:"=!"
 	set "xmr24h=!xmr24h:"=!"
-	if not defined xmrtousd (
-		set xmrtousd=1
-		set xmr24h=0
-	)
-	for /f "delims=. tokens=1,2" %%a in ("!xmr24h!") do (
-		set "xmr24h1=%%a"
-		set "xmr24h2=%%b"
-	)
-	set "xmr24h=!xmr24h1!.!xmr24h2:~0,3!"
 )
-for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\au.json") do (
+if not defined xmrtousd (
+	set xmrtousd=1
+	set xmr24h=0
+)
+for /f "tokens=1,2 delims=." %%a in ("!xmr24h!") do (
+	set "xmr24h1=%%a"
+	set "xmr24h2=%%b"
+)
+set "xmr24h=!xmr24h1!.!xmr24h2:~0,3!"
+for /f "usebackq tokens=7 delims=:}" %%a in ("%temp%\down\au.json") do (
 	set "autousd=%%a"
 	set "autousd=!autousd:"=!"
-	if not defined autousd (set autousd=1)
 )
-for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\ag.json") do (
+if not defined autousd (set autousd=1)
+for /f "usebackq tokens=7 delims=:}" %%a in ("%temp%\down\ag.json") do (
 	set "agtousd=%%a"
 	set "agtousd=!agtousd:"=!"
-	if not defined agtousd (set agtousd=1)
 )
-for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\eur.json") do (
+if not defined agtousd (set agtousd=1)
+for /f "usebackq tokens=7 delims=:}" %%a in ("%temp%\down\eur.json") do (
 	set "eurtousd=%%a"
 	set "eurtousd=!eurtousd:"=!"
-	if not defined eurtousd (set eurtousd=1)
 )
-for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\gbp.json") do (
+if not defined eurtousd (set eurtousd=1)
+for /f "usebackq tokens=7 delims=:}" %%a in ("%temp%\down\gbp.json") do (
 	set "gbptousd=%%a"
 	set "gbptousd=!gbptousd:"=!"
-	if not defined gbptousd (set gbptousd=1)
 )
-for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\jpy.json") do (
+if not defined gbptousd (set gbptousd=1)
+for /f "usebackq tokens=7 delims=:}" %%a in ("%temp%\down\jpy.json") do (
 	set "jpytousd=%%a"
 	set "jpytousd=!jpytousd:"=!"
-	if not defined jpytousd (set jpytousd=1)
 )
-for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\hkd.json") do (
+if not defined jpytousd (set jpytousd=1)
+for /f "usebackq tokens=7 delims=:}" %%a in ("%temp%\down\hkd.json") do (
 	set "hkdtousd=%%a"
 	set "hkdtousd=!hkdtousd:"=!"
-	if not defined hkdtousd (set hkdtousd=1)
 )
-for /f "usebackq delims=:} tokens=7" %%a in ("%temp%\down\twd.json") do (
+if not defined hkdtousd (set hkdtousd=1)
+for /f "usebackq tokens=7 delims=:}" %%a in ("%temp%\down\twd.json") do (
 	set "twdtousd=%%a"
 	set "hkdtousd=!hkdtousd:"=!"
-	if not defined twdtousd (set twdtousd=1)
 )
+if not defined twdtousd (set twdtousd=1)
 rd /s /q "%temp%\down">nul
-call :Division !dogetousd! !cnytousd! 9 dogetocny
 call :Division !btctousd! !cnytousd! 9 btctocny
 call :Division !ethtousd! !cnytousd! 9 ethtocny
 call :Division !eurtousd! !cnytousd! 9 eurtocny
@@ -3846,6 +3845,7 @@ call :Division !jpytousd! !cnytousd! 9 jpytocny
 call :Division !hkdtousd! !cnytousd! 9 hkdtocny
 call :Division !twdtousd! !cnytousd! 9 twdtocny
 call :Division !xmrtousd! !cnytousd! 9 xmrtocny
+call :Division !dogetousd! !cnytousd! 9 dogetocny
 call :Division !filetousd! !cnytousd! 9 filetocny
 call :Division 1 !cnytousd! 3 usdtocny
 call :Division !autousd! 31.1034768 3 autocny
