@@ -49,9 +49,11 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250101
-set versize=168284
+set versize=161554
 set fy1=___
 set xz0=0
+set nx1=[+]下一页
+set nx2=[-]上一页
 set "pause=set /p =按任意键返回菜单<nul&pause>nul"
 set hx=echo;_______________________________________________________________________________
 for /f "delims=" %%a in ("%0") do (set "weizhi=%%~fa")
@@ -61,10 +63,7 @@ if exist "!temp!\dos_pre_reading_cache_wmictype.tmp" (
 	set "wmictype='wmic PATH Win32_SystemEnclosure get ChassisTypes /value'"
 )
 for /f "tokens=2 delims=={}" %%a in (!wmictype!) do (
-	if "%%a" equ "3" (
-		set nx1=[+]下一页
-		set nx2=[-]上一页
-	) else (
+	if "%%a" neq "3" (
 		set nx1=[S]下一页
 		set nx2=[A]上一页
 	)
@@ -1137,7 +1136,7 @@ if defined commandline (
 	echo;命令行:		!commandline!
 ) else (
 	echo;命令行:
-	wmic process where processid=!jclj! get commandline /format:value
+	wmic process where processid=!jclj! get commandline
 )
 tasklist /fi "pid eq !jclj!" /m
 ver
@@ -2962,7 +2961,12 @@ title 已知年月日计算星期!system!
 set jsxq=00000000
 set /p "jsxq=请输入年月日(例如20150605): "
 call :checkvar jsxq year jg
-if "!jg!" equ "0" (goto 53.1)
+if "!jg!" equ "0" (
+	set /p =请输入正确的格式!<nul
+	call :out 2
+	endlocal
+	goto 53
+)
 set "y=!jsxq:~0,4!"
 set "m=!jsxq:~4,2!"
 set "d=!jsxq:~6,2!"
@@ -3000,11 +3004,6 @@ echo;!rn! !jsxq:~0,4!年!jsxq:~4,2!月!jsxq:~6,2!日是星期!w!
 %pause%
 endlocal
 goto memuv2
-:53.1
-set /p =请输入正确的格式!<nul
-call :out 2
-endlocal
-goto 53
 :54
 setlocal
 if /i "!processor_architecture!" equ "x86" (set bit=32) else (set bit=64)
@@ -3672,7 +3671,7 @@ cls
 title 显示货币汇率!system!
 set "mainurl=https://api.coincap.io/v2/assets/"
 set "mainurl1=https://api.coincap.io/v2/rates/"
-echo;下载汇率文件(总共13个文件)...
+echo;下载汇率文件(总共6个文件)...
 if not exist "%temp%\down" (md "%temp%\down")
 for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
 	if "%%a" equ "0x1" (
@@ -3688,15 +3687,8 @@ set "doh=--doh-url https://101.101.101.101/dns-query"
 set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36""
 if exist "%systemroot%\system32\curl.exe" (
 	pushd "%temp%\down"
-	curl !proxy! !doh! !ua! -# -Z --compressed -C - --retry 2 --retry-delay 1 --connect-timeout 5 ^
-	-o au.json			%mainurl1%gold-ounce ^
-	-o ag.json			%mainurl1%silver-ounce ^
-	-o eur.json			%mainurl1%euro ^
-	-o jpy.json			%mainurl1%japanese-yen ^
-	-o hkd.json			%mainurl1%hong-kong-dollar ^
-	-o twd.json			%mainurl1%new-taiwan-dollar ^
-	-o cny.json			%mainurl1%chinese-yuan-renminbi ^
-	-o gbp.json			%mainurl1%british-pound-sterling ^
+	curl !proxy! !doh! !ua! -Z --compressed -C - --retry 2 --retry-delay 1 --connect-timeout 5 ^
+	-o all.json			%mainurl1% ^
 	-o xmr.json			%mainurl%monero ^
 	-o btc.json			%mainurl%bitcoin ^
 	-o eth.json			%mainurl%ethereum ^
@@ -3705,27 +3697,15 @@ if exist "%systemroot%\system32\curl.exe" (
 	popd
 ) else (
 	bitsadmin /transfer 下载汇率文件... /priority FOREGROUND ^
-	%mainurl1%gold-ounce				"%temp%\down\au.json" ^
-	%mainurl1%silver-ounce				"%temp%\down\ag.json" ^
-	%mainurl1%euro						"%temp%\down\eur.json" ^
-	%mainurl1%japanese-yen				"%temp%\down\jpy.json" ^
-	%mainurl1%hong-kong-dollar			"%temp%\down\hkd.json" ^
-	%mainurl1%new-taiwan-dollar			"%temp%\down\twd.json" ^
-	%mainurl1%chinese-yuan-renminbi		"%temp%\down\cny.json" ^
-	%mainurl1%british-pound-sterling	"%temp%\down\gbp.json" ^
-	%mainurl%monero						"%temp%\down\xmr.json" ^
-	%mainurl%bitcoin					"%temp%\down\btc.json" ^
-	%mainurl%ethereum					"%temp%\down\eth.json" ^
-	%mainurl%dogecoin					"%temp%\down\doge.json" ^
-	%mainurl%filecoin					"%temp%\down\filecoin.json"
+	%mainurl1%			"%temp%\down\all.json" ^
+	%mainurl%monero		"%temp%\down\xmr.json" ^
+	%mainurl%bitcoin	"%temp%\down\btc.json" ^
+	%mainurl%ethereum	"%temp%\down\eth.json" ^
+	%mainurl%dogecoin	"%temp%\down\doge.json" ^
+	%mainurl%filecoin	"%temp%\down\filecoin.json"
 )
 cls
 echo;处理汇率文件...
-for /f "usebackq tokens=7 delims=:}" %%a in ("%temp%\down\cny.json") do (
-	set "cnytousd=%%a"
-	set "cnytousd=!cnytousd:"=!"
-)
-if not defined cnytousd (set cnytousd=1)
 for /f "usebackq tokens=19,21 delims=:," %%a in ("%temp%\down\doge.json") do (
 	set "dogetousd=%%a"
 	set "doge24h=%%b"
@@ -3737,10 +3717,9 @@ if not defined dogetousd (
 	set doge24h=0
 )
 for /f "tokens=1,2 delims=." %%a in ("!doge24h!") do (
-	set "doge24h1=%%a"
-	set "doge24h2=%%b"
+	set "doge24h1=%%b"
+	set "doge24h=%%a.!doge24h1:~0,3!"
 )
-set "doge24h=!doge24h1!.!doge24h2:~0,3!"
 for /f "usebackq tokens=19,21 delims=:," %%a in ("%temp%\down\btc.json") do (
 	set "btctousd=%%a"
 	set "btc24h=%%b"
@@ -3752,10 +3731,9 @@ if not defined btctousd (
 	set btc24h=0
 )
 for /f "tokens=1,2 delims=." %%a in ("!btc24h!") do (
-	set "btc24h1=%%a"
-	set "btc24h2=%%b"
+	set "btc24h1=%%b"
+	set "btc24h=%%a.!btc24h1:~0,3!"
 )
-set "btc24h=!btc24h1!.!btc24h2:~0,3!"
 for /f "usebackq tokens=19,21 delims=:," %%a in ("%temp%\down\eth.json") do (
 	set "ethtousd=%%a"
 	set "eth24h=%%b"
@@ -3767,10 +3745,9 @@ if not defined ethtousd (
 	set eth24h=0
 )
 for /f "tokens=1,2 delims=." %%a in ("!eth24h!") do (
-	set "eth24h1=%%a"
-	set "eth24h2=%%b"
+	set "eth24h1=%%b"
+	set "eth24h=%%a.!eth24h1:~0,3!"
 )
-set "eth24h=!eth24h1!.!eth24h2:~0,3!"
 for /f "usebackq tokens=19,21 delims=:," %%a in ("%temp%\down\filecoin.json") do (
 	set "filetousd=%%a"
 	set "file24h=%%b"
@@ -3782,10 +3759,9 @@ if not defined filetousd (
 	file24h=0
 )
 for /f "tokens=1,2 delims=." %%a in ("!file24h!") do (
-	set "file24h1=%%a"
-	set "file24h2=%%b"
+	set "file24h1=%%b"
+	set "file24h=%%a.!file24h1:~0,3!"
 )
-set "file24h=!file24h1!.!file24h2:~0,3!"
 for /f "usebackq tokens=19,21 delims=:," %%a in ("%temp%\down\xmr.json") do (
 	set "xmrtousd=%%a"
 	set "xmr24h=%%b"
@@ -3797,45 +3773,30 @@ if not defined xmrtousd (
 	set xmr24h=0
 )
 for /f "tokens=1,2 delims=." %%a in ("!xmr24h!") do (
-	set "xmr24h1=%%a"
-	set "xmr24h2=%%b"
+	set "xmr24h1=%%b"
+	set "xmr24h=%%a.!xmr24h1:~0,3!"
 )
-set "xmr24h=!xmr24h1!.!xmr24h2:~0,3!"
-for /f "usebackq tokens=7 delims=:}" %%a in ("%temp%\down\au.json") do (
-	set "autousd=%%a"
-	set "autousd=!autousd:"=!"
+for %%i in (
+	euro^
+	gold-ounce^
+	silver-ounce^
+	japanese-yen^
+	hong-kong-dollar^
+	new-taiwan-dollar^
+	chinese-yuan-renminbi^
+	british-pound-sterling) do (
+	for /f "tokens=*" %%a in ('powershell -command "(Get-Content -Encoding UTF8 '%temp%\down\all.json'|ConvertFrom-Json).data|Where-Object {$_.id -eq '%%i'}|Select-Object -ExpandProperty rateUsd"') do (
+		set "%%i=%%a"
+	)
 )
-if not defined autousd (set autousd=1)
-for /f "usebackq tokens=7 delims=:}" %%a in ("%temp%\down\ag.json") do (
-	set "agtousd=%%a"
-	set "agtousd=!agtousd:"=!"
-)
-if not defined agtousd (set agtousd=1)
-for /f "usebackq tokens=7 delims=:}" %%a in ("%temp%\down\eur.json") do (
-	set "eurtousd=%%a"
-	set "eurtousd=!eurtousd:"=!"
-)
-if not defined eurtousd (set eurtousd=1)
-for /f "usebackq tokens=7 delims=:}" %%a in ("%temp%\down\gbp.json") do (
-	set "gbptousd=%%a"
-	set "gbptousd=!gbptousd:"=!"
-)
-if not defined gbptousd (set gbptousd=1)
-for /f "usebackq tokens=7 delims=:}" %%a in ("%temp%\down\jpy.json") do (
-	set "jpytousd=%%a"
-	set "jpytousd=!jpytousd:"=!"
-)
-if not defined jpytousd (set jpytousd=1)
-for /f "usebackq tokens=7 delims=:}" %%a in ("%temp%\down\hkd.json") do (
-	set "hkdtousd=%%a"
-	set "hkdtousd=!hkdtousd:"=!"
-)
-if not defined hkdtousd (set hkdtousd=1)
-for /f "usebackq tokens=7 delims=:}" %%a in ("%temp%\down\twd.json") do (
-	set "twdtousd=%%a"
-	set "hkdtousd=!hkdtousd:"=!"
-)
-if not defined twdtousd (set twdtousd=1)
+set "eurtousd=!euro!"
+set "autousd=!gold-ounce!"
+set "agtousd=!silver-ounce!"
+set "jpytousd=!japanese-yen!"
+set "hkdtousd=!hong-kong-dollar!"
+set "twdtousd=!new-taiwan-dollar!"
+set "cnytousd=!chinese-yuan-renminbi!"
+set "gbptousd=!british-pound-sterling!"
 rd /s /q "%temp%\down">nul
 call :Division !btctousd! !cnytousd! 9 btctocny
 call :Division !ethtousd! !cnytousd! 9 ethtocny
@@ -4352,7 +4313,7 @@ for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\W
 	)
 )
 for /l %%a in (1,1,!tr!) do (
-	start /min /low "curl多进程下载_!tr!" ^
+	start /min /low "curl多进程下载_%%a" ^
 	curl !proxy! !doh! !ua! --compressed -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir "%temp%\down" "!url!"
 	set /a "oldfd=newfd+1"
 	if "%%a" equ "!pdtr!" (set newfd=) else (set /a "newfd=oldfd+fd-1")
@@ -4557,6 +4518,10 @@ if not exist "!域名重定向!" (
 		echo #quora
 		echo quora.com=qr.ae
 		echo *.quora.com=qr.ae
+		echo;
+		echo #duckduckgo
+		echo duckduckgo.com=duck.co
+		echo *.duckduckgo.com=duck.co
 	)>"!域名重定向!"
 )
 if not exist "!域名重解析!" (
@@ -4667,12 +4632,14 @@ if exist "!域名重定向!" (
 	for /f "eol=# tokens=1,2 delims== " %%a in (!域名重定向!) do (
 		set "host-rules=!host-rules!MAP %%a %%b, "
 	)
+	set "host-rules=!host-rules:~0,-2!"
 	set "host-rules=--host-rules="!host-rules!""
 )
 if exist "!域名重解析!" (
 	for /f "eol=# tokens=1,2 delims== " %%a in (!域名重解析!) do (
 		set "host-resolver-rules=!host-resolver-rules!MAP %%a %%b, "
 	)
+	set "host-resolver-rules=!host-resolver-rules:~0,-2!"
 	set "host-resolver-rules=--host-resolver-rules="!host-resolver-rules!""
 )
 if exist "!强制使用quic!" (
@@ -4683,6 +4650,7 @@ if exist "!强制使用quic!" (
 			set "origin-to-force-quic-on=!origin-to-force-quic-on!%%a:%%b, "
 		)
 	)
+	set "origin-to-force-quic-on=!origin-to-force-quic-on:~0,-2!"
 	set "origin-to-force-quic-on=--enable-quic --origin-to-force-quic-on="!origin-to-force-quic-on!""
 )
 if "!chrome-command-line!" equ "1" (
@@ -4958,8 +4926,6 @@ for /f "skip=1 eol=C" %%a in ('certutil -hashfile "!url!" !shuanfa!') do (
 	)
 )
 goto :eof
-::for /f "delims=" %%a in ('"powershell get-filehash %url% -algorithm %shuanfa%^|select-object hash^|format-list"') do (set hash=%%a)
-::set hash=%hash:~7%
 :update
 setlocal
 cls
@@ -5167,7 +5133,6 @@ if /i "!hash!" equ "!doshash!" (
 	set verbak=
 	goto memuv2
 )
-::bitsadmin /transfer 下载更新中... /priority FOREGROUND https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js %weizhi%&start %comspec% /c %0&exit 0
 :sjc
 REM 参数: 开始时间和结束时间，格式为 HH:MM:SS.mm
 setlocal
@@ -5262,7 +5227,7 @@ set "a4=显示系统信息"
 set "a5=解除任务管理器被禁用"
 set "a6=显示被隐藏文件(中了该类病毒后)"
 set "a7=解除注册表被禁用"
-set "a8=计算开平方"
+set "a8=计算正整数开平方"
 set "a9=切换到命令提示符"
 set "a10=将磁盘格式转换为NTFS"
 set "a11=磁盘错误修复"
@@ -5498,191 +5463,198 @@ If (Test-Path $InfFileLocation) {
 #su#
 :xdwjs
 setlocal
-set Bytes=%~1
-set danwei=%~2
-if /i "!danwei!" equ "kb" (set /a bytes*=1024)
-if /i "!danwei!" equ "mb" (set /a bytes*=1048576)
-if /i "!danwei!" equ "gb" (set /a bytes*=1073741824)
-if "%~3" equ "" (goto :eof)
+set "Bytes=%1"
+set "danwei=%2"
+if /i "!danwei!" equ "kb" (set /a "bytes*=1024")
+if /i "!danwei!" equ "mb" (set /a "bytes*=1048576")
+if /i "!danwei!" equ "gb" (set /a "bytes*=1073741824")
+if "%3" equ "" (goto :eof)
 call :Division !Bytes! 1152921504606846976 2 OK
-if not "%OK:~0,2%" equ "0." (
-	endlocal&set %~3=%OK% EB
-	Goto :eof
-) else (call :Division !Bytes! 1125899906842624 2 OK)
-if not "%OK:~0,2%" equ "0." (
-	endlocal&set %~3=%OK% PB
-	Goto :eof
-) else (call :Division !Bytes! 1099511627776 2 OK)
-if not "%OK:~0,2%" equ "0." (
-	endlocal&set %~3=%OK% TB
-	Goto :eof
-) else (call :Division !Bytes! 1073741824 2 OK)
-if not "%OK:~0,2%" equ "0." (
-	endlocal&set %~3=%OK% GB
-	Goto :eof
-) else (call :Division !Bytes! 1048576 2 OK)
-if not "%OK:~0,2%" equ "0." (
-	endlocal&set %~3=%OK% MB
-	Goto :eof
-) else (call :Division !Bytes! 1024 2 OK)
-if not "%OK:~0,2%" equ "0." (
-	endlocal&set %~3=%OK% KB
-	Goto :eof
+if not "!OK:~0,2!" equ "0." (
+	endlocal&set "%3=%OK% EB"
+	goto :eof
 ) else (
-	endlocal&set %~3=%Bytes% Byte
-	Goto :eof
+	call :Division !Bytes! 1125899906842624 2 OK
+)
+if not "!OK:~0,2!" equ "0." (
+	endlocal&set "%3=%OK% PB"
+	goto :eof
+) else (
+	call :Division !Bytes! 1099511627776 2 OK
+)
+if not "!OK:~0,2!" equ "0." (
+	endlocal&set "%3=%OK% TB"
+	goto :eof
+) else (
+	call :Division !Bytes! 1073741824 2 OK
+)
+if not "!OK:~0,2!" equ "0." (
+	endlocal&set "%3=%OK% GB"
+	goto :eof
+) else (
+	call :Division !Bytes! 1048576 2 OK
+)
+if not "!OK:~0,2!" equ "0." (
+	endlocal&set "%3=%OK% MB"
+	goto :eof
+) else (
+	call :Division !Bytes! 1024 2 OK
+)
+if not "!OK:~0,2!" equ "0." (
+	endlocal&set "%3=%OK% KB"
+	goto :eof
+) else (
+	endlocal&set "%3=%Bytes% Byte"
+	goto :eof
 )
 :Division
 setlocal
-if "%~4" equ "" (goto :eof)
-set Div.1=%~1
-set Div.2=%~2
+if "%4" equ "" (goto :eof)
+set "Div.1=%1"
+set "Div.2=%2"
 set Div.3=
 set Div.I=0
-set Div.D=%~3
+set "Div.D=%3"
 set Div.1.Len.0=
 set Div.2.Len.0=
 set Div.Z=00000000
-for /l %%i in (1 1 9) do set Div.Num.%%i=
-for /l %%i in (1 1 7) do set Div.Z=!Div.Z!!Div.Z!
-set Div.H=4096 2048 1024 512 256 128 64 32 16 8 4 2 1
+for /l %%i in (1 1 9) do (set Div.Num.%%i=)
+for /l %%i in (1 1 7) do (set "Div.Z=!Div.Z!!Div.Z!")
+set "Div.H=4096 2048 1024 512 256 128 64 32 16 8 4 2 1"
 for /l %%i in (1 1 2) do (
 	set Div.N=0
 	set Div.%%i.Len.2=0
 	for %%j in (!Div.%%i:.^= !) do (
-		set /a Div.N+=1
-		set Div.M=Div.M%%j
+		set /a "Div.N+=1"
+		set "Div.M=Div.M%%j"
 		set Div.%%i.Len.!Div.N!=0
 		for %%l in (!Div.H!) do (
 			if "!Div.M:~%%l!" neq "" (
-				set /a Div.%%i.Len.!Div.N!+=%%l
-				set Div.M=!Div.M:~%%l!
+				set /a "Div.%%i.Len.!Div.N!+=%%l"
+				set "Div.M=!Div.M:~%%l!"
 			)
 		)
-		set /a Div.%%i.Len.0+=Div.%%i.Len.!Div.N!
+		set /a "Div.%%i.Len.0+=Div.%%i.Len.!Div.N!"
 	)
-		set Div.%%i=!Div.%%i:.=!
+	set "Div.%%i=!Div.%%i:.=!"
 )
 if !Div.1.Len.2! gtr !Div.2.Len.2! (
-	set /a Div.2.Len.0+=Div.1.Len.2-Div.2.Len.2
-	) else (
-		set /a Div.1.Len.0+=Div.2.Len.2-Div.1.Len.2
+	set /a "Div.2.Len.0+=Div.1.Len.2-Div.2.Len.2"
+) else (
+	set /a "Div.1.Len.0+=Div.2.Len.2-Div.1.Len.2"
 )
 for /l %%i in (1 1 2) do (
-	set Div.%%i=!Div.%%i!!Div.Z!
-	for %%j in (!Div.%%i.Len.0!) do set Div.%%i=!Div.%%i:~,%%j!
+	set "Div.%%i=!Div.%%i!!Div.Z!"
+	for %%j in (!Div.%%i.Len.0!) do (set "Div.%%i=!Div.%%i:~,%%j!")
 )
 for /f "tokens=* delims=0" %%i in ("!Div.2!") do (
-	set Div.O=%%i
-	set Div.2=0%%i
+	set "Div.O=%%i"
+	set "Div.2=0%%i"
 )
 set Div.2.Len.0=1
 for %%i in (!Div.H!) do (
 	if "!Div.O:~%%i!" neq "" (
-		set /a Div.2.Len.0+=%%i
-		set Div.O=!Div.O:~%%i!
+		set /a "Div.2.Len.0+=%%i"
+		set "Div.O=!Div.O:~%%i!"
 	)
 )
-set /a Div.Len=Div.2.Len.0+1
+set /a "Div.Len=Div.2.Len.0+1"
 if !Div.1.Len.0! lss !Div.2.Len.0! (
-	set Div.1.Len.0=!Div.2.Len.0!
-	set Div.1=!Div.Z:~-%Div.2.Len.0%,-%Div.1.Len.0%!!Div.1!
+	set "Div.1.Len.0=!Div.2.Len.0!"
+	set "Div.1=!Div.Z:~-%Div.2.Len.0%,-%Div.1.Len.0%!!Div.1!"
 )
-set /a Div.1.Len.0+=Div.D
-set Div.1=0!Div.1!!Div.Z:~,%Div.D%!
-set Div.P=!Div.1:~,%Div.2.Len.0%!
-set Div.T=0000000!Div.2!
-set /a Div.J+=1
-set /a Div.Tem.Len=Div.2.Len.0+7
-if !Div.J! equ 1 (for %%i in (!1:~-1!) do (
-	for /f "delims=" %%j in ("!%%i!") do (
-		if %%~Zj equ !%Div.I%! set C=!Div.D!
+set /a "Div.1.Len.0+=Div.D"
+set "Div.1=0!Div.1!!Div.Z:~,%Div.D%!"
+set "Div.P=!Div.1:~,%Div.2.Len.0%!"
+set "Div.T=0000000!Div.2!"
+set /a "Div.J+=1"
+set /a "Div.Tem.Len=Div.2.Len.0+7"
+if "!Div.J!" equ "1" (
+	for %%i in (!1:~-1!) do (
+		for /f "delims=" %%j in ("!%%i!") do (
+			if "%%~Zj" equ "!%Div.I%!" (set "C=!Div.D!")
 		)
 	)
 )
 for /l %%i in (1 1 9) do (
 	set Div.V=0
 	for /l %%j in (8 8 !Div.Tem.Len!) do (
-		set /a Div.V=1!Div.T:~-%%j,8!*%%i+Div.V
-			set Div.Num.%%i=!Div.V:~-8!!Div.Num.%%i!
-		set /a Div.V=!Div.V:~,-8!-%%i
+		set /a "Div.V=1!Div.T:~-%%j,8!*%%i+Div.V"
+		set "Div.Num.%%i=!Div.V:~-8!!Div.Num.%%i!"
+		set /a "Div.V=!Div.V:~,-8!-%%i"
 	)
-	set Div.Num.%%i=!Div.V!!Div.Num.%%i!
-	set Div.Num.%%i=0000000!Div.Num.%%i:~-%Div.Len%!
+	set "Div.Num.%%i=!Div.V!!Div.Num.%%i!"
+	set "Div.Num.%%i=0000000!Div.Num.%%i:~-%Div.Len%!"
 )
 for /l %%l in (!Div.2.Len.0! 1 !Div.1.Len.0!) do (
-	set Div.P=!Div.Z!!Div.P!!Div.1:~%%l,1!
-	set Div.P=!Div.P:~-%Div.Len%!
-	if !Div.J! equ 1 (
+	set "Div.P=!Div.Z!!Div.P!!Div.1:~%%l,1!"
+	set "Div.P=!Div.P:~-%Div.Len%!"
+	if "!Div.J!" equ "1" (
 		set Div.I.Tem=
-		for %%i in (!%Div.I%!) do set Div.D.Tem=%%i
-		for /l %%i in (0 1 9) do set Div.D.Tem=!Div.D.Tem:%%i=%%i !
-		for %%i in (!Div.D.Tem!) do set /a Div.I.Tem=!Div.I.Tem!+%%i
-		if !Div.I.Tem! neq 24 set C=
+		for %%i in (!%Div.I%!) do (set "Div.D.Tem=%%i")
+		for /l %%i in (0 1 9) do (set "Div.D.Tem=!Div.D.Tem:%%i=%%i !")
+		for %%i in (!Div.D.Tem!) do (set /a "Div.I.Tem=!Div.I.Tem!+%%i")
+		if "!Div.I.Tem!" neq "24" (set C=)
 	)
 	if "!Div.P!" geq "!Div.2!" (
 		set Div.R=1
-		set Div.S=0000000!Div.P!
+		set "Div.S=0000000!Div.P!"
 		for /l %%i in (2 1 9) do (
-			if "!Div.S!" geq "!Div.Num.%%i!" set Div.R=%%i
+			if "!Div.S!" geq "!Div.Num.%%i!" (set "Div.R=%%i")
 		)
-		set Div.3=!Div.3!!Div.R!
+		set "Div.3=!Div.3!!Div.R!"
 		set Div.P=
 		set Div.V=0
 		for %%i in (!Div.R!) do (
 			for /l %%j in (8 8 !Div.Tem.Len!) do (
-				set /a Div.V=3!Div.S:~-%%j,8!-1!Div.Num.%%i:~-%%j,8!-!Div.V:~,1!%%2
-				set Div.P=!Div.V:~1!!Div.P!
+				set /a "Div.V=3!Div.S:~-%%j,8!-1!Div.Num.%%i:~-%%j,8!-!Div.V:~,1!%%2"
+				set "Div.P=!Div.V:~1!!Div.P!"
 			)
 		)	
-	) else set Div.3=!Div.3!0
+	) else (
+		set "Div.3=!Div.3!0"
+	)
 )
-if defined Div.D if %Div.D% gtr 0 set Div.3=!Div.3:~,-%Div.D%!.!Div.3:~-%Div.D%!
-for /f "tokens=* delims=0" %%i in ("!Div.3!") do set Div.3=%%i
-if "!Div.3:~0,1!" equ "." set Div.3=0!Div.3!
-if "!Div.3!" equ "" set Div.3=0
-endlocal&set %~4=%Div.3%
+if defined Div.D (
+	if !Div.D! gtr 0 (set "Div.3=!Div.3:~,-%Div.D%!.!Div.3:~-%Div.D%!")
+)
+for /f "tokens=* delims=0" %%i in ("!Div.3!") do (set "Div.3=%%i")
+if "!Div.3:~0,1!" equ "." (set "Div.3=0!Div.3!")
+if "!Div.3!" equ "" (set Div.3=0)
+endlocal&set "%4=%Div.3%"
 goto :eof
 :cf
 setlocal
 call :cf_1 %1 %2 %3 jg
-endlocal&set %4=%jg%
+endlocal&set "%4=%jg%"
 goto :eof
 :cf_1
 set num=0
 set dec_str=
 set input=
-if "%~4" equ "" (goto :eof)
-set /a int_str=%1/%2
-set /a mod=%1%%%2
-if %mod% equ 0 goto end
-:count_dec
-set mod=%mod%0
-if %mod% lss %2 (
-	set dec_str=!dec_str!0
-	goto count_dec
+if "%4" equ "" (goto :eof)
+set /a "int_str=%1/%2"
+set /a "mod=%1%%%2"
+if "!mod!" equ "0" (goto cf_3)
+:cf_4
+set "mod=!mod!0"
+if !mod! lss %2 (
+	set "dec_str=!dec_str!0"
+	goto cf_4
 ) else (
-	set /a dec=%mod%/%2
-	set dec_str=!dec_str!!dec!
-	set /a mod=%mod%%%%2
+	set /a "dec=mod/%2"
+	set "dec_str=!dec_str!!dec!"
+	set /a "mod=mod%%%2"
 )
-set /a num+=1
-if %mod% neq 0 if %num% lss %3 goto count_dec
-:end
-for /l %%i in (1,1,%3) do set zero_str=!zero_str!0
-set dec_str=%dec_str%%zero_str%
-set %~4=%int_str%.!dec_str:~0,%3!
+set /a "num+=1"
+if "!mod!" neq "0" (
+	if !num! lss %3 (goto cf_4)
+)
+:cf_3
+for /l %%i in (1,1,%3) do (set "zero_str=!zero_str!0")
+set "dec_str=!dec_str!!zero_str!"
+set "%4=!int_str!.!dec_str:~0,%3!"
 goto :eof
-:add
-setlocal
-(set L=&for /l %%a in (1,1,8) do set L=!L!00000000
-for /f "tokens=1-3 delims=." %%a in ("!L!%1.!L!") do set at=%%a&set aw=%%b%%c
-for /f "tokens=1-3 delims=." %%a in ("!L!%2.!L!") do set bt=%%a&set bw=%%b%%c
-set a=!at:~-64!!aw:~,64!&set b=!bt:~-64!!bw:~,64!&set e=&set v=200000000
-for /l %%a in (8,8,128)do set/a v=1!b:~-%%a,8!+1!a:~-%%a,8!+!v:~-9,-8!-2&set e=!v:~-8!!e!
-set e=!e:0= !&for /f "tokens=*" %%a in ("!e:~,-64!_.!e:~64!") do set e=%%~nxa
-set e=!e:_=!&for %%a in ("!e: =0!") do endlocal&(if %3.==. (echo;%%~a) else set %3=%%~a)
-goto :eof)
 :offdisplay
 powershell (Add-Type '[DllImport(\"user32.dll\")]^public static extern int SendMessage(int hWnd, int hMsg, int wParam, int lParam);' -Name a -Pas)::SendMessage(-1,0x0112,0xF170,2)
 goto :eof
@@ -5876,60 +5848,109 @@ if "%3" neq "" (
 goto :eof
 :sqrt
 setlocal
-set s=%1
-set w=%2
-if defined W (for /l %%i in (1 1 %W%) do set "s=!s!00") else set W=0
-set p=!s!&set /a len=N=0
-for %%i in (4096 2048 1024 512 256 128 64 32 16 8 4 2 1) do IF "!p:~%%i!" NEQ "" set/a len+=%%i&set "p=!p:~%%i!"
+set "s=%1"
+set "w=%2"
+if defined W (
+	for /l %%i in (1 1 !W!) do set "s=!s!00"
+) else (
+	set W=0
+)
+set "p=!s!"
+set len=0
+set N=0
+for %%i in (4096 2048 1024 512 256 128 64 32 16 8 4 2 1) do (
+	if "!p:~%%i!" neq "" (
+		set /a "len+=%%i"
+		set "p=!p:~%%i!"
+	)
+)
 set /a "N-=~(len%%2)"
-set M=!s:~,%N%!
-for /l %%i in (1 1 9) do set/a Mx=%%i*%%i&if !Mx! leq !M! set/a "i=%%i,j=100+M-Mx"
-set /a "len-=1,Len_i=_N=i/5+1,p=i*20"
-set j=!j:~-%_N%!&set p=0!p!&set kl=0000000
-set /a _N=8-_N
-for /l %%i in (%N% 2 !len!) do (
-set "j=!j!!s:~%%i,2!"
-if "!j:0=!" neq "" (
-set /a Ln_i=Len_i+=2
-if "!p!" lss "!j!" (
-set d=Z&set in=!kl!!P!&set /a Ln_i+=7
-for /l %%j in (9 -1 2) do (
-if "!d!" gtr "!j!" (
-set "x=%%j"
-set d=&set /a "b=x*x"
-for /l %%k in (8 8 !Ln_i!) do (
-set /a "b=1!in:~-%%k,8!*%%j+b"
-set d=!b:~-8!!d!&set /a "b=!b:~,-8!-%%j"
+set "M=!s:~,%N%!"
+for /l %%i in (1 1 9) do (
+	set /a "Mx=%%i*%%i"
+	if !Mx! leq !M! (
+		set "i=%%i"
+		set /a "j=100+M-Mx"
+	)
 )
-set d=!b!!d!
-for %%k in (!Len_i!) do set "d=!d:~-%%k!"
+set /a "len-=1"
+set /a "Len_i=_N=i/5+1"
+set /a "p=i*20"
+set "j=!j:~-%_N%!"
+set "p=0!p!"
+set kl=0000000
+set /a "_N=8-_N"
+for /l %%i in (!N! 2 !len!) do (
+	set "j=!j!!s:~%%i,2!"
+	if "!j:0=!" neq "" (
+		set /a "Ln_i=Len_i+=2"
+		if !p! lss !j! (
+			set d=Z
+			set "in=!kl!!P!"
+			set /a "Ln_i+=7"
+			for /l %%j in (9 -1 2) do (
+				if !d! gtr !j! (
+					set "x=%%j"
+					set d=
+					set /a "b=x*x"
+					for /l %%k in (8 8 !Ln_i!) do (
+						set /a "b=1!in:~-%%k,8!*%%j+b"
+						set "d=!b:~-8!!d!"
+						set /a "b=!b:~,-8!-%%j"
+					)
+					set "d=!b!!d!"
+					for %%k in (!Len_i!) do (set "d=!d:~-%%k!")
+				)
+			)
+			if !d! gtr !j! (
+				set "d=!in!"
+				set x=1
+				set b=1
+			) else (
+				set "d=!kl!!d!"
+				set b=0
+			)
+			set "j=!kl!!j!"
+			set t=
+			for /l %%j in (8 8 !Ln_i!) do (
+				set /a "b=3!j:~-%%j,8!-1!d:~-%%j,8!-!b:~,1!%%2"
+				set "t=!b:~1!!t!"
+			)
+			for %%j in (!Len_i!) do (set "j=!t:~-%%j!")
+			set "j=!j:~1!"
+		) else (
+			set x=0
+		)
+		set /a "Len_i-=1"
+		if "!x!" neq "0" (
+			if "!x!" geq "5" (
+				set p=
+				set b=0
+				set "in=!kl!!i!!x!"
+				set /a "Ln_i=Len_i+_N"
+				for /l %%j in (8 8 !Ln_i!) do (
+					set /a "b=1!in:~-%%j,8!*2+!b:~,1!%%2"
+					set "p=!b:~1!!p!"
+				)
+				set /a "b=!b:~,1!%%2"
+				for %%j in (!Len_i!) do (set "p=!b:1=01!!p:~-%%j!0")
+			) else (
+				set /a "t=x*2"
+				set "p=!p:~,-1!!t!0"
+			)
+		) else (
+			set "p=!p!0"
+			set "j=!j:~1!"
+		)
+	) else (
+		set "j=!j:~1!"
+		set "p=!p!0"
+		set /a "Len_i+=1"
+		set x=0
+	)
+	set "i=!i!!x!"
 )
-)
-if "!d!" gtr "!j!" (set d=!in!&set x=1&set b=1) else set d=!kl!!d!&set b=0
-set j=!kl!!j!&set "t="
-for /l %%j in (8 8 !Ln_i!) do (
-set /a "b=3!j:~-%%j,8!-1!d:~-%%j,8!-!b:~,1!%%2"
-set "t=!b:~1!!t!"
-)
-for %%j in (!Len_i!) do set "j=!t:~-%%j!"
-set "j=!j:~1!") else set "x=0"
-set /a "Len_i-=1"
-if "!x!" neq "0" (
-if "!x!" geq "5" (
-set p=&set b=0&set "in=!kl!!i!!x!"
-set /a "Ln_i=Len_i+_N"
-for /l %%j in (8 8 !Ln_i!) do (
-set /a "b=1!in:~-%%j,8!*2+!b:~,1!%%2"
-set p=!b:~1!!p!
-)
-set /a "b=!b:~,1!%%2"
-for %%j in (!Len_i!) do set "p=!b:1=01!!p:~-%%j!0"
-) else set /a t=x*2&set "p=!p:~,-1!!t!0"
-) else set p=!p!0&set "j=!j:~1!"
-) else set j=!j:~1!&set p=!p!0&set /a "Len_i+=1,x=0"
-set i=!i!!x!
-)
-for /f "tokens=* delims=." %%i in ("!i:~,-%W%!.!i:~-%W%!") do (endlocal&set %3=%%i)
+for /f "tokens=* delims=." %%i in ("!i:~,-%W%!.!i:~-%W%!") do (endlocal&set "%3=%%i")
 goto :eof
 :10to16
 setlocal
@@ -5998,122 +6019,6 @@ if "%2" neq "" (
 	endlocal&echo;%num%
 )
 goto :eof
-:calc
-setlocal
-set a=%~1.0
-set b=%~3.0
-for /f "tokens=1,2 delims=." %%a in ("%a:-=%") do set "a_1=%%a"&set "a_2=%%b"
-for /f "tokens=1,2 delims=." %%a in ("%b:-=%") do set "b_1=%%a"&set "b_2=%%b"
-call :strlenx %a_1% L1_1
-call :strlenx %a_2% L1_2
-call :strlenx %b_1% L2_1
-call :strlenx %b_2% L2_2
-for %%i in (1 2) do (
-	set "zero="&set m=0
-	if !L1_%%i! leq !L2_%%i! (
-		set /a m=L2_%%i-L1_%%i
-		if !m! neq 0 (
-			for /l %%a in (1 1 !m!) do set zero=!zero!0
-		)
-		if "%%i" equ "1" (set a_%%i=!zero!!a_%%i!) else set a_%%i=!a_%%i!!zero!
-		set Len_%%i=!L2_%%i!
-	) else (
-		set /a m=L1_%%i-L2_%%i
-		for /l %%a in (1 1 !m!) do set zero=!zero!0
-		if "%%i" equ "1" (set b_%%i=!zero!!b_%%i!) else set b_%%i=!b_%%i!!zero!
-		set Len_%%i=!L1_%%i!
-	)
-)
-set /a Len=Len_1+Len_2+1
-if "%~2" equ "+" (
-	if "!a:~,1!" neq "-" (
-		if "!b:~,1!" neq "-" (
-			call :jia %a_1%.%a_2% %b_1%.%b_2% %Len% s
-			set "%~4=!s!"
-		) else (
-			call :jian %a_1%.%a_2% %b_1%.%b_2% %Len% s
-			if "%a_1%.%a_2%" gtr "%b_1%.%b_2%" (set "%~4=!s!") else set "%~4=-!s!"
-		)
-	) else (
-		if "!b:~,1!" neq "-" (
-			call :jian %a_1%.%a_2% %b_1%.%b_2% %Len% s
-			if "%a_1%.%a_2%" gtr "%b_1%.%b_2%" (set "%~4=-!s!") else set "%~4=!s!"
-		) else (
-			call :jia %a_1%.%a_2% %b_1%.%b_2% %Len% s
-			set "%~4=-!s!"
-		)
-	)
-) else (
-	if "!a:~,1!" neq "-" (
-		if "!b:~,1!" neq "-" (
-			call :jian %a_1%.%a_2% %b_1%.%b_2% %Len% s
-			if "%a_1%.%a_2%" lss "%b_1%.%b_2%" (set "%~4=-!s!") else set "%~4=!s!"
-		) else (
-			call :jia %a_1%.%a_2% %b_1%.%b_2% %Len% s
-			set "%~4=!s!"
-		)
-	) else (
-		if "!b:~,1!" neq "-" (
-			call :jia %a_1%.%a_2% %b_1%.%b_2% %Len% s
-			set "%~4=-!s!"
-		) else (
-			call :jian %a_1%.%a_2% %b_1%.%b_2% %Len% s
-			if "%a_1%.%a_2%" lss "%b_1%.%b_2%" (set "%~4=!s!") else set "%~4=-!s!"
-		)
-	)
-)
-goto :eof
-:strlenx
-setlocal
-set "$=%1#"
-set len=&for %%a in (4096 2048 1024 512 256 128 64 32 16)do if !$:~%%a!. neq . set/a len+=%%a&set $=!$:~%%a!
-set $=!$!fedcba9876543210&set/a len+=0x!$:~16,1!
-endlocal&set %2=%len%&goto :eof
-:jia
-setlocal
-set a=%~1
-set b=%~2
-set t=0
-set "s="
-for /l %%a in (-1 -1 -%~3) do (
-	if "!a:~%%a,1!" equ "." (
-		set s=.!s!
-	) else (
-		set /a "c=t+!a:~%%a,1!+!b:~%%a,1!"
-		if !c! geq 10 (set t=1) else set t=0
-		set s=!c:~-1!!s!
-	)
-)
-if %t% equ 1 (set s=1!s!)
-for /f "tokens=1,2 delims=." %%a in ("%s%") do (
-	for /f "tokens=1* delims=0" %%c in (".%%b") do if "%%c%%d" equ "." set s=%%a
-)
-endlocal&set %~4=%s%&goto :eof
-:jian
-setlocal
-if %~1 lss %~2 (
-	set a=%~2
-	set b=%~1
-) else (
-	set a=%~1
-	set b=%~2
-)
-set t=0
-set "s="
-for /l %%a in (-1 -1 -%~3) do (
-	if "!a:~%%a,1!" equ "." (
-		set s=.!s!
-	) else (
-		set /a "c=10+!a:~%%a,1!-!b:~%%a,1!-t"
-		if !c! lss 10 (set t=1) else set t=0
-		set s=!c:~-1!!s!
-	)
-)
-for /f "tokens=1,2 delims=." %%a in ("%s%") do (
-	for /f "tokens=* delims=0" %%c in ("%%a") do if "%%c" equ "" (set pre=0) else set pre=%%c
-	for /f "tokens=* delims=0" %%c in ("%%b") do if "%%c" equ "" (set s=!pre!) else set s=!pre!.%%b
-)
-endlocal&set %~4=%s%&goto :eof
 :pdxp
 if /i "!system!" equ "Microsoft Windows XP Home" (set "system= - Windows XP 家庭版"&goto :eof)
 if /i "!system!" equ "Microsoft Windows XP Professional" (set "system= - Windows XP 专业版"&goto :eof)
@@ -6152,41 +6057,6 @@ if /i "!system!" equ "Microsoft Windows 11 Professional" (set "system= - Windows
 if /i "!system!" equ "Microsoft Windows 11 Education" (set "system= - Windows 11 教育版"&goto :eof)
 if /i "!system!" equ "Microsoft Windows 11 Enterprise" (set "system= - Windows 11 企业版"&goto :eof)
 set "system= - !system:~10!"
-goto :eof
-:sortaz
-setlocal
-for /f "delims==" %%a in ('set p. 2^>nul')do set "%%a="
-for /l %%a in (1 1 20) do set "p.lin=0000000000!p.lin!"
-for %%a in (%~1) do (set s=!p.lin!%%a&set "s=!s:~-200!"
-if defined p...!s! (set p..%%a=!p..%%a! %%a
-set p...!s!=!p..%%a! %%a) else (set p...!s!=%%a))
-for /f "tokens=2 delims==" %%a in ('set p...') do (
-for %%i in (%%a) do set "p.ok=!p.ok! %%i")
-endlocal&set %~2=%p.ok:~1%&goto :EOF
-:sortza
-setlocal
-for /f "delims==" %%a in ('set p. 2^>nul')do set "%%a="
-for /l %%a in (1 1 20) do set "p.lin=0000000000!p.lin!"
-for %%a in (%~1) do (set s=!p.lin!%%a&set "s=!s:~-200!"
-if defined p...!s! (set p..%%a=!p..%%a! %%a
-set p...!s!=!p..%%a! %%a) else (set p...!s!=%%a))
-for /f "tokens=2 delims==" %%a in ('set p...') do (
-for %%i in (%%a) do set "p.ok=%%i !p.ok!")
-endlocal&set %~2=%p.ok%&goto :EOF
-:checkmem
-setlocal
-if "%1" equ "" (goto :eof)
-if "%2" equ "" (goto :eof)
-if "%3" equ "" (goto :eof)
-for /f "tokens=2 delims==" %%a in ('wmic OS get FreePhysicalMemory /Value') do (
-	set "mem=%%a"
-	set "mem=!mem:~0,-1!"
-	if !mem! %1 %2 (
-		endlocal&set "%3=1"
-	) else (
-		endlocal&set "%3=0"
-	)
-)
 goto :eof
 :xcf
 setlocal
@@ -6243,27 +6113,6 @@ if "%3" neq "" (
 	echo;!num!
 )
 goto :eof
-:scf
-setlocal
-if "%~1" equ "0" Endlocal&set %~3=0&goto :EOF
-if "%~2" equ "0" Endlocal&set %~3=0&goto :EOF
-set f=&set jia=&set ji=&set /a n1=0,n2=0
-set vard1=&set "vard2="&set var1=%~1&set "var2=%~2"
-for /l %%a in (0 1 9) do (
-set var1=!var1:%%a= %%a !&set var2=!var2:%%a= %%a !)
-for %%a in (!var1!)do (set /a n1+=1&set vard1=%%a !vard1!)
-for %%a in (!var2!)do (set /a n2+=1&set vard2=%%a !vard2!)
-if !n1! gtr !n2! (set vard1=%vard2%&set vard2=%vard1%)
-for %%a in (!vard1!) do (set "t="&set /a j=0
-for %%b in (!vard2!) do (if "!jia!" equ "" set /a jia=0
-set /a a=%%a*%%b+j+!jia:~-1!&set "t=!a:~-1!!t!"
-set a=0!a!&set "j=!a:~-2,1!"&set jia=!jia:~0,-1!)
-set "ji=!t:~-1!!ji!"
-if "!j:~0,1!" equ "0" (set ss=) else set "ss=!j:~0,1!"
-set jia=!ss!!t:~0,-1!)
-if not "!j:~0,1!" equ "0" set "t=!j:~0,1!!t!"
-set "ji=!t!!ji:~1!"
-Endlocal&set %~3=%ji%&goto :EOF
 :convertu
 setlocal
 if "%1" equ "" (goto :eof)
@@ -6418,7 +6267,7 @@ for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\W
 	)
 )
 for /l %%a in (1,1,!tr!) do (
-	start /b /low "curl多进程下载_!tr!" curl !proxy! !doh! !par! !ua! -s --compressed -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir "%temp%\down" "!url!"
+	start /b /low "curl多进程下载_%%a" curl !proxy! !doh! !par! !ua! -s --compressed -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir "%temp%\down" "!url!"
 	set /a "oldfd=newfd+1"
 	if "%%a" equ "!pdtr!" (
 		set newfd=
@@ -6465,7 +6314,7 @@ if "!dir:~-1!" equ "\" (set "dir=!dir:~0,-1!")
 curl !proxy! !doh! !par! !ua! --compressed -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o "!filename!" --output-dir "!dir!" "!url!"
 goto :eof
 :pwiex
-powershell -mta -nologo -noprofile -command "$command=[IO.File]::ReadAllText('"%weizhi%"') -split '#%1\#.*'; iex ($command[1])"
+powershell -mta -nologo -noprofile -command "$command=[IO.File]::ReadAllText('"%weizhi%"') -split '#%1\#.*';iex ($command[1])"
 goto :eof
 :out
 if exist "!systemroot!\system32\timeout.exe" (
