@@ -49,7 +49,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250101
-set versize=161554
+set versize=161223
 set fy1=___
 set xz0=0
 set nx1=[+]下一页
@@ -3777,14 +3777,15 @@ for /f "tokens=1,2 delims=." %%a in ("!xmr24h!") do (
 	set "xmr24h=%%a.!xmr24h1:~0,3!"
 )
 for %%i in (
-	euro^
-	gold-ounce^
-	silver-ounce^
-	japanese-yen^
-	hong-kong-dollar^
-	new-taiwan-dollar^
-	chinese-yuan-renminbi^
-	british-pound-sterling) do (
+	euro
+	gold-ounce
+	silver-ounce
+	japanese-yen
+	hong-kong-dollar
+	new-taiwan-dollar
+	chinese-yuan-renminbi
+	british-pound-sterling
+) do (
 	for /f "tokens=*" %%a in ('powershell -command "(Get-Content -Encoding UTF8 '%temp%\down\all.json'|ConvertFrom-Json).data|Where-Object {$_.id -eq '%%i'}|Select-Object -ExpandProperty rateUsd"') do (
 		set "%%i=%%a"
 	)
@@ -4662,7 +4663,6 @@ if "%1" neq "-chrome" (endlocal&goto memuv2) else (exit 0)
 setlocal
 title 逐一复制文件并压缩!system!
 cls
-rem 设置源目录和目标目录
 set source_dir=
 set target_dir=
 set /p "source_dir=输入源目录: "
@@ -4677,12 +4677,9 @@ for /r "%source_dir%" %%f in (*) do (
 	set "relative_path=%%~pf"
 	set "relative_path=!relative_path:%source_dir%=!"
 	set "target_path=!target_dir!!relative_path!"
-	rem 创建目标子目录（如果不存在）
 	if not exist "!target_path!" (mkdir "!target_path!")
-	rem 拷贝文件到目标目录
 	echo;"%%f" → "!target_path!%%~nxf"
 	copy /y /z "%%f" "!target_path!%%~nxf"
-	rem 压缩文件
 	call :74_2 "!target_path!%%~nxf" %%~zf %%~xf
 )
 %hx%
@@ -5134,40 +5131,40 @@ if /i "!hash!" equ "!doshash!" (
 	goto memuv2
 )
 :sjc
-REM 参数: 开始时间和结束时间，格式为 HH:MM:SS.mm
 setlocal
 set "start_time=%1"
 set "end_time=%2"
-REM 解析开始时间
 for /f "tokens=1-4 delims=:. " %%a in ("!start_time!") do (
 	set "start_hour=%%a"
 	set "start_minute=%%b"
 	set "start_second=%%c"
 	set "start_millisecond=%%d"
 )
-REM 解析结束时间
 for /f "tokens=1-4 delims=:. " %%a in ("!end_time!") do (
 	set "end_hour=%%a"
 	set "end_minute=%%b"
 	set "end_second=%%c"
 	set "end_millisecond=%%d"
 )
-REM 去掉前导零并确保以十进制格式进行计算
-for %%i in (start_hour start_minute start_second start_millisecond end_hour end_minute end_second end_millisecond) do (
-	set "%%i=!%%i: =!"
-	set /a "%%i=1!%%i! - 100"
+for %%i in (
+	start_hour
+	start_minute
+	start_second
+	start_millisecond
+	end_hour
+	end_minute
+	end_second
+	end_millisecond
+) do (
+	set /a "%%i=1!%%i!-100"
 )
-REM 计算时间差（毫秒）
 set /a "time_difference-=start_hour*3600000+start_minute*60000+start_second*1000+start_millisecond*10"
 set /a "time_difference+=end_hour*3600000+end_minute*60000+end_second*1000+end_millisecond*10"
-REM 处理跨天情况
 if !time_difference! lss 0 (set /a "time_difference+=86400000")
-REM 转换时间差为 HH:MM:SS.mm 格式
 set /a "diff_hours=time_difference/3600000"
 set /a "diff_minutes=(time_difference%%3600000)/60000"
 set /a "diff_seconds=(time_difference%%60000)/1000"
 set /a "diff_milliseconds=(time_difference%%1000)/10"
-REM 格式化输出
 if !diff_hours! lss 10 (set "diff_hours=0!diff_hours!")
 if !diff_minutes! lss 10 (set "diff_minutes=0!diff_minutes!")
 if !diff_seconds! lss 10 (set "diff_seconds=0!diff_seconds!")
