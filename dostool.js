@@ -49,7 +49,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250101
-set versize=161223
+set versize=161935
 set fy1=___
 set xz0=0
 set nx1=[+]下一页
@@ -2399,7 +2399,7 @@ call :sjc "!dosqssj!" "!time!" jg format
 cls
 echo;关于DOS工具箱
 %hx%
-echo;版本: 		1.9.6 (!ver!.!versize!)
+echo;版本: 		1.9.7 (!ver!.!versize!)
 echo;操作系统: 	!system:~3! !bit!位
 echo;版权所有 	2012-2025 Administrator 保留所有权利
 %hx%
@@ -2782,7 +2782,7 @@ endlocal
 goto memuv2
 :pjcg
 %hx%
-forfiles /p %~dp0 /m %~nx0 /c "%comspec% /c set /p =0x07<nul"
+call :bel
 echo;破解成功！
 echo;
 echo;压缩包: "!yswjlj!"
@@ -3983,9 +3983,7 @@ if /i "!msidir!" equ "e" (
 	goto memuv2
 )
 if not defined msidir (
-	for /f "delims=" %%a in ("!msiurl!") do (
-		set "msidir=%%~dpna"
-	)
+	for /f "delims=" %%a in ("!msiurl!") do (set "msidir=%%~dpna")
 )
 call :lj msidir msidir
 echo;开始解压...
@@ -4396,7 +4394,7 @@ if exist "!dir!!filename!" (
 		call :Division !raw! 1000 3 xzsd
 		call :Division !filesize! !xzsd! 3 sd
 		call :xdwjs !sd! d dw
-		forfiles /p %~dp0 /m %~nx0 /c "%comspec% /c set /p =0x07<nul"
+		call :bel
 		cls
 		echo;下载完成
 		echo;链接:		!url!
@@ -4412,7 +4410,7 @@ if exist "!dir!!filename!" (
 		echo;保存路径:	%%~dpa
 	)
 ) else (
-	forfiles /p %~dp0 /m %~nx0 /c "%comspec% /c set /p =0x07<nul"
+	call :bel
 	cls
 	echo;链接:	!url!
 	echo;下载失败
@@ -4589,16 +4587,12 @@ if exist "chrome.exe" (
 	for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe" /v Path 2>nul"') do (
 		set "chrome=%%a"
 	)
-	for /f "delims=" %%a in ("!chrome!") do (
-		set "chrome=%%~fa"
-	)
+	for /f "delims=" %%a in ("!chrome!") do (set "chrome=%%~fa")
 	if exist "!chrome!\Chrome.exe" (
 		set "chrome=!chrome!\Chrome.exe"
 		goto startchrome
 	) else (
-		for /f "delims=" %%a in ("!chromium!") do (
-			set "chrome=%%~fa"
-		)
+		for /f "delims=" %%a in ("!chromium!") do (set "chrome=%%~fa")
 		if exist "!chrome!" (
 			goto startchrome
 		) else (
@@ -4908,6 +4902,25 @@ if "!errorlevel!" neq "0" (
 %pause%
 endlocal
 goto memuv2
+:79
+setlocal
+title 随机生成MAC地址!system!
+cls
+set mac=1
+set /p "mac=输入需要生成的MAC地址数量(默认数量1条)(e=返回菜单): "
+if /i "!mac!" equ "e" (endlocal&goto memuv2)
+call :checkvar mac num jg
+if "!jg!" equ "0" (
+	set /p =无效输入<nul
+	call :out 2
+	endlocal
+	goto 79
+)
+for /l %%a in (1,1,!mac!) do (call :ranmac)
+%hx%
+%pause%
+endlocal
+goto memuv2
 :hash
 setlocal
 for /f "delims=" %%a in ("%1") do (set "url=%%~fa")
@@ -5062,7 +5075,7 @@ if exist "%systemroot%\system32\curl.exe" (
 )
 :updatecheck
 cls
-del /f /q "%temp%\dostoolupdate"
+if exist "%temp%\dostoolupdate" (del /f /q "%temp%\dostoolupdate")
 set /a "checkver=gxver-verbak"
 if !checkver! gtr 0 (
 	set /p =检查到更新版本: <nul
@@ -5134,17 +5147,15 @@ if /i "!hash!" equ "!doshash!" (
 setlocal
 set "start_time=%1"
 set "end_time=%2"
-for /f "tokens=1-4 delims=:. " %%a in ("!start_time!") do (
+for /f "tokens=1-8 delims=:. " %%a in ("!start_time! !end_time!") do (
 	set "start_hour=%%a"
 	set "start_minute=%%b"
 	set "start_second=%%c"
 	set "start_millisecond=%%d"
-)
-for /f "tokens=1-4 delims=:. " %%a in ("!end_time!") do (
-	set "end_hour=%%a"
-	set "end_minute=%%b"
-	set "end_second=%%c"
-	set "end_millisecond=%%d"
+	set "end_hour=%%e"
+	set "end_minute=%%f"
+	set "end_second=%%g"
+	set "end_millisecond=%%h"
 )
 for %%i in (
 	start_hour
@@ -5295,7 +5306,8 @@ set "a75=打开证书管理单元"
 set "a76=BAT文本混淆"
 set "a77=VBS计算器"
 set "a78=执行w32tm /resync对时"
-set maxa=78
+set "a79=随机生成MAC地址"
+set maxa=79
 )
 goto :eof
 :colortxt
@@ -5356,7 +5368,7 @@ set /p =!cswz!48;2;!brgb!;38;2;!qrgb!m!zt!!cswz!!ysbak!<nul
 goto :eof
 :su
 rem 使用goto调用:su
-set /p =%comspec% /c %0 -ks<nul>"%temp%\su.bat"
+set /p =!comspec! /c %0 -ks<nul>"%temp%\su.bat"
 powershell -mta -nologo -noprofile -command "$command=[IO.File]::ReadAllText('%0') -split '#su\#.*'; iex ($command[1])"
 rem 延时删除文件确保能被上一条指令读取
 call :out 1
@@ -5848,7 +5860,7 @@ setlocal
 set "s=%1"
 set "w=%2"
 if defined W (
-	for /l %%i in (1 1 !W!) do set "s=!s!00"
+	for /l %%i in (1 1 !W!) do (set "s=!s!00")
 ) else (
 	set W=0
 )
@@ -6351,3 +6363,18 @@ if "%2" equ "dir" (
 		exit /b 1
 	)
 )
+:ranmac
+setlocal
+set chars=0123456789ABCDEF
+set mac=
+for /l %%i in (1,1,12) do (set /a "rand%%i=!random!%%16")
+set "mac=!chars:~%rand1%,1!!chars:~%rand2%,1!:!chars:~%rand3%,1!!chars:~%rand4%,1!:!chars:~%rand5%,1!!chars:~%rand6%,1!:!chars:~%rand7%,1!!chars:~%rand8%,1!:!chars:~%rand9%,1!!chars:~%rand10%,1!:!chars:~%rand11%,1!!chars:~%rand12%,1!"
+if "%1" equ "" (
+	echo;!mac!
+) else (
+	endlocal&set "%1=%mac%"
+)
+goto :eof
+:bel
+2>nul forfiles /m "%~nx0" /c "!comspec! /c set /p =0x07<nul"
+goto :eof
