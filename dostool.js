@@ -49,7 +49,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250101
-set versize=161935
+set versize=161904
 set fy1=___
 set xz0=0
 set nx1=[+]下一页
@@ -4894,10 +4894,8 @@ if "!errorlevel!" neq "0" (
 	) else (
 		echo;第 !attempts! 次尝试同步时间失败，已达到最大重试次数。
 	)
-) else (
-	echo;时间同步成功
-	if "!stop!" equ "1" (sc stop w32time>nul 2>nul)
 )
+if "!stop!" equ "1" (sc stop w32time>nul 2>nul)
 %hx%
 %pause%
 endlocal
