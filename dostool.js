@@ -49,7 +49,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250101
-set versize=161904
+set versize=162076
 set fy1=___
 set xz0=0
 set nx1=[+]ÏÂÒ»Ò³
@@ -6364,8 +6364,7 @@ if "%2" equ "dir" (
 :ranmac
 setlocal
 set chars=0123456789ABCDEF
-set mac=
-for /l %%i in (1,1,12) do (set /a "rand%%i=!random!%%16")
+set /a "rand1=!random!%%16,rand2=!random!%%16,rand3=!random!%%16,rand4=!random!%%16,rand5=!random!%%16,rand6=!random!%%16,rand7=!random!%%16,rand8=!random!%%16,rand9=!random!%%16,rand10=!random!%%16,rand11=!random!%%16,rand12=!random!%%16"
 set "mac=!chars:~%rand1%,1!!chars:~%rand2%,1!:!chars:~%rand3%,1!!chars:~%rand4%,1!:!chars:~%rand5%,1!!chars:~%rand6%,1!:!chars:~%rand7%,1!!chars:~%rand8%,1!:!chars:~%rand9%,1!!chars:~%rand10%,1!:!chars:~%rand11%,1!!chars:~%rand12%,1!"
 if "%1" equ "" (
 	echo;!mac!
