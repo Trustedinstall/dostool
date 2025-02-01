@@ -49,7 +49,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250101
-set versize=162076
+set versize=162134
 set fy1=___
 set xz0=0
 set nx1=[+]下一页
@@ -4242,7 +4242,7 @@ for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\W
 		set proxy=
 	)
 )
-curl !proxy! !doh! !ua! -I --compressed -# -L -o tag --connect-timeout 5 --output-dir "%temp%" "!url!"
+curl !proxy! !doh! !ua! -I -# -L -o tag --connect-timeout 5 --output-dir "%temp%" "!url!"
 if not exist "%temp%\tag" (
 	echo;没有获取到文件信息
 	%hx%
@@ -4263,10 +4263,13 @@ if defined filesize (
 	)
 ) else (
 	set "dw=未知 (转为单进程下载)"
+	set tr=1
 )
 if not defined filename (set /p "filename=输入文件名: ")
 if not defined filename (set filename=curl下载文件)
-set /a "fd=filesize/tr"
+set fd=
+2>nul set /a "fd=filesize/tr"
+if not defined fd (set fd=0)
 set xfd=
 if !fd! geq 1024 (
 	call :xdwjs !fd! b xfd
@@ -4274,7 +4277,9 @@ if !fd! geq 1024 (
 ) else (
 	set "xfd=!fd! 字节"
 )
-set /a "ys=filesize%%tr"
+set ys=
+2>nul set /a "ys=filesize%%tr"
+if not defined ys (set ys=0)
 set xys=
 if "!ys!" neq "0" (set "xys= + !ys! 字节")
 set oldfd=0
@@ -4297,6 +4302,7 @@ set /p =按任意键开始下载<nul&pause>nul
 cls
 echo;开始下载文件...
 if not defined filesize (goto 72.3)
+if "!tr!" equ "1" (goto 72.3)
 title curl多进程下载 - 等待文件下载完成(按e返回菜单)!system!
 if exist "%temp%\down" (rd /s /q "%temp%\down")
 md "%temp%\down"
@@ -4313,7 +4319,7 @@ for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\W
 )
 for /l %%a in (1,1,!tr!) do (
 	start /min /low "curl多进程下载_%%a" ^
-	curl !proxy! !doh! !ua! --compressed -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir "%temp%\down" "!url!"
+	curl !proxy! !doh! !ua! -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir "%temp%\down" "!url!"
 	set /a "oldfd=newfd+1"
 	if "%%a" equ "!pdtr!" (set newfd=) else (set /a "newfd=oldfd+fd-1")
 )
@@ -5143,9 +5149,7 @@ if /i "!hash!" equ "!doshash!" (
 )
 :sjc
 setlocal
-set "start_time=%1"
-set "end_time=%2"
-for /f "tokens=1-8 delims=:. " %%a in ("!start_time! !end_time!") do (
+for /f "tokens=1-8 delims=:. " %%a in ("%1 %2") do (
 	set "start_hour=%%a"
 	set "start_minute=%%b"
 	set "start_second=%%c"
@@ -6239,7 +6243,7 @@ for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\W
 		set proxy=
 	)
 )
-curl !proxy! !doh! !par! !ua! --compressed -I -# -L -o tag --connect-timeout 5 --output-dir "%temp%" "!url!"
+curl !proxy! !doh! !par! !ua! -I -# -L -o tag --connect-timeout 5 --output-dir "%temp%" "!url!"
 if not exist "%temp%\tag" (
 	echo;没有获取到文件信息
 	goto :eof
@@ -6250,6 +6254,7 @@ for /f "tokens=2 delims==" %%a in ('type %temp%\tag^|findstr /c:"filename="') do
 if "!trflag!" neq "bytes" (set tr=1)
 if not defined filename (set "filename=%3")
 if not defined filesize (goto curldxc_3)
+if "!tr!" equ "1" (goto curldxc_3)
 set /a "fd=filesize/tr"
 set /a "ys=filesize%%tr"
 set oldfd=0
@@ -6274,7 +6279,7 @@ for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\W
 	)
 )
 for /l %%a in (1,1,!tr!) do (
-	start /b /low "curl多进程下载_%%a" curl !proxy! !doh! !par! !ua! -s --compressed -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir "%temp%\down" "!url!"
+	start /b /low "curl多进程下载_%%a" curl !proxy! !doh! !par! !ua! -s -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir "%temp%\down" "!url!"
 	set /a "oldfd=newfd+1"
 	if "%%a" equ "!pdtr!" (
 		set newfd=
