@@ -49,7 +49,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250101
-set versize=162134
+set versize=162136
 set fy1=___
 set xz0=0
 set nx1=[+]下一页
@@ -1534,14 +1534,19 @@ if "!jg!" equ "1" (
 cls
 echo;检测Everything的安装路径与运行状态...
 for /f "skip=2 tokens=3 delims= " %%a in ('reg query "HKEY_LOCAL_MACHINE\SOFTWARE\voidtools\Everything" /v InstallLocation') do (
-	set "EverythingInstallPath=%%a"
-)
-echo;正在搜索空文件夹...	文件越多搜索时间越长
-if exist "!EverythingInstallPath!\Everything.exe" (
-	tasklist /fi "status eq running" /fi "username eq "%username%"" /fi "imagename eq everything.exe"|find /i "Everything.exe"&&(
-		if exist "!EverythingInstallPath!\es.exe" (goto loop1)
+	if exist "%%a\Everything.exe" (
+		tasklist /fi "status eq running" /fi "username eq "%username%"" /fi "imagename eq everything.exe"|find /i "Everything.exe"&&(
+			if exist "%%a\es.exe" (
+				set "EverythingInstallPath=%%a"
+				cls
+				echo;正在搜索空文件夹...
+				goto loop1
+			)
+		)
 	)
 )
+cls
+echo;正在搜索空文件夹...
 goto loop2
 :loop1
 set empty=0
