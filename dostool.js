@@ -48,8 +48,8 @@ goto :eof
 setlocal
 set "dosqssj=!time!"
 chcp 936>nul
-set ver=20250101
-set versize=162136
+set ver=20250201
+set versize=162006
 set fy1=___
 set xz0=0
 set nx1=[+]ÏÂÒ»Ò³
@@ -6373,13 +6373,13 @@ if "%2" equ "dir" (
 )
 :ranmac
 setlocal
-set chars=0123456789ABCDEF
-set /a "rand1=!random!%%16,rand2=!random!%%16,rand3=!random!%%16,rand4=!random!%%16,rand5=!random!%%16,rand6=!random!%%16,rand7=!random!%%16,rand8=!random!%%16,rand9=!random!%%16,rand10=!random!%%16,rand11=!random!%%16,rand12=!random!%%16"
-set "mac=!chars:~%rand1%,1!!chars:~%rand2%,1!:!chars:~%rand3%,1!!chars:~%rand4%,1!:!chars:~%rand5%,1!!chars:~%rand6%,1!:!chars:~%rand7%,1!!chars:~%rand8%,1!:!chars:~%rand9%,1!!chars:~%rand10%,1!:!chars:~%rand11%,1!!chars:~%rand12%,1!"
+set a=0123456789ABCDEF
+set /a "b1=!random!%%16,b2=!random!%%16,b3=!random!%%16,b4=!random!%%16,b5=!random!%%16,b6=!random!%%16,b7=!random!%%16,b8=!random!%%16,b9=!random!%%16,b10=!random!%%16,b11=!random!%%16,b12=!random!%%16"
+set "c=!a:~%b1%,1!!a:~%b2%,1!:!a:~%b3%,1!!a:~%b4%,1!:!a:~%b5%,1!!a:~%b6%,1!:!a:~%b7%,1!!a:~%b8%,1!:!a:~%b9%,1!!a:~%b10%,1!:!a:~%b11%,1!!a:~%b12%,1!"
 if "%1" equ "" (
-	echo;!mac!
+	echo;!c!
 ) else (
-	endlocal&set "%1=%mac%"
+	endlocal&set "%1=%c%"
 )
 goto :eof
 :bel
