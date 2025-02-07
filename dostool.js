@@ -49,7 +49,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250201
-set versize=162006
+set versize=162036
 set fy1=___
 set xz0=0
 set nx1=[+]下一页
@@ -2358,6 +2358,7 @@ set bajinzhi=
 set /p "shijinzhi=请输入十进制整数: "
 call :checkvar shijinzhi num jg
 if "!jg!" equ "0" (goto 10z)
+set /a "shijinzhi=shijinzhi"
 call :10to2 !shijinzhi! erjinzhi
 call :10to8 !shijinzhi! bajinzhi
 call :10to16 !shijinzhi! shilioujinzhi
@@ -4548,15 +4549,15 @@ if not exist "!域名重解析!" (
 		echo;
 		echo #youtube google
 		echo #mt7.gstatic.com=[2404:6800:4008:c07::5a]
-		echo mt7.gstatic.com=39.106.25.252
+		echo mt7.gstatic.com=221.194.179.97
 		echo #alt6.gstatic.com=[2404:6800:4008:c07::5a]
-		echo alt6.gstatic.com=39.106.25.252
+		echo alt6.gstatic.com=221.194.179.97
 		echo #google-analytics.com=[2404:6800:4008:c07::5a]
-		echo google-analytics.com=39.106.25.252
+		echo google-analytics.com=221.194.179.97
 		echo #googleadservices.com=[2404:6800:4008:c07::5a]
-		echo googleadservices.com=39.106.25.252
+		echo googleadservices.com=221.194.179.97
 		echo #static.doubleclick.net=[2404:6800:4008:c07::5a]
-		echo static.doubleclick.net=39.106.25.252
+		echo static.doubleclick.net=221.194.179.97
 		echo;
 		echo #nyaa
 		echo nyaa.ddos-guard.net=nyaa.si
@@ -5971,6 +5972,7 @@ goto :eof
 :10to16
 setlocal
 set "ran=%1"
+set ss=
 :10to16_1
 set /a "s=!ran!%%16"
 if !s! lss 10 (goto 10to16_3)
@@ -5983,18 +5985,19 @@ if "!s!" equ "13" (set "s=D"&goto 10to16_3)
 if "!s!" equ "14" (set "s=E"&goto 10to16_3)
 if "!s!" equ "15" (set "s=F"&goto 10to16_3)
 :10to16_3
-set "jg=!s!!jg!"
+set "ss=!s!!ss!"
 set /a "ran/=16"
 if "!ran!" neq "0" (goto 10to16_1)
 if "%2" neq "" (
-	endlocal&set "%2=%jg%"
+	endlocal&set "%2=%ss%"
 ) else (
-	endlocal&echo;%jg%
+	echo;!ss!
 )
 goto :eof
 :10to2
 setlocal
 set "num=%1"
+set num1=
 :10to2_1
 set /a "e=num%%2"
 set /a "num/=2"
@@ -6003,12 +6006,13 @@ if "!num!" neq "0" (goto 10to2_1)
 if "%2" neq "" (
 	endlocal&set "%2=%num1%"
 ) else (
-	endlocal&echo;%num1%
+	echo;!num1!
 )
 goto :eof
 :10to8
 setlocal
 set "num=%1"
+set num1=
 :10to8_2
 set /a "b=num%%8"
 set /a "num/=8"
@@ -6017,7 +6021,7 @@ if "!num!" neq "0" (goto 10to8_2)
 if "%2" neq "" (
 	endlocal&set "%2=%num1%"
 ) else (
-	endlocal&echo;%num1%
+	echo;!num1!
 )
 goto :eof
 :2to10
@@ -6032,7 +6036,7 @@ for %%a in (!nn!) do (set /a "num+=%%a*nnn,nnn*=2")
 if "%2" neq "" (
 	endlocal&set "%2=%num%"
 ) else (
-	endlocal&echo;%num%
+	echo;!num!
 )
 goto :eof
 :pdxp
