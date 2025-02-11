@@ -49,7 +49,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250201
-set versize=162036
+set versize=162110
 set fy1=___
 set xz0=0
 set nx1=[+]下一页
@@ -2773,8 +2773,8 @@ for /f "usebackq delims=" %%a in ("!pjzd!") do (
 	echo;正在使用的字典文件: "!pjzd!"
 	echo;
 	set "pjmm=%%a"
-	echo;正在尝试密码:%%a
-	"!rarpd!" t -y -inul -p%%a "!yswjlj!"
+	echo;正在尝试密码: "%%a"
+	"!rarpd!" t -y -inul -p"%%a" "!yswjlj!"
 	if "!errorlevel!" equ "0" (goto pjcg)
 )
 :pjsb
@@ -2792,7 +2792,7 @@ call :bel
 echo;破解成功！
 echo;
 echo;压缩包: "!yswjlj!"
-echo;解压密码是:!pjmm!
+echo;解压密码是: "!pjmm!"
 %hx%
 %pause%
 endlocal
@@ -2806,8 +2806,8 @@ for /f "usebackq delims=" %%a in ("!pjzd!") do (
 	echo;正在使用的字典文件: "!pjzd!"
 	echo;
 	set "pjmm=%%a"
-	echo;正在尝试密码:%%a
-	"!rarpd7z!" t -y -inul -p%%a "!yswjlj!"
+	echo;正在尝试密码: "%%a"
+	"!rarpd7z!" t -y -inul -p"%%a" "!yswjlj!"
 	if "!errorlevel!" equ "0" (goto pjcg)
 )
 goto pjsb
@@ -5180,19 +5180,19 @@ for %%i in (
 set /a "time_difference-=start_hour*3600000+start_minute*60000+start_second*1000+start_millisecond*10"
 set /a "time_difference+=end_hour*3600000+end_minute*60000+end_second*1000+end_millisecond*10"
 if !time_difference! lss 0 (set /a "time_difference+=86400000")
-set /a "diff_hours=time_difference/3600000"
-set /a "diff_minutes=(time_difference%%3600000)/60000"
-set /a "diff_seconds=(time_difference%%60000)/1000"
+set /a "diff_hours1=time_difference/3600000"
+set /a "diff_minutes1=(time_difference%%3600000)/60000"
+set /a "diff_seconds1=(time_difference%%60000)/1000"
 set /a "diff_milliseconds=(time_difference%%1000)/10"
-if !diff_hours! lss 10 (set "diff_hours=0!diff_hours!")
-if !diff_minutes! lss 10 (set "diff_minutes=0!diff_minutes!")
-if !diff_seconds! lss 10 (set "diff_seconds=0!diff_seconds!")
+if !diff_hours1! lss 10 (set "diff_hours=0!diff_hours1!")
+if !diff_minutes1! lss 10 (set "diff_minutes=0!diff_minutes1!")
+if !diff_seconds1! lss 10 (set "diff_seconds=0!diff_seconds1!")
 if !diff_milliseconds! lss 10 (set "diff_milliseconds=0!diff_milliseconds!")
 set "time_diff=!diff_hours!:!diff_minutes!:!diff_seconds!.!diff_milliseconds!"
 if "%4" equ "format" (
-	for /f "tokens=1-3 delims=:" %%a in ("!time_diff!") do (
-		if "%%a" equ "00" (
-			if "%%b" equ "00" (
+	for /f "tokens=1-3 delims=:" %%a in ("!diff_hours1!:!diff_minutes1!:!diff_seconds1!.!diff_milliseconds!") do (
+		if "%%a" equ "0" (
+			if "%%b" equ "0" (
 				set "time_diff=%%c秒"
 			) else (
 				set "time_diff=%%b分%%c秒"
