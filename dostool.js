@@ -49,7 +49,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250201
-set versize=162110
+set versize=162205
 set fy1=___
 set xz0=0
 set nx1=[+]下一页
@@ -165,10 +165,12 @@ echo;现在是!date:~0,4!年!date:~5,2!月!date:~8,2!日 !xingqi!!time:~0,8!
 call :memuv2.2
 set xx=0
 for /l %%a in (!start!,1,!end!) do (
+	set /a "xx+=1"
 	if defined a%%a (
-		set /a "xx+=1"
 		set "xz!xx!=%%a"
 		echo;[!xx!]!a%%a!
+	) else (
+		set xz!xx!=
 	)
 )
 set /a "pd=end+1"
@@ -200,7 +202,13 @@ set /p "caidan=请输入你的选择:"
 if not defined caidan (goto memuv2.1)
 if "!caidan:~1!" equ "" (
 	call :checkvar caidan num jg
-	if "!jg!" equ "1" (goto !xz%caidan%!)
+	if "!jg!" equ "1" (
+		if defined xz!caidan! (
+			goto !xz%caidan%!
+		) else (
+			goto memuv2.1
+		)
+	)
 	if "!caidan!" equ "-" (
 		set /a "pd=start-1"
 		if !pd! geq 1 (
