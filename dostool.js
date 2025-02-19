@@ -2367,13 +2367,13 @@ set /p "shijinzhi=请输入十进制整数: "
 call :checkvar shijinzhi num jg
 if "!jg!" equ "0" (goto 10z)
 set /a "shijinzhi=shijinzhi"
-call :10to2 !shijinzhi! erjinzhi
-call :10to8 !shijinzhi! bajinzhi
-call :10to16 !shijinzhi! shilioujinzhi
 cls
 echo;十进制: !shijinzhi!
+call :10to2 !shijinzhi! erjinzhi
 echo;二进制: !erjinzhi!
+call :10to8 !shijinzhi! bajinzhi
 echo;八进制: !bajinzhi!
+call :10to16 !shijinzhi! shilioujinzhi
 echo;十六进制: !shilioujinzhi!
 %hx%
 set /p =按任意键返回<nul&pause>nul
@@ -2388,13 +2388,13 @@ set bajinzhi=
 set /p "srejz=请输入二进制整数: "
 if not defined srejz (goto 2z)
 for /f "delims=01" %%a in ("!srejz!") do (goto 2z)
-call :2to10 !srejz! sjz
-call :10to8 !sjz! bajinzhi
-call :10to16 !sjz! shilioujinzhi
 cls
+call :2to10 !srejz! sjz
 echo;十进制: !sjz!
 echo;二进制: !srejz!
+call :10to8 !sjz! bajinzhi
 echo;八进制: !bajinzhi!
+call :10to16 !sjz! shilioujinzhi
 echo;十六进制: !shilioujinzhi!
 %hx%
 set /p =按任意键返回<nul&pause>nul
@@ -3698,7 +3698,7 @@ for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\W
 	)
 )
 set "doh=--doh-url https://101.101.101.101/dns-query"
-set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36""
+set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36""
 if exist "%systemroot%\system32\curl.exe" (
 	pushd "%temp%\down"
 	curl !proxy! !doh! !ua! -Z --compressed -C - --retry 2 --retry-delay 1 --connect-timeout 5 ^
@@ -4209,7 +4209,7 @@ if not exist "%systemroot%\system32\curl.exe" (
 :72.1
 cls
 set "doh=--doh-url https://101.101.101.101/dns-query"
-set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36""
+set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36""
 set filename=
 set url=
 set /p "url=输入下载链接(e=返回): "
@@ -4959,7 +4959,7 @@ setlocal
 cls
 title 更新DOS工具箱 - 当前版本: !ver!!system!
 set "doh=--doh-url https://101.101.101.101/dns-query"
-set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36""
+set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36""
 set resolve=--resolve raw.github.io:443:^
 185.199.110.133,^
 185.199.109.133,^
@@ -6227,7 +6227,7 @@ set "filename=%3"
 set "dir=%4"
 set "par=%5"
 set "doh=--doh-url https://101.101.101.101/dns-query"
-set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36""
+set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36""
 if not defined url (
 	echo;链接不能为空!
 	goto :eof
