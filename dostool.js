@@ -49,7 +49,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250201
-set versize=162205
+set versize=162289
 set fy1=___
 set xz0=0
 set nx1=[+]下一页
@@ -4588,6 +4588,11 @@ if not exist "!强制使用quic!" (
 		echo tile.openstreetmap.org
 		echo ipfs.io
 		echo cloudflare-ipfs.com
+		echo croxyproxy.com
+		echo cdnjs.cloudflare.com
+		echo cdn.jsdelivr.net
+		echo chatgpt.aitianhu.com
+		echo outlook.live.com
 	)>"!强制使用quic!"
 )
 cd /d "%~dp0"
@@ -4685,17 +4690,18 @@ if "!errorlevel!" equ "0" (goto 74.3)
 set /p "target_dir=输入目标目录: "
 call :ljjc target_dir dir
 if "!errorlevel!" equ "0" (goto 74.3)
-rem 创建目标目录结构%source_dir%不能替换成!source_dir!
-for /r "%source_dir%" %%f in (*) do (
+pushd !source_dir!
+for /r %%f in (*) do (
 	cls
 	set "relative_path=%%~pf"
 	set "relative_path=!relative_path:%source_dir%=!"
 	set "target_path=!target_dir!!relative_path!"
-	if not exist "!target_path!" (mkdir "!target_path!")
+	if not exist "!target_path!" (md "!target_path!")
 	echo;"%%f" → "!target_path!%%~nxf"
 	copy /y /z "%%f" "!target_path!%%~nxf"
 	call :74_2 "!target_path!%%~nxf" %%~zf %%~xf
 )
+popd
 %hx%
 %pause%
 endlocal
@@ -4727,7 +4733,7 @@ if "%3" equ ".mkv" (goto :eof)
 if "%3" equ ".3gp" (goto :eof)
 if "%3" equ ".cab" (goto :eof)
 if "%3" equ ".pdf" (goto :eof)
-if %2 lss 4096 goto :eof
+if %2 lss 4096 (goto :eof)
 compact /c /exe:lzx %1
 goto :eof
 :74.3
@@ -5102,7 +5108,7 @@ if !checkver! gtr 0 (
 	call :xdwjs !dossize! b new
 	call :hash "!weizhi!" sha1 oldhash
 	echo;
-	echo;文件大小: !old!（%~z0 字节）→ !new!（!dossize! 字节）
+	echo;文件大小: !old! [%~z0 字节] → !new! [!dossize! 字节]
 	echo;SHA1: !oldhash! → !doshash!
 	%hx%
 	set shuru=
