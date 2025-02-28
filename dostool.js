@@ -49,7 +49,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250201
-set versize=162289
+set versize=162290
 set fy1=___
 set xz0=0
 set nx1=[+]обр╩рЁ
@@ -4947,7 +4947,7 @@ endlocal
 goto memuv2
 :hash
 setlocal
-for /f "delims=" %%a in ("%1") do (set "url=%%~fa")
+for /f "delims=" %%a in ("%~1") do (set "url=%%~fa")
 set "shuanfa=%2"
 if not defined shuanfa (set "shuanfa=sha256")
 for /f "skip=1 eol=C" %%a in ('certutil -hashfile "!url!" !shuanfa!') do (
