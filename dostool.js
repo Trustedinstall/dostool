@@ -49,7 +49,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250301
-set versize=162284
+set versize=160699
 set fy1=___
 set xz0=0
 set nx1=[+]下一页
@@ -2732,17 +2732,11 @@ if "!errorlevel!" equ "0" (
 	goto 46
 )
 for /f "delims=" %%a in ("!yswjlj!") do (
-	if /i "%%~xa" equ ".rar" (
-		set "ysbkzm=.rar"
-		goto rarwjok
-	)
-	if /i "%%~xa" equ ".7z" (
-		set "ysbkzm=.7z"
-		goto rarwjok
-	)
-	if /i "%%~xa" equ ".zip" (
-		set "ysbkzm=.zip"
-		goto rarwjok
+	for %%b in (.rar .7z .zip) do (
+		if /i "%%~xa" equ "%%b" do (
+			set "ysbkzm=%%b"
+			goto rarwjok
+		)
 	)
 	set /p =无效的文件格式！<nul
 	call :out 2
@@ -2764,9 +2758,9 @@ if "!errorlevel!" equ "0" (
 )
 for /f "delims=" %%a in ("!pjzd!") do (
 	if /i "%%~xa" equ ".txt" (
-		if /i "!ysbkzm!" equ ".rar" (goto kspj)
-		if /i "!ysbkzm!" equ ".7z" (goto kspj1)
-		if /i "!ysbkzm!" equ ".zip" (goto kspj1)
+		for %%a in (.rar .7z .zip) do (
+			if /i "!ysbkzm!" equ "%%a" (goto kspj)
+		)
 	)
 	set /p =不是txt文件！<nul
 	call :out 2
@@ -3454,50 +3448,36 @@ del /f /q "%temp%\listfile.log";^
 endlocal
 goto memuv2
 :ifloadfile
-set "file=%1"
+set "file=%~1"
 set "loadtime=%2"
-call :copyfile !file!
-if !raw! geq !loadtime! (echo;!file!>>"%temp%\uncompact.log")
+call :copyfile "!file!"
+if !raw! geq !loadtime! (echo;"!file!">>"%temp%\uncompact.log")
 goto :eof
 :loadfile
-set "file=%1"
-call :copyfile !file!
-echo;!file! !raw!>>"%temp%\loadtime.log"
+set "file=%~1"
+call :copyfile "!file!"
+echo;"!file!" !raw!>>"%temp%\loadtime.log"
 goto :eof
 :copyfile
-set "file=%1"
-echo;!file!
+set "file=%~1"
+echo;"!file!"
 set "kssj=!time!"
-copy /z !file! nul
+copy /z "!file!" nul
 set "jssj=!time!"
 call :sjc !kssj! !jssj! raw
 echo;读取用时: !raw! ms
 goto :eof
 :listfile
-set "urld=%1"
-set "size=%2"
-set "name=%3"
-dir /ad !urld!>nul 2>nul&&goto :eof
-if "!name!" equ ".zip" (goto :eof)
-if "!name!" equ ".rar" (goto :eof)
-if "!name!" equ ".7z" (goto :eof)
-if "!name!" equ ".png" (goto :eof)
-if "!name!" equ ".jpg" (goto :eof)
-if "!name!" equ ".mp3" (goto :eof)
-if "!name!" equ ".acc" (goto :eof)
-if "!name!" equ ".m4a" (goto :eof)
-if "!name!" equ ".flac" (goto :eof)
-if "!name!" equ ".ape" (goto :eof)
-if "!name!" equ ".mp4" (goto :eof)
-if "!name!" equ ".avi" (goto :eof)
-if "!name!" equ ".flv" (goto :eof)
-if "!name!" equ ".f4v" (goto :eof)
-if "!name!" equ ".mkv" (goto :eof)
-if "!name!" equ ".3gp" (goto :eof)
-if "!name!" equ ".cab" (goto :eof)
-if "!name!" equ ".pdf" (goto :eof)
-if !size! gtr 4096 (
-	if !size! leq 104857600 (echo;!urld!>>"%temp%\listfile.log")
+if exist "%~1\" (goto :eof)
+if %2 gtr 4096 (
+	if !size! leq 104857600 (
+		for %%a in (.7z .ogg .mpg .gif .zip .rar .png .jpg .wmf .wmv .bik .bk2 .mp3
+			.acc .m4a .ape .mp4 .avi .flv .f4v .mkv .3gp .cab .pdf .jpeg .flac
+		) do (
+			if /i "%3" equ "%%a" (goto :eof)
+		)
+		echo;"%~1">>"%temp%\listfile.log"
+	)
 )
 goto :eof
 #clearcache#
@@ -4388,8 +4368,8 @@ choice /c 1e /t 1 /d 1 >nul
 if "!errorlevel!" equ "2" (
 	taskkill /fi "windowtitle eq curl多进程下载_*" /fi "imagename eq curl.exe" /f
 	popd
-	rd /s /q "%temp%\down"
 	del /f /q "%temp%\tag"
+	rd /s /q "%temp%\down"
 	endlocal
 	goto memuv2
 )
@@ -4397,22 +4377,20 @@ if "!jccs!" neq "!tr!" (goto 72.2)
 set "jssj=!time!"
 cls
 echo;合并文件中...
-if "!dir:~-1!" neq "\" (set "dir=!dir!\")
-copy /b /z !file! "!dir!!filename!"
+copy /b /z !file! "!dir!\!filename!"
 popd
-rd /s /q "%temp%\down"
 del /f /q "%temp%\tag"
+rd /s /q "%temp%\down"
 :72.4
 cls
 title curl多进程下载!system!
-if "!dir:~-1!" neq "\" (set "dir=!dir!\")
-if exist "!dir!!filename!" (
-	for /f "delims=" %%a in ("!dir!!filename!") do (
+if exist "!dir!\!filename!" (
+	for /f "delims=" %%a in ("!dir!\!filename!") do (
 		echo;计算下载速度...
 		call :sjc !kssj! !jssj! raw
 		call :sjc !kssj! !jssj! xzys format
 		call :Division !raw! 1000 3 xzsd
-		call :Division !filesize! !xzsd! 3 sd
+		call :Division %%~za !xzsd! 3 sd
 		call :xdwjs !sd! d dw
 		call :bel
 		cls
@@ -4454,7 +4432,6 @@ if "!dir:~-1!" equ "\" (set "dir=!dir:~0,-1!")
 set "kssj=!time!"
 curl !proxy! !doh! !ua! --compressed -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o "!filename!" --output-dir "!dir!" "!url!"
 set "jssj=!time!"
-for /f "delims=" %%a in ("!dir!\!filename!") do (set "filesize=%%~za")
 goto 72.4
 :73
 setlocal
@@ -4690,7 +4667,7 @@ if "!errorlevel!" equ "0" (goto 74.3)
 set /p "target_dir=输入目标目录: "
 call :ljjc target_dir dir
 if "!errorlevel!" equ "0" (goto 74.3)
-pushd !source_dir!
+pushd "!source_dir!"
 for /r %%f in (*) do (
 	cls
 	set "relative_path=%%~pf"
@@ -4699,42 +4676,21 @@ for /r %%f in (*) do (
 	if not exist "!target_path!" (md "!target_path!")
 	echo;"%%f" → "!target_path!%%~nxf"
 	copy /y /z "%%f" "!target_path!%%~nxf"
-	call :74_2 "!target_path!%%~nxf" %%~zf %%~xf
+	call :74.2 "!target_path!%%~nxf" %%~zf %%~xf
 )
 popd
 %hx%
 %pause%
 endlocal
 goto memuv2
-:74_2
-if "%3" equ ".ogg" (goto :eof)
-if "%3" equ ".mpg" (goto :eof)
-if "%3" equ ".gif" (goto :eof)
-if "%3" equ ".zip" (goto :eof)
-if "%3" equ ".rar" (goto :eof)
-if "%3" equ ".7z" (goto :eof)
-if "%3" equ ".png" (goto :eof)
-if "%3" equ ".jpg" (goto :eof)
-if "%3" equ ".jpeg" (goto :eof)
-if "%3" equ ".wmf" (goto :eof)
-if "%3" equ ".wmv" (goto :eof)
-if "%3" equ ".bik" (goto :eof)
-if "%3" equ ".bk2" (goto :eof)
-if "%3" equ ".mp3" (goto :eof)
-if "%3" equ ".acc" (goto :eof)
-if "%3" equ ".m4a" (goto :eof)
-if "%3" equ ".flac" (goto :eof)
-if "%3" equ ".ape" (goto :eof)
-if "%3" equ ".mp4" (goto :eof)
-if "%3" equ ".avi" (goto :eof)
-if "%3" equ ".flv" (goto :eof)
-if "%3" equ ".f4v" (goto :eof)
-if "%3" equ ".mkv" (goto :eof)
-if "%3" equ ".3gp" (goto :eof)
-if "%3" equ ".cab" (goto :eof)
-if "%3" equ ".pdf" (goto :eof)
+:74.2
 if %2 lss 4096 (goto :eof)
-compact /c /exe:lzx %1
+for %%a in (.7z .ogg .mpg .gif .zip .rar .png .jpg .wmf .wmv .bik .bk2 .mp3
+			.acc .m4a .ape .mp4 .avi .flv .f4v .mkv .3gp .cab .pdf .jpeg .flac
+) do (
+	if /i "%3" equ "%%a" (goto :eof)
+)
+compact /c /exe:lzx "%~1"
 goto :eof
 :74.3
 set /p =无效输入<nul
@@ -4947,10 +4903,9 @@ endlocal
 goto memuv2
 :hash
 setlocal
-for /f "delims=" %%a in ("%~1") do (set "url=%%~fa")
 set "shuanfa=%2"
 if not defined shuanfa (set "shuanfa=sha256")
-for /f "skip=1 eol=C" %%a in ('certutil -hashfile "!url!" !shuanfa!') do (
+for /f "skip=1 eol=C" %%a in ('certutil -hashfile "%~1" !shuanfa!') do (
 	if "%3" neq "" (
 		endlocal&set "%3=%%a"
 		goto :eof
@@ -5169,7 +5124,7 @@ if /i "!hash!" equ "!doshash!" (
 )
 :sjc
 setlocal
-for /f "tokens=1-8 delims=:. " %%a in ("%~1 %~2") do (
+for /f "tokens=1-8 delims=:. " %%a in ("%1 %2") do (
 	set "start_hour=%%a"
 	set "start_minute=%%b"
 	set "start_second=%%c"
@@ -6227,11 +6182,11 @@ if not exist "%systemroot%\system32\curl.exe" (
 		goto :eof
 	)
 )
-set "url=%1"
+set "url=%~1"
 set "tr=%2"
-set "filename=%3"
-set "dir=%4"
-set "par=%5"
+set "filename=%~3"
+set "dir=%~4"
+set "par=%~5"
 set "doh=--doh-url https://101.101.101.101/dns-query"
 set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36""
 if not defined url (
@@ -6247,12 +6202,8 @@ if "!errorlevel!" neq "0" (
 if not defined dir (
 	for /f "delims=" %%a in ("%0") do (set "dir=%%~dpa")
 )
-if not exist "!dir!" (
-	echo;路径 !dir! 不存在
-	goto :eof
-)
-dir /ad "!dir!">nul 2>nul||(
-	echo;路径 !dir! 不是一个文件夹
+if not exist "!dir!\" (
+	echo;文件夹 "!dir!" 不存在
 	goto :eof
 )
 if exist "%temp%\tag" (del /f /q "%temp%\tag")
@@ -6275,7 +6226,7 @@ for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Accept-Ranges:"
 for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Content-Length:"') do (set "filesize=%%a")
 for /f "tokens=2 delims==" %%a in ('type %temp%\tag^|findstr /c:"filename="') do (set "filename=%%a")
 if "!trflag!" neq "bytes" (set tr=1)
-if not defined filename (set "filename=%3")
+if not defined filename (set "filename=%~3")
 if not defined filesize (goto curldxc_3)
 if "!tr!" equ "1" (goto curldxc_3)
 set /a "fd=filesize/tr"
@@ -6328,11 +6279,10 @@ for /l %%a in (1,1,!tr!) do (
 )
 timeout /t 1 /nobreak>nul
 if "!次数!" neq "!tr!" (goto curldxc_2)
-if "!dir:~-1!" neq "\" (set "dir=!dir!\")
-copy /b /z !file! "!dir!!filename!"
+copy /b /z !file! "!dir!\!filename!"
 popd
-rd /s /q "%temp%\down"
 del /f /q "%temp%\tag"
+rd /s /q "%temp%\down"
 goto :eof
 :curldxc_3
 for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
@@ -6349,7 +6299,7 @@ if "!dir:~-1!" equ "\" (set "dir=!dir:~0,-1!")
 curl !proxy! !doh! !par! !ua! --compressed -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o "!filename!" --output-dir "!dir!" "!url!"
 goto :eof
 :pwiex
-powershell -mta -nologo -noprofile -command "$command=[IO.File]::ReadAllText('"%weizhi%"') -split '#%1\#.*';iex ($command[1])"
+powershell -mta -nologo -noprofile -command "$command=[IO.File]::ReadAllText('"%weizhi%"') -split '#%~1\#.*';iex ($command[1])"
 goto :eof
 :out
 if exist "!systemroot!\system32\timeout.exe" (
