@@ -48,8 +48,8 @@ goto :eof
 setlocal
 set "dosqssj=!time!"
 chcp 936>nul
-set ver=20250201
-set versize=162290
+set ver=20250301
+set versize=162284
 set fy1=___
 set xz0=0
 set nx1=[+]下一页
@@ -2287,7 +2287,7 @@ set "kssjbk=!time!"
 cls
 echo;计时器已开始计时,按任意键停止计时.&pause>nul
 set "jssjbk=!time!"
-call :sjc "!kssjbk!" "!jssjbk!" jg format
+call :sjc !kssjbk! !jssjbk! jg format
 cls
 echo;计时开始时间: !kssjbk!
 echo;计时结束时间: !jssjbk!
@@ -2409,7 +2409,7 @@ if "%~z0" equ "!versize!" (
 	set "daxiao1=(文件大小异常,可能已被修改)"
 )
 if /i "!processor_architecture!" equ "x86" (set bit=32) else (set bit=64)
-call :sjc "!dosqssj!" "!time!" jg format
+call :sjc !dosqssj! !time! jg format
 cls
 echo;关于DOS工具箱
 %hx%
@@ -5169,7 +5169,7 @@ if /i "!hash!" equ "!doshash!" (
 )
 :sjc
 setlocal
-for /f "tokens=1-8 delims=:. " %%a in ("%1 %2") do (
+for /f "tokens=1-8 delims=:. " %%a in ("%~1 %~2") do (
 	set "start_hour=%%a"
 	set "start_minute=%%b"
 	set "start_second=%%c"
