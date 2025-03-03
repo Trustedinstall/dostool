@@ -49,7 +49,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250301
-set versize=160699
+set versize=160701
 set fy1=___
 set xz0=0
 set nx1=[+]обр╩рЁ
@@ -1071,7 +1071,7 @@ tasklist /fi "pid eq !jclj!"|findstr /i "!jclj!"||(
 	goto 23.6
 )
 cls
-for /f "tokens=2 delims==" %%a in ('wmic process where processid=!jclj! get executablepath /value') do (
+for /f "tokens=2 delims==" %%a in ('"wmic process where processid=!jclj! get executablepath /value"') do (
 	set "jclj1=%%a"
 	set "jclj1=!jclj1:~0,-1!"
 )
