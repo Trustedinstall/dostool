@@ -49,7 +49,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250301
-set versize=160701
+set versize=161038
 set fy1=___
 set xz0=0
 set nx1=[+]下一页
@@ -1029,6 +1029,7 @@ if "!shuru!" equ "6" (goto 23.4)
 if "!shuru!" equ "7" (endlocal&goto memuv2)
 if "!shuru!" equ "0" (endlocal&goto memuv2)
 set /p =请输入正确的选项！<nul
+call :out 2
 endlocal
 goto 23
 :23.1
@@ -2999,13 +3000,32 @@ if !m! lss 3 (
 set /a "k=y%%100"
 set /a "j=y/100"
 set /a "w=(d+13*(m+1)/5+k+k/4+j/4+5*j)%%7"
-if "!w!" equ "1" (set w=天)
-if "!w!" equ "2" (set w=一)
-if "!w!" equ "3" (set w=二)
-if "!w!" equ "4" (set w=三)
-if "!w!" equ "5" (set w=四)
-if "!w!" equ "6" (set w=五)
-if "!w!" equ "0" (set w=六)
+if !w! gtr 4 (goto 53.1)
+if "!w!" equ "1" (
+	set w=天
+) else (
+	if "!w!" equ "2" (
+		set w=一
+	) else (
+		if "!w!" equ "3" (
+			set w=二
+		) else (
+			if "!w!" equ "4" (set w=三)
+		)
+	)
+)
+goto 53.2
+:53.1
+if "!w!" equ "5" (
+	set w=四
+) else (
+	if "!w!" equ "6" (
+		set w=五
+	) else (
+		if "!w!" equ "0" (set w=六)
+	)
+)
+:53.2
 echo;
 echo;!rn! !jsxq:~0,4!年!jsxq:~4,2!月!jsxq:~6,2!日是星期!w!
 %hx%
@@ -3471,7 +3491,8 @@ goto :eof
 if exist "%~1\" (goto :eof)
 if %2 gtr 4096 (
 	if !size! leq 104857600 (
-		for %%a in (.7z .ogg .mpg .gif .zip .rar .png .jpg .wmf .wmv .bik .bk2 .mp3
+		for %%a in (
+			.7z .ogg .mpg .gif .zip .rar .png .jpg .wmf .wmv .bik .bk2 .mp3
 			.acc .m4a .ape .mp4 .avi .flv .f4v .mkv .3gp .cab .pdf .jpeg .flac
 		) do (
 			if /i "%3" equ "%%a" (goto :eof)
@@ -3793,6 +3814,7 @@ set "twdtousd=!new-taiwan-dollar!"
 set "cnytousd=!chinese-yuan-renminbi!"
 set "gbptousd=!british-pound-sterling!"
 rd /s /q "%temp%\down">nul
+call :Division 1 !cnytousd! 3 usdtocny
 call :Division !btctousd! !cnytousd! 9 btctocny
 call :Division !ethtousd! !cnytousd! 9 ethtocny
 call :Division !eurtousd! !cnytousd! 9 eurtocny
@@ -3803,7 +3825,6 @@ call :Division !twdtousd! !cnytousd! 9 twdtocny
 call :Division !xmrtousd! !cnytousd! 9 xmrtocny
 call :Division !dogetousd! !cnytousd! 9 dogetocny
 call :Division !filetousd! !cnytousd! 9 filetocny
-call :Division 1 !cnytousd! 3 usdtocny
 call :Division !autousd! 31.1034768 3 autocny
 call :Division !agtousd! 31.1034768 3 agtocny
 call :xcf !autocny! !usdtocny! autocny
@@ -4021,9 +4042,7 @@ for /l %%a in (40,1,47) do (
 								if "!xh1!" equ "46" (
 									set bj=3
 								) else (
-									if "!xh1!" equ "47" (
-										set bj=7
-									)
+									if "!xh1!" equ "47" (set bj=7)
 								)
 							)
 						)
@@ -4052,9 +4071,7 @@ for /l %%a in (40,1,47) do (
 								if "!xh2!" equ "96" (
 									set zt=b
 								) else (
-									if "!xh2!" equ "97" (
-										set zt=f
-									)
+									if "!xh2!" equ "97" (set zt=f)
 								)
 							)
 						)
@@ -4115,7 +4132,7 @@ endlocal
 goto memuv2
 :71
 setlocal
-title KMS激活Windows 10!system!
+title KMS激活Windows!system!
 cls
 (
 set "Core=TX9XD-98N7V-6WMQ6-BX7FG-H8Q99"
@@ -4668,6 +4685,8 @@ set /p "target_dir=输入目标目录: "
 call :ljjc target_dir dir
 if "!errorlevel!" equ "0" (goto 74.3)
 pushd "!source_dir!"
+echo;取消文件隐藏属性...
+for /f "delims=" %%a in ('dir /ah /s /b') do (attrib -h "%%a")
 for /r %%f in (*) do (
 	cls
 	set "relative_path=%%~pf"
@@ -4685,8 +4704,9 @@ endlocal
 goto memuv2
 :74.2
 if %2 lss 4096 (goto :eof)
-for %%a in (.7z .ogg .mpg .gif .zip .rar .png .jpg .wmf .wmv .bik .bk2 .mp3
-			.acc .m4a .ape .mp4 .avi .flv .f4v .mkv .3gp .cab .pdf .jpeg .flac
+for %%a in (
+	.7z .ogg .mpg .gif .zip .rar .png .jpg .wmf .wmv .bik .bk2 .mp3
+	.acc .m4a .ape .mp4 .avi .flv .f4v .mkv .3gp .cab .pdf .jpeg .flac
 ) do (
 	if /i "%3" equ "%%a" (goto :eof)
 )
@@ -5299,49 +5319,120 @@ if "!bj:~1,1!" equ "" (
 	set "bj2=!bj:~1,1!"
 )
 pushd "%temp%"
-set /p =!cswz1!<nul>"%2"
-findstr /v /a:!bj1!!bj2! /r "^$" "%2" nul
-del /f /q "%2">nul 2>nul
+set /p =!cswz1!<nul>"%~2"
+findstr /v /a:!bj1!!bj2! /r "^$" "%~2" nul
+del /f /q "%~2">nul 2>nul
 popd
 goto :eof
 :colortxt2
 set "bj=%1"
-set "zt=%2"
-if "!bj:~0,1!" equ "0" set bj1=40;
-if "!bj:~0,1!" equ "4" set bj1=41;
-if "!bj:~0,1!" equ "2" set bj1=42;
-if "!bj:~0,1!" equ "6" set bj1=43;
-if "!bj:~0,1!" equ "1" set bj1=44;
-if "!bj:~0,1!" equ "5" set bj1=45;
-if "!bj:~0,1!" equ "3" set bj1=46;
-if "!bj:~0,1!" equ "7" set bj1=47;
-if "!bj:~0,1!" equ "8" set bj2=90m
-if "!bj:~0,1!" equ "c" set bj2=91m
-if "!bj:~0,1!" equ "a" set bj2=92m
-if "!bj:~0,1!" equ "e" set bj2=93m
-if "!bj:~0,1!" equ "9" set bj2=94m
-if "!bj:~0,1!" equ "d" set bj2=95m
-if "!bj:~0,1!" equ "b" set bj2=96m
-if "!bj:~0,1!" equ "f" set bj2=97m
-if "!bj:~1,1!" equ "8" set bj2=90m
-if "!bj:~1,1!" equ "c" set bj2=91m
-if "!bj:~1,1!" equ "a" set bj2=92m
-if "!bj:~1,1!" equ "e" set bj2=93m
-if "!bj:~1,1!" equ "9" set bj2=94m
-if "!bj:~1,1!" equ "d" set bj2=95m
-if "!bj:~1,1!" equ "b" set bj2=96m
-if "!bj:~1,1!" equ "f" set bj2=97m
-if "!bj:~1,1!" equ "" set "bj1=!ysbak:~0,3!"
-set /p =!cswz!!bj1!!bj2!!zt!!cswz!!ysbak!<nul
+set "zt=%~2"
+if 0x!bj:~0,1! gtr 0x9 (goto colortxt2.2)
+if 0x!bj:~0,1! gtr 0x4 (goto colortxt2.1)
+if "!bj:~0,1!" equ "0" (
+	set bj1=40;
+) else (
+	if "!bj:~0,1!" equ "1" (
+		set bj1=44;
+	) else (
+		if "!bj:~0,1!" equ "2" (
+			set bj1=42;
+		) else (
+			if "!bj:~0,1!" equ "3" (
+				set bj1=46;
+			) else (
+				if "!bj:~0,1!" equ "4" (set bj1=41;)
+			)
+		)
+	)
+)
+goto colortxt2.3
+:colortxt2.1
+if "!bj:~0,1!" equ "5" (
+	set bj1=45;
+) else (
+	if "!bj:~0,1!" equ "6" (
+		set bj1=43;
+	) else (
+		if "!bj:~0,1!" equ "7" (
+			set bj1=47;
+		) else (
+			if "!bj:~0,1!" equ "8" (
+				set bj2=90m
+			) else (
+				if "!bj:~0,1!" equ "9" (set bj2=94m)
+			)
+		)
+	)
+)
+goto colortxt2.3
+:colortxt2.2
+if /i "!bj:~0,1!" equ "a" (
+	set bj2=92m
+) else (
+	if /i "!bj:~0,1!" equ "b" (
+		set bj2=96m
+	) else (
+		if /i "!bj:~0,1!" equ "c" (
+			set bj2=91m
+		) else (
+			if /i "!bj:~0,1!" equ "d" (
+				set bj2=95m
+			) else (
+				if /i "!bj:~0,1!" equ "e" (
+					set bj2=93m
+				) else (
+					if /i "!bj:~0,1!" equ "f" (set bj2=97m)
+				)
+			)
+		)
+	)
+)
+:colortxt2.3
+if 0x!bj:~1,1! gtr 0xb (goto colortxt2.5)
+if "!bj:~1,1!" equ "8" (
+	set bj2=90m
+) else (
+	if "!bj:~1,1!" equ "9" (
+		set bj2=94m
+	) else (
+		if /i "!bj:~1,1!" equ "a" (
+			set bj2=92m
+		) else (
+			if /i "!bj:~1,1!" equ "b" (set bj2=96m)
+		)
+	)
+)
+goto colortxt2.6
+:colortxt2.5
+if /i "!bj:~1,1!" equ "" (
+	set "bj1=!ysbak:~0,3!"
+) else (
+	if /i "!bj:~1,1!" equ "c" (
+		set bj2=91m
+	) else (
+		if /i "!bj:~1,1!" equ "d" (
+			set bj2=95m
+		) else (
+			if /i "!bj:~1,1!" equ "e" (
+				set bj2=93m
+			) else (
+				if /i "!bj:~1,1!" equ "f" (set bj2=97m)
+			)
+		)
+	)
+)
+:colortxt2.6
+set /p "=!cswz!!bj1!!bj2!!zt!!cswz!!ysbak!"<nul
 goto :eof
 :rgb
 setlocal
 set "brgb=%1"
 set "qrgb=%2"
-set "zt=%3"
+set "zt=%~3"
 set "brgb=!brgb:.=;!"
 set "qrgb=!qrgb:.=;!"
-set /p =!cswz!48;2;!brgb!;38;2;!qrgb!m!zt!!cswz!!ysbak!<nul
+set /p "=!cswz!48;2;!brgb!;38;2;!qrgb!m!zt!!cswz!!ysbak!"<nul
 goto :eof
 :su
 rem 使用goto调用:su
@@ -5946,13 +6037,26 @@ set ss=
 set /a "s=!ran!%%16"
 if !s! lss 10 (goto 10to16_3)
 if !s! gtr 12 (goto 10to16_2)
-if "!s!" equ "10" (set "s=A"&goto 10to16_3)
-if "!s!" equ "11" (set "s=B"&goto 10to16_3)
-if "!s!" equ "12" (set "s=C"&goto 10to16_3)
+if "!s!" equ "10" (
+	set s=A
+) else (
+	if "!s!" equ "11" (
+		set s=B
+	) else (
+		if "!s!" equ "12" (set s=C)
+	)
+)
+goto 10to16_3
 :10to16_2
-if "!s!" equ "13" (set "s=D"&goto 10to16_3)
-if "!s!" equ "14" (set "s=E"&goto 10to16_3)
-if "!s!" equ "15" (set "s=F"&goto 10to16_3)
+if "!s!" equ "13" (
+	set s=D
+) else (
+	if "!s!" equ "14" (
+		set s=E
+	) else (
+		if "!s!" equ "15" (set s=F)
+	)
+)
 :10to16_3
 set "ss=!s!!ss!"
 set /a "ran/=16"
@@ -6104,34 +6208,18 @@ if "%3" neq "" (
 goto :eof
 :convertu
 setlocal
-if "%1" equ "" (goto :eof)
-set "tmp=%1"
-set "tmp=!tmp:a=A!"
-set "tmp=!tmp:b=B!"
-set "tmp=!tmp:c=C!"
-set "tmp=!tmp:d=D!"
-set "tmp=!tmp:e=E!"
-set "tmp=!tmp:f=F!"
-set "tmp=!tmp:g=G!"
-set "tmp=!tmp:h=H!"
-set "tmp=!tmp:i=I!"
-set "tmp=!tmp:j=J!"
-set "tmp=!tmp:k=K!"
-set "tmp=!tmp:l=L!"
-set "tmp=!tmp:m=M!"
-set "tmp=!tmp:n=N!"
-set "tmp=!tmp:o=O!"
-set "tmp=!tmp:p=P!"
-set "tmp=!tmp:q=Q!"
-set "tmp=!tmp:r=R!"
-set "tmp=!tmp:s=S!"
-set "tmp=!tmp:t=T!"
-set "tmp=!tmp:u=U!"
-set "tmp=!tmp:v=V!"
-set "tmp=!tmp:w=W!"
-set "tmp=!tmp:x=X!"
-set "tmp=!tmp:y=Y!"
-set "tmp=!tmp:z=Z!"
+if "%~1" equ "" (goto :eof)
+set "tmp=%~1"
+for %%a in (
+	"a=A" "b=B" "c=C" "d=D" "e=E"
+	"f=F" "g=G" "h=H" "i=I" "j=J"
+	"k=K" "l=L" "m=M" "n=N" "o=O"
+	"p=P" "q=Q" "r=R" "s=S" "t=T"
+	"u=U" "v=V" "w=W" "x=X" "y=Y"
+	"z=Z"
+) do (
+	set "tmp=!tmp:%%~a!"
+)
 if "%2" neq "" (
 	endlocal&set "%2=%tmp%"
 ) else (
@@ -6140,34 +6228,18 @@ if "%2" neq "" (
 goto :eof
 :convertl
 setlocal
-if "%1" equ "" (goto :eof)
-set "tmp=%1"
-set "tmp=!tmp:A=a!"
-set "tmp=!tmp:B=b!"
-set "tmp=!tmp:C=c!"
-set "tmp=!tmp:D=d!"
-set "tmp=!tmp:E=e!"
-set "tmp=!tmp:F=f!"
-set "tmp=!tmp:G=g!"
-set "tmp=!tmp:H=h!"
-set "tmp=!tmp:I=i!"
-set "tmp=!tmp:J=j!"
-set "tmp=!tmp:K=k!"
-set "tmp=!tmp:L=l!"
-set "tmp=!tmp:M=m!"
-set "tmp=!tmp:N=n!"
-set "tmp=!tmp:O=o!"
-set "tmp=!tmp:P=p!"
-set "tmp=!tmp:Q=q!"
-set "tmp=!tmp:R=r!"
-set "tmp=!tmp:S=s!"
-set "tmp=!tmp:T=t!"
-set "tmp=!tmp:U=u!"
-set "tmp=!tmp:V=v!"
-set "tmp=!tmp:W=w!"
-set "tmp=!tmp:X=x!"
-set "tmp=!tmp:Y=y!"
-set "tmp=!tmp:Z=z!"
+if "%~1" equ "" (goto :eof)
+set "tmp=%~1"
+for %%a in (
+	"A=a" "B=b" "C=c" "D=d" "E=e"
+	"F=f" "G=g" "H=h" "I=i" "J=j"
+	"K=k" "L=l" "M=m" "N=n" "O=o"
+	"P=p" "Q=q" "R=r" "S=s" "T=t"
+	"U=u" "V=v" "W=w" "X=x" "Y=y"
+	"Z=z"
+) do (
+	set "tmp=!tmp:%%~a!"
+)
 if "%2" neq "" (
 	endlocal&set "%2=%tmp%"
 ) else (
