@@ -21,7 +21,7 @@ if /i "%1" equ "-ks" (goto ks)
 if /i "%1" equ "-chrome" (goto chrome)
 if /i "!systemdrive!" equ "x:" (goto ks)
 fltmc 1>nul 2>nul
-if "!errorlevel!" equ "0" (goto ks)
+if not errorlevel 1 (goto ks)
 for /f "delims=" %%a in ("%0") do (set "weizhi=%%~fa")
 if exist "!localappdata!\Microsoft\WindowsApps\wt.exe" (call :stwt) else (call :stcmd)
 rem 在权限申请进程中预读命令提升后面初始化速度
@@ -49,7 +49,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250301
-set versize=161038
+set versize=161950
 set fy1=___
 set xz0=0
 set nx1=[+]下一页
@@ -515,7 +515,7 @@ set cipanxioufu=
 set /p "cipanxioufu=请输入需要修复的盘符: "
 cls
 fsutil fsinfo ntfsinfo !cipanxioufu!:>nul 2>nul
-if "!errorlevel!" equ "0" (
+if not errorlevel 1 (
 	chkdsk /x /f /sdcleanup !cipanxioufu!:
 ) else (
 	chkdsk /f /x !cipanxioufu!:
@@ -1533,7 +1533,7 @@ if "!jg!" equ "1" (
 	set "caozuo=!caozuo!:\"
 ) else (
 	call :ljjc caozuo dir
-	if "!errorlevel!" neq "1" (
+	if not errorlevel 1 (
 		set /p =路径 "!caozuo!" 不是一个文件夹<nul
 		call :out 2
 		endlocal
@@ -1584,7 +1584,7 @@ title ping测试网络延迟!system!
 cls
 if exist "%systemroot%\system32\curl.exe" (
 	ping /n 1 www.baidu.com>nul
-	if "!errorlevel!" equ "0" (
+	if not errorlevel 1 (
 		rem set /p =本机IPV4地址: <nul
 		rem curl https://4.ipw.cn
 		rem curl https://ipv4.ip.sb
@@ -1593,7 +1593,7 @@ if exist "%systemroot%\system32\curl.exe" (
 		echo;
 	)
 	ping /n 1 240c::6666>nul
-	if "!errorlevel!" equ "0" (
+	if not errorlevel 1 (
 		set /p =本机IPV6地址: <nul
 		curl https://6.ipw.cn
 		rem curl https://ipv6.ip.sb
@@ -1986,7 +1986,7 @@ for /f "tokens=2 delims==" %%a in ('Wmic Path Win32_NetworkAdapterConfiguration 
 echo;
 if exist %systemroot%\system32\curl.exe (
 	ping /n 1 www.baidu.com>nul
-	if "!errorlevel!" equ "0" (
+	if not errorlevel 1 (
 		for /f "delims=" %%a in ('curl -s 4.ipw.cn') do (
 			set /p =外部IP地址:<nul
 			echo;	%%a
@@ -2436,7 +2436,7 @@ echo;F=显示下个文件,Q=退出,等号显示行数,空格显示下一页,回车显示下一行
 set wenben=
 set /p "wenben=拖动需要显示的文件到此窗口: "
 call :ljjc wenben
-if "!errorlevel!" equ "0" (
+if not errorlevel 1 (
 	set /p =无效路径<nul
 	call :out 2
 	endlocal
@@ -2486,7 +2486,7 @@ cls
 set jieya=
 set /p "jieya=拖动需要解压的文件到此窗口: "
 call :ljjc jieya
-if "!errorlevel!" equ "0" (
+if not errorlevel 1 (
 	set /p =无效路径<nul
 	call :out 2
 	goto jieya
@@ -2503,7 +2503,7 @@ cls
 set yasuo=
 set /p "yasuo=拖动需要压缩的文件到此窗口: "
 call :ljjc yasuo
-if "!errorlevel!" equ "0" (
+if not errorlevel 1 (
 	set /p =无效路径<nul
 	call :out 2
 	goto yasuo
@@ -2520,7 +2520,7 @@ cls
 set jieya=
 set /p "jieya=拖动需要解压的文件夹到此窗口: "
 call :ljjc jieya dir
-if "!errorlevel!" equ "0" (
+if not errorlevel 1 (
 	set /p =无效路径<nul
 	call :out 2
 	goto jieyawjj
@@ -2537,7 +2537,7 @@ cls
 set jieya=
 set /p "jieya=拖动需要压缩的文件夹到此窗口: "
 call :ljjc jieya dir
-if "!errorlevel!" equ "0" (
+if not errorlevel 1 (
 	set /p =无效路径<nul
 	call :out 2
 	goto yasuowjj
@@ -2629,7 +2629,7 @@ cls
 set batfx=
 set /p "batfx=拖动要分析的文件到此窗口: "
 call :ljjc batfx
-if "!errorlevel!" equ "0" (
+if not errorlevel 1 (
 	set /p =无效路径<nul
 	call :out 2
 	endlocal
@@ -2678,7 +2678,7 @@ cls
 set xfwj=
 set /p "xfwj=拖动要修复的文件到此窗口: "
 call :ljjc xfwj
-if "!errorlevel!" equ "0" (
+if not errorlevel 1 (
 	set /p =无效路径<nul
 	call :out 2
 	endlocal
@@ -2726,7 +2726,7 @@ if /i "!yswjlj!" equ "e" (
 	goto memuv2
 )
 call :ljjc yswjlj
-if "!errorlevel!" equ "0" (
+if not errorlevel 1 (
 	set /p =无效路径<nul
 	call :out 2
 	endlocal
@@ -2752,7 +2752,7 @@ if /i "!pjzd!" equ "e" (
 	goto memuv2
 )
 call :ljjc pjzd
-if "!errorlevel!" equ "0" (
+if not errorlevel 1 (
 	set /p =无效路径<nul
 	call :out 2
 	goto rarwjok
@@ -2778,7 +2778,7 @@ for /f "usebackq delims=" %%a in ("!pjzd!") do (
 	set "pjmm=%%a"
 	echo;正在尝试密码: "%%a"
 	"!rarpd!" t -y -inul -p"%%a" "!yswjlj!"
-	if "!errorlevel!" equ "0" (goto pjcg)
+	if not errorlevel 1 (goto pjcg)
 )
 :pjsb
 %hx%
@@ -2811,7 +2811,7 @@ for /f "usebackq delims=" %%a in ("!pjzd!") do (
 	set "pjmm=%%a"
 	echo;正在尝试密码: "%%a"
 	"!rarpd7z!" t -y -inul -p"%%a" "!yswjlj!"
-	if "!errorlevel!" equ "0" (goto pjcg)
+	if not errorlevel 1 (goto pjcg)
 )
 goto pjsb
 :47
@@ -2896,7 +2896,7 @@ if /i "!chmlj!" equ "e" (
 	goto memuv2
 )
 call :ljjc chmlj
-if "!errorlevel!" equ "0" (
+if not errorlevel 1 (
 	set /p =无效路径<nul
 	call :out 2
 	endlocal
@@ -2954,7 +2954,7 @@ cls
 set nz=
 set /p "nz=请输入要写入到剪切板的文字内容:"
 mshta vbscript:clipboardData.SetData("text","!nz!")(window.close)
-if "!errorlevel!" equ "0" (echo;写入成功) else (echo;写入失败)
+if not errorlevel 1 (echo;写入成功) else (echo;写入失败)
 %hx%
 %pause%
 endlocal
@@ -3125,7 +3125,7 @@ title 解除Streams文件锁定!system!
 set jcwjsd=
 set /p "jcwjsd=拖动目标文件到此窗口: "
 call :ljjc jcwjsd
-if "!errorlevel!" equ "0" (
+if not errorlevel 1 (
 	set /p =无效路径<nul
 	call :out 2
 	endlocal
@@ -3309,7 +3309,7 @@ if not exist "!basebm!" (
 	goto 63-11
 )
 call :ljjc basebm dir
-if "!errorlevel!" equ "1" (
+if errorlevel 1 (
 	set /p =不能解码文件夹<nul
 	call :out 2
 	goto 63-1
@@ -3332,7 +3332,7 @@ if "!bxz!" equ "y" (
 	call :lj basebc basebc
 	%hx%
 	copy /y /z "%temp%\codetmp" "!basebc!"
-	if "!errorlevel!" neq "0" (echo;保存失败) else (echo;保存成功)
+	if errorlevel 1 (echo;保存失败) else (echo;保存成功)
 	%hx%
 	%pause%
 )
@@ -3352,7 +3352,7 @@ if not exist "!basebm!" (
 	goto 63-21
 )
 call :ljjc basebm dir
-if "!errorlevel!" equ "1" (
+if errorlevel 1 (
 	set /p =不能解码文件夹<nul
 	call :out 2
 	goto 63-2
@@ -3378,7 +3378,7 @@ if "!bxz!" equ "y" (
 	call :lj basebc basebc
 	%hx%
 	copy /y /z "%temp%\codetmp" "!basebc!"
-	if "!errorlevel!" neq "0" (echo;保存失败) else (echo;保存成功)
+	if errorlevel 1 (echo;保存失败) else (echo;保存成功)
 	%hx%
 	%pause%
 )
@@ -3428,7 +3428,7 @@ cls
 set url=
 set /p "url=请输入要压缩的文件夹: "
 call :ljjc url dir
-if "!errorlevel!" equ "0" (
+if not errorlevel 1 (
 	set /p =路径 !url! 不是一个文件夹<nul
 	call :out 2
 	goto 65
@@ -3650,7 +3650,7 @@ if /i "!url!" equ "e" (
 	goto memuv2
 )
 call :ljjc url
-if "!errorlevel!" equ "0" (
+if not errorlevel 1 (
 	set /p =无效路径<nul
 	call :out 2
 	endlocal
@@ -3701,6 +3701,18 @@ for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\W
 set "doh=--doh-url https://101.101.101.101/dns-query"
 set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36""
 if exist "%systemroot%\system32\curl.exe" (
+	if defined doh (
+		echo;测试DoH端口是否有效...
+		for /f "tokens=2 delims=/" %%a in ("!doh!") do (
+			curl -s --connect-timeout 2 --retry 1 -I -o nul "https://%%a"
+			if errorlevel 1 (
+				echo;使用系统默认DNS
+				set doh=
+			) else (
+				echo;使用DoH: !doh:~10!
+			)
+		)
+	)
 	pushd "%temp%\down"
 	curl !proxy! !doh! !ua! -Z --compressed -C - --retry 2 --retry-delay 1 --connect-timeout 5 ^
 	-o all.json			%mainurl1% ^
@@ -3729,7 +3741,7 @@ for /f "usebackq tokens=19,21 delims=:," %%a in ("%temp%\down\doge.json") do (
 )
 if not defined dogetousd (
 	set dogetousd=1
-	set doge24h=0
+	set doge24h=0.0
 )
 for /f "tokens=1,2 delims=." %%a in ("!doge24h!") do (
 	set "doge24h1=%%b"
@@ -3743,7 +3755,7 @@ for /f "usebackq tokens=19,21 delims=:," %%a in ("%temp%\down\btc.json") do (
 )
 if not defined btctousd (
 	set btctousd=1
-	set btc24h=0
+	set btc24h=0.0
 )
 for /f "tokens=1,2 delims=." %%a in ("!btc24h!") do (
 	set "btc24h1=%%b"
@@ -3757,7 +3769,7 @@ for /f "usebackq tokens=19,21 delims=:," %%a in ("%temp%\down\eth.json") do (
 )
 if not defined ethtousd (
 	set ethtousd=1
-	set eth24h=0
+	set eth24h=0.0
 )
 for /f "tokens=1,2 delims=." %%a in ("!eth24h!") do (
 	set "eth24h1=%%b"
@@ -3771,7 +3783,7 @@ for /f "usebackq tokens=19,21 delims=:," %%a in ("%temp%\down\filecoin.json") do
 )
 if not defined filetousd (
 	set filetousd=1
-	file24h=0
+	set file24h=0.0
 )
 for /f "tokens=1,2 delims=." %%a in ("!file24h!") do (
 	set "file24h1=%%b"
@@ -3785,34 +3797,36 @@ for /f "usebackq tokens=19,21 delims=:," %%a in ("%temp%\down\xmr.json") do (
 )
 if not defined xmrtousd (
 	set xmrtousd=1
-	set xmr24h=0
+	set xmr24h=0.0
 )
 for /f "tokens=1,2 delims=." %%a in ("!xmr24h!") do (
 	set "xmr24h1=%%b"
 	set "xmr24h=%%a.!xmr24h1:~0,3!"
 )
-for %%i in (
-	euro
-	gold-ounce
-	silver-ounce
-	japanese-yen
-	hong-kong-dollar
-	new-taiwan-dollar
-	chinese-yuan-renminbi
-	british-pound-sterling
-) do (
-	for /f "tokens=*" %%a in ('powershell -command "(Get-Content -Encoding UTF8 '%temp%\down\all.json'|ConvertFrom-Json).data|Where-Object {$_.id -eq '%%i'}|Select-Object -ExpandProperty rateUsd"') do (
-		set "%%i=%%a"
+if exist "!temp!\down\all.json" (
+	for %%i in (
+		euro
+		gold-ounce
+		silver-ounce
+		japanese-yen
+		hong-kong-dollar
+		new-taiwan-dollar
+		chinese-yuan-renminbi
+		british-pound-sterling
+	) do (
+		for /f "tokens=*" %%a in ('powershell -command "(Get-Content -Encoding UTF8 '%temp%\down\all.json'|ConvertFrom-Json).data|Where-Object {$_.id -eq '%%i'}|Select-Object -ExpandProperty rateUsd"') do (
+			set "%%i=%%a"
+		)
 	)
+	set "eurtousd=!euro!"
+	set "autousd=!gold-ounce!"
+	set "agtousd=!silver-ounce!"
+	set "jpytousd=!japanese-yen!"
+	set "hkdtousd=!hong-kong-dollar!"
+	set "twdtousd=!new-taiwan-dollar!"
+	set "cnytousd=!chinese-yuan-renminbi!"
+	set "gbptousd=!british-pound-sterling!"
 )
-set "eurtousd=!euro!"
-set "autousd=!gold-ounce!"
-set "agtousd=!silver-ounce!"
-set "jpytousd=!japanese-yen!"
-set "hkdtousd=!hong-kong-dollar!"
-set "twdtousd=!new-taiwan-dollar!"
-set "cnytousd=!chinese-yuan-renminbi!"
-set "gbptousd=!british-pound-sterling!"
 rd /s /q "%temp%\down">nul
 call :Division 1 !cnytousd! 3 usdtocny
 call :Division !btctousd! !cnytousd! 9 btctocny
@@ -3928,14 +3942,14 @@ set /p "newpf=输入要创建的新盘符:"
 set gllj=
 set /p "gllj=输入要关联的路径: "
 call :ljjc gllj dir
-if "!errorlevel!" equ "0" (
+if not errorlevel 1 (
 	set /p =无效路径<nul
 	call :out 2
 	endlocal
 	goto 68
 )
 subst !newpf!: !gllj!
-if "!errorlevel!" equ "0" (
+if not errorlevel 1 (
 	set /p =创建成功<nul
 	call :out 2
 	endlocal
@@ -3955,7 +3969,7 @@ subst
 set xzxnp=
 set /p "xzxnp=输入要卸载的盘符: "
 subst !xzxnp!: /d
-if "!errorlevel!" equ "0" (
+if not errorlevel 1 (
 	set /p =卸载成功<nul
 	call :out 2
 	endlocal
@@ -3977,7 +3991,7 @@ if /i "!msiurl!" equ "e" (
 	goto memuv2
 )
 call :ljjc msiurl
-if "!errorlevel!" equ "0" (
+if not errorlevel 1 (
 	set /p =无效路径<nul
 	call :out 2
 	endlocal
@@ -4234,12 +4248,24 @@ if not defined dir (
 	for /f "delims=" %%a in ("!weizhi!") do (set "dir=%%~dpa")
 )
 call :ljjc dir dir
-if "!errorlevel!" equ "0" (
+if not errorlevel 1 (
 	set /p =路径无效<nul
 	call :out 2
 	goto 72.1
 )
 cls
+if defined doh (
+	echo;测试DoH端口是否有效...
+	for /f "tokens=2 delims=/" %%a in ("!doh!") do (
+		curl -s --connect-timeout 2 --retry 1 -I -o nul "https://%%a"
+		if errorlevel 1 (
+			echo;使用系统默认DNS
+			set doh=
+		) else (
+			echo;使用DoH: !doh:~10!
+		)
+	)
+)
 echo;开始获取文件信息...
 set filename=
 if exist "%temp%\tag" (del /f /q "%temp%\tag")
@@ -4630,7 +4656,7 @@ if exist "chrome.exe" (
 :startchrome
 for /f "delims=" %%a in ("!chrome!") do (
 	tasklist /fi "IMAGENAME eq %%~nxa"|findstr /i /c:"%%~nxa">nul
-	if "!errorlevel!" equ "0" (
+	if not errorlevel 1 (
 		cls
 		echo;%%~nxa正在运行,请关闭浏览器后重试.
 		set /p =按任意键退出<nul&pause>nul
@@ -4680,10 +4706,10 @@ set source_dir=
 set target_dir=
 set /p "source_dir=输入源目录: "
 call :ljjc source_dir dir
-if "!errorlevel!" equ "0" (goto 74.3)
+if not errorlevel 1 (goto 74.3)
 set /p "target_dir=输入目标目录: "
 call :ljjc target_dir dir
-if "!errorlevel!" equ "0" (goto 74.3)
+if not errorlevel 1 (goto 74.3)
 pushd "!source_dir!"
 echo;取消文件隐藏属性...
 for /f "delims=" %%a in ('dir /ah /s /b') do (attrib -h "%%a")
@@ -4767,7 +4793,7 @@ if /i "!jiami!" equ "e" (
 	goto 76
 )
 call :ljjc jiami
-if "!errorlevel!" equ "0" (
+if not errorlevel 1 (
 	set /p =无效路径<nul
 	call :out 2
 	goto 76.1
@@ -4806,7 +4832,7 @@ if /i "!jiemi!" equ "e" (
 	goto 76
 )
 call :ljjc jiemi
-if "!errorlevel!" equ "0" (
+if not errorlevel 1 (
 	set /p =无效路径<nul
 	call :out 2
 	goto 76.2
@@ -4832,7 +4858,7 @@ if /i "!jiami!" equ "e" (
 	goto 76
 )
 call :ljjc jiami
-if "!errorlevel!" equ "0" (
+if not errorlevel 1 (
 	set /p =无效路径<nul
 	call :out 2
 	goto 76.3
@@ -4868,10 +4894,10 @@ setlocal
 title 执行w32tm /resync对时!system!
 cls
 sc query w32time|find "RUNNING">nul 2>nul
-if "!errorlevel!" neq "0" (
+if errorlevel 1 (
 	echo;w32time服务未运行，正在启动...
 	sc start w32time
-	if "!errorlevel!" equ "0" (
+	if not errorlevel 1 (
 		echo;w32time服务已成功启动
 		set stop=1
 	) else (
@@ -4886,7 +4912,7 @@ for /f "tokens=2 delims=:," %%a in ('"w32tm /query /configuration|findstr /i "Nt
 )
 :78.1
 w32tm /resync
-if "!errorlevel!" neq "0" (
+if errorlevel 1 (
 	set /a "attempts+=1"
 	if !attempts! lss 3 (
 		echo;第 !attempts! 次尝试同步时间失败
@@ -4960,6 +4986,18 @@ set "gxdoshost1=https://raw.github.io/Trustedinstall/dostool/main/dostool.js"
 set "gxdoshost2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js"
 set "gxdos1=https://raw.githubusercontent.com/Trustedinstall/dostool/main/dostool.js"
 set "gxdos2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js"
+if defined doh (
+	echo;测试DoH端口是否有效...
+	for /f "tokens=2 delims=/" %%a in ("!doh!") do (
+		curl -s --connect-timeout 2 --retry 1 -I -o nul "https://%%a"
+		if errorlevel 1 (
+			echo;使用系统默认DNS
+			set doh=
+		) else (
+			echo;使用DoH: !doh:~10!
+		)
+	)
+)
 echo;检查最新版本...
 if exist "%temp%\dostoolupdate" (del /f /q "%temp%\dostoolupdate")
 if exist "%systemroot%\system32\curl.exe" (
@@ -5327,8 +5365,8 @@ goto :eof
 :colortxt2
 set "bj=%1"
 set "zt=%~2"
-if 0x!bj:~0,1! gtr 0x9 (goto colortxt2.2)
-if 0x!bj:~0,1! gtr 0x4 (goto colortxt2.1)
+if 0x%bj:~0,1% gtr 0x9 (goto colortxt2.2)
+if 0x%bj:~0,1% gtr 0x4 (goto colortxt2.1)
 if "!bj:~0,1!" equ "0" (
 	set bj1=40;
 ) else (
@@ -5389,7 +5427,7 @@ if /i "!bj:~0,1!" equ "a" (
 	)
 )
 :colortxt2.3
-if 0x!bj:~1,1! gtr 0xb (goto colortxt2.5)
+if 0x%bj:~1,1% gtr 0xb (goto colortxt2.5)
 if "!bj:~1,1!" equ "8" (
 	set bj2=90m
 ) else (
@@ -6267,7 +6305,7 @@ if not defined url (
 )
 if not defined tr (set tr=8)
 set tr|findstr "\<[0-9]*\>">nul
-if "!errorlevel!" neq "0" (
+if errorlevel 1 (
 	echo;线程数只能输入数字!
 	goto :eof
 )
@@ -6287,6 +6325,18 @@ for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\W
 		)
 	) else (
 		set proxy=
+	)
+)
+if defined doh (
+	echo;测试DoH端口是否有效...
+	for /f "tokens=2 delims=/" %%a in ("!doh!") do (
+		curl -s --connect-timeout 2 --retry 1 -I -o nul "https://%%a"
+		if errorlevel 1 (
+			echo;使用系统默认DNS
+			set doh=
+		) else (
+			echo;使用DoH: !doh:~10!
+		)
 	)
 )
 curl !proxy! !doh! !par! !ua! -I -# -L -o tag --connect-timeout 5 --output-dir "%temp%" "!url!"
