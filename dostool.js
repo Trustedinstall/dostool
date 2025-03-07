@@ -22,7 +22,7 @@ if /i "%1" equ "-chrome" (goto chrome)
 if /i "!systemdrive!" equ "x:" (goto ks)
 fltmc 1>nul 2>nul
 if not errorlevel 1 (goto ks)
-for /f "delims=" %%a in ("%0") do (set "weizhi=%%~fa")
+set "weizhi=%~0"
 if exist "!localappdata!\Microsoft\WindowsApps\wt.exe" (call :stwt) else (call :stcmd)
 rem 在权限申请进程中预读命令提升后面初始化速度
 if not exist "!temp!\dos_pre_reading_cache_os.tmp" (
@@ -30,13 +30,17 @@ if not exist "!temp!\dos_pre_reading_cache_os.tmp" (
 	start /b wmic PATH Win32_SystemEnclosure get ChassisTypes /value>"!temp!\dos_pre_reading_cache_wmictype.tmp"
 	start /b reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v desktop>"!temp!\dos_pre_reading_cache_zmlj.tmp"
 ) else (
-	type "!temp!\dos_pre_reading_cache_os.tmp">nul
-	type "!temp!\dos_pre_reading_cache_wmictype.tmp">nul
-	type "!temp!\dos_pre_reading_cache_zmlj.tmp">nul
+	for %%a in (
+		dos_pre_reading_cache_os.tmp
+		dos_pre_reading_cache_wmictype.tmp
+		dos_pre_reading_cache_zmlj.tmp
+	) do (
+		type "!temp!\%%a">nul
+	)
 )
 exit 0
 :stwt
-start /min !comspec! /c mshta vbscript:createobject("shell.application").shellexecute("!localappdata!\Microsoft\WindowsApps\wt.exe","!weizhi!","-ks","runas",1)(window.close)
+start /min !comspec! /c mshta vbscript:createobject("shell.application").shellexecute("!localappdata!\Microsoft\WindowsApps\wt.exe","!weizhi! -ks","","runas",1)(window.close)
 rem start /min powershell -mta -nologo -noprofile start-process -filepath "wt" -argumentlist '""!weizhi!" -ks"' -verb runas>nul 2>nul
 goto :eof
 :stcmd
@@ -49,14 +53,14 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250301
-set versize=161950
+set versize=153790
 set fy1=___
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
 set "pause=set /p =按任意键返回菜单<nul&pause>nul"
 set hx=echo;_______________________________________________________________________________
-for /f "delims=" %%a in ("%0") do (set "weizhi=%%~fa")
+set "weizhi=%~0"
 if exist "!temp!\dos_pre_reading_cache_wmictype.tmp" (
 	set "wmictype='type !temp!\dos_pre_reading_cache_wmictype.tmp'"
 ) else (
@@ -82,12 +86,12 @@ for /f "tokens=3 delims=.]" %%a in ('ver') do (
 	if %%a lss 10586 (set winv=1) else (set winv=0)
 )
 if exist "!temp!\dos_pre_reading_cache_os.tmp" (
-	set "wmicos='type !temp!\dos_pre_reading_cache_os.tmp'"
+	set "system='type !temp!\dos_pre_reading_cache_os.tmp'"
 ) else (
-	set "wmicos='wmic os get caption /value'"
+	set "system='wmic os get caption /value'"
 	set cm=1
 )
-for /f "tokens=2 delims==" %%a in (!wmicos!) do (
+for /f "tokens=2 delims==" %%a in (!system!) do (
 	set "system=%%a"
 	if "!cm!" equ "1" (
 		set "system=!system:~0,-1!"
@@ -95,7 +99,6 @@ for /f "tokens=2 delims==" %%a in (!wmicos!) do (
 	)
 	for /f "tokens=3" %%a in ("!system!") do (call :pd%%a 2>nul)
 )
-set wmicos=
 if "!date:~11,1!" equ "周" (
 	set "xingqi=!date:~11,2! "
 ) else (
@@ -201,55 +204,41 @@ set caidan=
 set /p "caidan=请输入你的选择:"
 if not defined caidan (goto memuv2.1)
 if "!caidan:~1!" equ "" (
-	call :checkvar caidan num jg
-	if "!jg!" equ "1" (
+	call :checkvar caidan num
+	if errorlevel 1 (
 		if defined xz!caidan! (
 			goto !xz%caidan%!
 		) else (
 			goto memuv2.1
 		)
 	)
-	if "!caidan!" equ "-" (
-		set /a "pd=start-1"
-		if !pd! geq 1 (
-			set /a "start-=9"
-			goto memuv2
-		) else (
-			goto memuv2.1
+	for %%a in (- a) do (
+		if "!caidan!" equ "%%~a" (
+			set /a "pd=start-1"
+			if !pd! geq 1 (
+				set /a "start-=9"
+				goto memuv2
+			) else (
+				goto memuv2.1
+			)
 		)
 	)
-	if "!caidan!" equ "+" (
-		set /a "pd=end+1"
-		if defined a!pd! (
-			set /a "start+=9"
-			goto memuv2
-		) else (
-			goto memuv2.1
-		)
-	)
-	if /i "!caidan!" equ "a" (
-		set /a "pd=start-1"
-		if !pd! geq 1 (
-			set /a "start-=9"
-			goto memuv2
-		) else (
-			goto memuv2.1
-		)
-	)
-	if /i "!caidan!" equ "s" (
-		set /a "pd=end+1"
-		if defined a!pd! (
-			set /a "start+=9"
-			goto memuv2
-		) else (
-			goto memuv2.1
+	for %%a in (+ s) do (
+		if "!caidan!" equ "%%~a" (
+			set /a "pd=end+1"
+			if defined a!pd! (
+				set /a "start+=9"
+				goto memuv2
+			) else (
+				goto memuv2.1
+			)
 		)
 	)
 )
 if /i "!caidan:~0,2!" equ "go" (
 	set "caidan=!caidan:~2!"
-	call :checkvar caidan num jg
-	if "!jg!" equ "1" (
+	call :checkvar caidan num
+	if errorlevel 1 (
 		set /a "start=caidan*9-8"
 		goto memuv2
 	) else (
@@ -270,6 +259,7 @@ if /i "!caidan!" equ "gcd" (goto gcd)
 if /i "!caidan!" equ "guanji" (goto guanji)
 if /i "!caidan!" equ "guanyu" (goto guanyu)
 if /i "!caidan!" equ "csh" (endlocal&goto chushihua)
+if /i "!caidan!" equ "offxsq" (call :pwiex offdisplay&goto memuv2)
 :memuv2.1
 set /p =请输入正确的选项！<nul
 call :out 2
@@ -439,17 +429,7 @@ goto memuv2
 :7
 title 解除注册表被禁用!system!
 cls
-(
-echo;[Version]
-echo;Signature="$CHICAGO$"
-echo;[DefaultInstall]
-echo;DelReg=del
-echo;[del]
-echo;HKCU,Software\Microsoft\Windows\CurrentVersion\Policies\System,Disableregistrytools
-)>%systemdrive%\windows\temp\reg.inf
-rundll32 syssetup,SetupInfObjectInstallAction DefaultInstall 128 %systemdrive%\windows\temp\reg.inf
-reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v DisableRegistryTools /t reg_dword /d 00000000 /f
-del /f /q %systemdrive%\windows\temp\reg.inf
+call :16.5
 %hx%
 %pause%
 goto memuv2
@@ -457,12 +437,12 @@ goto memuv2
 setlocal
 title 计算开平方!system!
 cls
-set /p "s=请输入被开平方的数: "
-call :checkvar s num jg
-if "!jg!" equ "0" (goto 8.1)
+set /p "s=输入被开平方的数: "
+call :checkvar s num
+if not errorlevel 1 (goto 8.1)
 set /p "w=精确到小数点后几位数: "
-call :checkvar w num jg
-if "!jg!" equ "0" (goto 8.1)
+call :checkvar w num
+if not errorlevel 1 (goto 8.1)
 call :sqrt !s! !w! jg
 cls
 echo;!s!的开平方结果是(精确到小数点后!w!位): !jg!
@@ -497,7 +477,7 @@ fsutil fsinfo drives
 %hx%
 echo;如果不能正常转换，请使用磁盘错误修复
 set zhuanhuancipan=
-set /p "zhuanhuancipan=请输入需要转换的盘符: "
+set /p "zhuanhuancipan=输入需要转换的盘符: "
 cls
 convert !zhuanhuancipan!: /fs:ntfs /v /x
 %hx%
@@ -512,13 +492,13 @@ cls
 fsutil fsinfo drives
 %hx%
 set cipanxioufu=
-set /p "cipanxioufu=请输入需要修复的盘符: "
+set /p "cipanxioufu=输入需要修复的盘符: "
 cls
 fsutil fsinfo ntfsinfo !cipanxioufu!:>nul 2>nul
-if not errorlevel 1 (
-	chkdsk /x /f /sdcleanup !cipanxioufu!:
-) else (
+if errorlevel 1 (
 	chkdsk /f /x !cipanxioufu!:
+) else (
+	chkdsk /x /f /sdcleanup !cipanxioufu!:
 )
 %hx%
 echo;修复完成
@@ -545,7 +525,7 @@ cls
 fsutil fsinfo drives
 %hx%
 set geshihua=
-set /p "geshihua=请输入需要格式化的盘符: "
+set /p "geshihua=输入需要格式化的盘符: "
 cls
 label !geshihua!: format
 format !geshihua!: /x /q /v:format /y
@@ -563,7 +543,7 @@ echo;有效数值范围(-2147483648至2147483647)(c=清屏 e=返回)
 %hx%
 :13.1
 set biaodashi=
-set /p "biaodashi=请输入表达式: "
+set /p "biaodashi=输入表达式: "
 if /i "!biaodashi!" equ "c" (endlocal&goto 13)
 if /i "!biaodashi!" equ "e" (endlocal&goto memuv2)
 set /a "jieguo=!biaodashi!"
@@ -586,8 +566,8 @@ echo;说明:只能输入整数，随机数范围(0-32767)(e=返回菜单)
 %hx%
 set zuidazhi=
 set zuixiaozhi=
-set /p "zuidazhi=请输入随机数的最大值: "
-set /p "zuixiaozhi=请输入随机数的最小值: "
+set /p "zuidazhi=输入随机数的最大值: "
+set /p "zuixiaozhi=输入随机数的最小值: "
 %hx%
 :15.1
 set /a "cs+=1"
@@ -604,27 +584,24 @@ title 清除KHATRA病毒!system!
 cls
 echo;按任意键开始清除KHATRT病毒&pause>nul
 cls
-set /p =正在结束KHATRA病毒进程...<nul
-set khatra=0
+echo;正在结束KHATRA病毒进程...
 :16.4.1
-taskkill /f /im xplorer.exe
-attrib -s -h -r "%systemdrive%\windows\xplorer.exe"
-del /f /q "%systemdrive%\windows\xplorer.exe"
-md "%systemdrive%\windows\xplorer.exe"
-taskkill /f /im ghost.exe
-attrib -s -h -r "%systemdrive%\windows\system\ghost.exe"
-del /f /q "%systemdrive%\windows\system\ghost.exe"
-md "%systemdrive%\windows\system\ghost.exe"
-taskkill /f /im khatra.exe
-attrib -s -h -r "%systemdrive%\windows\system32\khatra.exe"
-del /f /q "%systemdrive%\windows\system32\khatra.exe"
-md "%systemdrive%\windows\system32\khatra.exe"
-attrib -s -h -r "%systemdrive%\khatra.exe"
-del /f /q "%systemdrive%\khatra.exe"
-md "%systemdrive%\khatra.exe"
-if "!khatra!" neq "1" (
-	set /a "khatra+=1"
-	goto 16.4.1
+for /l %%a in (1,1,2) do (
+	taskkill /f /im xplorer.exe
+	attrib -s -h -r "%systemdrive%\windows\xplorer.exe"
+	del /f /q "%systemdrive%\windows\xplorer.exe"
+	md "%systemdrive%\windows\xplorer.exe"
+	taskkill /f /im ghost.exe
+	attrib -s -h -r "%systemdrive%\windows\system\ghost.exe"
+	del /f /q "%systemdrive%\windows\system\ghost.exe"
+	md "%systemdrive%\windows\system\ghost.exe"
+	taskkill /f /im khatra.exe
+	attrib -s -h -r "%systemdrive%\windows\system32\khatra.exe"
+	del /f /q "%systemdrive%\windows\system32\khatra.exe"
+	md "%systemdrive%\windows\system32\khatra.exe"
+	attrib -s -h -r "%systemdrive%\khatra.exe"
+	del /f /q "%systemdrive%\khatra.exe"
+	md "%systemdrive%\khatra.exe"
 )
 echo;正在删除KHATRA病毒...
 rd /s /q "%systemdrive%\khatra.exe";^
@@ -667,20 +644,10 @@ for /f "delims=" %%c in ('"for %%d in (!sypf!) do (dir /a /s /b %%dautorun.inf)"
 	)
 )
 for %%k in (!sypf!) do (del /f /s /q %%k(Empty).lnk)
-(
-echo;[Version]
-echo;Signature="$CHICAGO$"
-echo;[DefaultInstall]
-echo;DelReg=del
-echo;[del]
-echo;HKCU,Software\Microsoft\Windows\CurrentVersion\Policies\System,Disableregistrytools
-)>%systemdrive%\windows\temp\reg.inf
-rundll32 syssetup,SetupInfObjectInstallAction DefaultInstall 128 %systemdrive%\windows\temp\reg.inf
+call :16.5
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\Hidden\SHOWALL" /v CheckedValue /t reg_dword /d 00000001 /f
-reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v DisableRegistryTools /t reg_dword /d 00000000 /f
 reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\Current Version\Policies\Explorer" /v nosetfolders /t reg_dword /d 00000000 /f
 reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v NoControlPanel /t reg_dword /d 00000000 /f
-del /f /q %systemdrive%\windows\temp\reg.inf
 :16.1
 %hx%
 set zhucebiaoqingli=
@@ -699,6 +666,19 @@ echo;KHATRA病毒清除完成
 %pause%
 endlocal
 goto memuv2
+:16.5
+(
+echo;[Version]
+echo;Signature="$CHICAGO$"
+echo;[DefaultInstall]
+echo;DelReg=del
+echo;[del]
+echo;HKCU,Software\Microsoft\Windows\CurrentVersion\Policies\System,Disableregistrytools
+)>%systemdrive%\windows\temp\reg.inf
+rundll32 syssetup,SetupInfObjectInstallAction DefaultInstall 128 %systemdrive%\windows\temp\reg.inf
+del /f /q %systemdrive%\windows\temp\reg.inf
+reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v DisableRegistryTools /t reg_dword /d 00000000 /f
+goto :eof
 :17
 cls
 start regedit
@@ -720,15 +700,19 @@ setlocal
 title 用户管理!system!
 cls
 %hx%
-echo;[1]显示所有的用户
-echo;[2]创建新用户
-echo;[3]删除用户
-echo;[4]提升用户为管理员
-echo;[5]强制修改用户密码
-echo;[6]查看用户信息
-echo;[7]激活账户
-echo;[8]停用账户
-echo;[0]返回菜单
+for %%a in (
+	"[1]显示所有的用户"
+	"[2]创建新用户"
+	"[3]删除用户"
+	"[4]提升用户为管理员"
+	"[5]强制修改用户密码"
+	"[6]查看用户信息"
+	"[7]激活账户"
+	"[8]停用账户"
+	"[0]返回菜单"
+) do (
+	echo;%%~a
+)
 %hx%
 set cho=123456780
 !sel!
@@ -786,7 +770,7 @@ net user
 echo;当前已登录的用户: !username!
 %hx%
 set shanchuyonghu=
-set /p "shanchuyonghu=请输入要删除的用户: "
+set /p "shanchuyonghu=输入要删除的用户: "
 cls
 net user !shanchuyonghu! /del
 %hx%
@@ -802,7 +786,7 @@ net user
 echo;当前已登录的用户: !username!
 %hx%
 set tishengyonghu=
-set /p "tishengyonghu=请输入要提升的用户名: "
+set /p "tishengyonghu=输入要提升的用户名: "
 cls
 net localgroup administrators !tishengyonghu! /add
 %hx%
@@ -819,8 +803,8 @@ echo;当前已登录的用户: !username!
 %hx%
 set xiougaimima=
 set xinmima=
-set /p "xiougaimima=请输入要修改的用户名: "
-set /p "xinmima=请输入新密码: "
+set /p "xiougaimima=输入要修改的用户名: "
+set /p "xinmima=输入新密码: "
 cls
 net user !xiougaimima! !xinmima!
 %hx%
@@ -835,7 +819,7 @@ net user
 echo;当前已登录的用户: !username!
 %hx%
 set chakanyonghuxinxi=
-set /p "chakanyonghuxinxi=请输入要查看的用户名: "
+set /p "chakanyonghuxinxi=输入要查看的用户名: "
 cls
 net user !chakanyonghuxinxi!
 %hx%
@@ -850,7 +834,7 @@ net user
 echo;当前已登录的用户: !username!
 %hx%
 set jhzh=
-set /p "jhzh=请输入要操作的用户名: "
+set /p "jhzh=输入要操作的用户名: "
 cls
 net user !jhzh! /active:yes
 %hx%
@@ -865,7 +849,7 @@ net user
 echo;当前已登录的用户: !username!
 %hx%
 set tyzh=
-set /p "tyzh=请输入要操作的用户名: "
+set /p "tyzh=输入要操作的用户名: "
 cls
 net user !tyzh! /active:no
 %hx%
@@ -882,16 +866,20 @@ title 关机选项!system!
 color 0a
 cls
 %hx%
-echo;[1]关机
-echo;[2]重启
-echo;[3]注销
-echo;[4]放弃系统关机
-echo;[5]开启休眠功能
-echo;[6]关闭休眠功能
-echo;[7]显示系统上可用的睡眠状态
-echo;[8]锁屏
-echo;[9]循环显示唤醒计时器与电源请求
-echo;[0]返回菜单
+for %%a in (
+	"[1]关机"
+	"[2]重启"
+	"[3]注销"
+	"[4]放弃系统关机"
+	"[5]开启休眠功能"
+	"[6]关闭休眠功能"
+	"[7]显示系统上可用的睡眠状态"
+	"[8]锁屏"
+	"[9]循环显示唤醒计时器与电源请求"
+	"[0]返回菜单"
+) do (
+	echo;%%~a
+)
 %hx%
 set cho=1234567890
 !sel!
@@ -915,10 +903,10 @@ goto guanji
 title 关机!system!
 cls
 set guanjidaojishi=
-set /p "guanjidaojishi=请设置关机倒计时，有效范围(0-315360000)秒(e=返回): "
+set /p "guanjidaojishi=设置关机倒计时，有效范围(0-315360000)秒(e=返回): "
 if /i "!guanjidaojishi!" equ "e" (endlocal&goto guanji)
-call :checkvar guanjidaojishi num jg
-if "!jg!" equ "0" (
+call :checkvar guanjidaojishi num
+if not errorlevel 1 (
 	set /p =不是有效数字！<nul
 	call :out 2
 	goto guanji.1
@@ -930,10 +918,10 @@ goto guanji
 title 重启!system!
 cls
 set chongqidaojishi=
-set /p "chongqidaojishi=请设置重启倒计时，有效范围(0-315360000)秒(e=返回): "
+set /p "chongqidaojishi=设置重启倒计时，有效范围(0-315360000)秒(e=返回): "
 if "!chongqidaojishi!" equ "e" (endlocal&goto guanji)
-call :checkvar chongqidaojishi num jg
-if "!jg!" equ "0" (
+call :checkvar chongqidaojishi num
+if not errorlevel 1 (
 	set /p =不是有效数字！<nul
 	call :out 2
 	goto guanji.2
@@ -964,8 +952,8 @@ cls
 set size=
 set /p "size=设置休眠文件占用总内存比例(40~100)(默认100)(e=返回): "
 if /i "!size!" equ "e" (endlocal&goto guanji)
-call :checkvar size num jg
-if "!jg!" equ "0" (
+call :checkvar size num
+if not errorlevel 1 (
 	set /p =不是有效数字！<nul
 	call :out 2
 	goto guanji.6
@@ -1010,13 +998,17 @@ setlocal
 title DOS任务管理器!system!
 cls
 %hx%
-echo;[1]显示所有进程
-echo;[2]显示每个进程的服务
-echo;[3]显示进程路径
-echo;[4]显示进程详细信息
-echo;[5]显示进程的TCP/UDP连接
-echo;[6]循环显示CPU占用率与网络速度
-echo;[0]返回菜单
+for %%a in (
+	"[1]显示所有进程"
+	"[2]显示每个进程的服务"
+	"[3]显示进程路径"
+	"[4]显示进程详细信息"
+	"[5]显示进程的TCP/UDP连接"
+	"[6]循环显示CPU占用率与网络速度"
+	"[0]返回菜单"
+) do (
+	echo;%%~a
+)
 %hx%
 set cho=1234560
 !sel!
@@ -1144,7 +1136,6 @@ if defined executablepath (echo;路径:		!executablepath!)
 if defined commandline (
 	echo;命令行:		!commandline!
 ) else (
-	echo;命令行:
 	wmic process where processid=!jclj! get commandline
 )
 tasklist /fi "pid eq !jclj!" /m
@@ -1245,13 +1236,17 @@ setlocal
 title 文件系统信息查询!system!
 cls
 %hx%
-echo;[1]列出所有驱动器
-echo;[2]查询一个驱动器的类型
-echo;[3]查询卷信息
-echo;[4]查询NTFS卷信息
-echo;[5]查询REFS卷信息
-echo;[6]查询扇区信息
-echo;[0]返回菜单
+for %%a in (
+	"[1]列出所有驱动器"
+	"[2]查询一个驱动器的类型"
+	"[3]查询卷信息"
+	"[4]查询NTFS卷信息"
+	"[5]查询REFS卷信息"
+	"[6]查询扇区信息"
+	"[0]返回菜单"
+) do (
+	echo;%%~a
+)
 %hx%
 set cho=1234560
 !sel!
@@ -1282,7 +1277,7 @@ cls
 fsutil fsinfo drives
 %hx%
 set qdqlx=
-set /p "qdqlx=请输入要查询的驱动器: "
+set /p "qdqlx=输入要查询的驱动器: "
 if not defined qdqlx (goto 24.2)
 cls
 fsutil fsinfo drivetype !qdqlx!:
@@ -1297,7 +1292,7 @@ cls
 fsutil fsinfo drives
 %hx%
 set qdqlx=
-set /p "qdqlx=请输入要查询的驱动器: "
+set /p "qdqlx=输入要查询的驱动器: "
 if not defined qdqlx (goto 24.3)
 cls
 fsutil fsinfo volumeinfo !qdqlx!:
@@ -1312,7 +1307,7 @@ cls
 fsutil fsinfo drives
 %hx%
 set qdqlx=
-set /p "qdqlx=请输入要查询的驱动器: "
+set /p "qdqlx=输入要查询的驱动器: "
 if not defined qdqlx (goto 24.4)
 cls
 fsutil fsinfo ntfsinfo !qdqlx!:
@@ -1327,7 +1322,7 @@ cls
 fsutil fsinfo drives
 %hx%
 set qdqlx=
-set /p "qdqlx=请输入要查询的驱动器: "
+set /p "qdqlx=输入要查询的驱动器: "
 if not defined qdqlx (goto 24.5)
 cls
 fsutil fsinfo refsinfo !qdqlx!:
@@ -1342,7 +1337,7 @@ cls
 fsutil fsinfo drives
 %hx%
 set qdqlx=
-set /p "qdqlx=请输入要查询的驱动器: "
+set /p "qdqlx=输入要查询的驱动器: "
 if not defined qdqlx (goto 24.6)
 cls
 fsutil fsinfo sectorinfo !qdqlx!:
@@ -1355,15 +1350,15 @@ setlocal
 title 创建指定大小的文件!system!
 cls
 set cjlj=
-set /p "cjlj=请输入文件路径(e=返回): "
+set /p "cjlj=输入文件路径(e=返回): "
 if not defined cjlj (endlocal&goto 25)
 if /i "!cjlj!" equ "e" (endlocal&goto memuv2)
 set cjdx=
-set /p "cjdx=请输入文件大小(单位:字节)(e=返回): "
+set /p "cjdx=输入文件大小(单位:字节)(e=返回): "
 if not defined cjdx (endlocal&goto 25)
 if /i "!cjdx!" equ "e" (endlocal&goto memuv2)
-call :checkvar cjdx num jg
-if "!jg!" equ "0" (endlocal&goto 25)
+call :checkvar cjdx num
+if not errorlevel 1 (endlocal&goto 25)
 fsutil file createnew !cjlj! !cjdx!
 %hx%
 set /p =按任意键返回<nul&pause>nul
@@ -1375,9 +1370,13 @@ title 免疫U盘病毒!system!
 cls
 echo;此功能针对U盘进行免疫，避免autorun类型的病毒自动启动
 %hx%
-echo;[1]启动U盘免疫
-echo;[2]取消U盘免疫
-echo;[0]返回菜单
+for %%a in (
+	"[1]启动U盘免疫"
+	"[2]取消U盘免疫"
+	"[0]返回菜单"
+) do (
+	echo;%%~a
+)
 %hx%
 set cho=120
 !sel!
@@ -1479,7 +1478,7 @@ echo;[0]返回菜单
 fsutil fsinfo drives
 %hx%
 set fenxi=
-set /p "fenxi=请输入需要分析的盘符:"
+set /p "fenxi=输入需要分析的盘符:"
 if "!fenxi!" equ "1" (goto 27.1)
 if "!fenxi!" equ "0" (endlocal&goto memuv2)
 cls
@@ -1501,8 +1500,9 @@ for /f "delims=" %%a in ('fsutil fsinfo drives') do (
 )
 if /i "!system:~11,2!" equ "XP" (
 	for %%n in (!sypf!) do (defrag /v /x %%n)
+) else (
+	for %%n in (!sypf!) do (defrag /u /v /x %%n)
 )
-for %%n in (!sypf!) do (defrag /u /v /x %%n)
 %hx%
 set /p =按任意键返回<nul&pause>nul
 endlocal
@@ -1523,7 +1523,7 @@ echo;注意:如果对系统盘进行操作可能会被杀毒软件拦截
 fsutil fsinfo drives
 %hx%
 set caozuo=
-set /p "caozuo=请输入需要操作的盘符或路径: "
+set /p "caozuo=输入需要操作的盘符或路径: "
 if not defined caozuo (
 	endlocal
 	goto 28
@@ -1603,8 +1603,8 @@ if exist "%systemroot%\system32\curl.exe" (
 echo;
 set ping=
 set pingcishu=
-set /p "ping=请输入目标IP或者网址: "
-set /p "pingcishu=请输入ping次数: "
+set /p "ping=输入目标IP或者网址: "
+set /p "pingcishu=输入ping次数: "
 echo;
 echo;正在测试!ping!的网络延迟...
 ping /n !pingcishu! !ping! /a
@@ -2076,7 +2076,7 @@ cls
 :d0c
 for /l %%a in (1,2,127) do (set /p =%%a	<nul)
 echo;
-choice /c YN /n /m 请问这里有你想的数吗?(Y=有,N=没有)[1\7]
+choice /c YN /n /m 这里有你想的数吗?(Y=有,N=没有)[1\7]
 if "!errorlevel!" equ "1" (set num=1)
 if "!errorlevel!" equ "2" (set num=0)
 set a=2
@@ -2090,7 +2090,7 @@ for /l %%a in (!a!,1,!b!) do (
 )
 if !b! lss 128 (goto d1c)
 echo;
-choice /c YN /n /m 请问这里有你想的数吗?(Y=有,N=没有)[2\7]
+choice /c YN /n /m 这里有你想的数吗?(Y=有,N=没有)[2\7]
 if "!errorlevel!" equ "1" (set /a "num+=2")
 if "!errorlevel!" equ "2" (set /a "num=num")
 set c=4
@@ -2104,7 +2104,7 @@ for /l %%a in (!c!,1,!d!) do (
 )
 if !d! lss 128 (goto d2c)
 echo;
-choice /c YN /n /m 请问这里有你想的数吗?(Y=有,N=没有)[3\7]
+choice /c YN /n /m 这里有你想的数吗?(Y=有,N=没有)[3\7]
 if "!errorlevel!" equ "1" (set /a "num+=4")
 if "!errorlevel!" equ "2" (set /a "num=num")
 set e=8
@@ -2118,7 +2118,7 @@ for /l %%a in (!e!,1,!f!) do (
 )
 if !f! lss 128 (goto d3c)
 echo;
-choice /c YN /n /m 请问这里有你想的数吗?(Y=有,N=没有)[4\7]
+choice /c YN /n /m 这里有你想的数吗?(Y=有,N=没有)[4\7]
 if "!errorlevel!" equ "1" (set /a "num+=8")
 if "!errorlevel!" equ "2" (set /a "num=num")
 set g=16
@@ -2132,7 +2132,7 @@ for /l %%a in (!g!,1,!h!) do (
 )
 if !g! lss 128 (goto d4c)
 echo;
-choice /c YN /n /m 请问这里有你想的数吗?(Y=有,N=没有)[5\7]
+choice /c YN /n /m 这里有你想的数吗?(Y=有,N=没有)[5\7]
 if "!errorlevel!" equ "1" (set /a "num+=16")
 if "!errorlevel!" equ "2" (set /a "num=num")
 set i=32
@@ -2146,7 +2146,7 @@ for /l %%a in (!i!,1,!j!) do (
 )
 if !j! lss 128 (goto d5c)
 echo;
-choice /c YN /n /m 请问这里有你想的数吗?(Y=有,N=没有)[6\7]
+choice /c YN /n /m 这里有你想的数吗?(Y=有,N=没有)[6\7]
 if "!errorlevel!" equ "1" (set /a "num+=32")
 if "!errorlevel!" equ "2" (set /a "num=num")
 set k=64
@@ -2160,7 +2160,7 @@ for /l %%a in (!k!,1,!l!) do (
 )
 if !l! lss 128 (goto d6c)
 echo;
-choice /c YN /n /m 请问这里有你想的数吗?(Y=有,N=没有)[7\7]
+choice /c YN /n /m 这里有你想的数吗?(Y=有,N=没有)[7\7]
 if "!errorlevel!" equ "1" (set /a "num+=64")
 if "!errorlevel!" equ "2" (set /a "num=num")
 cls
@@ -2174,11 +2174,15 @@ setlocal
 title DOS闹钟!system!
 cls
 %hx%
-echo;[1]定时提醒指定内容
-echo;[2]定时运行指定文件
-echo;[3]显示已有的计划任务
-echo;[4]删除计划任务
-echo;[0]返回菜单
+for %%a in (
+	"[1]定时提醒指定内容"
+	"[2]定时运行指定文件"
+	"[3]显示已有的计划任务"
+	"[4]删除计划任务"
+	"[0]返回菜单"
+) do (
+	echo;%%~a
+)
 %hx%
 set cho=12340
 !sel!
@@ -2196,16 +2200,16 @@ goto 32
 title 定时提醒指定内容!system!
 cls
 set txnrmc=
-set /p "txnrmc=请指定任务名称: "
+set /p "txnrmc=指定任务名称: "
 %hx%
 set txnr=
-set /p "txnr=请输入你需要提醒的内容: "
+set /p "txnr=输入你需要提醒的内容: "
 %hx%
 set txnrrq=
-set /p "txnrrq=请设置提醒日期(格式: yyyy/mm/dd 例如2015/08/05): "
+set /p "txnrrq=设置提醒日期(格式: yyyy/mm/dd 例如2015/08/05): "
 %hx%
 set txnrsj=
-set /p "txnrsj=请设置提醒时间(格式: hh:mm:ss 例如09:03:05): "
+set /p "txnrsj=设置提醒时间(格式: hh:mm:ss 例如09:03:05): "
 cls
 if not exist "%temp%\DOS工具箱临时目录" (md "%temp%\DOS工具箱临时目录")
 echo;该文件夹是DOS工具箱的临时文件夹,删除后将无法提醒已有的内容！>"%temp%\DOS工具箱临时目录\说明.txt"
@@ -2232,17 +2236,17 @@ goto 32
 title 定时运行指定文件!system!
 cls
 set dsyxmc=
-set /p "dsyxmc=请指定任务名称: "
+set /p "dsyxmc=指定任务名称: "
 %hx%
 set dsyxlj=
-set /p "dsyxlj=请拖动需要定时运行的文件到此窗口: "
+set /p "dsyxlj=拖动需要定时运行的文件到此窗口: "
 call :lj dsyxlj dsyxlj
 %hx%
 set dsyxrq=
-set /p "dsyxrq=请设置提醒日期(格式: yyyy/mm/dd 例如2015/08/05): "
+set /p "dsyxrq=设置提醒日期(格式: yyyy/mm/dd 例如2015/08/05): "
 %hx%
 set dsyxsj=
-set /p "dsyxsj=请设置提醒时间(格式: hh:mm:ss 例如09:03:05): "
+set /p "dsyxsj=设置提醒时间(格式: hh:mm:ss 例如09:03:05): "
 cls
 if not exist "%temp%\DOS工具箱临时目录" (md "%temp%\DOS工具箱临时目录")
 echo;该文件夹是DOS工具箱的临时文件夹,删除后将无法提醒已有的内容！>"%temp%\DOS工具箱临时目录\说明.txt"
@@ -2267,7 +2271,7 @@ cls
 schtasks /query
 %hx%
 set rwsc=
-set /p "rwsc=请输入要删除的任务名称: "
+set /p "rwsc=输入要删除的任务名称: "
 cls
 schtasks /delete /tn "!rwsc!" /f
 del /f /q "%temp%\DOS工具箱临时目录\!rwsc! - 定时提醒文件.bat";^
@@ -2305,7 +2309,7 @@ set mmws=
 set mmxz=
 set mmjg=
 set mmjs=aA0bB1cC2dD3eE4fF5gG6hH7iI8jJ9kK0lL1mM2nN3oO4pP5qQ6rR7sS8tT9uU0vV1wW2xX3yY4zZ5
-set /p "mmws=请输入生成的密码位数: "
+set /p "mmws=输入生成的密码位数: "
 cls
 for /l %%a in (1,1,!mmws!) do (
 	set /a "mmxz=!random!%%63"
@@ -2344,9 +2348,13 @@ title 二进制转换器!system!
 cls
 echo;最大支持2147483647的十进制转换
 %hx%
-echo;[1]输入十进制转换
-echo;[2]输入二进制转换
-echo;[0]返回菜单
+for %%a in (
+	"[1]输入十进制转换"
+	"[2]输入二进制转换"
+	"[0]返回菜单"
+) do (
+	echo;%%~a
+)
 %hx%
 set cho=120
 !sel!
@@ -2364,9 +2372,9 @@ set shijinzhi=
 set erjinzhi=
 set shilioujinzhi=
 set bajinzhi=
-set /p "shijinzhi=请输入十进制整数: "
-call :checkvar shijinzhi num jg
-if "!jg!" equ "0" (goto 10z)
+set /p "shijinzhi=输入十进制整数: "
+call :checkvar shijinzhi num
+if not errorlevel 1 (goto 10z)
 set /a "shijinzhi=shijinzhi"
 cls
 echo;十进制: !shijinzhi!
@@ -2386,7 +2394,7 @@ set srejz=
 set sjz=
 set shilioujinzhi=
 set bajinzhi=
-set /p "srejz=请输入二进制整数: "
+set /p "srejz=输入二进制整数: "
 if not defined srejz (goto 2z)
 for /f "delims=01" %%a in ("!srejz!") do (goto 2z)
 cls
@@ -2407,7 +2415,7 @@ title 关于DOS工具箱!system!
 if "%~z0" equ "!versize!" (
 	set daxiao1=
 ) else (
-	set "daxiao1=(文件大小异常,可能已被修改)"
+	set "daxiao1= (文件大小异常,可能已被修改)"
 )
 if /i "!processor_architecture!" equ "x86" (set bit=32) else (set bit=64)
 call :sjc !dosqssj! !time! jg format
@@ -2419,8 +2427,8 @@ echo;操作系统: 	!system:~3! !bit!位
 echo;版权所有 	2012-2025 Administrator 保留所有权利
 %hx%
 echo;本次已运行:		!jg!
-echo;DOS工具箱所在路径:	!weizhi!
-echo;文件大小:		%~z0 字节 !daxiao1!
+echo;DOS工具箱所在路径:	%~0
+echo;文件大小:		%~z0 字节!daxiao1!
 %hx%
 %pause%
 endlocal
@@ -2460,13 +2468,17 @@ goto memuv2
 setlocal
 title NTFS压缩!system!
 cls
-echo;此功能只能用于NTFS分区,要压缩或者解压多个文件,就用空格隔开路径.
+echo;此功能只能用于NTFS分区
 %hx%
-echo;[1]NTFS压缩
-echo;[2]NTFS解压
-echo;[3]NTFS压缩文件夹
-echo;[4]NTFS解压文件夹
-echo;[0]返回菜单
+for %%a in (
+	"[1]NTFS压缩"
+	"[2]NTFS解压"
+	"[3]NTFS压缩文件夹"
+	"[4]NTFS解压文件夹"
+	"[0]返回菜单"
+) do (
+	echo;%%~a
+)
 %hx%
 set cho=12340
 !sel!
@@ -2615,7 +2627,7 @@ setlocal
 title 语音阅读器!system!
 cls
 set ydnr=
-set /p "ydnr=请输入要阅读的内容: "
+set /p "ydnr=输入要阅读的内容: "
 start mshta vbscript:createobject("sapi.spvoice").speak("!ydnr!")(window.close)
 %hx%
 %pause%
@@ -2664,7 +2676,7 @@ setlocal
 title 文件搜索!system!
 cls
 set sswjm=
-set /p "sswjm=输入你要搜索的文件名(默认在%systemdrive%\中搜索): "
+set /p "sswjm=输入要搜索的文件名(默认在当前目录中搜索): "
 %hx%
 dir /a /s "!sswjm!"
 %hx%
@@ -2733,11 +2745,12 @@ if not errorlevel 1 (
 	goto 46
 )
 for /f "delims=" %%a in ("!yswjlj!") do (
-	for %%b in (.rar .7z .zip) do (
-		if /i "%%~xa" equ "%%b" do (
-			set "ysbkzm=%%b"
-			goto rarwjok
-		)
+	if /i "%%~xa" equ ".7z" (
+		set "rarpd=!rarpd7z!"
+		goto rarwjok
+	)
+	for %%a in (.rar .zip) do (
+		if "%%~xa" equ "%%a" (goto rarwjok)
 	)
 	set /p =无效的文件格式！<nul
 	call :out 2
@@ -2758,14 +2771,11 @@ if not errorlevel 1 (
 	goto rarwjok
 )
 for /f "delims=" %%a in ("!pjzd!") do (
-	if /i "%%~xa" equ ".txt" (
-		for %%a in (.rar .7z .zip) do (
-			if /i "!ysbkzm!" equ "%%a" (goto kspj)
-		)
+	if /i "%%~xa" neq ".txt" (
+		set /p =不是txt文件！<nul
+		call :out 2
+		goto rarwjok
 	)
-	set /p =不是txt文件！<nul
-	call :out 2
-	goto rarwjok
 )
 :kspj
 %hx%
@@ -2775,10 +2785,12 @@ for /f "usebackq delims=" %%a in ("!pjzd!") do (
 	echo;
 	echo;正在使用的字典文件: "!pjzd!"
 	echo;
-	set "pjmm=%%a"
 	echo;正在尝试密码: "%%a"
 	"!rarpd!" t -y -inul -p"%%a" "!yswjlj!"
-	if not errorlevel 1 (goto pjcg)
+	if not errorlevel 1 (
+		set "pjmm=%%a"
+		goto pjcg
+	)
 )
 :pjsb
 %hx%
@@ -2800,29 +2812,19 @@ echo;解压密码是: "!pjmm!"
 %pause%
 endlocal
 goto memuv2
-:kspj1
-%hx%
-for /f "usebackq delims=" %%a in ("!pjzd!") do (
-	cls
-	echo;正在破解的压缩包: "!yswjlj!"
-	echo;
-	echo;正在使用的字典文件: "!pjzd!"
-	echo;
-	set "pjmm=%%a"
-	echo;正在尝试密码: "%%a"
-	"!rarpd7z!" t -y -inul -p"%%a" "!yswjlj!"
-	if not errorlevel 1 (goto pjcg)
-)
-goto pjsb
 :47
 setlocal
 title Wifi热点!system!
 cls
 %hx%
-echo;[1]开启Wifi热点
-echo;[2]关闭Wifi热点
-echo;[3]查看网络配置
-echo;[0]返回菜单
+for %%a in (
+	"[1]开启Wifi热点"
+	"[2]关闭Wifi热点"
+	"[3]查看网络配置"
+	"[0]返回菜单"
+) do (
+	echo;%%~a
+)
 %hx%
 set cho=1230
 !sel!
@@ -2840,8 +2842,8 @@ title 开启Wifi热点!system!
 cls
 set wifissid=
 set wifimiam=
-set /p "wifissid=请输入Wifi名称(SSID): "
-set /p "wifimima=请输入Wifi密码(密码位数:8到63位): "
+set /p "wifissid=输入Wifi名称(SSID): "
+set /p "wifimima=输入Wifi密码(密码位数:8到63位): "
 cls
 net start sharedaccess
 netsh wlan stop hostednetwork
@@ -2952,9 +2954,9 @@ setlocal
 title 将文字写入剪切板!system!
 cls
 set nz=
-set /p "nz=请输入要写入到剪切板的文字内容:"
+set /p "nz=输入要写入到剪切板的文字内容:"
 mshta vbscript:clipboardData.SetData("text","!nz!")(window.close)
-if not errorlevel 1 (echo;写入成功) else (echo;写入失败)
+if errorlevel 1 (echo;写入失败) else (echo;写入成功)
 %hx%
 %pause%
 endlocal
@@ -2968,9 +2970,9 @@ setlocal
 cls
 title 已知年月日计算星期!system!
 set jsxq=00000000
-set /p "jsxq=请输入年月日(例如20150605): "
-call :checkvar jsxq year jg
-if "!jg!" equ "0" (
+set /p "jsxq=输入年月日(例如20150605): "
+call :checkvar jsxq year
+if not errorlevel 1 (
 	set /p =请输入正确的格式!<nul
 	call :out 2
 	endlocal
@@ -3010,7 +3012,9 @@ if "!w!" equ "1" (
 		if "!w!" equ "3" (
 			set w=二
 		) else (
-			if "!w!" equ "4" (set w=三)
+			if "!w!" equ "4" (
+				set w=三
+			)
 		)
 	)
 )
@@ -3022,7 +3026,9 @@ if "!w!" equ "5" (
 	if "!w!" equ "6" (
 		set w=五
 	) else (
-		if "!w!" equ "0" (set w=六)
+		if "!w!" equ "0" (
+			set w=六
+		)
 	)
 )
 :53.2
@@ -3040,10 +3046,14 @@ title 查询系统激活状态!system!
 echo;操作系统: !system:~3! !bit!位
 if "!system:~11,2!" equ "XP" (echo;Windows XP系统无法使用此功能查询)
 %hx%
-echo;[1]显示许可信息
-echo;[2]显示详细的许可信息
-echo;[3]显示当前许可状态的截止日期
-echo;[0]返回菜单
+for %%a in (
+	"[1]显示许可信息"
+	"[2]显示详细的许可信息"
+	"[3]显示当前许可状态的截止日期"
+	"[0]返回菜单"
+) do (
+	echo;%%~a
+)
 %hx%
 set cho=1230
 !sel!
@@ -3073,7 +3083,7 @@ setlocal
 cls
 title 创建指定文件的快捷方式到桌面!system!
 set kjfs=
-set /p "kjfs=请拖动目标文件到此窗口: "
+set /p "kjfs=拖动目标文件到此窗口: "
 if not defined kjfs (endlocal&goto 55)
 call :lj kjfs kjfs
 for /f "delims=" %%a in ("!kjfs!") do (set "kjfsmc=%%~na")
@@ -3091,7 +3101,7 @@ setlocal
 cls
 title 字数统计!system!
 set zstj=
-set /p "zstj=请输入文字:"
+set /p "zstj=输入文字:"
 call :strlen zstj jg
 echo;总计!jg!个字(包含标点符号)
 %hx%
@@ -3143,13 +3153,17 @@ title 创建、删除或列出卷装入点!system!
 cls
 %hx%
 rem 管理员权限创建的盘符只对有管理员权限的进程可见
-echo;[1]列出卷装入点
-echo;[2]删除不在系统中的、卷的装入点目录和注册表设置
-echo;[3]列出指定目录的已装入的卷名称
-echo;[4]创建盘符(创建卷装入点)
-echo;[5]删除盘符(删除卷装入点)
-echo;[6]为EFI分区分配盘符
-echo;[0]返回菜单
+for %%a in (
+	"[1]列出卷装入点"
+	"[2]删除不在系统中的、卷的装入点目录和注册表设置"
+	"[3]列出指定目录的已装入的卷名称"
+	"[4]创建盘符(创建卷装入点)"
+	"[5]删除盘符(删除卷装入点)"
+	"[6]为EFI分区分配盘符"
+	"[0]返回菜单"
+) do (
+	echo;%%~a
+)
 %hx%
 set cho=1234560
 !sel!
@@ -3188,7 +3202,7 @@ cls
 fsutil fsinfo drives
 %hx%
 set xszz=
-set /p "xszz=请输入需要显示的盘符: "
+set /p "xszz=输入需要显示的盘符: "
 cls
 if defined xszz (set /p =!xszz!:<nul)
 mountvol !xszz!: /l
@@ -3226,7 +3240,7 @@ cls
 fsutil fsinfo drives
 %hx%
 set scpf=
-set /p "scpf=请输入需要删除的盘符: "
+set /p "scpf=输入需要删除的盘符: "
 mountvol !scpf!: /d
 echo;操作完成
 %hx%
@@ -3282,9 +3296,13 @@ if not exist %systemroot%\system32\certutil.exe (
 	goto memuv2
 )
 %hx%
-echo;[1]Base64解码
-echo;[2]Base64编码
-echo;[0]返回菜单
+for %%a in (
+	"[1]Base64解码"
+	"[2]Base64编码"
+	"[0]返回菜单"
+) do (
+	echo;%%~a
+)
 %hx%
 set cho=120
 !sel!
@@ -3390,9 +3408,13 @@ setlocal
 title 8.3短文件名管理!system!
 cls
 %hx%
-echo;[1]查询8.3短文件名状态
-echo;[2]禁止8.3短文件名创建
-echo;[0]返回菜单
+for %%a in (
+	"[1]查询8.3短文件名状态"
+	"[2]禁止8.3短文件名创建"
+	"[0]返回菜单"
+) do (
+	echo;%%~a
+)
 %hx%
 set cho=120
 !sel!
@@ -3408,7 +3430,7 @@ goto 64
 cls
 fsutil fsinfo drives
 set query83=
-set /p "query83=请输入要查询的盘符: "
+set /p "query83=输入要查询的盘符: "
 fsutil 8dot3name query !query83!:
 %hx%
 %pause%
@@ -3426,16 +3448,20 @@ setlocal
 title 智能NTFS压缩!system!
 cls
 set url=
-set /p "url=请输入要压缩的文件夹: "
+set /p "url=输入要压缩的文件夹: "
 call :ljjc url dir
 if not errorlevel 1 (
 	set /p =路径 !url! 不是一个文件夹<nul
 	call :out 2
 	goto 65
 )
-if exist "%temp%\listfile.log" (del /f /q "%temp%\listfile.log")
-if exist "%temp%\loadtime.log" (del /f /q "%temp%\loadtime.log")
-if exist "%temp%\uncompact.log" (del /f /q "%temp%\uncompact.log")
+for %%a in (
+	listfile.log
+	loadtime.log
+	uncompact.log
+) do (
+	if exist "%temp%\%%a" (del /f /q "%temp%\%%a")
+)
 title 记录文件列表...
 for /f "delims=" %%a in ('dir /a /s /b "!url!"') do (
 	echo;"%%a" %%~za %%~xa
@@ -3502,12 +3528,6 @@ if %2 gtr 4096 (
 )
 goto :eof
 #clearcache#
-If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`
-	[Security.Principal.WindowsBuiltInRole] "Administrator"))
-{
-	Write-Warning “You do not have Administrator rights to run this script!`nPlease re-run this script as an Administrator!”
-	Break
-}
 $Source = @"
 using System;
 using System.ComponentModel;
@@ -3657,25 +3677,25 @@ if not errorlevel 1 (
 	goto 66
 )
 cls
-echo;文件: 		"!url!"
+echo;文件:		"!url!"
 for /f "delims=" %%a in ("!url!") do (
 	if %%~za gtr 1024 (
 		call :xdwjs %%~za b dw
-		echo;文件大小: 	!dw! %%~za 字节
+		echo;文件大小:	!dw! %%~za 字节
 	) else (
-		echo;文件大小: 	%%~za 字节
+		echo;文件大小:	%%~za 字节
 	)
 )
-call :hash %url% md5 hash
+call :hash "!url!" md5 hash
 call :convertu !hash! hash
 echo;
-echo;MD5:	 %hash%
-call :hash %url% sha1 hash
+echo;MD5:	 !hash!
+call :hash "!url!" sha1 hash
 call :convertu !hash! hash
-echo;SHA-1:	 %hash%
-call :hash %url% sha256 hash
+echo;SHA-1:	 !hash!
+call :hash "!url!" sha256 hash
 call :convertu !hash! hash
-echo;SHA-256: %hash%
+echo;SHA-256: !hash!
 %hx%
 %pause%
 endlocal
@@ -3687,121 +3707,63 @@ title 显示货币汇率!system!
 set "mainurl=https://api.coincap.io/v2/assets/"
 set "mainurl1=https://api.coincap.io/v2/rates/"
 echo;下载汇率文件(总共6个文件)...
-if not exist "%temp%\down" (md "%temp%\down")
-for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
-	if "%%a" equ "0x1" (
-		for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
-			set "proxy=-x %%b"
-			echo;使用代理:	%%b
-		)
-	) else (
-		set proxy=
-	)
+call :md "%temp%\down"
+if errorlevel 1 (
+	echo;不能创建临时文件夹: "%temp%\down"
+	endlocal
+	goto :memuv2
 )
 set "doh=--doh-url https://101.101.101.101/dns-query"
 set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36""
 if exist "%systemroot%\system32\curl.exe" (
-	if defined doh (
-		echo;测试DoH端口是否有效...
-		for /f "tokens=2 delims=/" %%a in ("!doh!") do (
-			curl -s --connect-timeout 2 --retry 1 -I -o nul "https://%%a"
-			if errorlevel 1 (
-				echo;使用系统默认DNS
-				set doh=
-			) else (
-				echo;使用DoH: !doh:~10!
-			)
-		)
-	)
+	call :curlproxy
 	pushd "%temp%\down"
 	curl !proxy! !doh! !ua! -Z --compressed -C - --retry 2 --retry-delay 1 --connect-timeout 5 ^
-	-o all.json			%mainurl1% ^
-	-o xmr.json			%mainurl%monero ^
-	-o btc.json			%mainurl%bitcoin ^
-	-o eth.json			%mainurl%ethereum ^
-	-o doge.json		%mainurl%dogecoin ^
-	-o filecoin.json	%mainurl%filecoin
+	-o all.json		!mainurl1! ^
+	-o 门罗币XMR.json	!mainurl!monero ^
+	-o 比特币BTC.json	!mainurl!bitcoin ^
+	-o 以太坊ETH.json	!mainurl!ethereum ^
+	-o 狗狗币DOGE.json	!mainurl!dogecoin ^
+	-o 文件币FILE.json	!mainurl!filecoin
 	popd
 ) else (
 	bitsadmin /transfer 下载汇率文件... /priority FOREGROUND ^
-	%mainurl1%			"%temp%\down\all.json" ^
-	%mainurl%monero		"%temp%\down\xmr.json" ^
-	%mainurl%bitcoin	"%temp%\down\btc.json" ^
-	%mainurl%ethereum	"%temp%\down\eth.json" ^
-	%mainurl%dogecoin	"%temp%\down\doge.json" ^
-	%mainurl%filecoin	"%temp%\down\filecoin.json"
+	!mainurl1!			"%temp%\down\all.json" ^
+	!mainurl!monero		"%temp%\down\门罗币XMR.json" ^
+	!mainurl!bitcoin	"%temp%\down\比特币BTC.json" ^
+	!mainurl!ethereum	"%temp%\down\以太坊ETH.json" ^
+	!mainurl!dogecoin	"%temp%\down\狗狗币DOGE.json" ^
+	!mainurl!filecoin	"%temp%\down\文件币FILE.json"
 )
 cls
 echo;处理汇率文件...
-for /f "usebackq tokens=19,21 delims=:," %%a in ("%temp%\down\doge.json") do (
-	set "dogetousd=%%a"
-	set "doge24h=%%b"
-	set "dogetousd=!dogetousd:"=!"
-	set "doge24h=!doge24h:"=!"
-)
-if not defined dogetousd (
-	set dogetousd=1
-	set doge24h=0.0
-)
-for /f "tokens=1,2 delims=." %%a in ("!doge24h!") do (
-	set "doge24h1=%%b"
-	set "doge24h=%%a.!doge24h1:~0,3!"
-)
-for /f "usebackq tokens=19,21 delims=:," %%a in ("%temp%\down\btc.json") do (
-	set "btctousd=%%a"
-	set "btc24h=%%b"
-	set "btctousd=!btctousd:"=!"
-	set "btc24h=!btc24h:"=!"
-)
-if not defined btctousd (
-	set btctousd=1
-	set btc24h=0.0
-)
-for /f "tokens=1,2 delims=." %%a in ("!btc24h!") do (
-	set "btc24h1=%%b"
-	set "btc24h=%%a.!btc24h1:~0,3!"
-)
-for /f "usebackq tokens=19,21 delims=:," %%a in ("%temp%\down\eth.json") do (
-	set "ethtousd=%%a"
-	set "eth24h=%%b"
-	set "ethtousd=!ethtousd:"=!"
-	set "eth24h=!eth24h:"=!"
-)
-if not defined ethtousd (
-	set ethtousd=1
-	set eth24h=0.0
-)
-for /f "tokens=1,2 delims=." %%a in ("!eth24h!") do (
-	set "eth24h1=%%b"
-	set "eth24h=%%a.!eth24h1:~0,3!"
-)
-for /f "usebackq tokens=19,21 delims=:," %%a in ("%temp%\down\filecoin.json") do (
-	set "filetousd=%%a"
-	set "file24h=%%b"
-	set "filetousd=!filetousd:"=!"
-	set "file24h=!file24h:"=!"
-)
-if not defined filetousd (
-	set filetousd=1
-	set file24h=0.0
-)
-for /f "tokens=1,2 delims=." %%a in ("!file24h!") do (
-	set "file24h1=%%b"
-	set "file24h=%%a.!file24h1:~0,3!"
-)
-for /f "usebackq tokens=19,21 delims=:," %%a in ("%temp%\down\xmr.json") do (
-	set "xmrtousd=%%a"
-	set "xmr24h=%%b"
-	set "xmrtousd=!xmrtousd:"=!"
-	set "xmr24h=!xmr24h:"=!"
-)
-if not defined xmrtousd (
-	set xmrtousd=1
-	set xmr24h=0.0
-)
-for /f "tokens=1,2 delims=." %%a in ("!xmr24h!") do (
-	set "xmr24h1=%%b"
-	set "xmr24h=%%a.!xmr24h1:~0,3!"
+for %%a in (
+	门罗币XMR
+	比特币BTC
+	以太坊ETH
+	狗狗币DOGE
+	文件币FILE
+) do (
+	if not exist "%temp%\down\%%a.json" (
+		echo;%%a.json 下载失败
+		set "%%a=1"
+		set "%%a24h=0.0"
+	) else (
+		for /f "usebackq tokens=19,21 delims=:," %%b in ("%temp%\down\%%a.json") do (
+			set "%%a=%%b"
+			set "%%a24h=%%c"
+			set "%%a=!%%a:"=!"
+			set "%%a24h=!%%a24h:"=!"
+		)
+		if not defined %%a (
+			set "%%a=1"
+			set "%%a24h=0.0"
+		)
+		for /f "tokens=1,2 delims=." %%b in ("!%%a24h!") do (
+			set "%%a24h=%%c"
+			set "%%a24h=%%b.!%%a24h:~0,3!"
+		)
+	)
 )
 if exist "!temp!\down\all.json" (
 	for %%i in (
@@ -3811,97 +3773,62 @@ if exist "!temp!\down\all.json" (
 		japanese-yen
 		hong-kong-dollar
 		new-taiwan-dollar
-		chinese-yuan-renminbi
 		british-pound-sterling
+		chinese-yuan-renminbi
 	) do (
 		for /f "tokens=*" %%a in ('powershell -command "(Get-Content -Encoding UTF8 '%temp%\down\all.json'|ConvertFrom-Json).data|Where-Object {$_.id -eq '%%i'}|Select-Object -ExpandProperty rateUsd"') do (
 			set "%%i=%%a"
 		)
 	)
-	set "eurtousd=!euro!"
-	set "autousd=!gold-ounce!"
-	set "agtousd=!silver-ounce!"
-	set "jpytousd=!japanese-yen!"
-	set "hkdtousd=!hong-kong-dollar!"
-	set "twdtousd=!new-taiwan-dollar!"
-	set "cnytousd=!chinese-yuan-renminbi!"
-	set "gbptousd=!british-pound-sterling!"
+	call :Division !gold-ounce! 31.1034768 3 黄金XAU
+	call :Division !silver-ounce! 31.1034768 3 白银XAG
+	call :Division 1 !chinese-yuan-renminbi! 3 美元USD
+	call :Division !euro! !chinese-yuan-renminbi! 9 欧元EUR
+	call :Division !japanese-yen! !chinese-yuan-renminbi! 9 日元JPY
+	call :Division !hong-kong-dollar! !chinese-yuan-renminbi! 9 港币HKD
+	call :Division !new-taiwan-dollar! !chinese-yuan-renminbi! 9 台币TWD
+	call :Division !british-pound-sterling! !chinese-yuan-renminbi! 9 英镑GBP
+	for %%a in (黄金XAU 白银XAG) do (
+		call :xcf !%%a! !美元USD! %%a
+	)
 )
 rd /s /q "%temp%\down">nul
-call :Division 1 !cnytousd! 3 usdtocny
-call :Division !btctousd! !cnytousd! 9 btctocny
-call :Division !ethtousd! !cnytousd! 9 ethtocny
-call :Division !eurtousd! !cnytousd! 9 eurtocny
-call :Division !gbptousd! !cnytousd! 9 gbptocny
-call :Division !jpytousd! !cnytousd! 9 jpytocny
-call :Division !hkdtousd! !cnytousd! 9 hkdtocny
-call :Division !twdtousd! !cnytousd! 9 twdtocny
-call :Division !xmrtousd! !cnytousd! 9 xmrtocny
-call :Division !dogetousd! !cnytousd! 9 dogetocny
-call :Division !filetousd! !cnytousd! 9 filetocny
-call :Division !autousd! 31.1034768 3 autocny
-call :Division !agtousd! 31.1034768 3 agtocny
-call :xcf !autocny! !usdtocny! autocny
-call :xcf !agtocny! !usdtocny! agtocny
 cls
-echo;黄金XAU	→ 人民币CNY
-echo;	1 → !autocny!
-echo;
-echo;白银XAG	→ 人民币CNY
-echo;	1 → !agtocny!
-echo;
-echo;美元USD	→ 人民币CNY
-echo;	1 → !usdtocny!
-echo;
-echo;欧元EUR	→ 人民币CNY
-echo;	1 → !eurtocny!
-echo;
-echo;英镑GBP	→ 人民币CNY
-echo;	1 → !gbptocny!
-echo;
-echo;日元JPY	→ 人民币CNY
-echo;	1 → !jpytocny!
-echo;
-echo;港币HKD	→ 人民币CNY
-echo;	1 → !hkdtocny!
-echo;
-echo;新台币TWD → 人民币CNY
-echo; 	1 → !twdtocny!
-echo;
-echo;以太坊ETH  → 人民币CNY
-set /p =!cswz1![]	<nul
-set /p =1  → !ethtocny!	24小时涨跌幅: <nul
-if "!eth24h:~0,1!" equ "-" (call :colortxt a !eth24h!) else (call :colortxt c +!eth24h!)
-set /p =%% <nul
-echo;
-echo;
-echo;比特币BTC  → 人民币CNY
-set /p =!cswz1![]	<nul
-set /p =1  → !btctocny!	24小时涨跌幅: <nul
-if "!btc24h:~0,1!" equ "-" (call :colortxt a !btc24h!) else (call :colortxt c +!btc24h!)
-set /p =%% <nul
-echo;
-echo;
-echo;门罗币XMR  → 人民币CNY
-set /p =!cswz1![]	<nul
-set /p =1  → !xmrtocny!	24小时涨跌幅: <nul
-if "!xmr24h:~0,1!" equ "-" (call :colortxt a !xmr24h!) else (call :colortxt c +!xmr24h!)
-set /p =%% <nul
-echo;
-echo;
-echo;文件币FILE → 人民币CNY
-set /p =!cswz1![]	<nul
-set /p =1  → !filetocny!	24小时涨跌幅: <nul
-if "!file24h:~0,1!" equ "-" (call :colortxt a !file24h!) else (call :colortxt c +!file24h!)
-set /p =%% <nul
-echo;
-echo;
-echo;狗狗币DOGE → 人民币CNY
-set /p =!cswz1![]	<nul
-set /p =1  → !dogetocny!	24小时涨跌幅: <nul
-if "!doge24h:~0,1!" equ "-" (call :colortxt a !doge24h!) else (call :colortxt c +!doge24h!)
-set /p =%% <nul
-echo;
+for %%a in (
+	黄金XAU
+	白银XAG
+	美元USD
+	欧元EUR
+	英镑GBP
+	日元JPY
+	港币HKD
+	台币TWD
+) do (
+	echo;%%a	→ 人民币CNY
+	echo;	1 → !%%a!
+	echo;
+)
+set cs=0
+for %%a in (
+	比特币BTC
+	以太坊ETH
+	门罗币XMR
+	狗狗币DOGE
+	文件币FILE
+) do (
+	set /a "cs+=1"
+	call :Division !%%a! !chinese-yuan-renminbi! 9 %%a
+	echo;%%a → 人民币CNY
+	set /p =!cswz1![]	<nul
+	set /p =1  → !%%a!	24小时涨跌幅: <nul
+	if "!%%a24h:~0,1!" equ "-" (
+		call :colortxt a !%%a24h!
+	) else (
+		call :colortxt c +!%%a24h!
+	)
+	echo;%%
+	if "!cs!" neq "5" (echo;)
+)
 %hx%
 %pause%
 endlocal
@@ -3912,9 +3839,13 @@ cls
 title 创建虚拟盘符!system!
 echo;虚拟盘符只能在当前DOS工具箱内访问
 %hx%
-echo;[1]将路径与盘符关联
-echo;[2]删除虚拟盘符
-echo;[0]返回菜单
+for %%a in (
+	"[1]将路径与盘符关联"
+	"[2]删除虚拟盘符"
+	"[0]返回菜单"
+) do (
+	echo;%%~a
+)
 %hx%
 set cho=120
 !sel!
@@ -3949,13 +3880,13 @@ if not errorlevel 1 (
 	goto 68
 )
 subst !newpf!: !gllj!
-if not errorlevel 1 (
-	set /p =创建成功<nul
+if errorlevel 1 (
+	set /p =创建失败<nul
 	call :out 2
 	endlocal
 	goto 68
 ) else (
-	set /p =创建失败<nul
+	set /p =创建成功<nul
 	call :out 2
 	endlocal
 	goto 68
@@ -3969,13 +3900,13 @@ subst
 set xzxnp=
 set /p "xzxnp=输入要卸载的盘符: "
 subst !xzxnp!: /d
-if not errorlevel 1 (
-	set /p =卸载成功<nul
+if errorlevel 1 (
+	set /p =卸载失败<nul
 	call :out 2
 	endlocal
 	goto 68
 ) else (
-	set /p =卸载失败<nul
+	set /p =卸载成功<nul
 	call :out 2
 	endlocal
 	goto 68
@@ -4056,7 +3987,9 @@ for /l %%a in (40,1,47) do (
 								if "!xh1!" equ "46" (
 									set bj=3
 								) else (
-									if "!xh1!" equ "47" (set bj=7)
+									if "!xh1!" equ "47" (
+										set bj=7
+									)
 								)
 							)
 						)
@@ -4085,7 +4018,9 @@ for /l %%a in (40,1,47) do (
 								if "!xh2!" equ "96" (
 									set zt=b
 								) else (
-									if "!xh2!" equ "97" (set zt=f)
+									if "!xh2!" equ "97" (
+										set zt=f
+									)
 								)
 							)
 						)
@@ -4148,23 +4083,25 @@ goto memuv2
 setlocal
 title KMS激活Windows!system!
 cls
-(
-set "Core=TX9XD-98N7V-6WMQ6-BX7FG-H8Q99"
-set "CoreCountrySpecific=PVMJN-6DFY6-9CCP6-7BKTT-D3WVR"
-set "CoreN=3KHY7-WNT83-DGQKR-F7HPR-844BM"
-set "CoreSingleLanguage=7HNRX-D7KGG-3K4RQ-4WPJ4-YTDFH"
-set "ProfessionalStudent=YNXW3-HV3VB-Y83VG-KPBXM-6VH3Q"
-set "ProfessionalStudentN=8G9XJ-GN6PJ-GW787-MVV7G-GMR99"
-set "Professional=W269N-WFGWX-YVC9B-4J6C9-T83GX"
-set "ProfessionalN=MH37W-N47XK-V7XM9-C7227-GCQG9"
-set "ProfessionalSN=8Q36Y-N2F39-HRMHT-4XW33-TCQR4"
-set "ProfessionalWMC=NKPM6-TCVPT-3HRFX-Q4H9B-QJ34Y"
-set "Enterprise=NPPR9-FWDCX-D2C8J-H872K-2YT43"
-set "EnterpriseN=DPH2V-TTNVB-4X9Q3-TJR4H-KHJW4"
-set "Education=NW6C2-QMPVW-D7KKK-3GKT6-VCFB2"
-set "EducationN=2WH4N-8QGBV-H22JP-CT43Q-MDWWJ"
-set "EnterpriseS=WNMTR-4C88C-JK8YV-HQ7T2-76DF9"
-set "EnterpriseSN=2F77B-TNFGY-69QQF-B8YKP-D69TJ"
+for %%a in (
+	"Core=TX9XD-98N7V-6WMQ6-BX7FG-H8Q99"
+	"CoreCountrySpecific=PVMJN-6DFY6-9CCP6-7BKTT-D3WVR"
+	"CoreN=3KHY7-WNT83-DGQKR-F7HPR-844BM"
+	"CoreSingleLanguage=7HNRX-D7KGG-3K4RQ-4WPJ4-YTDFH"
+	"ProfessionalStudent=YNXW3-HV3VB-Y83VG-KPBXM-6VH3Q"
+	"ProfessionalStudentN=8G9XJ-GN6PJ-GW787-MVV7G-GMR99"
+	"Professional=W269N-WFGWX-YVC9B-4J6C9-T83GX"
+	"ProfessionalN=MH37W-N47XK-V7XM9-C7227-GCQG9"
+	"ProfessionalSN=8Q36Y-N2F39-HRMHT-4XW33-TCQR4"
+	"ProfessionalWMC=NKPM6-TCVPT-3HRFX-Q4H9B-QJ34Y"
+	"Enterprise=NPPR9-FWDCX-D2C8J-H872K-2YT43"
+	"EnterpriseN=DPH2V-TTNVB-4X9Q3-TJR4H-KHJW4"
+	"Education=NW6C2-QMPVW-D7KKK-3GKT6-VCFB2"
+	"EducationN=2WH4N-8QGBV-H22JP-CT43Q-MDWWJ"
+	"EnterpriseS=WNMTR-4C88C-JK8YV-HQ7T2-76DF9"
+	"EnterpriseSN=2F77B-TNFGY-69QQF-B8YKP-D69TJ"
+) do (
+	set "%%~a">nul
 )
 for /f "tokens=3 delims= " %%a in ('reg QUERY "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v "EditionID"') do (
 	set "sysid=%%a"
@@ -4172,11 +4109,15 @@ for /f "tokens=3 delims= " %%a in ('reg QUERY "HKLM\SOFTWARE\Microsoft\Windows N
 set server=
 if defined !sysid! (echo;系统名称: !system:~3!) else (call :colortxt c 没有当前系统的激活密钥&echo;)
 ping /4 /n 1 www.baidu.com>nul||call :colortxt c 没有网络连接&echo;
-echo;请选择KMS服务器
+echo;选择KMS服务器
 %hx%
-echo;[1]kms.loli.best
-echo;[2]kms.03k.org
-echo;[0]返回菜单
+for %%a in (
+	"[1]kms.loli.best"
+	"[2]kms.03k.org"
+	"[0]返回菜单"
+) do (
+	echo;%%~a
+)
 %hx%
 set cho=120
 !sel!
@@ -4236,17 +4177,15 @@ if /i "!url!" equ "e" (
 set tr=
 set /p "tr=输入下载进程数(默认16): "
 if not defined tr (set tr=16)
-call :checkvar tr num jg
-if "!jg!" equ "0" (
+call :checkvar tr num
+if not errorlevel 1 (
 	set /p =只能输入正整数!<nul
 	call :out 2
 	goto 72.1
 )
 set dir=
 set /p "dir=输入保存路径(默认当前DOS工具箱所在路径): "
-if not defined dir (
-	for /f "delims=" %%a in ("!weizhi!") do (set "dir=%%~dpa")
-)
+if not defined dir (set "dir=%~dp0")
 call :ljjc dir dir
 if not errorlevel 1 (
 	set /p =路径无效<nul
@@ -4254,31 +4193,10 @@ if not errorlevel 1 (
 	goto 72.1
 )
 cls
-if defined doh (
-	echo;测试DoH端口是否有效...
-	for /f "tokens=2 delims=/" %%a in ("!doh!") do (
-		curl -s --connect-timeout 2 --retry 1 -I -o nul "https://%%a"
-		if errorlevel 1 (
-			echo;使用系统默认DNS
-			set doh=
-		) else (
-			echo;使用DoH: !doh:~10!
-		)
-	)
-)
 echo;开始获取文件信息...
 set filename=
 if exist "%temp%\tag" (del /f /q "%temp%\tag")
-for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
-	if "%%a" equ "0x1" (
-		for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
-			set "proxy=-x %%b"
-			echo;使用代理:	%%b
-		)
-	) else (
-		set proxy=
-	)
-)
+call :curlproxy
 curl !proxy! !doh! !ua! -I -# -L -o tag --connect-timeout 5 --output-dir "%temp%" "!url!"
 if not exist "%temp%\tag" (
 	echo;没有获取到文件信息
@@ -4341,19 +4259,13 @@ echo;开始下载文件...
 if not defined filesize (goto 72.3)
 if "!tr!" equ "1" (goto 72.3)
 title curl多进程下载 - 等待文件下载完成(按e返回菜单)!system!
-if exist "%temp%\down" (rd /s /q "%temp%\down")
-md "%temp%\down"
-set "kssj=!time!"
-for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
-	if "%%a" equ "0x1" (
-		for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
-			set "proxy=-x %%b"
-			echo;使用代理:	%%b
-		)
-	) else (
-		set proxy=
-	)
+call :md "%temp%\down"
+if errorlevel 1 (
+	echo;不能创建临时文件夹: "%temp%\down"
+	endlocal
+	goto memuv2
 )
+set "kssj=!time!"
 for /l %%a in (1,1,!tr!) do (
 	start /min /low "curl多进程下载_%%a" ^
 	curl !proxy! !doh! !ua! -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir "%temp%\down" "!url!"
@@ -4461,158 +4373,159 @@ if exist "!dir!\!filename!" (
 endlocal
 goto memuv2
 :72.3
-for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
-	if "%%a" equ "0x1" (
-		for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
-			set "proxy=-x %%b"
-			echo;使用代理:	%%b
-		)
-	) else (
-		set proxy=
-	)
-)
 if "!dir:~-1!" equ "\" (set "dir=!dir:~0,-1!")
 set "kssj=!time!"
 curl !proxy! !doh! !ua! --compressed -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o "!filename!" --output-dir "!dir!" "!url!"
 set "jssj=!time!"
 goto 72.4
-:73
-setlocal
 :chrome
 @echo off&setlocal enabledelayedexpansion&chcp 936>nul
+:73
+setlocal
 set "域名重定向=!temp!\域名重定向.txt"
 set "域名重解析=!temp!\域名重解析.txt"
 set "强制使用quic=!temp!\强制使用quic.txt"
 if not exist "!域名重定向!" (
 	(
-		echo #wikipedia
-		echo *.wikipedia.org=wikidata.org
-		echo *.wikiquote.org=wikidata.org
-		echo *.wikinews.org=wikidata.org
-		echo *.wikibooks.org=wikidata.org
-		echo *.wiktionary.org=wikidata.org
-		echo *.wikisource.org=wikidata.org
-		echo *.wikivoyage.org=wikidata.org
-		echo *.wikiversity.org=wikidata.org
-		echo;
-		echo #pixiv
-		echo pixiv.net=pixiv.me
-		echo *.pixiv.net=pixiv.me
-		echo *.pximg.net=pximg.net
-		echo;
-		echo #protonmail
-		echo proton.me=pr.tn
-		echo account.proton.me=a.pr.tn
-		echo account-api.proton.me=b.pr.tn
-		echo mail.proton.me=c.pr.tn
-		echo;
-		echo #youtube
-		echo *.youtube.com=google-analytics.com
-		echo *.ytimg.com=googleadservices.com
-		echo *.ggpht.com=static.doubleclick.net
-		echo youtube.com=static.doubleclick.net
-		echo youtu.be=mt7.gstatic.com
-		echo;
-		echo #google
-		echo *.google.com=googleadservices.com
-		echo *.google.com.hk=googleadservices.com
-		echo *.google.com.tw=googleadservices.com
-		echo *.googleapis.com=static.doubleclick.net
-		echo *.googleusercontent.com=static.doubleclick.net
-		echo *.gstatic.com=alt6.gstatic.com
-		echo *.cloudfunctions.net=alt6.gstatic.com
-		echo *.blogspot.com=google-analytics.com
-		echo;
-		echo #github
-		echo github.com=octocaptcha.com
-		echo *.github.com=octocaptcha.com
-		echo raw.githubusercontent.com=avatars.githubusercontent.com
-		echo *.github.io=octocaptcha.com
-		echo github.io=octocaptcha.com
-		echo;
-		echo #steam
-		echo login.steampowered.com=login.steampowered.com
-		echo help.steampowered.com=help.steampowered.com
-		echo *.steampowered.com=steamuserimages-a.akamaihd.net
-		echo steamcommunity.com=underlords.com
-		echo *.steamcommunity.com=underlords.com
-		echo;
-		echo #onedrive
-		echo onedrive.live.com=od0.live.com
-		echo skyapi.onedrive.live.com=storage.live.com
-		echo;
-		echo #nyaa
-		echo nyaa.si=nyaa.ddos-guard.net
-		echo;
-		echo #vercel.app
-		echo vercel.app=no-sni.vercel-infra.com
-		echo *.vercel.app=no-sni.vercel-infra.com
-		echo;
-		echo #lain.la
-		echo *.lain.la=lain.la
-		echo;
-		echo pkuanvil.com=gcore.com
-		echo *.pkuanvil.com=gcore.com
-		echo;
-		echo #quora
-		echo quora.com=qr.ae
-		echo *.quora.com=qr.ae
-		echo;
-		echo #duckduckgo
-		echo duckduckgo.com=duck.co
-		echo *.duckduckgo.com=duck.co
+	for %%a in (
+		"#wikipedia"
+		"*.wikipedia.org=wikidata.org"
+		"*.wikiquote.org=wikidata.org"
+		"*.wikinews.org=wikidata.org"
+		"*.wikibooks.org=wikidata.org"
+		"*.wiktionary.org=wikidata.org"
+		"*.wikisource.org=wikidata.org"
+		"*.wikivoyage.org=wikidata.org"
+		"*.wikiversity.org=wikidata.org"
+
+		"#pixiv"
+		"pixiv.net=pixiv.me"
+		"*.pixiv.net=pixiv.me"
+		"*.pximg.net=pximg.net"
+
+		"#protonmail"
+		"proton.me=pr.tn"
+		"account.proton.me=a.pr.tn"
+		"account-api.proton.me=b.pr.tn"
+		"mail.proton.me=c.pr.tn"
+
+		"#youtube"
+		"*.youtube.com=google-analytics.com"
+		"*.ytimg.com=googleadservices.com"
+		"*.ggpht.com=static.doubleclick.net"
+		"youtube.com=static.doubleclick.net"
+		"youtu.be=mt7.gstatic.com"
+
+		"#google"
+		"google.com=googleadservices.com"
+		"*.google.com=googleadservices.com"
+		"*.google.com.hk=googleadservices.com"
+		"*.google.com.tw=googleadservices.com"
+		"*.googleapis.com=static.doubleclick.net"
+		"*.googleusercontent.com=static.doubleclick.net"
+		"*.gstatic.com=alt6.gstatic.com"
+		"*.cloudfunctions.net=alt6.gstatic.com"
+		"*.blogspot.com=google-analytics.com"
+
+		"#github"
+		"github.com=octocaptcha.com"
+		"*.github.com=octocaptcha.com"
+		"raw.githubusercontent.com=avatars.githubusercontent.com"
+		"*.github.io=octocaptcha.com"
+		"github.io=octocaptcha.com"
+
+		"#steam"
+		"login.steampowered.com=login.steampowered.com"
+		"help.steampowered.com=help.steampowered.com"
+		"*.steampowered.com=steamuserimages-a.akamaihd.net"
+		"steamcommunity.com=underlords.com"
+		"*.steamcommunity.com=underlords.com"
+
+		"#onedrive"
+		"onedrive.live.com=od0.live.com"
+		"skyapi.onedrive.live.com=storage.live.com"
+
+		"#nyaa"
+		"nyaa.si=nyaa.ddos-guard.net"
+
+		"#vercel.app"
+		"vercel.app=no-sni.vercel-infra.com"
+		"*.vercel.app=no-sni.vercel-infra.com"
+
+		"#lain.la"
+		"pkuanvil.com=gcore.com"
+		"*.pkuanvil.com=gcore.com"
+
+		"#quora"
+		"quora.com=qr.ae"
+		"*.quora.com=qr.ae"
+
+		"#duckduckgo"
+		"duckduckgo.com=duck.co"
+		"*.duckduckgo.com=duck.co"
+	) do (
+		echo;%%~a
+	)
 	)>"!域名重定向!"
 )
 if not exist "!域名重解析!" (
 	(
-		echo #wikipedia
-		echo #wikidata.org=[2620:0:863:ed1a::1]
-		echo wikidata.org=208.80.153.224
-		echo;
-		echo #protonmail
-		echo pr.tn=proton.me
-		echo a.pr.tn=account.proton.me
-		echo b.pr.tn=account-api.proton.me
-		echo c.pr.tn=mail.proton.me
-		echo;
-		echo #youtube google
-		echo #mt7.gstatic.com=[2404:6800:4008:c07::5a]
-		echo mt7.gstatic.com=221.194.179.97
-		echo #alt6.gstatic.com=[2404:6800:4008:c07::5a]
-		echo alt6.gstatic.com=221.194.179.97
-		echo #google-analytics.com=[2404:6800:4008:c07::5a]
-		echo google-analytics.com=221.194.179.97
-		echo #googleadservices.com=[2404:6800:4008:c07::5a]
-		echo googleadservices.com=221.194.179.97
-		echo #static.doubleclick.net=[2404:6800:4008:c07::5a]
-		echo static.doubleclick.net=221.194.179.97
-		echo;
-		echo #nyaa
-		echo nyaa.ddos-guard.net=nyaa.si
+	for %%a in (
+		"#wikipedia"
+		"#wikidata.org=[2620:0:863:ed1a::1]"
+		"wikidata.org=208.80.153.224"
+
+		"#protonmail"
+		"pr.tn=proton.me"
+		"a.pr.tn=account.proton.me"
+		"b.pr.tn=account-api.proton.me"
+		"c.pr.tn=mail.proton.me"
+
+		"#youtube google"
+		"#mt7.gstatic.com=[2404:6800:4008:c07::5a]"
+		"mt7.gstatic.com=221.194.179.97"
+		"#alt6.gstatic.com=[2404:6800:4008:c07::5a]"
+		"alt6.gstatic.com=221.194.179.97"
+		"#google-analytics.com=[2404:6800:4008:c07::5a]"
+		"google-analytics.com=221.194.179.97"
+		"#googleadservices.com=[2404:6800:4008:c07::5a]"
+		"googleadservices.com=221.194.179.97"
+		"#static.doubleclick.net=[2404:6800:4008:c07::5a]"
+		"static.doubleclick.net=221.194.179.97"
+
+		"#nyaa"
+		"nyaa.ddos-guard.net=nyaa.si"
+	) do (
+		echo;%%~a
+	)
 	)>"!域名重解析!"
 )
 if not exist "!强制使用quic!" (
 	(
-		echo #不支持通配符
-		echo www.google.com.hk
-		echo www.google.com.tw
-		echo www.google.com
-		echo www.quora.com
-		echo quora.com
-		echo qsbr.cf2.quoracdn.net
-		echo v2ex.com
-		echo cdn.v2ex.com
-		echo www.v2ex.com
-		echo challenges.cloudflare.com
-		echo www.openstreetmap.org
-		echo tile.openstreetmap.org
-		echo ipfs.io
-		echo cloudflare-ipfs.com
-		echo croxyproxy.com
-		echo cdnjs.cloudflare.com
-		echo cdn.jsdelivr.net
-		echo chatgpt.aitianhu.com
-		echo outlook.live.com
+	for %%a in (
+		"#不支持通配符"
+		"www.google.com.hk"
+		"www.google.com.tw"
+		"www.google.com"
+		"www.quora.com"
+		"quora.com"
+		"qsbr.cf2.quoracdn.net"
+		"v2ex.com"
+		"cdn.v2ex.com"
+		"www.v2ex.com"
+		"challenges.cloudflare.com"
+		"www.openstreetmap.org"
+		"tile.openstreetmap.org"
+		"ipfs.io"
+		"cloudflare-ipfs.com"
+		"croxyproxy.com"
+		"cdnjs.cloudflare.com"
+		"cdn.jsdelivr.net"
+		"chatgpt.aitianhu.com"
+		"outlook.live.com"
+	) do (
+		echo;%%~a
+	)
 	)>"!强制使用quic!"
 )
 cd /d "%~dp0"
@@ -4748,9 +4661,13 @@ setlocal
 cls
 title 打开证书管理单元!system!
 %hx%
-echo;[1]certmgr	[证书 - 当前用户]
-echo;[2]certlm	[证书 - 本地计算机]
-echo;[0]返回菜单
+for %%a in (
+	"[1]certmgr	[证书 - 当前用户]"
+	"[2]certlm	[证书 - 本地计算机]"
+	"[0]返回菜单"
+) do (
+	echo;%%~a
+)
 %hx%
 set cho=120
 !sel!
@@ -4767,10 +4684,14 @@ title bat加密!system!
 cls
 echo;此工具只可以用于纯文本文件加密
 %hx%
-echo;[1]bat文件加密(方法1)
-echo;[2]bat文件解密
-echo;[3]bat文件加密(方法2)(推荐使用)
-echo;[0]返回菜单
+for %%a in (
+	"[1]bat文件加密(方法1)"
+	"[2]bat文件解密"
+	"[3]bat文件加密(方法2)(推荐使用)"
+	"[0]返回菜单"
+) do (
+	echo;%%~a
+)
 %hx%
 set cho=1230
 !sel!
@@ -4802,16 +4723,11 @@ cls
 for /f "delims=" %%b in ("!jiami!") do (
 	set /a "batpdjg=%%~zb%%2"
 	if "!batpdjg!" equ "1" (set "batpdjg= ") else (set "batpdjg=")
+	set aaa=
+	for /l %%A in (0,1,128) do (set "aaa=!aaa!%%%%a ")
+	set "aaa=!aaa:~0,-1!!batpdjg!"
 	(
-	echo;%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
-%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
-%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
-%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
-%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
-%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
-%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
-%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a ^
-%%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a %%%%a!batpdjg!
+	echo;!aaa!
 	echo;cls
 	)>"%temp%\1.tmp"
 	copy /b /y "%temp%\1.tmp"+"%%b" "%%~dpb加密_%%~nb%%~xb">nul
@@ -4881,7 +4797,7 @@ title vbs计算器!system!
 set vbsbds=
 set vbsjieguo=
 cls
-set /p "vbsbds=请输入表达式(e=返回菜单): "
+set /p "vbsbds=输入表达式(e=返回菜单): "
 if not defined vbsbds (endlocal&goto 77)
 if /i "!vbsbds!" equ "e" (endlocal&goto memuv2)
 echo;msgbox !vbsbds!,"65","VBS计算器">"%temp%\temp.vbs"
@@ -4897,11 +4813,11 @@ sc query w32time|find "RUNNING">nul 2>nul
 if errorlevel 1 (
 	echo;w32time服务未运行，正在启动...
 	sc start w32time
-	if not errorlevel 1 (
+	if errorlevel 1 (
+		echo;无法启动w32time服务
+	) else (
 		echo;w32time服务已成功启动
 		set stop=1
-	) else (
-		echo;无法启动w32time服务
 	)
 ) else (
 	echo;w32time服务正在运行
@@ -4935,8 +4851,8 @@ cls
 set mac=1
 set /p "mac=输入需要生成的MAC地址数量(默认数量1条)(e=返回菜单): "
 if /i "!mac!" equ "e" (endlocal&goto memuv2)
-call :checkvar mac num jg
-if "!jg!" equ "0" (
+call :checkvar mac num
+if not errorlevel 1 (
 	set /p =无效输入<nul
 	call :out 2
 	endlocal
@@ -4986,32 +4902,11 @@ set "gxdoshost1=https://raw.github.io/Trustedinstall/dostool/main/dostool.js"
 set "gxdoshost2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js"
 set "gxdos1=https://raw.githubusercontent.com/Trustedinstall/dostool/main/dostool.js"
 set "gxdos2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js"
-if defined doh (
-	echo;测试DoH端口是否有效...
-	for /f "tokens=2 delims=/" %%a in ("!doh!") do (
-		curl -s --connect-timeout 2 --retry 1 -I -o nul "https://%%a"
-		if errorlevel 1 (
-			echo;使用系统默认DNS
-			set doh=
-		) else (
-			echo;使用DoH: !doh:~10!
-		)
-	)
-)
 echo;检查最新版本...
 if exist "%temp%\dostoolupdate" (del /f /q "%temp%\dostoolupdate")
 if exist "%systemroot%\system32\curl.exe" (
 	pushd "%temp%"
-	for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
-		if "%%a" equ "0x1" (
-			for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
-				set "proxy=-x %%b"
-				echo;使用代理:	%%b
-			)
-		) else (
-			set proxy=
-		)
-	)
+	call :curlproxy
 	echo;使用链接:	!gxurlhost1!
 	echo;Host域名:	!githost:~10,-1!
 	curl !proxy! !doh! !githost! !ua! --compressed -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 !resolve! -o dostoolupdate !gxurlhost1!
@@ -5119,7 +5014,7 @@ if !checkver! gtr 0 (
 	call :colortxt a !gxver!
 	call :xdwjs %~z0 b old
 	call :xdwjs !dossize! b new
-	call :hash "!weizhi!" sha1 oldhash
+	call :hash %0 sha1 oldhash
 	echo;
 	echo;文件大小: !old! [%~z0 字节] → !new! [!dossize! 字节]
 	echo;SHA1: !oldhash! → !doshash!
@@ -5149,16 +5044,6 @@ echo;正在下载更新...
 if exist "%temp%\dostool" (del /f /q "%temp%\dostool")
 if exist "%systemroot%\system32\curl.exe" (
 	pushd "%temp%"
-	for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
-		if "%%a" equ "0x1" (
-			for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
-				set "proxy=-x %%b"
-				echo;使用代理:	%%b
-			)
-		) else (
-			set proxy=
-		)
-	)
 	echo;使用链接:	!url!
 	if defined host (echo;Host域名:	!host:~10,-1!)
 	curl !proxy! !doh! !host! !ua! --compressed -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 !resolve! -o dostool !url!
@@ -5172,7 +5057,6 @@ if /i "!hash!" equ "!doshash!" (
 	endlocal
 	copy /z /y "%temp%\dostool" %0&del /f /q "%temp%\dostool"&goto chushihua
 ) else (
-	del /f /q "%temp%\dostool"
 	call :colortxt c 文件无效
 	echo;
 	call :out 2
@@ -5182,7 +5066,7 @@ if /i "!hash!" equ "!doshash!" (
 )
 :sjc
 setlocal
-for /f "tokens=1-8 delims=:. " %%a in ("%1 %2") do (
+for /f "tokens=1-8 delims=:. " %%a in ("%~1 %~2") do (
 	set "start_hour=%%a"
 	set "start_minute=%%b"
 	set "start_second=%%c"
@@ -5248,11 +5132,11 @@ endlocal&If %2. neq . (set/a%2=%N%)else echo;%N%
 goto :eof
 :ys
 setlocal
-for /f "tokens=1,2,3,4 delims=:." %%a in ("!time!") do (
+for /f "tokens=1-4 delims=:." %%a in ("!time!") do (
 	set /a "start=1%%a*360000+1%%b*6000+1%%c*100+1%%d"
 )
 :ys_loop
-for /f "tokens=1,2,3,4 delims=:." %%a in ("!time!") do (
+for /f "tokens=1-4 delims=:." %%a in ("!time!") do (
 	set /a "sub=(1%%a*360000+1%%b*6000+1%%c*100+1%%d)-start"
 )
 if !sub! lss 0 (
@@ -5261,88 +5145,90 @@ if !sub! lss 0 (
 	if !sub! geq %1 (goto :eof) else (goto ys_loop)
 )
 :list
-(
 set start=1
-set "a1=清除U盘里的lpk.dll病毒"
-set "a2=清除U盘里的jwgkvsq.vmx病毒，并免疫该病毒"
-set "a3=清理系统垃圾"
-set "a4=显示系统信息"
-set "a5=解除任务管理器被禁用"
-set "a6=显示被隐藏文件(中了该类病毒后)"
-set "a7=解除注册表被禁用"
-set "a8=计算正整数开平方"
-set "a9=切换到命令提示符"
-set "a10=将磁盘格式转换为NTFS"
-set "a11=磁盘错误修复"
-set "a12=格式化"
-set "a13=DOS计算器"
-set "a14=解除命令提示符被禁用"
-set "a15=随机数生成器"
-set "a16=清除KHATRA病毒"
-set "a17=打开注册表"
-set "a18=打开控制面板"
-set "a19=打开DirectX诊断工具"
-set "a20=打开计算机管理"
-set "a21=用户管理"
-set "a22=打开组策略"
-set "a23=DOS任务管理器"
-set "a24=文件系统信息查询"
-set "a25=创建指定大小的文件"
-set "a26=免疫U盘病毒"
-set "a27=磁盘碎片整理"
-set "a28=一键删除空文件夹"
-set "a29=ping测试网络延迟"
-set "a30=硬件检测"
-set "a31=读心术"
-set "a32=DOS闹钟"
-set "a33=计时器"
-set "a34=随机密码生成器"
-set "a35=删除每个盘符下的System Volume Information文件夹"
-set "a36=二进制转换器"
-set "a37=文本浏览"
-set "a38=显示计算机与用户的设置"
-set "a39=NTFS压缩"
-set "a40=获取文件权限"
-set "a41=显示开机启动项"
-set "a42=语音阅读器"
-set "a43=批处理文件风险分析"
-set "a44=文件搜索"
-set "a45=修复已损坏的文件"
-set "a46=暴力破解压缩包密码"
-set "a47=Wifi热点"
-set "a48=反编译chm文件"
-set "a49=关闭无响应进程"
-set "a50=文件比较器"
-set "a51=将文字写入剪切板"
-set "a52=打开系统服务设置"
-set "a53=已知年月日计算星期"
-set "a54=查询系统激活状态"
-set "a55=创建指定文件的快捷方式到桌面"
-set "a56=打开系统配置"
-set "a57=字数统计"
-set "a58=创建符号链接"
-set "a59=打开管理控制台"
-set "a60=解除Streams文件锁定"
-set "a61=创建、删除或列出卷装入点"
-set "a62=注册表搜索"
-set "a63=Base64编解码"
-set "a64=8.3短文件名管理"
-set "a65=智能NTFS压缩"
-set "a66=计算文件哈希值"
-set "a67=显示货币汇率"
-set "a68=创建虚拟盘符"
-set "a69=解压msi安装文件"
-set "a70=生成CMD控制台色彩表"
-set "a71=KMS激活Windows"
-set "a72=curl多进程下载"
-set "a73=用域前置参数开启Chromium类浏览器"
-set "a74=逐一复制文件并压缩"
-set "a75=打开证书管理单元"
-set "a76=BAT文本混淆"
-set "a77=VBS计算器"
-set "a78=执行w32tm /resync对时"
-set "a79=随机生成MAC地址"
-set maxa=79
+for %%a in (
+	"清除U盘里的lpk.dll病毒"
+	"清除U盘里的jwgkvsq.vmx病毒，并免疫该病毒"
+	"清理系统垃圾"
+	"显示系统信息"
+	"解除任务管理器被禁用"
+	"显示被隐藏文件(中了该类病毒后)"
+	"解除注册表被禁用"
+	"计算正整数开平方"
+	"切换到命令提示符"
+	"将磁盘格式转换为NTFS"
+	"磁盘错误修复"
+	"格式化"
+	"DOS计算器"
+	"解除命令提示符被禁用"
+	"随机数生成器"
+	"清除KHATRA病毒"
+	"打开注册表"
+	"打开控制面板"
+	"打开DirectX诊断工具"
+	"打开计算机管理"
+	"用户管理"
+	"打开组策略"
+	"DOS任务管理器"
+	"文件系统信息查询"
+	"创建指定大小的文件"
+	"免疫U盘病毒"
+	"磁盘碎片整理"
+	"一键删除空文件夹"
+	"ping测试网络延迟"
+	"硬件检测"
+	"读心术"
+	"DOS闹钟"
+	"计时器"
+	"随机密码生成器"
+	"删除每个盘符下的System Volume Information文件夹"
+	"二进制转换器"
+	"文本浏览"
+	"显示计算机与用户的设置"
+	"NTFS压缩"
+	"获取文件权限"
+	"显示开机启动项"
+	"语音阅读器"
+	"批处理文件风险分析"
+	"文件搜索"
+	"修复已损坏的文件"
+	"暴力破解压缩包密码"
+	"Wifi热点"
+	"反编译chm文件"
+	"关闭无响应进程"
+	"文件比较器"
+	"将文字写入剪切板"
+	"打开系统服务设置"
+	"已知年月日计算星期"
+	"查询系统激活状态"
+	"创建指定文件的快捷方式到桌面"
+	"打开系统配置"
+	"字数统计"
+	"创建符号链接"
+	"打开管理控制台"
+	"解除Streams文件锁定"
+	"创建、删除或列出卷装入点"
+	"注册表搜索"
+	"Base64编解码"
+	"8.3短文件名管理"
+	"智能NTFS压缩"
+	"计算文件哈希值"
+	"显示货币汇率"
+	"创建虚拟盘符"
+	"解压msi安装文件"
+	"生成CMD控制台色彩表"
+	"KMS激活Windows"
+	"curl多进程下载"
+	"用域前置参数开启Chromium类浏览器"
+	"逐一复制文件并压缩"
+	"打开证书管理单元"
+	"BAT文本混淆"
+	"VBS计算器"
+	"执行w32tm /resync对时"
+	"随机生成MAC地址"
+) do (
+	set /a "maxa+=1"
+	set "a!maxa!=%%~a"
 )
 goto :eof
 :colortxt
@@ -5379,7 +5265,9 @@ if "!bj:~0,1!" equ "0" (
 			if "!bj:~0,1!" equ "3" (
 				set bj1=46;
 			) else (
-				if "!bj:~0,1!" equ "4" (set bj1=41;)
+				if "!bj:~0,1!" equ "4" (
+					set bj1=41;
+				)
 			)
 		)
 	)
@@ -5398,7 +5286,9 @@ if "!bj:~0,1!" equ "5" (
 			if "!bj:~0,1!" equ "8" (
 				set bj2=90m
 			) else (
-				if "!bj:~0,1!" equ "9" (set bj2=94m)
+				if "!bj:~0,1!" equ "9" (
+					set bj2=94m
+				)
 			)
 		)
 	)
@@ -5420,7 +5310,9 @@ if /i "!bj:~0,1!" equ "a" (
 				if /i "!bj:~0,1!" equ "e" (
 					set bj2=93m
 				) else (
-					if /i "!bj:~0,1!" equ "f" (set bj2=97m)
+					if /i "!bj:~0,1!" equ "f" (
+						set bj2=97m
+					)
 				)
 			)
 		)
@@ -5437,7 +5329,9 @@ if "!bj:~1,1!" equ "8" (
 		if /i "!bj:~1,1!" equ "a" (
 			set bj2=92m
 		) else (
-			if /i "!bj:~1,1!" equ "b" (set bj2=96m)
+			if /i "!bj:~1,1!" equ "b" (
+				set bj2=96m
+			)
 		)
 	)
 )
@@ -5455,7 +5349,9 @@ if /i "!bj:~1,1!" equ "" (
 			if /i "!bj:~1,1!" equ "e" (
 				set bj2=93m
 			) else (
-				if /i "!bj:~1,1!" equ "f" (set bj2=97m)
+				if /i "!bj:~1,1!" equ "f" (
+					set bj2=97m
+				)
 			)
 		)
 	)
@@ -5474,9 +5370,9 @@ set /p "=!cswz!48;2;!brgb!;38;2;!qrgb!m!zt!!cswz!!ysbak!"<nul
 goto :eof
 :su
 rem 使用goto调用:su
-set /p =!comspec! /c %0 -ks<nul>"%temp%\su.bat"
+set /p "=!comspec! /c %0 -ks"<nul>"%temp%\su.bat"
 powershell -mta -nologo -noprofile -command "$command=[IO.File]::ReadAllText('%0') -split '#su\#.*'; iex ($command[1])"
-rem 延时删除文件确保能被上一条指令读取
+rem 延迟删除文件确保能被上一条指令读取
 call :out 1
 del /f /q "%temp%\su.bat";"%Temp%\CMSTP.inf"
 exit 0
@@ -5770,9 +5666,17 @@ for /l %%i in (1,1,%3) do (set "zero_str=!zero_str!0")
 set "dec_str=!dec_str!!zero_str!"
 set "%4=!int_str!.!dec_str:~0,%3!"
 goto :eof
-:offdisplay
-powershell (Add-Type '[DllImport(\"user32.dll\")]^public static extern int SendMessage(int hWnd, int hMsg, int wParam, int lParam);' -Name a -Pas)::SendMessage(-1,0x0112,0xF170,2)
-goto :eof
+#offdisplay#
+Add-Type @"
+using System;
+using System.Runtime.InteropServices;
+public class User32 {
+	[DllImport("user32.dll",SetLastError = true)]
+	public static extern int SendMessage(int hWnd,int hMsg,int wParam,int lParam);
+}
+"@
+[User32]::SendMessage(-1,0x0112,0xF170,2)
+#offdisplay#
 :choice
 setlocal
 choice /c !cho! /n /m "输入选项: "
@@ -5880,10 +5784,10 @@ goto :eof
 set "val1=!val:~1!"
 set "val2=!val:.=!"
 if defined val1 (
-	call :checkvar val1 num. jg
-	if "!jg!" equ "1" (
+	call :checkvar val1 num.
+	if errorlevel 1 (
 		call :checkvar val2 -num jg
-		if "!jg!" equ "1" (goto checkvar_exit1)
+		if errorlevel 1 (goto checkvar_exit1)
 	)
 )
 goto checkvar_exit0
@@ -5948,19 +5852,9 @@ if defined %1 (
 	goto checkvar_exit0
 )
 :checkvar_exit0
-if "%3" neq "" (
-	endlocal&set "%3=0"
-) else (
-	echo;0
-)
-goto :eof
+exit /b 0
 :checkvar_exit1
-if "%3" neq "" (
-	endlocal&set "%3=1"
-) else (
-	echo;1
-)
-goto :eof
+exit /b 1
 :sqrt
 setlocal
 set "s=%1"
@@ -6081,7 +5975,9 @@ if "!s!" equ "10" (
 	if "!s!" equ "11" (
 		set s=B
 	) else (
-		if "!s!" equ "12" (set s=C)
+		if "!s!" equ "12" (
+			set s=C
+		)
 	)
 )
 goto 10to16_3
@@ -6092,7 +5988,9 @@ if "!s!" equ "13" (
 	if "!s!" equ "14" (
 		set s=E
 	) else (
-		if "!s!" equ "15" (set s=F)
+		if "!s!" equ "15" (
+			set s=F
+		)
 	)
 )
 :10to16_3
@@ -6253,8 +6151,7 @@ for %%a in (
 	"f=F" "g=G" "h=H" "i=I" "j=J"
 	"k=K" "l=L" "m=M" "n=N" "o=O"
 	"p=P" "q=Q" "r=R" "s=S" "t=T"
-	"u=U" "v=V" "w=W" "x=X" "y=Y"
-	"z=Z"
+	"u=U" "v=V" "w=W" "x=X" "y=Y" "z=Z"
 ) do (
 	set "tmp=!tmp:%%~a!"
 )
@@ -6273,8 +6170,7 @@ for %%a in (
 	"F=f" "G=g" "H=h" "I=i" "J=j"
 	"K=k" "L=l" "M=m" "N=n" "O=o"
 	"P=p" "Q=q" "R=r" "S=s" "T=t"
-	"U=u" "V=v" "W=w" "X=x" "Y=y"
-	"Z=z"
+	"U=u" "V=v" "W=w" "X=x" "Y=y" "Z=z"
 ) do (
 	set "tmp=!tmp:%%~a!"
 )
@@ -6309,9 +6205,7 @@ if errorlevel 1 (
 	echo;线程数只能输入数字!
 	goto :eof
 )
-if not defined dir (
-	for /f "delims=" %%a in ("%0") do (set "dir=%%~dpa")
-)
+if not defined dir (set "dir=%%~dp0")
 if not exist "!dir!\" (
 	echo;文件夹 "!dir!" 不存在
 	goto :eof
@@ -6330,7 +6224,7 @@ for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\W
 if defined doh (
 	echo;测试DoH端口是否有效...
 	for /f "tokens=2 delims=/" %%a in ("!doh!") do (
-		curl -s --connect-timeout 2 --retry 1 -I -o nul "https://%%a"
+		curl !proxy! -s --connect-timeout 2 --retry 1 -I -o nul "https://%%a"
 		if errorlevel 1 (
 			echo;使用系统默认DNS
 			set doh=
@@ -6362,17 +6256,15 @@ set /a "newtr=tr+1"
 set file=
 for /l %%a in (1,1,!tr!) do (set "file=!file!%%a+")
 set "file=!file:~0,-1!"
-if exist "%temp%\down" (rd /s /q "%temp%\down")
+if not exist "%temp%\down\" (
+	if exist "%temp%\down" (del /f /q "%temp%\down")
+) else (
+	rd /s /q "%temp%\down"
+)
 md "%temp%\down"
-for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
-	if "%%a" equ "0x1" (
-		for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
-			set "proxy=-x %%b"
-			echo;使用代理:	%%b
-		)
-	) else (
-		set proxy=
-	)
+if errorlevel 1 (
+	echo;不能创建临时文件夹: "%temp%\down"
+	goto :eof
 )
 for /l %%a in (1,1,!tr!) do (
 	start /b /low "curl多进程下载_%%a" curl !proxy! !doh! !par! !ua! -s -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir "%temp%\down" "!url!"
@@ -6407,16 +6299,6 @@ del /f /q "%temp%\tag"
 rd /s /q "%temp%\down"
 goto :eof
 :curldxc_3
-for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
-	if "%%a" equ "0x1" (
-		for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
-			set "proxy=-x %%b"
-			echo;使用代理:	%%b
-		)
-	) else (
-		set proxy=
-	)
-)
 if "!dir:~-1!" equ "\" (set "dir=!dir:~0,-1!")
 curl !proxy! !doh! !par! !ua! --compressed -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o "!filename!" --output-dir "!dir!" "!url!"
 goto :eof
@@ -6475,3 +6357,38 @@ goto :eof
 :bel
 2>nul forfiles /m "%~nx0" /c "!comspec! /c set /p =0x07<nul"
 goto :eof
+:md
+if "%~1" equ "" (goto :eof)
+setlocal
+set "url=%~1"
+if "!url:-1!" equ "\" (set "url=!url:0,-1!")
+if not exist "!url!\" (
+	if exist "!url!" (del /f /q "!url!")
+) else (
+	rd /s /q "!url!"
+)
+md "!url!"
+endlocal&exit /b %errorlevel%
+:curlproxy
+for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
+	if "%%a" equ "0x1" (
+		for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
+			set "proxy=-x %%b"
+			echo;使用代理:	%%b
+		)
+	) else (
+		set proxy=
+	)
+)
+if defined doh (
+	echo;测试DoH端口是否有效...
+	for /f "tokens=2 delims=/" %%a in ("!doh!") do (
+		curl !proxy! -s --connect-timeout 2 --retry 1 -I -o nul "https://%%a"
+		if errorlevel 1 (
+			echo;使用系统默认DNS
+			set doh=
+		) else (
+			echo;使用DoH: !doh:~10!
+		)
+	)
+)
