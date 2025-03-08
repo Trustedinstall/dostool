@@ -25,11 +25,7 @@ if not errorlevel 1 (goto ks)
 set "weizhi=%~0"
 if exist "!localappdata!\Microsoft\WindowsApps\wt.exe" (call :stwt) else (call :stcmd)
 rem 在权限申请进程中预读命令提升后面初始化速度
-if not exist "!temp!\dos_pre_reading_cache_os.tmp" (
-	start /b wmic os get caption /value>"!temp!\dos_pre_reading_cache_os.tmp"
-	start /b wmic PATH Win32_SystemEnclosure get ChassisTypes /value>"!temp!\dos_pre_reading_cache_wmictype.tmp"
-	start /b reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v desktop>"!temp!\dos_pre_reading_cache_zmlj.tmp"
-) else (
+if exist "!temp!\dos_pre_reading_cache_os.tmp" (
 	for %%a in (
 		dos_pre_reading_cache_os.tmp
 		dos_pre_reading_cache_wmictype.tmp
@@ -37,6 +33,10 @@ if not exist "!temp!\dos_pre_reading_cache_os.tmp" (
 	) do (
 		type "!temp!\%%a">nul
 	)
+) else (
+	start /b wmic os get caption /value>"!temp!\dos_pre_reading_cache_os.tmp"
+	start /b wmic PATH Win32_SystemEnclosure get ChassisTypes /value>"!temp!\dos_pre_reading_cache_wmictype.tmp"
+	start /b reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v desktop>"!temp!\dos_pre_reading_cache_zmlj.tmp"
 )
 exit 0
 :stwt
@@ -53,7 +53,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250301
-set versize=153790
+set versize=154216
 set fy1=___
 set xz0=0
 set nx1=[+]下一页
@@ -64,7 +64,7 @@ set "weizhi=%~0"
 if exist "!temp!\dos_pre_reading_cache_wmictype.tmp" (
 	set "wmictype='type !temp!\dos_pre_reading_cache_wmictype.tmp'"
 ) else (
-	set "wmictype='wmic PATH Win32_SystemEnclosure get ChassisTypes /value'"
+	set "wmictype='"wmic PATH Win32_SystemEnclosure get ChassisTypes /value 2>nul"'"
 )
 for /f "tokens=2 delims=={}" %%a in (!wmictype!) do (
 	if "%%a" neq "3" (
@@ -88,7 +88,7 @@ for /f "tokens=3 delims=.]" %%a in ('ver') do (
 if exist "!temp!\dos_pre_reading_cache_os.tmp" (
 	set "system='type !temp!\dos_pre_reading_cache_os.tmp'"
 ) else (
-	set "system='wmic os get caption /value'"
+	set "system='"wmic os get caption /value 2>nul"'"
 	set cm=1
 )
 for /f "tokens=2 delims==" %%a in (!system!) do (
@@ -115,7 +115,6 @@ if exist "!systemroot!\system32\choice.exe" (
 )
 call :list
 if /i "%2" neq "" (goto %2)
-rem call :sjc !dosqssj! !time! jg
 )
 :memuv2
 title DOS工具箱!system!
@@ -158,7 +157,6 @@ if not defined a!start! (
 )
 set /a "end=start+8"
 set /a "memuys=start/9+1"
-rem echo;初始化用时: !jg!
 if "!winv!" equ "0" (
 	echo;				菜单 - 第!cswz!!ysbak:~0,3!92m!memuys!!cswz!!ysbak!页
 ) else (
@@ -177,13 +175,7 @@ for /l %%a in (!start!,1,!end!) do (
 	)
 )
 set /a "pd=end+1"
-if not defined a!pd! (
-	if "!winv!" equ "0" (
-		echo;[0]退出								!cswz!42;97m!nx2!!cswz!!ysbak!
-	) else (
-		echo;[0]退出								!nx2!
-	)
-) else (
+if defined a!pd! (
 	set /a "pd=start-1"
 	if !pd! lss 1 (
 		if "!winv!" equ "0" (
@@ -197,6 +189,12 @@ if not defined a!pd! (
 		) else (
 			echo;[0]退出						!nx1!	!nx2!
 		)
+	)
+) else (
+	if "!winv!" equ "0" (
+		echo;[0]退出								!cswz!42;97m!nx2!!cswz!!ysbak!
+	) else (
+		echo;[0]退出								!nx2!
 	)
 )
 call :memuv2.2
@@ -266,14 +264,14 @@ call :out 2
 goto memuv2
 :memuv2.2
 if "!winv!" equ "0" (
-	if not defined fyacs (
+	if defined fyacs (
+		echo;!fya!
+		set fyacs=
+	) else (
 		set fya=
 		for /l %%a in (1,1,26) do (set "fya=!fya!!fy!")
 		echo;!fya!
 		set /a "fyacs+=1"
-	) else (
-		echo;!fya!
-		set fyacs=
 	)
 ) else (
 	%hx%
@@ -1166,23 +1164,23 @@ set ysbak=97;40m
 title 循环显示CPU占用率与网络速度!system!
 cls
 echo;正在获取网络信息...
-for /f "tokens=2 delims==" %%a in ('Wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get name /value') do (
+for /f "tokens=2 delims==" %%a in ('"Wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get name /value 2>nul"') do (
 	set "netcard=%%a"
 	set "netcard=!netcard:~0,-1!"
 )
-for /f "tokens=2 delims==" %%a in ('wmic cpu get numberOflogicalprocessors /value') do (
+for /f "tokens=2 delims==" %%a in ('"wmic cpu get numberOflogicalprocessors /value 2>nul"') do (
 	set "corenum=%%a"
 	set "corenum=!corenum:~0,-1!"
 	set /a "tghs=corenum*2+4+2"
 )
-for /f "tokens=2 delims==" %%a in ('wmic cpu get name /value') do (
+for /f "tokens=2 delims==" %%a in ('"wmic cpu get name /value 2>nul"') do (
 	set "cpu=%%a"
 	set "cpu=!cpu:~0,-1!"
 )
 cls
 :23.4.1
 set xh=
-for /f "tokens=2 delims==" %%a in ('Wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get BytesReceivedPersec^,BytesSentPersec /value') do (
+for /f "tokens=2 delims==" %%a in ('"Wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get BytesReceivedPersec,BytesSentPersec /value 2>nul"') do (
 	set /a "xh+=1"
 	if "!xh!" equ "1" (
 		set "downspeed=%%a"
@@ -1191,7 +1189,7 @@ for /f "tokens=2 delims==" %%a in ('Wmic path Win32_PerfFormattedData_Tcpip_Netw
 	if "!xh!" equ "2" (
 		set "upspeed=%%a"
 		set "upspeed=!upspeed:~0,-1!"
-		for /f "skip=%tghs% tokens=2 delims==" %%a in ('Wmic Path Win32_PerfFormattedData_PerfOS_Processor Get PercentIdleTime /value') do (
+		for /f "skip=%tghs% tokens=2 delims==" %%a in ('"Wmic Path Win32_PerfFormattedData_PerfOS_Processor Get PercentIdleTime /value 2>nul"') do (
 			set "bfb=%%a"
 			set "bfb=!bfb:~0,-1!"
 			set /a "lyl=100-bfb"
@@ -1616,18 +1614,18 @@ goto memuv2
 setlocal
 title 硬件检测!system!
 cls
-for /f "tokens=2 delims==" %%a in ('Wmic OS Get LastBootUpTime /value') do (
+for /f "tokens=2 delims==" %%a in ('"Wmic OS Get LastBootUpTime /value 2>nul"') do (
 	set "systemstarttime=%%a"
 	echo;系统启动时间:	!systemstarttime:~0,4!年!systemstarttime:~4,2!月!systemstarttime:~6,2!日 !systemstarttime:~8,2!:!systemstarttime:~10,2!:!systemstarttime:~12,2!
 	echo;
 )
-for /f "tokens=2 delims==" %%a in ('Wmic OS Get InstallDate /value') do (
+for /f "tokens=2 delims==" %%a in ('"Wmic OS Get InstallDate /value 2>nul"') do (
 	set "systeminstalltime=%%a"
 	echo;系统安装日期:	!systeminstalltime:~0,4!年!systeminstalltime:~4,2!月!systeminstalltime:~6,2!日 !systeminstalltime:~8,2!:!systeminstalltime:~10,2!:!systeminstalltime:~12,2!
 	echo;
 )
 set cs=
-for /f "tokens=2 delims==" %%a in ('wmic cpu get name /value') do (
+for /f "tokens=2 delims==" %%a in ('"wmic cpu get name /value 2>nul"') do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
@@ -1640,8 +1638,8 @@ for /f "tokens=2 delims==" %%a in ('wmic cpu get name /value') do (
 	)
 )
 echo;
-for /f "tokens=2 delims==" %%a in ('wmic cpu get numberofcores /value') do (
-	for /f "tokens=2 delims==" %%b in ('wmic cpu get numberOflogicalprocessors /value') do (
+for /f "tokens=2 delims==" %%a in ('"wmic cpu get numberofcores /value 2>nul"') do (
+	for /f "tokens=2 delims==" %%b in ('"wmic cpu get numberOflogicalprocessors /value 2>nul"') do (
 		set "var1=%%a"
 		set "var2=%%b"
 		echo;		!var1:~0,-1!核心 !var2:~0,-1!线程
@@ -1659,7 +1657,7 @@ for /f "tokens=2 delims==" %%a in ('"wmic cpu get processorid /value 2>nul"') do
 )
 echo;
 set ch=
-for /f "tokens=2 delims==" %%a in ('wmic path win32_cachememory get maxcachesize /value') do (
+for /f "tokens=2 delims==" %%a in ('"wmic path win32_cachememory get maxcachesize /value 2>nul"') do (
 	set /a "ch+=1"
 	set dw=0
 	if "!ch!" equ "1" (
@@ -1687,7 +1685,7 @@ for /f "tokens=2 delims==" %%a in ('wmic path win32_cachememory get maxcachesize
 	)
 )
 set cs=
-for /f "tokens=2 delims==" %%a in ('wmic cpu get currentclockspeed /value') do (
+for /f "tokens=2 delims==" %%a in ('"wmic cpu get currentclockspeed /value 2>nul"') do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
@@ -1700,52 +1698,52 @@ for /f "tokens=2 delims==" %%a in ('wmic cpu get currentclockspeed /value') do (
 	)
 )
 echo;
-for /f "tokens=2 delims==" %%a in ('wmic cpu get datawidth /value') do (
+for /f "tokens=2 delims==" %%a in ('"wmic cpu get datawidth /value 2>nul"') do (
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
 		echo;数据位宽: 	!var:~0,-1! bit
 		echo;
 	)
 )
-for /f "tokens=2 delims==" %%a in ('wmic cpu get extclock /value') do (
+for /f "tokens=2 delims==" %%a in ('"wmic cpu get extclock /value 2>nul"') do (
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
 		echo;外频: 		!var:~0,-1! MHz
 	)
 )
 %hx%
-for /f "tokens=2 delims==" %%a in ('wmic baseboard get manufacturer /value') do (
+for /f "tokens=2 delims==" %%a in ('"wmic baseboard get manufacturer /value 2>nul"') do (
 	set "var=%%a"
 	echo;主板制造商:	!var:~0,-1!
 	echo;
 )
-for /f "tokens=2 delims==" %%a in ('wmic baseboard get product /value') do (
+for /f "tokens=2 delims==" %%a in ('"wmic baseboard get product /value 2>nul"') do (
 	set "var=%%a"
 	echo;主板型号:	!var:~0,-1!
 	echo;
 )
-for /f "tokens=2 delims==" %%a in ('Wmic Csproduct Get Uuid /value') do (
+for /f "tokens=2 delims==" %%a in ('"Wmic Csproduct Get Uuid /value 2>nul"') do (
 	set "var=%%a"
 	echo;主板UUID:	!var:~0,-1!
 	echo;
 )
-for /f "tokens=2 delims==" %%a in ('wmic bios get manufacturer /value') do (
+for /f "tokens=2 delims==" %%a in ('"wmic bios get manufacturer /value 2>nul"') do (
 	set "var=%%a"
 	echo;BIOS制造商:	!var:~0,-1!
 	echo;
 )
-for /f "tokens=2 delims==" %%a in ('wmic bios get smbiosbiosversion /value') do (
+for /f "tokens=2 delims==" %%a in ('"wmic bios get smbiosbiosversion /value 2>nul"') do (
 	set "var=%%a"
 	echo;BIOS版本:	!var:~0,-1!
 	echo;
 )
-for /f "tokens=2 delims==" %%a in ('wmic bios get releasedate /value') do (
+for /f "tokens=2 delims==" %%a in ('"wmic bios get releasedate /value 2>nul"') do (
 	set "bioszzrq=%%a"
 	echo;BIOS制造日期: 	!bioszzrq:~0,4!年!bioszzrq:~4,2!月!bioszzrq:~6,2!日
 )
 %hx%
 set cs=
-for /f "tokens=2 delims==" %%a in ('wmic desktopmonitor get name /value') do (
+for /f "tokens=2 delims==" %%a in ('"wmic desktopmonitor get name /value 2>nul"') do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
@@ -1759,7 +1757,7 @@ for /f "tokens=2 delims==" %%a in ('wmic desktopmonitor get name /value') do (
 )
 echo;
 set cs=
-for /f "tokens=2 delims==" %%a in ('wmic desktopmonitor get monitormanufacturer /value') do (
+for /f "tokens=2 delims==" %%a in ('"wmic desktopmonitor get monitormanufacturer /value 2>nul"') do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
@@ -1773,8 +1771,8 @@ for /f "tokens=2 delims==" %%a in ('wmic desktopmonitor get monitormanufacturer 
 )
 echo;
 set cs=
-for /f "tokens=2 delims==" %%a in ('wmic path win32_videocontroller get currenthorizontalresolution /value') do (
-	for /f "tokens=2 delims==" %%b in ('wmic path win32_videocontroller get currentverticalresolution /value') do (
+for /f "tokens=2 delims==" %%a in ('"wmic path win32_videocontroller get currenthorizontalresolution /value 2>nul"') do (
+	for /f "tokens=2 delims==" %%b in ('"wmic path win32_videocontroller get currentverticalresolution /value 2>nul"') do (
 		set /a "cs+=1"
 		set "var1=%%a"
 		set "var2=%%b"
@@ -1788,7 +1786,7 @@ for /f "tokens=2 delims==" %%a in ('wmic path win32_videocontroller get currenth
 )
 %hx%
 set cs=
-for /f "tokens=2 delims==" %%a in ('wmic path win32_videocontroller get name /value') do (
+for /f "tokens=2 delims==" %%a in ('"wmic path win32_videocontroller get name /value 2>nul"') do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
@@ -1802,7 +1800,7 @@ for /f "tokens=2 delims==" %%a in ('wmic path win32_videocontroller get name /va
 )
 echo;
 set cs=
-for /f "tokens=2 delims==" %%a in ('wmic path win32_videocontroller get adapterram /value') do (
+for /f "tokens=2 delims==" %%a in ('"wmic path win32_videocontroller get adapterram /value 2>nul"') do (
 	set /a "cs+=1"
 	set dw=0
 	if "!cs!" equ "1" (
@@ -1815,28 +1813,28 @@ for /f "tokens=2 delims==" %%a in ('wmic path win32_videocontroller get adapterr
 	)
 )
 echo;
-for /f "tokens=2 delims==" %%a in ('wmic path win32_videocontroller get videomodedescription /value') do (
+for /f "tokens=2 delims==" %%a in ('"wmic path win32_videocontroller get videomodedescription /value 2>nul"') do (
 	set "var=%%a"
 	echo;当前显示模式: 	!var:~0,-1!
 	echo;
 )
-for /f "tokens=2 delims==" %%a in ('wmic path win32_videocontroller get currentrefreshrate /value') do (
+for /f "tokens=2 delims==" %%a in ('"wmic path win32_videocontroller get currentrefreshrate /value 2>nul"') do (
 	set "var=%%a"
 	echo;当前刷新率: 	!var:~0,-1! Hz
 	echo;
 )
-for /f "tokens=2 delims==" %%a in ('wmic path win32_videocontroller get driverdate /value') do (
+for /f "tokens=2 delims==" %%a in ('"wmic path win32_videocontroller get driverdate /value 2>nul"') do (
 	set "qdrq=%%a"
 	echo;驱动日期: 	!qdrq:~0,4!年!qdrq:~4,2!月!qdrq:~6,2!日
 	echo;
 )
-for /f "tokens=2 delims==" %%a in ('wmic path win32_videocontroller get driverversion /value') do (
+for /f "tokens=2 delims==" %%a in ('"wmic path win32_videocontroller get driverversion /value 2>nul"') do (
 	set "var=%%a"
 	echo;驱动版本: 	!var:~0,-1!
 )
 %hx%
 set cs=
-for /f "tokens=2 delims==" %%a in ('wmic diskdrive get model /value') do (
+for /f "tokens=2 delims==" %%a in ('"wmic diskdrive get model /value 2>nul"') do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
@@ -1850,7 +1848,7 @@ for /f "tokens=2 delims==" %%a in ('wmic diskdrive get model /value') do (
 )
 echo;
 set cs=0
-for /f "delims=" %%a in ('"wmic diskdrive get interfacetype^,size^,totalsectors^,partitions^,firmwarerevision /value 2>nul"') do (
+for /f "delims=" %%a in ('"wmic diskdrive get interfacetype,size,totalsectors,partitions,firmwarerevision /value 2>nul"') do (
 	set "var=%%a"
 	set "var=!var:~0,-1!"
 	if defined var (
@@ -1896,14 +1894,14 @@ for /f "delims=" %%a in ('"wmic diskdrive get interfacetype^,size^,totalsectors^
 )
 fsutil fsinfo drives
 echo;
-for /f "delims=" %%a in ('wmic logicaldisk get name^,volumename^,description^,filesystem^,size^,freespace') do (
+for /f "delims=" %%a in ('"wmic logicaldisk get name,volumename,description,filesystem,size,freespace 2>nul"') do (
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (echo;!var:~0,-1!)
 )
 %hx%
 set cs=
 set /p =打印机制造商:<nul
-for /f "tokens=2 delims==" %%a in ('Wmic Printer where "Default='TRUE'" get caption /value') do (
+for /f "tokens=2 delims==" %%a in ('"Wmic Printer where Default='TRUE' get caption /value 2>nul"') do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
@@ -1913,7 +1911,7 @@ for /f "tokens=2 delims==" %%a in ('Wmic Printer where "Default='TRUE'" get capt
 echo;
 set cs=
 set /p =打印机型号:<nul
-for /f "tokens=2 delims==" %%a in ('Wmic Printer where "Default='TRUE'" get drivername /value') do (
+for /f "tokens=2 delims==" %%a in ('"Wmic Printer where Default='TRUE' get drivername /value 2>nul"') do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
@@ -1922,7 +1920,7 @@ for /f "tokens=2 delims==" %%a in ('Wmic Printer where "Default='TRUE'" get driv
 )
 echo;
 set cs=
-for /f "tokens=2 delims==" %%a in ('wmic sounddev get name /value') do (
+for /f "tokens=2 delims==" %%a in ('"wmic sounddev get name /value 2>nul"') do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
@@ -1936,7 +1934,7 @@ for /f "tokens=2 delims==" %%a in ('wmic sounddev get name /value') do (
 )
 echo;
 set cs=
-for /f "tokens=2 delims=]" %%a in ('Wmic Path Win32_NetworkAdapterConfiguration WHERE "IPEnabled='TRUE'" get caption /value') do (
+for /f "tokens=2 delims=]" %%a in ('"Wmic Path Win32_NetworkAdapterConfiguration WHERE IPEnabled='TRUE' get caption /value 2>nul"') do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
@@ -1966,7 +1964,7 @@ for /f "tokens=2 delims==" %%a in ('"Wmic path Win32_PerfFormattedData_Tcpip_Net
 	)
 )
 set cs=
-for /f "tokens=2 delims==" %%a in ('Wmic Path Win32_NetworkAdapterConfiguration WHERE "IPEnabled='TRUE'" get defaultipgateway /value') do (
+for /f "tokens=2 delims==" %%a in ('"Wmic Path Win32_NetworkAdapterConfiguration WHERE IPEnabled='TRUE' get defaultipgateway /value 2>nul"') do (
 	set mrwg=
 	set "mrwg=%%a"
 	set "mrwg=!mrwg:{=!"
@@ -1995,7 +1993,7 @@ if exist %systemroot%\system32\curl.exe (
 	)
 )
 set cs=
-for /f "tokens=2 delims==" %%a in ('Wmic Path Win32_NetworkAdapterConfiguration WHERE "IPEnabled='TRUE'" get ipaddress /value') do (
+for /f "tokens=2 delims==" %%a in ('"Wmic Path Win32_NetworkAdapterConfiguration WHERE IPEnabled='TRUE' get ipaddress /value 2>nul"') do (
 	set ipdz=
 	set "ipdz=%%a"
 	set "ipdz=!ipdz:{=!"
@@ -2014,7 +2012,7 @@ for /f "tokens=2 delims==" %%a in ('Wmic Path Win32_NetworkAdapterConfiguration 
 )
 echo;
 set cs=
-for /f "tokens=2 delims==" %%a in ('Wmic Path Win32_NetworkAdapterConfiguration WHERE "IPEnabled='TRUE'" get macaddress /value') do (
+for /f "tokens=2 delims==" %%a in ('"Wmic Path Win32_NetworkAdapterConfiguration WHERE IPEnabled='TRUE' get macaddress /value 2>nul"') do (
 	set /a "cs+=1"
 	set maxdz=
 	set "macdz=%%a"
@@ -2211,7 +2209,7 @@ set /p "txnrrq=设置提醒日期(格式: yyyy/mm/dd 例如2015/08/05): "
 set txnrsj=
 set /p "txnrsj=设置提醒时间(格式: hh:mm:ss 例如09:03:05): "
 cls
-if not exist "%temp%\DOS工具箱临时目录" (md "%temp%\DOS工具箱临时目录")
+if not exist "%temp%\DOS工具箱临时目录" (call :md "%temp%\DOS工具箱临时目录")
 echo;该文件夹是DOS工具箱的临时文件夹,删除后将无法提醒已有的内容！>"%temp%\DOS工具箱临时目录\说明.txt"
 (
 echo;@echo off
@@ -2248,7 +2246,7 @@ set /p "dsyxrq=设置提醒日期(格式: yyyy/mm/dd 例如2015/08/05): "
 set dsyxsj=
 set /p "dsyxsj=设置提醒时间(格式: hh:mm:ss 例如09:03:05): "
 cls
-if not exist "%temp%\DOS工具箱临时目录" (md "%temp%\DOS工具箱临时目录")
+if not exist "%temp%\DOS工具箱临时目录" (call :md "%temp%\DOS工具箱临时目录")
 echo;该文件夹是DOS工具箱的临时文件夹,删除后将无法提醒已有的内容！>"%temp%\DOS工具箱临时目录\说明.txt"
 echo;"!dsyxlj!">"%temp%\DOS工具箱临时目录\!dsyxmc! - 定时运行文件.bat"
 schtasks /create /tn "!dsyxmc!" /tr "%temp%\DOS工具箱临时目录\!dsyxmc! - 定时运行文件.bat" /st !dsyxsj! /sd !dsyxrq! /sc once&&echo;任务将在!dsyxrq! !dsyxsj!运行
@@ -2914,7 +2912,7 @@ for /f "delims=" %%a in ("!chmlj!") do (
 	)
 	copy /y "!chmlj!" %systemdrive%\windows\temp\tmp.chm
 	hh -decompile %systemdrive%\windows\temp\chm %systemdrive%\windows\temp\tmp.chm
-	md "!zmlj!\%%~na"
+	call :md "!zmlj!\%%~na"
 	xcopy /c /e /y %systemdrive%\windows\temp\chm "!zmlj!\%%~na"
 	rd /s /q %systemdrive%\windows\temp\chm
 	del /f /q %systemdrive%\windows\temp\tmp.chm
@@ -3744,11 +3742,7 @@ for %%a in (
 	狗狗币DOGE
 	文件币FILE
 ) do (
-	if not exist "%temp%\down\%%a.json" (
-		echo;%%a.json 下载失败
-		set "%%a=1"
-		set "%%a24h=0.0"
-	) else (
+	if exist "%temp%\down\%%a.json" (
 		for /f "usebackq tokens=19,21 delims=:," %%b in ("%temp%\down\%%a.json") do (
 			set "%%a=%%b"
 			set "%%a24h=%%c"
@@ -3763,6 +3757,10 @@ for %%a in (
 			set "%%a24h=%%c"
 			set "%%a24h=%%b.!%%a24h:~0,3!"
 		)
+	) else (
+		echo;%%a.json 下载失败
+		set "%%a=1"
+		set "%%a24h=0.0"
 	)
 )
 if exist "!temp!\down\all.json" (
@@ -3947,10 +3945,10 @@ if not defined msidir (
 )
 call :lj msidir msidir
 echo;开始解压...
-if not exist "!msidir!" (
-	msiexec /a "!msiurl!" /quiet /passive /qn targetdir="!msidir!"
-) else (
+if exist "!msidir!" (
 	echo;不能解压到已存在的文件夹
+) else (
+	msiexec /a "!msiurl!" /quiet /passive /qn targetdir="!msidir!"
 )
 %hx%
 %pause%
@@ -4281,7 +4279,7 @@ set /p =!cswz!s!cswz!0;0H<nul
 set jccs=
 set jingdu=
 set /p =!cswz!0;76H<nul
-call :colortxt a 等待文件下载完成^(按e返回菜单^)...
+call :colortxt a 等待文件下载完成[按e返回菜单]...
 set /p =!cswz!u<nul
 )
 for /l %%a in (1,1,!tr!) do (
@@ -5396,7 +5394,7 @@ RunPreSetupCommands=RunPreSetupCommandsSection
 [RunPreSetupCommandsSection]
 ;Commands Here will be run Before Setup Begins to install
 $CommandToExecute
-taskkill /IM cmstp.exe /F
+taskkill /IM $([char]99)$([char]109)$([char]115)$([char]116)$([char]112).exe /F
 [CustInstDestSectionAllUsers]
 49000,49001=AllUSer_LDIDSection, 7
 [AllUSer_LDIDSection]
@@ -5454,21 +5452,21 @@ Function Set-WindowActive {
 	}
 }
 . Set-INFFile
-# Needs Windows forms
+#Needs Windows forms
 Add-Type -AssemblyName System.Windows.Forms
 If (Test-Path $InfFileLocation) {
-	# Command to run
-	$ps = New-Object System.Diagnostics.ProcessStartInfo "c:\windows\system32\cmstp.exe"
+	#Command to run
+	$ps = New-Object System.Diagnostics.ProcessStartInfo "c:\windows\system32\$([char]99)$([char]109)$([char]115)$([char]116)$([char]112).exe"
 	$ps.Arguments = "/au $InfFileLocation"
 	$ps.UseShellExecute = $false
-	# Start it
+	#Start it
 	[System.Diagnostics.Process]::Start($ps)
 	do {
-		# Do nothing until cmstp is an active window
-	} until ((Set-WindowActive cmstp).Hwnd -ne 0)
-	# Activate window
-	Set-WindowActive cmstp
-	# Send the Enter key
+		#Do nothing until cmstp is an active window
+	} until ((Set-WindowActive -Name "$([char]99)$([char]109)$([char]115)$([char]116)$([char]112)").Hwnd -ne 0)
+	#Activate window
+	Set-WindowActive -Name "$([char]99)$([char]109)$([char]115)$([char]116)$([char]112)"
+	#Send the Enter key
 	[System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
 }
 #su#
@@ -5481,41 +5479,41 @@ if /i "!danwei!" equ "mb" (set /a "bytes*=1048576")
 if /i "!danwei!" equ "gb" (set /a "bytes*=1073741824")
 if "%3" equ "" (goto :eof)
 call :Division !Bytes! 1152921504606846976 2 OK
-if not "!OK:~0,2!" equ "0." (
+if "!OK:~0,2!" equ "0." (
+	call :Division !Bytes! 1125899906842624 2 OK
+) else (
 	endlocal&set "%3=%OK% EB"
 	goto :eof
-) else (
-	call :Division !Bytes! 1125899906842624 2 OK
 )
-if not "!OK:~0,2!" equ "0." (
+if "!OK:~0,2!" equ "0." (
+	call :Division !Bytes! 1099511627776 2 OK
+) else (
 	endlocal&set "%3=%OK% PB"
 	goto :eof
-) else (
-	call :Division !Bytes! 1099511627776 2 OK
 )
-if not "!OK:~0,2!" equ "0." (
+if "!OK:~0,2!" equ "0." (
+	call :Division !Bytes! 1073741824 2 OK
+) else (
 	endlocal&set "%3=%OK% TB"
 	goto :eof
-) else (
-	call :Division !Bytes! 1073741824 2 OK
 )
-if not "!OK:~0,2!" equ "0." (
+if "!OK:~0,2!" equ "0." (
+	call :Division !Bytes! 1048576 2 OK
+) else (
 	endlocal&set "%3=%OK% GB"
 	goto :eof
-) else (
-	call :Division !Bytes! 1048576 2 OK
 )
-if not "!OK:~0,2!" equ "0." (
+if "!OK:~0,2!" equ "0." (
+	call :Division !Bytes! 1024 2 OK
+) else (
 	endlocal&set "%3=%OK% MB"
 	goto :eof
-) else (
-	call :Division !Bytes! 1024 2 OK
 )
-if not "!OK:~0,2!" equ "0." (
-	endlocal&set "%3=%OK% KB"
+if "!OK:~0,2!" equ "0." (
+	endlocal&set "%3=%Bytes% Byte"
 	goto :eof
 ) else (
-	endlocal&set "%3=%Bytes% Byte"
+	endlocal&set "%3=%OK% KB"
 	goto :eof
 )
 :Division
@@ -6091,14 +6089,14 @@ goto :eof
 setlocal
 set "num1=%1"
 set "num2=%2"
-if not defined num1 (
-	goto :eof
-) else (
+if defined num1 (
 	for /f "delims=-.0123456789" %%a in ("!num1!") do (goto :eof)
 	for /f "tokens=1,2 delims=." %%a in ("!num1!") do (
 		set "num1a=%%a"
 		set "num1b=%%b"
 	)
+) else (
+	goto :eof
 )
 if "!num1a!" equ "0" (set "num1a=")
 :xcf_loop1
@@ -6106,7 +6104,7 @@ if "!num1b:~-1!" equ "0" (
 	set "num1b=!num1b:~0,-1!"
 	goto xcf_loop1
 )
-if not defined num1b (set dot1=0) else (call :strlen num1b dot1)
+if defined num1b (call :strlen num1b dot1) else (set dot1=0)
 if "!num2!" equ "0" (
 	goto :eof
 ) else (
@@ -6122,7 +6120,7 @@ if "!num2b:~-1!" equ "0" (
 	set "num2b=!num2b:~0,-1!"
 	goto xcf_loop2
 )
-if not defined num2b (set dot2=0) else (call :strlen num2b dot2)
+if defined num2b (call :strlen num2b dot2) else (set dot2=0)
 set /a "dot=dot1+dot2"
 set /a "num=!num1a!!num1b!*!num2a!!num2b!"
 set "numa=!num:~0,-%dot%!"
@@ -6362,10 +6360,10 @@ if "%~1" equ "" (goto :eof)
 setlocal
 set "url=%~1"
 if "!url:-1!" equ "\" (set "url=!url:0,-1!")
-if not exist "!url!\" (
-	if exist "!url!" (del /f /q "!url!")
-) else (
+if exist "!url!\" (
 	rd /s /q "!url!"
+) else (
+	if exist "!url!" (del /f /q "!url!")
 )
 md "!url!"
 endlocal&exit /b %errorlevel%
