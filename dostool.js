@@ -52,7 +52,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250301
-set versize=153168
+set versize=153221
 set fy1=___
 set xz0=0
 set nx1=[+]ÏÂÒ»Ò³
@@ -2323,11 +2323,11 @@ for /f "delims=" %%a in ('fsutil fsinfo drives') do (
 for %%a in (!sypf!) do (
 	if exist "%%aSystem Volume Information" (
 		>nul 2>nul fsutil fsinfo ntfsinfo %%a&&(
-			takeown/f "%%aSystem Volume Information"
-			echo;y|cacls "%%aSystem Volume Information" /t /c /p everyone:f
+			takeown/f "%%aSystem Volume Information">nul
+			echo;y|cacls "%%aSystem Volume Information" /t /c /p everyone:f>nul
 		)
 		attrib -s -h -r "%%aSystem Volume Information"
-		rd /s /q "%%aSystem Volume Information"
+		rd /s /q "%%aSystem Volume Information"&&echo;ÒÑÉ¾³ý: "%%aSystem Volume Information"
 	)
 )
 %hx%
