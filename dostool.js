@@ -52,7 +52,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250301
-set versize=153574
+set versize=153582
 set fy1=___
 set xz0=0
 set nx1=[+]下一页
@@ -2557,7 +2557,7 @@ set ntfswjqx=
 set /p "ntfswjqx=拖动需要获取所有权限的文件或者文件夹到此窗口: "
 if not defined ntfswjqx (endlocal&goto 40)
 call :lj ntfswjqx ntfswjqx
-if exist "!ntfswjqx!" (
+if not exist "!ntfswjqx!" (
 	set /p =路径不存在<nul
 	call :out 2
 	endlocal
@@ -2784,7 +2784,7 @@ echo;字典里没有正确的密码
 endlocal
 goto memuv2
 :pjcg
-%hx%
+cls
 call :bel
 echo;破解成功！
 echo;
@@ -4072,7 +4072,7 @@ for %%a in (
 ) do (
 	>nul 2>nul set "%%~a"
 )
-for /f "tokens=3 delims= " %%a in ('"2>nul reg QUERY "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v "EditionID"') do (
+for /f "tokens=3 delims= " %%a in ('"2>nul reg QUERY "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v EditionID"') do (
 	set "sysid=%%a"
 )
 set server=
@@ -6272,7 +6272,7 @@ setlocal
 if exist "!windir!\system32\timeout.exe" (
 	timeout /t %1 /nobreak>nul
 ) else (
-	if "!windir!\system32\ping.exe" (
+	if exist "!windir!\system32\ping.exe" (
 		ping /n %1 0.0>nul
 	) else (
 		set /a "ms=%1*100"
