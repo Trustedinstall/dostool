@@ -52,7 +52,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250301
-set versize=153221
+set versize=153574
 set fy1=___
 set xz0=0
 set nx1=[+]下一页
@@ -4377,22 +4377,29 @@ if not exist "!域名重定向!" (
 		"mail.proton.me=c.pr.tn"
 
 		"#youtube"
-		"*.youtube.com=google-analytics.com"
-		"*.ytimg.com=googleadservices.com"
+		"*.youtube.com=click.google-analytics.com"
+		"*.ytimg.com=pagead1.googleadservices.com"
 		"*.ggpht.com=static.doubleclick.net"
 		"youtube.com=static.doubleclick.net"
 		"youtu.be=mt7.gstatic.com"
 
 		"#google"
-		"google.com=googleadservices.com"
-		"*.google.com=googleadservices.com"
-		"*.google.com.hk=googleadservices.com"
-		"*.google.com.tw=googleadservices.com"
+		"google.com=pagead1.googleadservices.com"
+		"*.google.com=pagead1.googleadservices.com"
+		"*.google.com.hk=pagead1.googleadservices.com"
+		"*.google.com.tw=pagead1.googleadservices.com"
 		"*.googleapis.com=static.doubleclick.net"
 		"*.googleusercontent.com=static.doubleclick.net"
 		"*.gstatic.com=alt6.gstatic.com"
 		"*.cloudfunctions.net=alt6.gstatic.com"
-		"*.blogspot.com=google-analytics.com"
+		"*.blogspot.com=click.google-analytics.com"
+		"*.googlesource.com=pagead1.googleadservices.com"
+		"*.chromium.org=google-analytics.com"
+		"*.google=pagead1.googleadservices.com"
+		"android.com=alt6.gstatic.com"
+		"*.android.com=alt6.gstatic.com"
+		"chrome.com=mt7.gstatic.com"
+		"*.chrome.com=mt7.gstatic.com"
 
 		"#github"
 		"github.com=octocaptcha.com"
@@ -4453,10 +4460,10 @@ if not exist "!域名重解析!" (
 		"mt7.gstatic.com=221.194.179.97"
 		"#alt6.gstatic.com=[2404:6800:4008:c07::5a]"
 		"alt6.gstatic.com=221.194.179.97"
-		"#google-analytics.com=[2404:6800:4008:c07::5a]"
-		"google-analytics.com=221.194.179.97"
-		"#googleadservices.com=[2404:6800:4008:c07::5a]"
-		"googleadservices.com=221.194.179.97"
+		"#click.google-analytics.com=[2404:6800:4008:c07::5a]"
+		"click.google-analytics.com=221.194.179.97"
+		"#pagead1.googleadservices.com=[2404:6800:4008:c07::5a]"
+		"pagead1.googleadservices.com=221.194.179.97"
 		"#static.doubleclick.net=[2404:6800:4008:c07::5a]"
 		"static.doubleclick.net=221.194.179.97"
 
