@@ -52,7 +52,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250301
-set versize=153130
+set versize=153170
 set fy1=___
 set xz0=0
 set nx1=[+]下一页
@@ -4346,21 +4346,22 @@ set "域名重解析=!temp!\域名重解析.txt"
 set "强制使用quic=!temp!\强制使用quic.txt"
 if not exist "!域名重定向!" (
 	(
+	rem 使用 @ 替代域名中的 * 通配符
 	for %%a in (
 		"#wikipedia"
-		"*.wikipedia.org=wikidata.org"
-		"*.wikiquote.org=wikidata.org"
-		"*.wikinews.org=wikidata.org"
-		"*.wikibooks.org=wikidata.org"
-		"*.wiktionary.org=wikidata.org"
-		"*.wikisource.org=wikidata.org"
-		"*.wikivoyage.org=wikidata.org"
-		"*.wikiversity.org=wikidata.org"
+		"@.wikipedia.org=wikidata.org"
+		"@.wikiquote.org=wikidata.org"
+		"@.wikinews.org=wikidata.org"
+		"@.wikibooks.org=wikidata.org"
+		"@.wiktionary.org=wikidata.org"
+		"@.wikisource.org=wikidata.org"
+		"@.wikivoyage.org=wikidata.org"
+		"@.wikiversity.org=wikidata.org"
 
 		"#pixiv"
 		"pixiv.net=pixiv.me"
-		"*.pixiv.net=pixiv.me"
-		"*.pximg.net=pximg.net"
+		"@.pixiv.net=pixiv.me"
+		"@.pximg.net=pximg.net"
 
 		"#protonmail"
 		"proton.me=pr.tn"
@@ -4369,43 +4370,43 @@ if not exist "!域名重定向!" (
 		"mail.proton.me=c.pr.tn"
 
 		"#youtube"
-		"*.youtube.com=click.google-analytics.com"
-		"*.ytimg.com=pagead1.googleadservices.com"
-		"*.ggpht.com=static.doubleclick.net"
+		"@.youtube.com=click.google-analytics.com"
+		"@.ytimg.com=pagead1.googleadservices.com"
+		"@.ggpht.com=static.doubleclick.net"
 		"youtube.com=static.doubleclick.net"
 		"youtu.be=mt7.gstatic.com"
 
 		"#google"
 		"google.com=pagead1.googleadservices.com"
-		"*.google.com=pagead1.googleadservices.com"
-		"*.google.com.hk=pagead1.googleadservices.com"
-		"*.google.com.tw=pagead1.googleadservices.com"
-		"*.googleapis.com=static.doubleclick.net"
-		"*.googleusercontent.com=static.doubleclick.net"
-		"*.gstatic.com=pagead2.googlesyndication.com"
-		"*.cloudfunctions.net=alt6.gstatic.com"
-		"*.blogspot.com=click.google-analytics.com"
-		"*.googlesource.com=pagead1.googleadservices.com"
-		"*.chromium.org=google-analytics.com"
-		"*.google=pagead1.googleadservices.com"
+		"@.google.com=pagead1.googleadservices.com"
+		"@.google.com.hk=pagead1.googleadservices.com"
+		"@.google.com.tw=pagead1.googleadservices.com"
+		"@.googleapis.com=static.doubleclick.net"
+		"@.googleusercontent.com=static.doubleclick.net"
+		"@.gstatic.com=pagead2.googlesyndication.com"
+		"@.cloudfunctions.net=alt6.gstatic.com"
+		"@.blogspot.com=click.google-analytics.com"
+		"@.googlesource.com=pagead1.googleadservices.com"
+		"@.chromium.org=google-analytics.com"
+		"@.google=pagead1.googleadservices.com"
 		"android.com=alt6.gstatic.com"
-		"*.android.com=alt6.gstatic.com"
+		"@.android.com=alt6.gstatic.com"
 		"chrome.com=mt7.gstatic.com"
-		"*.chrome.com=mt7.gstatic.com"
+		"@.chrome.com=mt7.gstatic.com"
 
 		"#github"
 		"github.com=octocaptcha.com"
-		"*.github.com=octocaptcha.com"
+		"@.github.com=octocaptcha.com"
 		"raw.githubusercontent.com=avatars.githubusercontent.com"
-		"*.github.io=octocaptcha.com"
+		"@.github.io=octocaptcha.com"
 		"github.io=octocaptcha.com"
 
 		"#steam"
 		"login.steampowered.com=login.steampowered.com"
 		"help.steampowered.com=help.steampowered.com"
-		"*.steampowered.com=steamuserimages-a.akamaihd.net"
+		"@.steampowered.com=steamuserimages-a.akamaihd.net"
 		"steamcommunity.com=underlords.com"
-		"*.steamcommunity.com=underlords.com"
+		"@.steamcommunity.com=underlords.com"
 
 		"#onedrive"
 		"onedrive.live.com=od0.live.com"
@@ -4416,19 +4417,19 @@ if not exist "!域名重定向!" (
 
 		"#vercel.app"
 		"vercel.app=no-sni.vercel-infra.com"
-		"*.vercel.app=no-sni.vercel-infra.com"
+		"@.vercel.app=no-sni.vercel-infra.com"
 
 		"#lain.la"
 		"pkuanvil.com=gcore.com"
-		"*.pkuanvil.com=gcore.com"
+		"@.pkuanvil.com=gcore.com"
 
 		"#quora"
 		"quora.com=qr.ae"
-		"*.quora.com=qr.ae"
+		"@.quora.com=qr.ae"
 
 		"#duckduckgo"
 		"duckduckgo.com=duck.co"
-		"*.duckduckgo.com=duck.co"
+		"@.duckduckgo.com=duck.co"
 	) do (
 		echo;%%~a
 	)
@@ -4439,7 +4440,7 @@ if not exist "!域名重解析!" (
 	for %%a in (
 		"#wikipedia"
 		"#wikidata.org=[2620:0:863:ed1a::1]"
-		"wikidata.org=208.80.153.224"
+		"#wikidata.org=208.80.153.224"
 
 		"#protonmail"
 		"pr.tn=proton.me"
@@ -4553,7 +4554,7 @@ if exist "!域名重定向!" (
 		set "host-rules=!host-rules!MAP %%a %%b, "
 	)
 	set "host-rules=!host-rules:~0,-2!"
-	set "host-rules=--host-rules="!host-rules!""
+	set "host-rules=--host-rules="!host-rules:@=*!""
 )
 if exist "!域名重解析!" (
 	for /f "eol=# tokens=1,2 delims== " %%a in (!域名重解析!) do (
