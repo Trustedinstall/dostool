@@ -52,7 +52,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250301
-set versize=153582
+set versize=153006
 set fy1=___
 set xz0=0
 set nx1=[+]下一页
@@ -2634,22 +2634,14 @@ call :ljjc batfx&&(
 	goto 43
 )
 %hx%
-find /n /i "del" "!batfx!"&&set /a "dx+=1"
-find /n /i "rd" "!batfx!"&&set /a "dx+=1"
-find /n /i "arp" "!batfx!"&&set /a "dx+=1"
-find /n /i "assoc" "!batfx!"&&set /a "dx+=1"
-find /n /i "attrib" "!batfx!"&&set /a "dx+=1"
-find /n /i "cacls" "!batfx!"&&set /a "dx+=1"
-find /n /i "format" "!batfx!"&&set /a "dx+=1"
-find /n /i "ftype" "!batfx!"&&set /a "dx+=1"
-find /n /i "taskkill" "!batfx!"&&set /a "dx+=1"
-find /n /i "taskl" "!batfx!"&&set /a "dx+=1"
-find /n /i "reg" "!batfx!"&&set /a "dx+=1"
-find /n /i "ren" "!batfx!"&&set /a "dx+=1"
-find /n /i "regsvr32" "!batfx!"&&set /a "dx+=1"
-find /n /i "rd" "!batfx!"&&set /a "dx+=1"
-find /n /i "schtask" "!batfx!"&&set /a "dx+=1"
-find /n /i "shutdown" "!batfx!"&&set /a "dx+=1"
+for %%a in (
+	del rd arp assoc
+	attrib cacls format ftype
+	taskkill tasklist reg ren
+	regsvr32 rd schtasks shutdown
+) do (
+	findstr /n /i /c:"%%a" "!batfx!"&&set /a "dx+=1"
+)
 %hx%
 echo;批处理文件: !batfx!
 echo;危险等级: !dx!
@@ -4172,9 +4164,9 @@ if not exist "%temp%\tag" (
 	endlocal
 	goto memuv2
 )
-for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Accept-Ranges:"') do (set "trflag=%%a")
-for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Content-Length:"') do (set "filesize=%%a")
-for /f "tokens=2 delims==" %%a in ('type %temp%\tag^|findstr /c:"filename="') do (set "filename=%%a")
+for /f "tokens=2 delims= " %%a in ('findstr /c:"Accept-Ranges:" "%temp%\tag"') do (set "trflag=%%a")
+for /f "tokens=2 delims= " %%a in ('findstr /c:"Content-Length:" "%temp%\tag"') do (set "filesize=%%a")
+for /f "tokens=2 delims==" %%a in ('findstr /c:"filename=" "%temp%\tag"') do (set "filename=%%a")
 if "!trflag!" neq "bytes" (set tr=1)
 if defined filesize (
 	if !filesize! geq 1024 (
@@ -6201,9 +6193,9 @@ if not exist "%temp%\tag" (
 	echo;没有获取到文件信息
 	goto :eof
 )
-for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Accept-Ranges:"') do (set "trflag=%%a")
-for /f "tokens=2 delims= " %%a in ('type %temp%\tag^|findstr /c:"Content-Length:"') do (set "filesize=%%a")
-for /f "tokens=2 delims==" %%a in ('type %temp%\tag^|findstr /c:"filename="') do (set "filename=%%a")
+for /f "tokens=2 delims= " %%a in ('findstr /c:"Accept-Ranges:" "%temp%\tag"') do (set "trflag=%%a")
+for /f "tokens=2 delims= " %%a in ('findstr /c:"Content-Length:" "%temp%\tag"') do (set "filesize=%%a")
+for /f "tokens=2 delims==" %%a in ('findstr /c:"filename=" "%temp%\tag"') do (set "filename=%%a")
 if "!trflag!" neq "bytes" (set tr=1)
 if not defined filename (set "filename=%~3")
 if not defined filesize (goto curldxc_3)
