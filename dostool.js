@@ -52,7 +52,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250301
-set versize=153170
+set versize=154135
 set fy1=___
 set xz0=0
 set nx1=[+]下一页
@@ -289,12 +289,13 @@ for /f "delims=" %%a in ('fsutil fsinfo drives') do (
 	set "sypf=!sypf:~5!"
 )
 for %%a in (!sypf!) do (
-	fsutil fsinfo drivetype %%a|find /i "可移动驱动器"&&(
-		for /f "delims=" %%b in ('dir /a /s /b %%alpk.dll') do (
-			if "%%~zb" equ "44032" (
-				attrib -s -h -r "%%b"
-				del /f /q "%%b"
-				echo;已删除%%b
+	for /f "tokens=2 delims=- " %%b in ('fsutil fsinfo drivetype %%a') do (
+		if "%%b" equ "可移动驱动器" (
+			for /f "delims=" %%b in ('dir /a /s /b %%alpk.dll') do (
+				if "%%~zb" equ "44032" (
+					attrib -s -h -r "%%b"
+					del /f /q "%%b"&&echo;已删除%%b
+				)
 			)
 		)
 	)
@@ -1049,10 +1050,12 @@ set /p "jclj=输入要显示的进程PID(e=返回)(f=刷新): "
 if not defined jclj (goto 23.6)
 if /i "!jclj!" equ "f" (goto 23.6)
 if /i "!jclj!" equ "e" (endlocal&goto 23)
-tasklist /fi "pid eq !jclj!"|findstr /i "!jclj!"||(
-	set /p =没有此进程<nul
-	call :out 2
-	goto 23.6
+for /f "tokens=2 delims=," %%a in ('tasklist /fi "pid eq !jclj!"/fo csv /nh') do (
+	if "%%~a" neq "!jclj!" (
+		set /p =没有此进程<nul
+		call :out 2
+		goto 23.6
+	)
 )
 cls
 for /f "tokens=2 delims==" %%a in ('"2>nul wmic process where processid=!jclj! get executablepath /value"') do (
@@ -1086,10 +1089,12 @@ set /p "jclj=输入要显示的进程PID(e=返回)(f=刷新): "
 if not defined jclj (goto 23.10)
 if /i "!jclj!" equ "f" (goto 23.10)
 if /i "!jclj!" equ "e" (endlocal&goto 23)
-tasklist /fi "pid eq !jclj!"|findstr /i "!jclj!"||(
-	set /p =没有此进程<nul
-	call :out 2
-	goto 23.10
+for /f "tokens=2 delims=," %%a in ('tasklist /fi "pid eq !jclj!" /fo csv /nh') do (
+	if "%%~a" neq "!jclj!" (
+		set /p =没有此进程<nul
+		call :out 2
+		goto 23.10
+	)
 )
 cls
 %hx%
@@ -1533,18 +1538,20 @@ cls
 echo;检测Everything的安装路径与运行状态...
 for /f "skip=2 tokens=3 delims= " %%a in ('"2>nul reg query "HKEY_LOCAL_MACHINE\SOFTWARE\voidtools\Everything" /v InstallLocation"') do (
 	if exist "%%a\Everything.exe" (
-		tasklist /fi "status eq running" /fi "username eq "%username%"" /fi "imagename eq everything.exe"|find /i "Everything.exe">nul 2>nul&&(
-			if exist "%%a\es.exe" (
-				set "EverythingInstallPath=%%a"
-				cls
-				echo;正在搜索空文件夹...
-				goto loop1
+		for /f "tokens=1 delims=," %%b in ('tasklist /fi "status eq running" /fi "username eq "%username%"" /fi "imagename eq everything.exe" /fo csv /nh') do (
+			if /i "%%~b" equ "everything.exe" (
+				if exist "%%a\es.exe" (
+					set "EverythingInstallPath=%%a"
+					cls
+					echo;使用Everything搜索空文件夹...
+					goto loop1
+				)
 			)
 		)
 	)
 )
 cls
-echo;正在搜索空文件夹...
+echo;使用dir命令搜索空文件夹...
 goto loop2
 :loop1
 set empty=0
@@ -4287,7 +4294,15 @@ if "!errorlevel!" equ "2" (
 	endlocal
 	goto memuv2
 )
-if "!jccs!" neq "!tr!" (goto 72.2)
+if "!jccs!" neq "!tr!" (
+	set nocurl=
+	for /l %%a in (1,1,!tr!) do (
+		for /f "tokens=1 delims=," %%a in ('tasklist /fi "imagename eq curl.exe" /fi "windowtitle eq curl多进程下载_%%a" /fo csv /nh') do (
+			if /i "%%~a" neq "curl.exe" (set /a "nocurl+=1")
+		)
+	)
+	if "!nocurl!" neq "!tr!" (goto 72.2)
+)
 set "jssj=!time!"
 cls
 echo;合并文件中...
@@ -4537,15 +4552,17 @@ if exist "chrome.exe" (
 )
 :startchrome
 for /f "delims=" %%a in ("!chrome!") do (
-	tasklist /fi "IMAGENAME eq %%~nxa"|findstr /i /c:"%%~nxa">nul&&(
-		cls
-		echo;%%~nxa正在运行,请关闭浏览器后重试.
-		set /p =按任意键退出<nul&pause>nul
-		if "%1" neq "-chrome" (
-			endlocal
-			goto memuv2
-		) else (
-			exit 0
+	for /f "tokens=1 delims=," %%b in ('tasklist /fi "imagename eq %%~nxa" /fo csv /nh') do (
+		if /i "%%~b" equ "%%~nxa" (
+			cls
+			echo;%%~nxa正在运行,请关闭浏览器后重试.
+			set /p =按任意键退出<nul&pause>nul
+			if "%1" neq "-chrome" (
+				endlocal
+				goto memuv2
+			) else (
+				exit 0
+			)
 		)
 	)
 )
@@ -6159,9 +6176,11 @@ if not defined url (
 	goto :eof
 )
 if not defined tr (set tr=8)
-set tr|findstr "\<[0-9]*\>">nul||(
-	echo;线程数只能输入数字!
-	goto :eof
+for /f "tokens=2 delims==" %%a in ('set tr') do (
+	for /f "delims=0123456789" %%a in ("%%a") do (
+		echo;线程数只能输入数字!
+		goto :eof
+	)
 )
 if not defined dir (set "dir=%%~dp0")
 if not exist "!dir!\" (
@@ -6249,7 +6268,15 @@ for /l %%a in (1,1,!tr!) do (
 	)
 )
 timeout /t 1 /nobreak>nul
-if "!次数!" neq "!tr!" (goto curldxc_2)
+if "!次数!" neq "!tr!" (
+	set nocurl=
+	for /l %%a in (1,1,!tr!) do (
+		for /f "tokens=1 delims=," %%a in ('tasklist /fi "imagename eq curl.exe" /fi "windowtitle eq curl多进程下载_%%a" /fo csv /nh') do (
+			if /i "%%~a" neq "curl.exe" (set /a "nocurl+=1")
+		)
+	)
+	if "!nocurl!" neq "!tr!" (goto curldxc_2)
+)
 copy /b /z !file! "!dir!\!filename!"
 popd
 del /f /q "%temp%\tag"
