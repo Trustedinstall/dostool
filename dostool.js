@@ -52,7 +52,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250301
-set versize=154135
+set versize=154354
 set fy1=___
 set xz0=0
 set nx1=[+]下一页
@@ -3444,8 +3444,11 @@ for /f "delims=" %%a in ('dir /a /s /b "!url!"') do (
 )
 title 整理碎片...
 defrag "!url!" /u /v
-echo;清空缓存...
->nul 2>nul net stop sysmain
+echo;停止sysmain服务并清空缓存...
+set sysmain=0
+sc query sysmain|find "RUNNING"&&(
+	>nul 2>nul sc stop sysmain 4:5:2 "DOS工具箱 - 智能NTFS压缩 - 清空缓存"&&set sysmain=1
+)
 call :pwiex clearcache
 title 记录文件压缩前的读取时间...
 for /f "tokens=*" %%a in (%temp%\listfile.log) do (call :loadfile %%a)
@@ -3460,7 +3463,7 @@ for /f "tokens=*" %%a in (%temp%\loadtime.log) do (call :ifloadfile %%a)
 title 解压不适合压缩的文件...
 for /f "tokens=*" %%a in (%temp%\uncompact.log) do (compact /u %%a)
 title 智能NTFS压缩!system!
->nul 2>nul net start sysmain
+if "!sysmain!" equ "1" (>nul 2>nul net start sysmain)
 del /f /q "%temp%\listfile.log";^
 		"%temp%\loadtime.log";^
 		"%temp%\uncompact.log"
@@ -4818,7 +4821,7 @@ w32tm /resync||(
 		echo;第 !attempts! 次尝试同步时间失败，已达到最大重试次数。
 	)
 )
-if "!stop!" equ "1" (>nul 2>nul sc stop w32time)
+if "!stop!" equ "1" (>nul 2>nul sc stop w32time 4:5:2 "DOS工具箱 - 执行w32tm /resync对时 - 还原w32time服务状态")
 %hx%
 %pause%
 endlocal
