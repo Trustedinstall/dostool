@@ -33,9 +33,13 @@ if exist "!temp!\dos_pre_reading_cache_os.tmp" (
 		type "!temp!\%%a">nul
 	)
 ) else (
-	start /b wmic os get caption /value>"!temp!\dos_pre_reading_cache_os.tmp"
-	start /b wmic PATH Win32_SystemEnclosure get ChassisTypes /value>"!temp!\dos_pre_reading_cache_wmictype.tmp"
-	start /b reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v desktop>"!temp!\dos_pre_reading_cache_zmlj.tmp"
+	if exist "!windir!\system32\wbem\wmic.exe" (
+		start /b wmic os get caption /value>"!temp!\dos_pre_reading_cache_os.tmp"
+		start /b wmic PATH Win32_SystemEnclosure get ChassisTypes /value>"!temp!\dos_pre_reading_cache_wmictype.tmp"
+	)
+	if exist "!windir!\system32\reg.exe" (
+		start /b reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v desktop>"!temp!\dos_pre_reading_cache_zmlj.tmp"
+	)
 )
 exit 0
 :stwt
@@ -52,7 +56,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250301
-set versize=154354
+set versize=154358
 set fy1=___
 set xz0=0
 set nx1=[+]下一页
@@ -63,7 +67,11 @@ set "weizhi=%~0"
 if exist "!temp!\dos_pre_reading_cache_wmictype.tmp" (
 	set "wmictype='type !temp!\dos_pre_reading_cache_wmictype.tmp'"
 ) else (
-	set "wmictype='wmic PATH Win32_SystemEnclosure get ChassisTypes /value'"
+	if exist "!windir!\system32\wbem\wmic.exe" (
+		set "wmictype='wmic PATH Win32_SystemEnclosure get ChassisTypes /value'"
+	) else (
+		set wmictype=
+	)
 )
 for /f "tokens=2 delims=={}" %%a in (!wmictype!) do (
 	if "%%a" neq "3" (
@@ -75,18 +83,26 @@ set wmictype=
 if exist "!temp!\dos_pre_reading_cache_zmlj.tmp" (
 	set "zmlj=!temp!\dos_pre_reading_cache_zmlj.tmp"
 ) else (
-	set "zmlj='reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v desktop'"
+	if exist "!windir!\system32\reg.exe" (
+		set "zmlj='reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v desktop'"
+	) else (
+		set zmlj=
+	)
 )
 for /f "skip=2 tokens=3 delims= " %%a in (!zmlj!) do (set "zmlj=%%~fa")
-if not exist "!zmlj!" (set "zmlj=X:\Users\Default\Desktop")
+if not exist "!zmlj!" (set "zmlj=!userprofile!\Desktop")
 for /f "tokens=3 delims=.]" %%a in ('ver') do (
 	if %%a lss 10586 (set winv=1) else (set winv=0)
 )
 if exist "!temp!\dos_pre_reading_cache_os.tmp" (
 	set "system='type !temp!\dos_pre_reading_cache_os.tmp'"
 ) else (
-	set "system='wmic os get caption /value'"
-	set cm=1
+	if exist "!windir!\system32\wbem\wmic.exe" (
+		set "system='wmic os get caption /value'"
+		set cm=1
+	) else (
+		set system=
+	)
 )
 for /f "tokens=2 delims==" %%a in (!system!) do (
 	set "system=%%a"
@@ -284,10 +300,8 @@ cls
 echo;按任意键开始清除lpl.dll病毒&pause>nul
 cls
 echo;正在搜索可移动磁盘...
-for /f "delims=" %%a in ('fsutil fsinfo drives') do (
-	set "sypf=%%a"
-	set "sypf=!sypf:~5!"
-)
+set sypf=
+call :sypf sypf
 for %%a in (!sypf!) do (
 	for /f "tokens=2 delims=- " %%b in ('fsutil fsinfo drivetype %%a') do (
 		if "%%b" equ "可移动驱动器" (
@@ -312,41 +326,24 @@ cls
 echo;按任意键开始清除jwgkvsq.vmx病毒&pause>nul
 cls
 echo;正在搜索可移动磁盘...
-for /f "delims=" %%a in ('fsutil fsinfo drives') do (
-	set "sypf=%%a"
-	set "sypf=!sypf:~5!"
-)
-for %%j in (!sypf!) do (
-	fsutil fsinfo drivetype %%j|find /i "可移动驱动器"&&goto 2-1
-)
-cls
-echo;没有找到可移动磁盘
-%hx%
-%pause%
-endlocal
-goto memuv2
-:2-1
-cls
-echo;正在清除jwgkvsq.vmx病毒...
-for /f "delims=" %%a in ('fsutil fsinfo drives') do (
-	set "sypf=%%a"
-	set "sypf=!sypf:~5!"
-)
-for %%j in (!sypf!) do (
-	fsutil fsinfo drivetype %%j|find /i "可移动驱动器"&&(
-		takeown/f "%%jautorun.inf"
-		echo;y|cacls "%%jautorun.inf" /t /c /p everyone:f
-		takeown/f "%%jRECYLER"
-		echo;y|cacls "%%jRECYCLER" /t /c /p everyone:f
-		attrib -s -h -r "%%jautorun.inf"
-		del /f /q "%%jautorun.inf"
-		rd /s /q "%%jRECYCLER"
-		del /f /q "%%jRECYCLER"
-		echo;jwgkvsq.vmx病毒免疫文件，请勿删除！>"%%jRECYCLER"
+set sypf=
+call :sypf sypf
+for %%a in (!sypf!) do (
+	for /f "tokens=2 delims=- " %%b in ('fsutil fsinfo drivetype %%a') do (
+		if "%%b" equ "可移动驱动器" (
+			call :isntfs %%a||call :wjqx "%%aautorun.inf"
+			call :isrefs %%a||call :wjqx "%%aautorun.inf"
+			call :isntfs %%a||call :wjqx "%%aRECYCLER"
+			call :isrefs %%a||call :wjqx "%%aRECYCLER"
+			attrib -s -h -r "%%aautorun.inf"
+			attrib -s -h -r "%%aRECYCLER"
+			del /f /q "%%aautorun.inf"
+			rd /s /q "%%aRECYCLER"
+			del /f /q "%%aRECYCLER"
+		)
 	)
 )
 %hx%
-echo;清除完成
 %pause%
 endlocal
 goto memuv2
@@ -489,11 +486,11 @@ fsutil fsinfo drives
 set cipanxioufu=
 set /p "cipanxioufu=输入需要修复的盘符: "
 cls
->nul 2>nul fsutil fsinfo ntfsinfo !cipanxioufu!:
+call :isntfs !cipanxioufu!:
 if errorlevel 1 (
-	chkdsk /f /x !cipanxioufu!:
-) else (
 	chkdsk /x /f /sdcleanup !cipanxioufu!:
+) else (
+	chkdsk /f /x !cipanxioufu!:
 )
 %hx%
 echo;修复完成
@@ -620,25 +617,23 @@ del /f /q "!windir!\youtube.cab";^
 		"!windir!\system32\avphost.dll";^
 		"!windir!\inf\autoplay.inf"
 echo;正在全盘扫描...
-for /f "delims=" %%a in ('fsutil fsinfo drives') do (
-	set "sypf=%%a"
-	set "sypf=!sypf:~5!"
-)
-for /f "delims=" %%a in ('"for %%b in (!sypf!) do (dir /a /s /b %%b*.exe)"') do (
+set sypf=
+call :sypf sypf
+for /f "delims=" %%a in ('"for %%a in (!sypf!) do (dir /a /s /b %%a*.exe)"') do (
 	if "%%~za" equ "486912" (
 		attrib -s -h -r "%%a"
 		del /f /q "%%a"
 		echo;已删除%%a
 	)
 )
-for /f "delims=" %%c in ('"for %%d in (!sypf!) do (dir /a /s /b %%dautorun.inf)"') do (
-	if "%%~zc" equ "234" (
-		attrib -s -h -r "%%c"
-		del /f /q "%%c"
-		echo;已删除%%c
+for /f "delims=" %%a in ('"for %%a in (!sypf!) do (dir /a /s /b %%aautorun.inf)"') do (
+	if "%%~za" equ "234" (
+		attrib -s -h -r "%%a"
+		del /f /q "%%a"
+		echo;已删除%%a
 	)
 )
-for %%k in (!sypf!) do (del /f /s /q %%k(Empty).lnk)
+for %%a in (!sypf!) do (del /f /s /q %%a(Empty).lnk)
 call :16.5
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\Hidden\SHOWALL" /v CheckedValue /t reg_dword /d 00000001 /f
 reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\Current Version\Policies\Explorer" /v nosetfolders /t reg_dword /d 00000000 /f
@@ -1387,39 +1382,23 @@ goto 26
 title 启动U盘免疫!system!
 cls
 echo;正在搜索可移动磁盘...
-for /f "delims=" %%a in ('fsutil fsinfo drives') do (
-	set "sypf=%%a"
-	set "sypf=!sypf:~5!"
-)
-for %%l in (!sypf!) do (
-	fsutil fsinfo drivetype %%l|find /i "可移动驱动器"&&goto 26.3
-)
-cls
-echo;没有找到可移动磁盘
-%hx%
-set /p =按任意键返回<nul&pause>nul
-endlocal
-goto 26
-:26.3
-cls
-for /f "delims=" %%a in ('fsutil fsinfo drives') do (
-	set "sypf=%%a"
-	set "sypf=!sypf:~5!"
-)
-for %%l in (!sypf!) do (
-	fsutil fsinfo drivetype %%l|find /i "可移动驱动器"&&(
-		takeown/f %%lautorun.inf
-		echo;y|cacls %%lautorun.inf /t /c /p everyone:f
-		attrib -s -h -r %%lautorun.inf
-		del /f /q %%lautorun.inf
-		rd /s /q %%lautorun.inf
-		md %%lautorun.inf
-		md "%%lautorun.inf\免疫文件夹！请勿删除"
-		md "%%lautorun.inf\免疫文件夹！请勿删除 / "
-		echo;y|cacls %%lautorun.inf /t /c /p everyone:r
+set sypf=
+call :sypf sypf
+for %%a in (!sypf!) do (
+	for /f "tokens=2 delims=- " %%b in ('fsutil fsinfo drivetype %%a') do (
+		if "%%b" equ "可移动驱动器" (
+			if exist "%%aautorun.inf" (
+				call :isntfs %%a||call :wjqx "%%aautorun.inf"
+				call :isrefs %%a||call :wjqx "%%aautorun.inf"
+				attrib -s -h -r "%%aautorun.inf"
+			)
+			call :md "%%aautorun.inf"
+			md "%%aautorun.inf\免疫文件夹！请勿删除"
+			md "%%aautorun.inf\免疫文件夹！请勿删除 / "
+			echo;y|cacls "%%aautorun.inf" /t /c /p everyone:r
+		)
 	)
-) 2>nul
-echo;
+)
 %hx%
 echo;U盘免疫完成
 set /p =按任意键返回<nul&pause>nul
@@ -1429,34 +1408,21 @@ goto 26
 title 取消U盘免疫!system!
 cls
 echo;正在搜索可移动磁盘...
-for /f "delims=" %%a in ('fsutil fsinfo drives') do (
-	set "sypf=%%a"
-	set "sypf=!sypf:~5!"
-)
-for %%m in (!sypf!) do (
-	fsutil fsinfo drivetype %%m|find /i "可移动驱动器"&&goto 26.4
-)
-cls
-echo;没有找到可移动磁盘
-%hx%
-set /p =按任意键返回<nul&pause>nul
-endlocal
-goto 26
-:26.4
-cls
-for /f "delims=" %%a in ('fsutil fsinfo drives') do (
-	set "sypf=%%a"
-	set "sypf=!sypf:~5!"
-)
-for %%m in (!sypf!) do (
-	fsutil fsinfo drivetype %%m|find /i "可移动驱动器"&&(
-		takeown/f %%mautorun.inf
-		echo;y|cacls %%mautorun.inf /t /c /p everyone:f
-		attrib -s -h -r %%mautorun.inf
-		del /f /q %%mautorun.inf
-		rd /s /q %%mautorun.inf
+set sypf=
+call :sypf sypf
+for %%a in (!sypf!) do (
+	for /f "tokens=2 delims=- " %%b in ('fsutil fsinfo drivetype %%a') do (
+		if "%%b" equ "可移动驱动器" (
+			if exist "%%aautorun.inf" (
+				call :isntfs %%a||call :wjqx "%%aautorun.inf"
+				call :isrefs %%a||call :wjqx "%%aautorun.inf"
+				attrib -s -h -r "%%aautorun.inf"
+			)
+			>nul 2>nul del /f /q "%%aautorun.inf"
+			>nul 2>nul rd /s /q "%%aautorun.inf"
+		)
 	)
-) 2>nul
+)
 %hx%
 echo;取消U盘免疫完成
 set /p =按任意键返回<nul&pause>nul
@@ -1489,14 +1455,12 @@ call :out 2
 goto 27.3
 :27.1
 cls
-for /f "delims=" %%a in ('fsutil fsinfo drives') do (
-	set "sypf=%%a"
-	set "sypf=!sypf:~5!"
-)
+set sypf=
+call :sypf sypf
 if /i "!system:~11,2!" equ "XP" (
-	for %%n in (!sypf!) do (defrag /v /x %%n)
+	for %%a in (!sypf!) do (defrag /v /x %%a)
 ) else (
-	for %%n in (!sypf!) do (defrag /u /v /x %%n)
+	for %%a in (!sypf!) do (defrag /u /v /x %%a)
 )
 %hx%
 set /p =按任意键返回<nul&pause>nul
@@ -2323,16 +2287,12 @@ title 删除每个盘符下的System Volume Information文件夹!system!
 cls
 echo;按任意键开始删除System Volume Information文件夹&pause>nul
 cls
-for /f "delims=" %%a in ('fsutil fsinfo drives') do (
-	set "sypf=%%a"
-	set "sypf=!sypf:~5!"
-)
+set sypf=
+call :sypf sypf
 for %%a in (!sypf!) do (
 	if exist "%%aSystem Volume Information" (
-		>nul 2>nul fsutil fsinfo ntfsinfo %%a&&(
-			takeown/f "%%aSystem Volume Information">nul
-			echo;y|cacls "%%aSystem Volume Information" /t /c /p everyone:f>nul
-		)
+		call :isntfs %%a||call :wjqx "%%aSystem Volume Information">nul
+		call :isrefs %%a||call :wjqx "%%aSystem Volume Information">nul
 		attrib -s -h -r "%%aSystem Volume Information"
 		rd /s /q "%%aSystem Volume Information"&&echo;已删除: "%%aSystem Volume Information"
 	)
@@ -2558,11 +2518,15 @@ goto 39
 setlocal
 title 获取文件所有权限!system!
 cls
-echo;此功能只能用于NTFS分区
+echo;此功能只能用于NTFS或REFS分区
 %hx%
 set ntfswjqx=
-set /p "ntfswjqx=拖动需要获取所有权限的文件或者文件夹到此窗口: "
+set /p "ntfswjqx=拖动需要获取所有权限的文件或者文件夹到此窗口(e=返回菜单): "
 if not defined ntfswjqx (endlocal&goto 40)
+if /i "!ntfswjqx!" equ "e" (
+	endlocal
+	goto memuv2
+)
 call :lj ntfswjqx ntfswjqx
 if not exist "!ntfswjqx!" (
 	set /p =路径不存在<nul
@@ -2571,9 +2535,10 @@ if not exist "!ntfswjqx!" (
 	goto 40
 )
 %hx%
-attrib -s -h -r "!ntfswjqx!"
-takeown /f "!ntfswjqx!"
-echo;y|cacls "!ntfswjqx!" /t /c /g %username%:f
+for /f "delims=" %%a in ("!ntfswjqx!") do (
+	call :isntfs %%~da||call :wjqx "%%~fa"
+	call :isrefs %%~da||call :wjqx "%%~fa"
+)
 %hx%
 %pause%
 endlocal
@@ -3430,6 +3395,13 @@ call :ljjc url dir&&(
 	call :out 2
 	goto 65
 )
+for /f "delims=" %%a in ("!url!") do (
+	call :isntfs %%~da&&(
+		set /p =%%~da 不是一个NTFS分区<nul
+		call :out 2
+		goto 65
+	)
+)
 for %%a in (
 	listfile.log
 	loadtime.log
@@ -3492,16 +3464,17 @@ call :sjc !kssj! !jssj! raw
 echo;读取用时: !raw! ms
 goto :eof
 :listfile
-if exist "%~1\" (goto :eof)
-if %2 gtr 4096 (
-	if !size! leq 104857600 (
-		for %%a in (
-			.7z .ogg .mpg .gif .zip .rar .png .jpg .wmf .wmv .bik .bk2 .mp3
-			.acc .m4a .ape .mp4 .avi .flv .f4v .mkv .3gp .cab .pdf .jpeg .flac
-		) do (
-			if /i "%3" equ "%%a" (goto :eof)
+if not exist "%~1\" (
+	if %2 gtr 4096 (
+		if !size! leq 104857600 (
+			for %%a in (
+				.7z .ogg .mpg .gif .zip .rar .png .jpg .wmf .wmv .bik .bk2 .mp3
+				.acc .m4a .ape .mp4 .avi .flv .f4v .mkv .3gp .cab .pdf .jpeg .flac
+			) do (
+				if /i "%3" equ "%%a" (goto :eof)
+			)
+			echo;"%~1">>"%temp%\listfile.log"
 		)
-		echo;"%~1">>"%temp%\listfile.log"
 	)
 )
 goto :eof
@@ -3837,10 +3810,8 @@ goto 68
 :68.1
 title 将路径与盘符关联!system!
 cls
-for /f "delims=" %%a in ('fsutil fsinfo drives') do (
-	set "sypf=%%a"
-	set "sypf=!sypf:~5!"
-)
+set sypf=
+call :sypf sypf
 echo;当前已有盘符: !sypf!
 echo;虚拟盘符:
 subst
@@ -4628,14 +4599,15 @@ popd
 endlocal
 goto memuv2
 :74.2
-if %2 lss 4096 (goto :eof)
-for %%a in (
-	.7z .ogg .mpg .gif .zip .rar .png .jpg .wmf .wmv .bik .bk2 .mp3
-	.acc .m4a .ape .mp4 .avi .flv .f4v .mkv .3gp .cab .pdf .jpeg .flac
-) do (
-	if /i "%3" equ "%%a" (goto :eof)
+if %2 gtr 4096 (
+	for %%a in (
+		.7z .ogg .mpg .gif .zip .rar .png .jpg .wmf .wmv .bik .bk2 .mp3
+		.acc .m4a .ape .mp4 .avi .flv .f4v .mkv .3gp .cab .pdf .jpeg .flac
+	) do (
+		if /i "%3" equ "%%a" (goto :eof)
+	)
+	compact /c /exe:lzx "%~1"
 )
-compact /c /exe:lzx "%~1"
 goto :eof
 :74.3
 set /p =无效输入<nul
@@ -5120,11 +5092,10 @@ for /f "tokens=1-4 delims=:." %%a in ("!time!") do (
 for /f "tokens=1-4 delims=:." %%a in ("!time!") do (
 	set /a "sub=(1%%a*360000+1%%b*6000+1%%c*100+1%%d)-start"
 )
-if !sub! lss 0 (
-	goto :eof
-) else (
-	if !sub! geq %1 (goto :eof) else (goto ys_loop)
+if !sub! geq 0 (
+	if !sub! lss %1 (goto ys_loop)
 )
+goto :eof
 :list
 set start=1
 for %%a in (
@@ -6385,3 +6356,46 @@ if defined doh (
 		)
 	)
 )
+:isntfs
+if "%1" neq "" (
+	>nul 2>nul fsutil fsinfo ntfsinfo %1&&(
+		exit /b 1
+	)
+	exit /b 0
+)
+goto :eof
+:isrefs
+if "%1" neq "" (
+	>nul 2>nul fsutil fsinfo refsinfo %1&&(
+		exit /b 1
+	)
+	exit /b 0
+)
+goto :eof
+:wjqx
+attrib -s -h -r "%~1"
+takeown /f "%~1"
+echo;y|cacls "%~1" /t /c /g %username%:f
+goto :eof
+:sypf
+if "%1" neq "" (
+	if exist "!windir!\System32\fsutil.exe" (
+		for /f "tokens=1* delims= " %%a in ('fsutil fsinfo drives') do (
+			set "%1=%%b"
+			goto :eof
+		)
+	)
+	setlocal
+	set var=
+	for %%a in (
+		a b c d e
+		f g h i j
+		k l m n o
+		p q r s t
+		u v w x y z
+	) do (
+		if exist "%%a:\" (set "var=!var!%%a:\ ")
+	)
+	endlocal&set "%1=%var%"
+)
+goto :eof
