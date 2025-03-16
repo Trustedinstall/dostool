@@ -56,7 +56,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250301
-set versize=154445
+set versize=154404
 set fy1=___
 set xz0=0
 set nx1=[+]下一页
@@ -116,11 +116,7 @@ for /f "tokens=3" %%a in ("!system!") do (
 		if /i "!systemdrive!" equ "x:" (set "system= - Windows PE") else (set system=)
 	)
 )
-if "!date:~11,1!" equ "周" (
-	set "xingqi=!date:~11,2! "
-) else (
-	set "xingqi=!date:~11,3! "
-)
+for /f "tokens=2" %%a in ("!date!") do (set "xingqi= %%a")
 for /f %%a in ('"echo;prompt $E^ |cmd"') do (
 	set "cswz=%%a["
 	set "cswz1=%%a"
@@ -179,7 +175,7 @@ if "!winv!" equ "0" (
 ) else (
 	echo;				菜单 - 第!memuys!页
 )
-echo;现在是!date:~0,4!年!date:~5,2!月!date:~8,2!日 !xingqi!!time:~0,8!
+echo;现在是!date:~0,4!年!date:~5,2!月!date:~8,2!日!xingqi! !time:~0,8!
 call :memuv2.2
 set xx=0
 for /l %%a in (!start!,1,!end!) do (
