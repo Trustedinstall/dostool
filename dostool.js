@@ -56,7 +56,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250301
-set versize=154336
+set versize=154337
 set fy1=___
 set xz0=0
 set nx1=[+]下一页
@@ -89,7 +89,7 @@ if exist "!temp!\dos_pre_reading_cache_zmlj.tmp" (
 		set zmlj=
 	)
 )
-for /f "skip=2 tokens=3 delims= " %%a in (!zmlj!) do (set "zmlj=%%~fa")
+for /f "skip=2 tokens=3" %%a in (!zmlj!) do (set "zmlj=%%~fa")
 if not exist "!zmlj!" (set "zmlj=!userprofile!\Desktop")
 for /f "tokens=3 delims=.]" %%a in ('ver') do (
 	if %%a lss 10586 (set winv=1) else (set winv=0)
@@ -1500,7 +1500,7 @@ if "!jg!" equ "1" (
 )
 cls
 echo;检测Everything的安装路径与运行状态...
-for /f "skip=2 tokens=3 delims= " %%a in ('"2>nul reg query "HKEY_LOCAL_MACHINE\SOFTWARE\voidtools\Everything" /v InstallLocation"') do (
+for /f "skip=2 tokens=3" %%a in ('"2>nul reg query "HKEY_LOCAL_MACHINE\SOFTWARE\voidtools\Everything" /v InstallLocation"') do (
 	if exist "%%a\Everything.exe" (
 		for /f "tokens=1 delims=," %%b in ('tasklist /fi "status eq running" /fi "username eq "%username%"" /fi "imagename eq everything.exe" /fo csv /nh') do (
 			if /i "%%~b" equ "everything.exe" (
@@ -1529,7 +1529,7 @@ call :out 2
 if "!empty!" equ "1" (goto loop1)
 goto 28.1
 :loop2
-for /f "delims=" %%o in ('"dir /a /s /b /ad-l "!caozuo!"|sort /r"') do (
+for /f "delims=" %%o in ('"dir /ad-l /s /b "!caozuo!"|sort /r"') do (
 	2>nul rd /q "%%o"&&echo;已删除空文件夹 "%%o"
 )
 :28.1
@@ -1944,7 +1944,7 @@ for /f "tokens=2 delims==" %%a in ('"2>nul Wmic Path Win32_NetworkAdapterConfigu
 	)
 )
 echo;
-if exist !windir!\system32\curl.exe (
+if exist "!windir!\system32\curl.exe" (
 	ping /n 1 www.baidu.com>nul
 	if not errorlevel 1 (
 		for /f "delims=" %%a in ('curl -s https://4.ipw.cn') do (
@@ -2381,9 +2381,9 @@ call :sjc !dosqssj! !time! jg format
 cls
 echo;关于DOS工具箱
 %hx%
-echo;版本: 		1.9.7 (!ver!.!versize!)
-echo;操作系统: 	!system:~3! !bit!位
-echo;版权所有 	2012-2025 Administrator 保留所有权利
+echo;版本:		1.9.7 (!ver!.!versize!)
+echo;操作系统:	!system:~3! !bit!位
+echo;版权所有	2012-2025 Administrator 保留所有权利
 %hx%
 echo;本次已运行:		!jg!
 echo;DOS工具箱所在路径:	%~0
@@ -2656,7 +2656,7 @@ setlocal
 title 暴力破解压缩包密码!system!
 cls
 set rarazlj=
-for /f "skip=2 tokens=3 delims= " %%a in ('"2>nul reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\WinRAR.exe" /v path"') do (
+for /f "skip=2 tokens=3" %%a in ('"2>nul reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\WinRAR.exe" /v path"') do (
 	set "rarazlj=%%a"
 	set "rarpd=!rarazlj!\Rar.exe"
 	set "rarpd7z=!rarazlj!\winrar.exe"
@@ -2666,7 +2666,7 @@ if not exist "!rarpd!" (
 	echo;没有安装WinRAR.
 	echo;搜索7-Zip...
 	set 7zlj=
-	for /f "skip=2 tokens=3 delims= " %%a in ('"2>nul reg query "HKEY_LOCAL_MACHINE\SOFTWARE\7-Zip" /v path"') do (
+	for /f "skip=2 tokens=3" %%a in ('"2>nul reg query "HKEY_LOCAL_MACHINE\SOFTWARE\7-Zip" /v path"') do (
 		set "7zlj=%%a"
 		set "7zlj=!7zlj!7z.exe"
 		set "rarpd=!7zlj!"
@@ -2914,7 +2914,7 @@ goto memuv2
 setlocal
 cls
 title 已知年月日计算星期!system!
-set jsxq=00000000
+set jsxq=
 set /p "jsxq=输入年月日(例如20150605): "
 call :checkvar jsxq year&&(
 	set /p =请输入正确的格式!<nul
@@ -3230,7 +3230,7 @@ goto memuv2
 setlocal
 title Base编解码!system!
 cls
-if not exist !windir!\system32\certutil.exe (
+if not exist "!windir!\system32\certutil.exe" (
 	echo;没有找到certutil.exe
 	echo;不能继续Base编解码
 	%hx%
@@ -4045,7 +4045,7 @@ for %%a in (
 ) do (
 	>nul 2>nul set "%%~a"
 )
-for /f "tokens=3 delims= " %%a in ('"2>nul reg QUERY "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v EditionID"') do (
+for /f "tokens=3" %%a in ('"2>nul reg QUERY "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v EditionID"') do (
 	set "sysid=%%a"
 )
 set server=
@@ -4145,8 +4145,8 @@ if not exist "%temp%\tag" (
 	endlocal
 	goto memuv2
 )
-for /f "tokens=2 delims= " %%a in ('findstr /c:"Accept-Ranges:" "%temp%\tag"') do (set "trflag=%%a")
-for /f "tokens=2 delims= " %%a in ('findstr /c:"Content-Length:" "%temp%\tag"') do (set "filesize=%%a")
+for /f "tokens=2" %%a in ('findstr /c:"Accept-Ranges:" "%temp%\tag"') do (set "trflag=%%a")
+for /f "tokens=2" %%a in ('findstr /c:"Content-Length:" "%temp%\tag"') do (set "filesize=%%a")
 for /f "tokens=2 delims==" %%a in ('findstr /c:"filename=" "%temp%\tag"') do (set "filename=%%a")
 if "!trflag!" neq "bytes" (set tr=1)
 if defined filesize (
@@ -4500,7 +4500,7 @@ if exist "chrome.exe" (
 	set chrome=chrome.exe
 	goto startchrome
 ) else (
-	for /f "skip=1 tokens=3 delims= " %%a in ('"2>nul reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe" /v Path"') do (
+	for /f "skip=1 tokens=3" %%a in ('"2>nul reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe" /v Path"') do (
 		set "chrome=%%a"
 	)
 	for /f "delims=" %%a in ("!chrome!") do (set "chrome=%%~fa")
@@ -4820,13 +4820,15 @@ goto memuv2
 setlocal
 set "shuanfa=%2"
 if not defined shuanfa (set "shuanfa=sha256")
-for /f "skip=1 eol=C" %%a in ('certutil -hashfile "%~1" !shuanfa!') do (
-	if "%3" neq "" (
-		endlocal&set "%3=%%a"
-		goto :eof
-	) else (
-		echo;%%a
-		goto :eof
+if exist "!windir!\system32\certutil.exe" (
+	for /f "skip=1 eol=C" %%a in ('certutil -hashfile "%~1" !shuanfa!') do (
+		if "%3" neq "" (
+			endlocal&set "%3=%%a"
+			goto :eof
+		) else (
+			echo;%%a
+			goto :eof
+		)
 	)
 )
 goto :eof
@@ -6160,9 +6162,9 @@ if not exist "!dir!\" (
 	goto :eof
 )
 if exist "%temp%\tag" (del /f /q "%temp%\tag")
-for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
+for /f "skip=1 tokens=3" %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
 	if "%%a" equ "0x1" (
-		for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
+		for /f "skip=1 tokens=3" %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
 			set "proxy=-x %%b"
 			echo;使用代理:	%%b
 		)
@@ -6187,8 +6189,8 @@ if not exist "%temp%\tag" (
 	echo;没有获取到文件信息
 	goto :eof
 )
-for /f "tokens=2 delims= " %%a in ('findstr /c:"Accept-Ranges:" "%temp%\tag"') do (set "trflag=%%a")
-for /f "tokens=2 delims= " %%a in ('findstr /c:"Content-Length:" "%temp%\tag"') do (set "filesize=%%a")
+for /f "tokens=2" %%a in ('findstr /c:"Accept-Ranges:" "%temp%\tag"') do (set "trflag=%%a")
+for /f "tokens=2" %%a in ('findstr /c:"Content-Length:" "%temp%\tag"') do (set "filesize=%%a")
 for /f "tokens=2 delims==" %%a in ('findstr /c:"filename=" "%temp%\tag"') do (set "filename=%%a")
 if "!trflag!" neq "bytes" (set tr=1)
 if not defined filename (set "filename=%~3")
@@ -6332,9 +6334,9 @@ if exist "!url!\" (
 md "!url!"
 endlocal&exit /b %errorlevel%
 :curlproxy
-for /f "skip=1 tokens=3 delims= " %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
+for /f "skip=1 tokens=3" %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
 	if "%%a" equ "0x1" (
-		for /f "skip=1 tokens=3 delims= " %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
+		for /f "skip=1 tokens=3" %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
 			set "proxy=-x %%b"
 			echo;使用代理:	%%b
 		)
@@ -6355,8 +6357,10 @@ if defined doh (
 	)
 )
 :isntfs
+setlocal
+set "var=%1"
 if "%1" neq "" (
-	>nul 2>nul fsutil fsinfo ntfsinfo %1&&(
+	>nul 2>nul fsutil fsinfo ntfsinfo !var:\=!&&(
 		exit /b 1
 	)
 	exit /b 0
@@ -6371,14 +6375,14 @@ if "%1" neq "" (
 )
 goto :eof
 :wjqx
-attrib -s -h -r "%~1"
-takeown /f "%~1"
+if exist "!windir!\system32\takeown.exe" (takeown /r /d y /skipsl /f "%~1")
 echo;y|cacls "%~1" /t /c /g %username%:f
+attrib -s -h -r "%~1"
 goto :eof
 :sypf
 if "%1" neq "" (
 	if exist "!windir!\System32\fsutil.exe" (
-		for /f "tokens=1* delims= " %%a in ('fsutil fsinfo drives') do (
+		for /f "tokens=1*" %%a in ('fsutil fsinfo drives') do (
 			set "%1=%%b"
 			goto :eof
 		)
