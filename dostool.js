@@ -56,7 +56,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250301
-set versize=154337
+set versize=154445
 set fy1=___
 set xz0=0
 set nx1=[+]下一页
@@ -4364,6 +4364,8 @@ if not exist "!域名重定向!" (
 		"@.ggpht.com=static.doubleclick.net"
 		"youtube.com=static.doubleclick.net"
 		"youtu.be=mt7.gstatic.com"
+		"@.youtube-nocookie.com=click.google-analytics.com"
+		"youtube-nocookie.com=click.google-analytics.com"
 
 		"#google"
 		"google.com=pagead1.googleadservices.com"
