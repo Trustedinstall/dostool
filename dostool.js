@@ -56,7 +56,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250301
-set versize=154358
+set versize=154336
 set fy1=___
 set xz0=0
 set nx1=[+]обр╩рЁ
@@ -5092,9 +5092,7 @@ for /f "tokens=1-4 delims=:." %%a in ("!time!") do (
 for /f "tokens=1-4 delims=:." %%a in ("!time!") do (
 	set /a "sub=(1%%a*360000+1%%b*6000+1%%c*100+1%%d)-start"
 )
-if !sub! geq 0 (
-	if !sub! lss %1 (goto ys_loop)
-)
+if !sub! lss %1 (goto ys_loop)
 goto :eof
 :list
 set start=1
