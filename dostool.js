@@ -24,21 +24,12 @@ if /i "!systemdrive!" equ "x:" (goto ks)
 set "weizhi=%~0"
 if exist "!localappdata!\Microsoft\WindowsApps\wt.exe" (call :stwt) else (call :stcmd)
 rem 在权限申请进程中预读命令提升后面初始化速度
-if exist "!temp!\dos_pre_reading_cache_os.tmp" (
-	for %%a in (
-		dos_pre_reading_cache_os.tmp
-		dos_pre_reading_cache_wmictype.tmp
-		dos_pre_reading_cache_zmlj.tmp
-	) do (
-		type "!temp!\%%a">nul
-	)
+if exist "!temp!\dos_reading_cache.tmp" (
+	type "!temp!\dos_reading_cache.tmp">nul
 ) else (
 	if exist "!windir!\system32\wbem\wmic.exe" (
-		start /b wmic os get caption /value>"!temp!\dos_pre_reading_cache_os.tmp"
-		start /b wmic PATH Win32_SystemEnclosure get ChassisTypes /value>"!temp!\dos_pre_reading_cache_wmictype.tmp"
-	)
-	if exist "!windir!\system32\reg.exe" (
-		start /b reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v desktop>"!temp!\dos_pre_reading_cache_zmlj.tmp"
+		wmic os get caption /value>"!temp!\dos_reading_cache.tmp"
+		wmic path Win32_SystemEnclosure get ChassisTypes /value>>"!temp!\dos_reading_cache.tmp"
 	)
 )
 exit 0
@@ -56,65 +47,43 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250301
-set versize=154404
+set versize=153392
 set fy1=___
 set xz0=0
-set nx1=[+]下一页
-set nx2=[-]上一页
 set "pause=set /p =按任意键返回菜单<nul&pause>nul"
 set hx=echo;_______________________________________________________________________________
 set "weizhi=%~0"
-if exist "!temp!\dos_pre_reading_cache_wmictype.tmp" (
-	set "wmictype='type !temp!\dos_pre_reading_cache_wmictype.tmp'"
+if exist "!temp!\dos_reading_cache.tmp" (
+	for /f "delims=" %%a in ('type "!temp!\dos_reading_cache.tmp"') do (
+		>nul 2>nul set "%%a"
+	)
 ) else (
 	if exist "!windir!\system32\wbem\wmic.exe" (
-		set "wmictype='wmic PATH Win32_SystemEnclosure get ChassisTypes /value'"
-	) else (
-		set wmictype=
+		for /f "tokens=2 delims==" %%a in ('"2>nul wmic os get caption /value"') do (
+			set "caption=%%a"
+			set "caption=!caption:~0,-1!"
+		)
+		for /f "tokens=2 delims={}" %%a in ('"2>nul wmic path Win32_SystemEnclosure get ChassisTypes /value"') do (
+			set "chassistypes={%%a}"
+		)
 	)
 )
-for /f "tokens=2 delims=={}" %%a in (!wmictype!) do (
-	if "%%a" neq "3" (
-		set nx1=[S]下一页
-		set nx2=[A]上一页
+for /f "tokens=3" %%a in ("!caption!") do (
+	2>nul call :pd%%a||(
+		if /i "!systemdrive!" equ "x:" (set "system= - Windows PE")
 	)
+	set caption=
 )
-set wmictype=
-if exist "!temp!\dos_pre_reading_cache_zmlj.tmp" (
-	set "zmlj=!temp!\dos_pre_reading_cache_zmlj.tmp"
+if "!chassistypes!" equ "{3}" (
+	set nx1=[+]下一页
+	set nx2=[-]上一页
 ) else (
-	if exist "!windir!\system32\reg.exe" (
-		set "zmlj='reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" /v desktop'"
-	) else (
-		set zmlj=
-	)
+	set nx1=[S]下一页
+	set nx2=[A]上一页
 )
-for /f "skip=2 tokens=3" %%a in (!zmlj!) do (set "zmlj=%%~fa")
-if not exist "!zmlj!" (set "zmlj=!userprofile!\Desktop")
+set chassistypes=
 for /f "tokens=3 delims=.]" %%a in ('ver') do (
 	if %%a lss 10586 (set winv=1) else (set winv=0)
-)
-if exist "!temp!\dos_pre_reading_cache_os.tmp" (
-	set "system='type !temp!\dos_pre_reading_cache_os.tmp'"
-) else (
-	if exist "!windir!\system32\wbem\wmic.exe" (
-		set "system='wmic os get caption /value'"
-		set cm=1
-	) else (
-		set system=
-	)
-)
-for /f "tokens=2 delims==" %%a in (!system!) do (
-	set "system=%%a"
-	if "!cm!" equ "1" (
-		set "system=!system:~0,-1!"
-		set cm=
-	)
-)
-for /f "tokens=3" %%a in ("!system!") do (
-	2>nul call :pd%%a||(
-		if /i "!systemdrive!" equ "x:" (set "system= - Windows PE") else (set system=)
-	)
 )
 for /f "tokens=2" %%a in ("!date!") do (set "xingqi= %%a")
 for /f %%a in ('"echo;prompt $E^ |cmd"') do (
@@ -2378,7 +2347,7 @@ cls
 echo;关于DOS工具箱
 %hx%
 echo;版本:		1.9.7 (!ver!.!versize!)
-echo;操作系统:	!system:~3! !bit!位
+if defined system (echo;操作系统:	!system:~3! !bit!位)
 echo;版权所有	2012-2025 Administrator 保留所有权利
 %hx%
 echo;本次已运行:		!jg!
@@ -2833,8 +2802,7 @@ setlocal
 title 反编译chm文件!system!
 cls
 set chmlj=
-echo;拖动要反编译的chm文件到此窗口
-set /p "chmlj=反编译后的文件保存在桌面(e=返回): "
+set /p "chmlj=反拖动要反编译的chm文件到此窗口(e=返回): "
 if /i "!chmlj!" equ "e" (
 	endlocal
 	goto memuv2
@@ -2855,13 +2823,13 @@ for /f "delims=" %%a in ("!chmlj!") do (
 	)
 	copy /y "!chmlj!" !windir!\temp\tmp.chm
 	hh -decompile !windir!\temp\chm !windir!\temp\tmp.chm
-	call :md "!zmlj!\%%~na"
-	xcopy /c /e /y !windir!\temp\chm "!zmlj!\%%~na"
+	md "%%~na_chm"
+	xcopy /c /e /y !windir!\temp\chm "%%~na_chm"
 	rd /s /q !windir!\temp\chm
 	del /f /q !windir!\temp\tmp.chm
 	cls
 	echo;反编译成功！
-	echo;以保存到"!zmlj!\%%~na"
+	echo;以保存到"%~dp0%%~na_chm"
 )
 %hx%
 %pause%
@@ -5997,43 +5965,43 @@ if "%2" neq "" (
 )
 goto :eof
 :pdxp
-if /i "!system!" equ "Microsoft Windows XP Home" (set "system= - Windows XP 家庭版"&goto :eof)
-if /i "!system!" equ "Microsoft Windows XP Professional" (set "system= - Windows XP 专业版"&goto :eof)
-set "system= - !system:~10!"
+if /i "!caption!" equ "Microsoft Windows XP Home" (set "system= - Windows XP 家庭版"&goto :eof)
+if /i "!caption!" equ "Microsoft Windows XP Professional" (set "system= - Windows XP 专业版"&goto :eof)
+set "system= - !caption:~10!"
 goto :eof
 :pd7
-if /i "!system!" equ "Microsoft Windows 7 Ultimate" (set "system= - Windows 7 旗舰版"&goto :eof)
-if /i "!system!" equ "Microsoft Windows 7 Home Basic" (set "system= - Windows 7 家庭普通版"&goto :eof)
-if /i "!system!" equ "Microsoft Windows 7 Home Premium" (set "system= - Windows 7 家庭高级版"&goto :eof)
-if /i "!system!" equ "Microsoft Windows 7 Professional" (set "system= - Windows 7 专业版"&goto :eof)
-if /i "!system!" equ "Microsoft Windows 7 Enterprise" (set "system= - Windows 7 企业版"&goto :eof)
-set "system= - !system:~10!"
+if /i "!caption!" equ "Microsoft Windows 7 Ultimate" (set "system= - Windows 7 旗舰版"&goto :eof)
+if /i "!caption!" equ "Microsoft Windows 7 Home Basic" (set "system= - Windows 7 家庭普通版"&goto :eof)
+if /i "!caption!" equ "Microsoft Windows 7 Home Premium" (set "system= - Windows 7 家庭高级版"&goto :eof)
+if /i "!caption!" equ "Microsoft Windows 7 Professional" (set "system= - Windows 7 专业版"&goto :eof)
+if /i "!caption!" equ "Microsoft Windows 7 Enterprise" (set "system= - Windows 7 企业版"&goto :eof)
+set "system= - !caption:~10!"
 goto :eof
 :pd8
-if /i "!system!" equ "Microsoft Windows 8 Pro" (set "system= - Windows 8 专业版"&goto :eof)
-if /i "!system!" equ "Microsoft Windows 8 China" (set "system= - Windows 8 中国版"&goto :eof)
-if /i "!system!" equ "Microsoft Windows 8 Enterprise" (set "system= - Windows 8 企业版"&goto :eof)
-set "system= - !system:~10!"
+if /i "!caption!" equ "Microsoft Windows 8 Pro" (set "system= - Windows 8 专业版"&goto :eof)
+if /i "!caption!" equ "Microsoft Windows 8 China" (set "system= - Windows 8 中国版"&goto :eof)
+if /i "!caption!" equ "Microsoft Windows 8 Enterprise" (set "system= - Windows 8 企业版"&goto :eof)
+set "system= - !caption:~10!"
 goto :eof
 :pd8.1
-if /i "!system!" equ "Microsoft Windows 8.1 Pro" (set "system= - Windows 8.1 专业版"&goto :eof)
-if /i "!system!" equ "Microsoft Windows 8.1 China" (set "system= - Windows 8.1 中国版"&goto :eof)
-if /i "!system!" equ "Microsoft Windows 8.1 Enterprise" (set "system= - Windows 8.1 企业版"&goto :eof)
-set "system= - !system:~10!"
+if /i "!caption!" equ "Microsoft Windows 8.1 Pro" (set "system= - Windows 8.1 专业版"&goto :eof)
+if /i "!caption!" equ "Microsoft Windows 8.1 China" (set "system= - Windows 8.1 中国版"&goto :eof)
+if /i "!caption!" equ "Microsoft Windows 8.1 Enterprise" (set "system= - Windows 8.1 企业版"&goto :eof)
+set "system= - !caption:~10!"
 goto :eof
 :pd10
-if /i "!system!" equ "Microsoft Windows 10 Home" (set "system= - Windows 10 家庭版"&goto :eof)
-if /i "!system!" equ "Microsoft Windows 10 Professional" (set "system= - Windows 10 专业版"&goto :eof)
-if /i "!system!" equ "Microsoft Windows 10 Education" (set "system= - Windows 10 教育版"&goto :eof)
-if /i "!system!" equ "Microsoft Windows 10 Enterprise" (set "system= - Windows 10 企业版"&goto :eof)
-set "system= - !system:~10!"
+if /i "!caption!" equ "Microsoft Windows 10 Home" (set "system= - Windows 10 家庭版"&goto :eof)
+if /i "!caption!" equ "Microsoft Windows 10 Professional" (set "system= - Windows 10 专业版"&goto :eof)
+if /i "!caption!" equ "Microsoft Windows 10 Education" (set "system= - Windows 10 教育版"&goto :eof)
+if /i "!caption!" equ "Microsoft Windows 10 Enterprise" (set "system= - Windows 10 企业版"&goto :eof)
+set "system= - !caption:~10!"
 goto :eof
 :pd11
-if /i "!system!" equ "Microsoft Windows 11 Home" (set "system= - Windows 11 家庭版"&goto :eof)
-if /i "!system!" equ "Microsoft Windows 11 Professional" (set "system= - Windows 11 专业版"&goto :eof)
-if /i "!system!" equ "Microsoft Windows 11 Education" (set "system= - Windows 11 教育版"&goto :eof)
-if /i "!system!" equ "Microsoft Windows 11 Enterprise" (set "system= - Windows 11 企业版"&goto :eof)
-set "system= - !system:~10!"
+if /i "!caption!" equ "Microsoft Windows 11 Home" (set "system= - Windows 11 家庭版"&goto :eof)
+if /i "!caption!" equ "Microsoft Windows 11 Professional" (set "system= - Windows 11 专业版"&goto :eof)
+if /i "!caption!" equ "Microsoft Windows 11 Education" (set "system= - Windows 11 教育版"&goto :eof)
+if /i "!caption!" equ "Microsoft Windows 11 Enterprise" (set "system= - Windows 11 企业版"&goto :eof)
+set "system= - !caption:~10!"
 goto :eof
 :xcf
 setlocal
