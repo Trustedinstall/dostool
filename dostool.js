@@ -47,9 +47,11 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250301
-set versize=153322
+set versize=153260
 set fy1=___
 set xz0=0
+set nx1=[+]下一页
+set nx2=[-]上一页
 set "pause=set /p =按任意键返回菜单<nul&pause>nul"
 set hx=echo;_______________________________________________________________________________
 set "weizhi=%~0"
@@ -74,12 +76,11 @@ for /f "tokens=3" %%a in ("!caption!") do (
 	)
 	set caption=
 )
-if "!chassistypes!" equ "{3}" (
-	set nx1=[+]下一页
-	set nx2=[-]上一页
-) else (
-	set nx1=[S]下一页
-	set nx2=[A]上一页
+if "!chassistypes!" neq "{3}" (
+	if "!chassistypes!" neq "{1}" (
+		set nx1=[S]下一页
+		set nx2=[A]上一页
+	)
 )
 set chassistypes=
 for /f "tokens=3 delims=.]" %%a in ('ver') do (
@@ -3686,14 +3687,14 @@ if exist "!temp!\down\all.json" (
 			>nul 2>nul set "%%i=%%a"
 		)
 	)
-	call :Division !gold-ounce! 31.1034768 3 黄金XAU
-	call :Division !silver-ounce! 31.1034768 3 白银XAG
-	call :Division 1 !chinese-yuan-renminbi! 3 美元USD
-	call :Division !euro! !chinese-yuan-renminbi! 9 欧元EUR
-	call :Division !japanese-yen! !chinese-yuan-renminbi! 9 日元JPY
-	call :Division !hong-kong-dollar! !chinese-yuan-renminbi! 9 港币HKD
-	call :Division !new-taiwan-dollar! !chinese-yuan-renminbi! 9 台币TWD
-	call :Division !british-pound-sterling! !chinese-yuan-renminbi! 9 英镑GBP
+	call :div !gold-ounce! 31.1034768 3 黄金XAU
+	call :div !silver-ounce! 31.1034768 3 白银XAG
+	call :div 1 !chinese-yuan-renminbi! 3 美元USD
+	call :div !euro! !chinese-yuan-renminbi! 9 欧元EUR
+	call :div !japanese-yen! !chinese-yuan-renminbi! 9 日元JPY
+	call :div !hong-kong-dollar! !chinese-yuan-renminbi! 9 港币HKD
+	call :div !new-taiwan-dollar! !chinese-yuan-renminbi! 9 台币TWD
+	call :div !british-pound-sterling! !chinese-yuan-renminbi! 9 英镑GBP
 	for %%a in (黄金XAU 白银XAG) do (
 		call :xcf !%%a! !美元USD! %%a
 	)
@@ -3723,7 +3724,7 @@ for %%a in (
 	文件币FILE
 ) do (
 	set /a "cs+=1"
-	call :Division !%%a! !chinese-yuan-renminbi! 9 %%a
+	call :div !%%a! !chinese-yuan-renminbi! 9 %%a
 	echo;%%a → 人民币CNY
 	set /p =!cswz1![]	<nul
 	set /p =1  → !%%a!	24小时涨跌幅: <nul
@@ -4248,8 +4249,8 @@ if exist "!dir!\!filename!" (
 		echo;计算下载速度...
 		call :sjc !kssj! !jssj! raw
 		call :sjc !kssj! !jssj! xzys format
-		call :Division !raw! 1000 3 xzsd
-		call :Division %%~za !xzsd! 3 sd
+		call :div !raw! 1000 3 xzsd
+		call :div %%~za !xzsd! 3 sd
 		call :xdwjs !sd! d dw
 		call :bel
 		cls
@@ -5390,33 +5391,33 @@ if /i "!danwei!" equ "kb" (set /a "bytes*=1024")
 if /i "!danwei!" equ "mb" (set /a "bytes*=1048576")
 if /i "!danwei!" equ "gb" (set /a "bytes*=1073741824")
 if "%3" equ "" (goto :eof)
-call :Division !Bytes! 1152921504606846976 2 OK
+call :div !Bytes! 1152921504606846976 2 OK
 if "!OK:~0,2!" equ "0." (
-	call :Division !Bytes! 1125899906842624 2 OK
+	call :div !Bytes! 1125899906842624 2 OK
 ) else (
 	endlocal&set "%3=%OK% EB"
 	goto :eof
 )
 if "!OK:~0,2!" equ "0." (
-	call :Division !Bytes! 1099511627776 2 OK
+	call :div !Bytes! 1099511627776 2 OK
 ) else (
 	endlocal&set "%3=%OK% PB"
 	goto :eof
 )
 if "!OK:~0,2!" equ "0." (
-	call :Division !Bytes! 1073741824 2 OK
+	call :div !Bytes! 1073741824 2 OK
 ) else (
 	endlocal&set "%3=%OK% TB"
 	goto :eof
 )
 if "!OK:~0,2!" equ "0." (
-	call :Division !Bytes! 1048576 2 OK
+	call :div !Bytes! 1048576 2 OK
 ) else (
 	endlocal&set "%3=%OK% GB"
 	goto :eof
 )
 if "!OK:~0,2!" equ "0." (
-	call :Division !Bytes! 1024 2 OK
+	call :div !Bytes! 1024 2 OK
 ) else (
 	endlocal&set "%3=%OK% MB"
 	goto :eof
@@ -5428,7 +5429,7 @@ if "!OK:~0,2!" equ "0." (
 	endlocal&set "%3=%OK% KB"
 	goto :eof
 )
-:Division
+:div
 setlocal
 if "%4" equ "" (goto :eof)
 set "Div.1=%1"
