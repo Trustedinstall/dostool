@@ -47,7 +47,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250301
-set versize=153362
+set versize=153322
 set fy1=___
 set xz0=0
 set "pause=set /p =按任意键返回菜单<nul&pause>nul"
@@ -635,19 +635,15 @@ del /f /q !windir!\temp\reg.inf
 reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v DisableRegistryTools /t reg_dword /d 00000000 /f
 goto :eof
 :17
-cls
 start regedit
 goto memuv2
 :18
-cls
 start control
 goto memuv2
 :19
-cls
 start dxdiag
 goto memuv2
 :20
-cls
 start compmgmt.msc
 goto memuv2
 :21
@@ -812,7 +808,6 @@ set /p =按任意键返回<nul&pause>nul
 endlocal
 goto 21
 :22
-cls
 start gpedit.msc
 goto memuv2
 :guanji
@@ -2871,7 +2866,6 @@ if errorlevel 1 (echo;写入失败) else (echo;写入成功)
 endlocal
 goto memuv2
 :52
-cls
 start services.msc
 goto memuv2
 :53
@@ -3001,7 +2995,6 @@ mshta VBScript:Execute("Set a=CreateObject(""WScript.Shell""):Set b=a.CreateShor
 endlocal
 goto memuv2
 :56
-cls
 start msconfig
 goto memuv2
 :57
@@ -3033,7 +3026,6 @@ endlocal
 goto memuv2
 :59
 title 打开管理控制台!system!
-cls
 start mmc
 goto memuv2
 :60
