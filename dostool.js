@@ -47,7 +47,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250301
-set versize=153260
+set versize=153334
 set fy1=___
 set xz0=0
 set nx1=[+]下一页
@@ -266,7 +266,6 @@ cls
 echo;按任意键开始清除lpl.dll病毒&pause>nul
 cls
 echo;正在搜索可移动磁盘...
-set sypf=
 call :sypf sypf
 for %%a in (!sypf!) do (
 	for /f "tokens=2 delims=- " %%b in ('fsutil fsinfo drivetype %%a') do (
@@ -292,7 +291,6 @@ cls
 echo;按任意键开始清除jwgkvsq.vmx病毒&pause>nul
 cls
 echo;正在搜索可移动磁盘...
-set sypf=
 call :sypf sypf
 for %%a in (!sypf!) do (
 	for /f "tokens=2 delims=- " %%b in ('fsutil fsinfo drivetype %%a') do (
@@ -431,7 +429,8 @@ setlocal
 title 将磁盘格式转换为NTFS!system!
 cls
 %hx%
-fsutil fsinfo drives
+call :sypf sypf
+echo;!sypf!
 %hx%
 echo;如果不能正常转换，请使用磁盘错误修复
 set zhuanhuancipan=
@@ -447,7 +446,8 @@ setlocal
 title 磁盘修复!system!
 cls
 %hx%
-fsutil fsinfo drives
+call :sypf sypf
+echo;!sypf!
 %hx%
 set cipanxioufu=
 set /p "cipanxioufu=输入需要修复的盘符: "
@@ -480,7 +480,8 @@ goto 12
 :12.1
 cls
 %hx%
-fsutil fsinfo drives
+call :sypf sypf
+echo;!sypf!
 %hx%
 set geshihua=
 set /p "geshihua=输入需要格式化的盘符: "
@@ -583,7 +584,6 @@ del /f /q "!windir!\youtube.cab";^
 		"!windir!\system32\avphost.dll";^
 		"!windir!\inf\autoplay.inf"
 echo;正在全盘扫描...
-set sypf=
 call :sypf sypf
 for /f "delims=" %%a in ('"for %%a in (!sypf!) do (dir /a /s /b %%a*.exe)"') do (
 	if "%%~za" equ "486912" (
@@ -667,7 +667,7 @@ for %%a in (
 )
 %hx%
 set cho=123456780
-!sel!
+%sel%
 if "!shuru!" equ "1" (goto 21.1)
 if "!shuru!" equ "2" (goto 21.2)
 if "!shuru!" equ "3" (goto 21.3)
@@ -833,7 +833,7 @@ for %%a in (
 )
 %hx%
 set cho=1234567890
-!sel!
+%sel%
 if "!shuru!" equ "1" (goto guanji.1)
 if "!shuru!" equ "2" (goto guanji.2)
 if "!shuru!" equ "3" (goto guanji.3)
@@ -959,7 +959,7 @@ for %%a in (
 )
 %hx%
 set cho=1234560
-!sel!
+%sel%
 if "!shuru!" equ "1" (goto 23.1)
 if "!shuru!" equ "2" (goto 23.2)
 if "!shuru!" equ "3" (goto 23.6)
@@ -1022,7 +1022,7 @@ echo;文件路径: !jclj1!
 %hx%
 echo;(e=返回)(d=打开文件位置)
 set cho=ed
-!sel!
+%sel%
 if "!shuru!" equ "1" (endlocal&goto 23)
 if "!shuru!" equ "2" (goto 23.8)
 if /i "!shuru!" equ "e" (endlocal&goto 23)
@@ -1201,7 +1201,7 @@ for %%a in (
 )
 %hx%
 set cho=1234560
-!sel!
+%sel%
 if "!shuru!" equ "1" (goto 24.1)
 if "!shuru!" equ "2" (goto 24.2)
 if "!shuru!" equ "3" (goto 24.3)
@@ -1217,7 +1217,8 @@ goto 24
 :24.1
 titel 列出所有驱动器!system!
 cls
-fsutil fsinfo drives
+call :sypf sypf
+echo;!sypf!
 %hx%
 set /p =按任意键返回<nul&pause>nul
 endlocal
@@ -1226,7 +1227,8 @@ goto 24
 title 查询一个驱动器的类型!system!
 cls
 %hx%
-fsutil fsinfo drives
+call :sypf sypf
+echo;!sypf!
 %hx%
 set qdqlx=
 set /p "qdqlx=输入要查询的驱动器: "
@@ -1241,7 +1243,8 @@ goto 24
 title 查询卷信息!system!
 cls
 %hx%
-fsutil fsinfo drives
+call :sypf sypf
+echo;!sypf!
 %hx%
 set qdqlx=
 set /p "qdqlx=输入要查询的驱动器: "
@@ -1256,7 +1259,8 @@ goto 24
 title 查询NTFS卷信息!system!
 cls
 %hx%
-fsutil fsinfo drives
+call :sypf sypf
+echo;!sypf!
 %hx%
 set qdqlx=
 set /p "qdqlx=输入要查询的驱动器: "
@@ -1271,7 +1275,8 @@ goto 24
 title 查询REFS卷信息!system!
 cls
 %hx%
-fsutil fsinfo drives
+call :sypf sypf
+echo;!sypf!
 %hx%
 set qdqlx=
 set /p "qdqlx=输入要查询的驱动器: "
@@ -1286,7 +1291,8 @@ goto 24
 title 查询扇区信息!system!
 cls
 %hx%
-fsutil fsinfo drives
+call :sypf sypf
+echo;!sypf!
 %hx%
 set qdqlx=
 set /p "qdqlx=输入要查询的驱动器: "
@@ -1330,7 +1336,7 @@ for %%a in (
 )
 %hx%
 set cho=120
-!sel!
+%sel%
 if "!shuru!" equ "1" (goto 26.1)
 if "!shuru!" equ "2" (goto 26.2)
 if "!shuru!" equ "3" (endlocal&goto memuv2)
@@ -1343,7 +1349,6 @@ goto 26
 title 启动U盘免疫!system!
 cls
 echo;正在搜索可移动磁盘...
-set sypf=
 call :sypf sypf
 for %%a in (!sypf!) do (
 	for /f "tokens=2 delims=- " %%b in ('fsutil fsinfo drivetype %%a') do (
@@ -1369,7 +1374,6 @@ goto 26
 title 取消U盘免疫!system!
 cls
 echo;正在搜索可移动磁盘...
-set sypf=
 call :sypf sypf
 for %%a in (!sypf!) do (
 	for /f "tokens=2 delims=- " %%b in ('fsutil fsinfo drivetype %%a') do (
@@ -1397,7 +1401,8 @@ cls
 echo;[1]整理所有磁盘
 echo;[0]返回菜单
 %hx%
-fsutil fsinfo drives
+call :sypf sypf
+echo;!sypf!
 %hx%
 set fenxi=
 set /p "fenxi=输入需要分析的盘符:"
@@ -1416,7 +1421,6 @@ call :out 2
 goto 27.3
 :27.1
 cls
-set sypf=
 call :sypf sypf
 if /i "!system:~11,2!" equ "XP" (
 	for %%a in (!sypf!) do (defrag /v /x %%a)
@@ -1440,7 +1444,8 @@ title 一键删除空文件夹!system!
 cls
 echo;注意:如果对系统盘进行操作可能会被杀毒软件拦截
 %hx%
-fsutil fsinfo drives
+call :sypf sypf
+echo;!sypf!
 %hx%
 set caozuo=
 set /p "caozuo=输入需要操作的盘符或路径: "
@@ -1815,7 +1820,8 @@ for /f "delims=" %%a in ('"2>nul wmic diskdrive get interfacetype,size,totalsect
 		)
 	)
 )
-fsutil fsinfo drives
+call :sypf sypf
+echo;!sypf!
 echo;
 for /f "delims=" %%a in ('"2>nul wmic logicaldisk get name,volumename,description,filesystem,size,freespace"') do (
 	set "var=%%a"
@@ -1823,22 +1829,30 @@ for /f "delims=" %%a in ('"2>nul wmic logicaldisk get name,volumename,descriptio
 )
 %hx%
 set cs=
-set /p =打印机制造商:<nul
 for /f "tokens=2 delims==" %%a in ('"2>nul Wmic Printer where Default='TRUE' get caption /value"') do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
-		if "!cs!" equ "1" (echo;	!var:~0,-1!) else (echo;		!var:~0,-1!)
+		if "!cs!" equ "1" (
+			set /p =打印机制造商:<nul
+			echo;	!var:~0,-1!
+		) else (
+			echo;		!var:~0,-1!
+		)
 	)
 )
 echo;
 set cs=
-set /p =打印机型号:<nul
 for /f "tokens=2 delims==" %%a in ('"2>nul Wmic Printer where Default='TRUE' get drivername /value"') do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
-		if "!cs!" equ "1" (echo;	!var:~0,-1!) else (echo;		!var:~0,-1!)
+		if "!cs!" equ "1" (
+			set /p =打印机型号:<nul
+			echo;	!var:~0,-1!
+		) else (
+			echo;		!var:~0,-1!
+		)
 	)
 )
 echo;
@@ -2106,7 +2120,7 @@ for %%a in (
 )
 %hx%
 set cho=12340
-!sel!
+%sel%
 if "!shuru!" equ "1" (goto 32.1)
 if "!shuru!" equ "2" (goto 32.2)
 if "!shuru!" equ "3" (goto 32.3)
@@ -2248,7 +2262,6 @@ title 删除每个盘符下的System Volume Information文件夹!system!
 cls
 echo;按任意键开始删除System Volume Information文件夹&pause>nul
 cls
-set sypf=
 call :sypf sypf
 for %%a in (!sypf!) do (
 	if exist "%%aSystem Volume Information" (
@@ -2278,7 +2291,7 @@ for %%a in (
 )
 %hx%
 set cho=120
-!sel!
+%sel%
 if "!shuru!" equ "1" (goto 10z)
 if "!shuru!" equ "2" (goto 2z)
 if "!shuru!" equ "3" (endlocal&goto memuv2)
@@ -2400,7 +2413,7 @@ for %%a in (
 )
 %hx%
 set cho=12340
-!sel!
+%sel%
 if "!shuru!" equ "1" (goto yasuo)
 if "!shuru!" equ "2" (goto jieya)
 if "!shuru!" equ "3" (goto yasuowjj)
@@ -2734,7 +2747,7 @@ for %%a in (
 )
 %hx%
 set cho=1230
-!sel!
+%sel%
 if "!shuru!" equ "1" (goto kqwifi)
 if "!shuru!" equ "2" (goto gbwifi)
 if "!shuru!" equ "3" (goto wlpz)
@@ -2959,7 +2972,7 @@ for %%a in (
 )
 %hx%
 set cho=1230
-!sel!
+%sel%
 if "!shuru!" equ "1" (
 	start slmgr.vbs -dli
 	endlocal
@@ -3066,7 +3079,7 @@ for %%a in (
 )
 %hx%
 set cho=1234560
-!sel!
+%sel%
 if "!shuru!" equ "1" (goto 61.1)
 if "!shuru!" equ "2" (goto 61.2)
 if "!shuru!" equ "3" (goto 61.3)
@@ -3099,7 +3112,8 @@ goto 61
 :61.3
 title 列出指定目录的已装入的卷名称!system!
 cls
-fsutil fsinfo drives
+call :sypf sypf
+echo;!sypf!
 %hx%
 set xszz=
 set /p "xszz=输入需要显示的盘符: "
@@ -3137,7 +3151,8 @@ goto 61
 :61.5
 title 删除盘符(删除卷装入点)!system!
 cls
-fsutil fsinfo drives
+call :sypf sypf
+echo;!sypf!
 %hx%
 set scpf=
 set /p "scpf=输入需要删除的盘符: "
@@ -3205,7 +3220,7 @@ for %%a in (
 )
 %hx%
 set cho=120
-!sel!
+%sel%
 if "!shuru!" equ "1" (goto 63-1)
 if "!shuru!" equ "2" (goto 63-2)
 if "!shuru!" equ "3" (endlocal&goto memuv2)
@@ -3315,7 +3330,7 @@ for %%a in (
 )
 %hx%
 set cho=120
-!sel!
+%sel%
 if "!shuru!" equ "1" (goto 64-1)
 if "!shuru!" equ "2" (goto 64-2)
 if "!shuru!" equ "3" (endlocal&goto memuv2)
@@ -3326,7 +3341,8 @@ endlocal
 goto 64
 :64-1
 cls
-fsutil fsinfo drives
+call :sypf sypf
+echo;!sypf!
 set query83=
 set /p "query83=输入要查询的盘符: "
 fsutil 8dot3name query !query83!:
@@ -3755,7 +3771,7 @@ for %%a in (
 )
 %hx%
 set cho=120
-!sel!
+%sel%
 if "!shuru!" equ "1" (goto 68.1)
 if "!shuru!" equ "2" (goto 68.2)
 if "!shuru!" equ "3" (endlocal&goto memuv2)
@@ -3767,7 +3783,6 @@ goto 68
 :68.1
 title 将路径与盘符关联!system!
 cls
-set sypf=
 call :sypf sypf
 echo;当前已有盘符: !sypf!
 echo;虚拟盘符:
@@ -4019,7 +4034,7 @@ for %%a in (
 )
 %hx%
 set cho=120
-!sel!
+%sel%
 if "!shuru!" equ "1" (set "server=kms.loli.best"&goto 71.1)
 if "!shuru!" equ "2" (set "server=kms.03k.org"&goto 71.1)
 if "!shuru!" equ "3" (endlocal&goto memuv2)
@@ -4587,7 +4602,7 @@ for %%a in (
 )
 %hx%
 set cho=120
-!sel!
+%sel%
 if "!shuru!" equ "1" (start certmgr.msc&goto memuv2)
 if "!shuru!" equ "2" (start certlm.msc&goto memuv2)
 if "!shuru!" equ "3" (endlocal&goto memuv2)
@@ -4611,7 +4626,7 @@ for %%a in (
 )
 %hx%
 set cho=1230
-!sel!
+%sel%
 if "!shuru!" equ "1" (goto 76.1)
 if "!shuru!" equ "2" (goto 76.2)
 if "!shuru!" equ "3" (goto 76.3)
