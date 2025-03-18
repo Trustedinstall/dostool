@@ -47,7 +47,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250301
-set versize=153334
+set versize=153355
 set fy1=___
 set xz0=0
 set nx1=[+]ÏÂÒ»Ò³
@@ -1575,12 +1575,16 @@ for /f "tokens=2 delims==" %%a in ('"2>nul wmic cpu get numberofcores /value"') 
 	)
 )
 set cs=
-set /p =CPUID:<nul
 for /f "tokens=2 delims==" %%a in ('"2>nul wmic cpu get processorid /value"') do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
-		if "!cs!" equ "1" (echo;		!var:~0,-1!) else (echo;			!var:~0,-1!)
+		if "!cs!" equ "1" (
+			set /p =CPUID:<nul
+			echo;		!var:~0,-1!
+		) else (
+			echo;			!var:~0,-1!
+		)
 	)
 )
 echo;
