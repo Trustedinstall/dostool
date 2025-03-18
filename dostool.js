@@ -47,7 +47,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250301
-set versize=153392
+set versize=153362
 set fy1=___
 set xz0=0
 set "pause=set /p =按任意键返回菜单<nul&pause>nul"
@@ -4285,7 +4285,7 @@ if exist "!dir!\!filename!" (
 endlocal
 goto memuv2
 :72.3
-if "!dir:~-1!" equ "\" (set "dir=!dir:~0,-1!")
+call :lj dir dir
 set "kssj=!time!"
 curl !proxy! !doh! !ua! --compressed -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o "!filename!" --output-dir "!dir!" "!url!"
 set "jssj=!time!"
