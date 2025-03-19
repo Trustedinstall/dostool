@@ -47,7 +47,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250301
-set versize=153778
+set versize=153797
 set fy1=___
 set xz0=0
 set nx1=[+]下一页
@@ -3117,8 +3117,11 @@ title 列出卷装入点!system!
 cls
 for /f "delims=" %%a in ('mountvol') do (
 	set "var=%%a"
-	if "!var:~-1!" equ "\" (echo;!var!)
-	if "!var:~-3!" equ "***" (echo;!var!)
+	if "!var:~-1!" equ "\" (
+		echo;!var!
+	) else (
+		if "!var:~-3!" equ "***" (echo;!var!)
+	)
 )
 %hx%
 set /p =按任意键返回<nul&pause>nul
