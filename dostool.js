@@ -47,7 +47,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250301
-set versize=153355
+set versize=153778
 set fy1=___
 set xz0=0
 set nx1=[+]下一页
@@ -3077,12 +3077,14 @@ for %%a in (
 	"[4]创建盘符(创建卷装入点)"
 	"[5]删除盘符(删除卷装入点)"
 	"[6]为EFI分区分配盘符"
+	"[7]禁用自动挂载"
+	"[8]启用自动挂载"
 	"[0]返回菜单"
 ) do (
 	echo;%%~a
 )
 %hx%
-set cho=1234560
+set cho=123456780
 %sel%
 if "!shuru!" equ "1" (goto 61.1)
 if "!shuru!" equ "2" (goto 61.2)
@@ -3090,7 +3092,21 @@ if "!shuru!" equ "3" (goto 61.3)
 if "!shuru!" equ "4" (goto 61.4)
 if "!shuru!" equ "5" (goto 61.5)
 if "!shuru!" equ "6" (goto 61.6)
-if "!shuru!" equ "7" (endlocal&goto memuv2)
+if "!shuru!" equ "7" (
+	mountvol /n>nul
+	if errorlevel 1 (echo;禁用自动挂载失败) else (echo;禁用自动挂载成功)
+	call :out 2
+	endlocal
+	goto 61
+)
+if "!shuru!" equ "8" (
+	mountvol /e>nul
+	if errorlevel 1 (echo;启用自动挂载失败) else (echo;启用自动挂载成功)
+	call :out 2
+	endlocal
+	goto 61
+)
+if "!shuru!" equ "9" (endlocal&goto memuv2)
 if "!shuru!" equ "0" (endlocal&goto memuv2)
 set /p =请输入正确的选项！<nul
 call :out 2
@@ -3099,7 +3115,11 @@ goto 61
 :61.1
 title 列出卷装入点!system!
 cls
-for /f "skip=22" %%a in ('mountvol') do (echo;%%a)
+for /f "delims=" %%a in ('mountvol') do (
+	set "var=%%a"
+	if "!var:~-1!" equ "\" (echo;!var!)
+	if "!var:~-3!" equ "***" (echo;!var!)
+)
 %hx%
 set /p =按任意键返回<nul&pause>nul
 endlocal
@@ -3132,10 +3152,10 @@ goto 61
 title 创建盘符(创建卷装入点)!system!
 cls
 set xx1=0
-for /f "delims=" %%a in ('"mountvol|find "\\?\Volume""') do (
+for /f "tokens=3 delims=\" %%a in ('mountvol') do (
 	set /a "xx1+=1"
 	set "b!xx1!=%%a"
-	echo;[!xx1!]%%a
+	echo;[!xx1!]	%%a
 )
 echo;[0]返回上级菜单
 %hx%
