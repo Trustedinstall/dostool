@@ -47,7 +47,7 @@ setlocal
 set "dosqssj=!time!"
 chcp 936>nul
 set ver=20250301
-set versize=153797
+set versize=154345
 set fy1=___
 set xz0=0
 set nx1=[+]下一页
@@ -3069,7 +3069,6 @@ setlocal
 title 创建、删除或列出卷装入点!system!
 cls
 %hx%
-rem 管理员权限创建的盘符只对有管理员权限的进程可见
 for %%a in (
 	"[1]列出卷装入点"
 	"[2]删除不在系统中的、卷的装入点目录和注册表设置"
@@ -3117,10 +3116,16 @@ title 列出卷装入点!system!
 cls
 for /f "delims=" %%a in ('mountvol') do (
 	set "var=%%a"
-	if "!var:~-1!" equ "\" (
-		echo;!var!
+	if "!var:~-2!" equ "}\" (
+		set /p =!var!<nul
 	) else (
-		if "!var:~-3!" equ "***" (echo;!var!)
+		if "!var:~-2!" equ ":\" (
+			for /f "tokens=1-4" %%a in ("!var!") do (
+				if /i "%%a" equ "efi" (echo;%%a %%b %%c) else (echo;!var!)
+			)
+		) else (
+			if "!var:~-3!" equ "***" (echo;!var!)
+		)
 	)
 )
 %hx%
@@ -3131,7 +3136,7 @@ goto 61
 title 删除不在系统中的,卷的装入点目录和注册表设置!system!
 cls
 mountvol /r
-echo;操作完成
+if not errorlevel 1 (echo;操作完成)
 %hx%
 set /p =按任意键返回<nul&pause>nul
 endlocal
@@ -3155,10 +3160,21 @@ goto 61
 title 创建盘符(创建卷装入点)!system!
 cls
 set xx1=0
-for /f "tokens=3 delims=\" %%a in ('mountvol') do (
-	set /a "xx1+=1"
-	set "b!xx1!=%%a"
-	echo;[!xx1!]	%%a
+for /f "delims=" %%a in ('mountvol') do (
+	set "var=%%a"
+	if "!var:~-2!" equ "}\" (
+		set /a "xx1+=1"
+		set "b!xx1!=!var!"
+		set /p =[!xx1!]!var!<nul
+	) else (
+		if "!var:~-2!" equ ":\" (
+			for /f "tokens=1-4" %%a in ("!var!") do (
+				if /i "%%a" equ "efi" (echo;%%a %%b %%c) else (echo;!var!)
+			)
+		) else (
+			if "!var:~-3!" equ "***" (echo;!var!)
+		)
+	)
 )
 echo;[0]返回上级菜单
 %hx%
@@ -3170,7 +3186,7 @@ set xzpf=
 set /p "xzpf=输入盘符: "
 if not defined xzpf (goto 61.4)
 mountvol !xzpf!: !b%cjpf%!
-echo;操作完成
+if not errorlevel 1 (echo;操作完成)
 %hx%
 set /p =按任意键返回<nul&pause>nul
 endlocal
@@ -3184,7 +3200,7 @@ echo;!sypf!
 set scpf=
 set /p "scpf=输入需要删除的盘符: "
 mountvol !scpf!: /d
-echo;操作完成
+if not errorlevel 1 (echo;操作完成)
 %hx%
 set /p =按任意键返回<nul&pause>nul
 endlocal
@@ -3192,10 +3208,12 @@ goto 61
 :61.6
 title 为EFI分区分配盘符!system!
 cls
+echo;管理员权限创建的EFI分区盘符只对有管理员权限的进程可见
 set xzpf=
 set /p "xzpf=输入分配给EFI分区的盘符: "
 if not defined xzpf (goto 61.6)
 mountvol !xzpf!: /s
+if not errorlevel 1 (echo;操作完成)
 %hx%
 set /p =按任意键返回<nul&pause>nul
 endlocal
