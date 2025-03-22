@@ -47,7 +47,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250301
-set versize=153975
+set versize=154039
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -485,8 +485,11 @@ echo;!sypf!
 set geshihua=
 set /p "geshihua=输入需要格式化的盘符: "
 cls
-label !geshihua!: format
-format !geshihua!: /x /q /v:format /y
+if defined geshihua (
+	if exist "!geshihua!:\" (
+		label /mp !geshihua!: format&&format !geshihua!: /x /q /v:format /y
+	)
+)
 %hx%
 %pause%
 endlocal
