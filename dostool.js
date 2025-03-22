@@ -47,7 +47,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250301
-set versize=154039
+set versize=154141
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -2971,12 +2971,19 @@ title 将文字写入剪切板!system!
 cls
 set nz=
 set /p "nz=输入要写入到剪切板的文字内容:"
-mshta vbscript:clipboardData.SetData("text","!nz!")(window.close)
+if exist "!windir!\system32\clip.exe" (
+	echo;!nz!|clip
+) else (
+	call :51.1
+)
 if errorlevel 1 (echo;写入失败) else (echo;写入成功)
 %hx%
 %pause%
 endlocal
 goto memuv2
+:51.1
+mshta vbscript:clipboardData.SetData("text","!nz!")(window.close)
+goto :eof
 :52
 start services.msc
 goto memuv2
