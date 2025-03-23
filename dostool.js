@@ -3888,7 +3888,7 @@ for %%a in (
 	set /a "cs+=1"
 	call :div !%%a! !chinese-yuan-renminbi! 9 %%a
 	echo;%%a → 人民币CNY
-	<nul set /p "=!cswz1![]"	
+	<nul set /p "=!cswz1![]	"
 	<nul set /p "=1  → !%%a!	24小时涨跌幅: "
 	if "!%%a24h:~0,1!" equ "-" (
 		call :colortxt a !%%a24h!
