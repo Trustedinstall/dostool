@@ -47,7 +47,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250301
-set versize=154162
+set versize=154157
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -2625,7 +2625,7 @@ if /i "!system:~11,1!" equ "x" (
 ) else (
 	2>nul dir /a /s /b "%systemdrive%\Users\%username%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"
 	2>nul dir /a /s /b "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp"
-) 
+)
 echo;
 for /f "delims=" %%a in ('"2>nul reg query HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run"') do (if "%%a" neq "" (echo;%%a))
 for /f "delims=" %%a in ('"2>nul reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"') do (if "%%a" neq "" (echo;%%a))
@@ -3437,7 +3437,7 @@ call :ljjc basebm dir||(
 :63-22
 >nul certutil -encode -f "!basebm!" "%temp%\codetmp"
 :63-21
-cls 
+cls
 %hx%
 echo;输入内容: !basebm!
 echo;编码内容:
@@ -3726,7 +3726,7 @@ namespace ClearStandbyList
 	}
 }
 "@
-Add-Type -TypeDefinition $Source -Language CSharp 
+Add-Type -TypeDefinition $Source -Language CSharp
 [ClearStandbyList.Program]::ClearFileSystemCache($true)
 #clearcache#
 :66
@@ -4828,7 +4828,7 @@ call :ljjc jiemi&&(
 	<nul set /p "=无效路径"
 	call :out 2
 	goto 76.2
-) 
+)
 cls
 for /f "delims=" %%a in ("!jiemi!") do (
 	>"%temp%\1.tmp" echo;
@@ -5693,7 +5693,7 @@ for /l %%l in (!Div.2.Len.0! 1 !Div.1.Len.0!) do (
 				set /a "Div.V=3!Div.S:~-%%j,8!-1!Div.Num.%%i:~-%%j,8!-!Div.V:~,1!%%2"
 				set "Div.P=!Div.V:~1!!Div.P!"
 			)
-		)	
+		)
 	) else (
 		set "Div.3=!Div.3!0"
 	)
