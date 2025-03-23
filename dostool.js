@@ -47,7 +47,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250301
-set versize=154141
+set versize=154162
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -6387,7 +6387,9 @@ if "%1" equ "" (
 )
 goto :eof
 :bel
+pushd "%~dp0"
 2>nul forfiles /m "%~nx0" /c "!comspec! /c <nul set /p "=0x07""
+popd
 goto :eof
 :md
 if "%~1" equ "" (goto :eof)
