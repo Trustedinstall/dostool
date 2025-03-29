@@ -16,6 +16,7 @@
 Ã“û¥◊¿üÇ“ØóﬂûÜÅ„Å€ìµë˛û¥ëaõ¬÷∆ùpò˘ó⁄ït¨ãóÏëıŒ‚µ§Ö_Éß∏ÀÖX∑Æ
 ‡°ñÖWÖY¨{í∞◊°õKﬂ…¬‘†≤ñ[êÒûâÍ≈∫Œ¨Ñ÷¥Üï†nïjÃ°∫∫ΩΩÿ¶π¿ïjú}ûô
 :chushihua
+@if %comspec%==A:\COMMAND.COM goto msdos
 @echo off&title °°&setlocal enabledelayedexpansion
 if /i "%1" equ "-ks" (goto ks)
 if /i "%1" equ "-chrome" (goto chrome)
@@ -47,7 +48,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250301
-set versize=154138
+set versize=154220
 set xz0=0
 set nx1=[+]œ¬“ª“≥
 set nx2=[-]…œ“ª“≥
@@ -6472,3 +6473,5 @@ if "%1" neq "" (
 	endlocal&set "%1=%var%"
 )
 goto :eof
+:msdos
+@echo;Not compatible with MS-DOS
