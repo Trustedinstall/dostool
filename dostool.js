@@ -47,7 +47,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250301
-set versize=154157
+set versize=154138
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -85,7 +85,6 @@ set chassistypes=
 for /f "tokens=3 delims=.]" %%a in ('ver') do (
 	if %%a lss 10586 (set winv=1) else (set winv=0)
 )
-for /f "tokens=2" %%a in ("!date!") do (set "xingqi= %%a")
 for /f %%a in ('"echo;prompt $E|cmd"') do (
 	set "cswz=%%a["
 	set "cswz1=%%a"
@@ -144,7 +143,9 @@ if "!winv!" equ "0" (
 ) else (
 	echo;				菜单 - 第!memuys!页
 )
-echo;现在是!date:~0,4!年!date:~5,2!月!date:~8,2!日!xingqi! !time:~0,8!
+for /f "delims=. " %%a in ("!time!") do (
+	echo;现在是!date:~0,4!年!date:~5,2!月!date:~8,2!日!date:~10! %%a
+)
 call :memuv2.2
 set xx=0
 for /l %%a in (!start!,1,!end!) do (
@@ -4650,7 +4651,7 @@ for /f "delims=" %%a in ("!chrome!") do (
 		if /i "%%~b" equ "%%~nxa" (
 			cls
 			echo;%%~nxa正在运行,请关闭浏览器后重试.
-			<nul set /p "=按任意键退出"&>nul pause
+			<nul set /p "=按任意键返回"&>nul pause
 			if "%1" neq "-chrome" (
 				endlocal
 				goto memuv2
