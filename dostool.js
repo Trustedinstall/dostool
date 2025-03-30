@@ -16,12 +16,16 @@
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
 :chushihua
-@if %comspec%==A:\COMMAND.COM goto msdos
+@if not exist "%windir%\system32\cmd.exe" goto winnt
 @echo off&title 　&setlocal enabledelayedexpansion
 if /i "%1" equ "-ks" (goto ks)
 if /i "%1" equ "-chrome" (goto chrome)
 if /i "!systemdrive!" equ "x:" (goto ks)
->nul 2>nul fltmc&&goto ks
+if exist "!windir!\system32\fltmc.exe" (
+	>nul 2>nul fltmc&&goto ks
+) else (
+	goto ks
+)
 set "weizhi=%~0"
 if exist "!localappdata!\Microsoft\WindowsApps\wt.exe" (call :stwt) else (call :stcmd)
 rem 在权限申请进程中预读命令提升后面初始化速度
@@ -48,7 +52,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250301
-set versize=154220
+set versize=154362
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -144,9 +148,7 @@ if "!winv!" equ "0" (
 ) else (
 	echo;				菜单 - 第!memuys!页
 )
-for /f "delims=. " %%a in ("!time!") do (
-	echo;现在是!date:~0,4!年!date:~5,2!月!date:~8,2!日!date:~10! %%a
-)
+for /f "delims=. " %%a in ("!time!") do (echo;现在是 !date! %%a)
 call :memuv2.2
 set xx=0
 for /l %%a in (!start!,1,!end!) do (
@@ -2456,7 +2458,11 @@ cls
 echo;关于DOS工具箱
 %hx%
 echo;版本:		1.9.7 (!ver!.!versize!)
-if defined system (echo;操作系统:	!system:~3! !bit!位)
+if defined system (
+	echo;操作系统:	!system:~3! !bit!位
+) else (
+	for /f "delims=" %%a in ('ver') do (echo;操作系统:	%%a)
+)
 echo;版权所有	2012-2025 Administrator 保留所有权利
 %hx%
 echo;本次已运行:		!jg!
@@ -6339,7 +6345,7 @@ if exist "!windir!\system32\timeout.exe" (
 	>nul timeout /t %1 /nobreak
 ) else (
 	if exist "!windir!\system32\ping.exe" (
-		>nul ping /n %1 0.0
+		>nul ping /n %1 127.0.0.1
 	) else (
 		set /a "ms=%1*100"
 		call :ys !ms!
@@ -6473,5 +6479,5 @@ if "%1" neq "" (
 	endlocal&set "%1=%var%"
 )
 goto :eof
-:msdos
-@echo;Not compatible with MS-DOS
+:winnt
+@echo;Incompatible with the current system operating environment
