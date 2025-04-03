@@ -52,7 +52,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250301
-set versize=154362
+set versize=154333
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -4274,6 +4274,7 @@ if not exist "%temp%\tag" (
 for /f "tokens=2" %%a in ('findstr /c:"Accept-Ranges:" "%temp%\tag"') do (set "trflag=%%a")
 for /f "tokens=2" %%a in ('findstr /c:"Content-Length:" "%temp%\tag"') do (set "filesize=%%a")
 for /f "tokens=2 delims==" %%a in ('findstr /c:"filename=" "%temp%\tag"') do (set "filename=%%a")
+del /f /q "%temp%\tag"
 if "!trflag!" neq "bytes" (set tr=1)
 if defined filesize (
 	if !filesize! geq 1024 (
@@ -4286,8 +4287,10 @@ if defined filesize (
 	set "dw=未知 (转为单进程下载)"
 	set tr=1
 )
-if not defined filename (set /p "filename=输入文件名: ")
-if not defined filename (set filename=curl下载文件)
+if not defined filename (
+	set /p "filename=输入文件名: "
+	if not defined filename (set filename=curl下载文件)
+)
 set fd=
 2>nul set /a "fd=filesize/tr"
 if not defined fd (set fd=0)
@@ -4389,7 +4392,6 @@ for /l %%a in (1,1,!tr!) do (
 if "!errorlevel!" equ "2" (
 	taskkill /fi "windowtitle eq curl多进程下载_*" /fi "imagename eq curl.exe" /f
 	popd
-	del /f /q "%temp%\tag"
 	rd /s /q "%temp%\down"
 	endlocal
 	goto memuv2
@@ -4408,7 +4410,6 @@ cls
 echo;合并文件中...
 copy /b /z !file! "!dir!\!filename!"
 popd
-del /f /q "%temp%\tag"
 rd /s /q "%temp%\down"
 :72.4
 cls
@@ -6268,6 +6269,7 @@ if not exist "%temp%\tag" (
 for /f "tokens=2" %%a in ('findstr /c:"Accept-Ranges:" "%temp%\tag"') do (set "trflag=%%a")
 for /f "tokens=2" %%a in ('findstr /c:"Content-Length:" "%temp%\tag"') do (set "filesize=%%a")
 for /f "tokens=2 delims==" %%a in ('findstr /c:"filename=" "%temp%\tag"') do (set "filename=%%a")
+del /f /q "%temp%\tag"
 if "!trflag!" neq "bytes" (set tr=1)
 if not defined filename (set "filename=%~3")
 if not defined filesize (goto curldxc_3)
@@ -6329,7 +6331,6 @@ if "!次数!" neq "!tr!" (
 )
 copy /b /z !file! "!dir!\!filename!"
 popd
-del /f /q "%temp%\tag"
 rd /s /q "%temp%\down"
 goto :eof
 :curldxc_3
@@ -6436,8 +6437,8 @@ if defined doh (
 )
 :isntfs
 setlocal
-set "var=%1"
 if "%1" neq "" (
+	set "var=%1"
 	>nul 2>nul fsutil fsinfo ntfsinfo !var:\=!&&(
 		exit /b 1
 	)
@@ -6458,26 +6459,25 @@ echo;y|cacls "%~1" /t /c /g %username%:f
 attrib -s -h -r "%~1"
 goto :eof
 :sypf
-if "%1" neq "" (
-	if exist "!windir!\System32\fsutil.exe" (
-		for /f "tokens=1*" %%a in ('fsutil fsinfo drives') do (
-			set "%1=%%b"
-			goto :eof
-		)
+if "%1" equ "" (goto :eof)
+if exist "!windir!\System32\fsutil.exe" (
+	for /f "tokens=1*" %%a in ('fsutil fsinfo drives') do (
+		set "%1=%%b"
+		goto :eof
 	)
-	setlocal
-	set var=
-	for %%a in (
-		a b c d e
-		f g h i j
-		k l m n o
-		p q r s t
-		u v w x y z
-	) do (
-		if exist "%%a:\" (set "var=!var!%%a:\ ")
-	)
-	endlocal&set "%1=%var%"
 )
+setlocal
+set var=
+for %%a in (
+	a b c d e
+	f g h i j
+	k l m n o
+	p q r s t
+	u v w x y z
+) do (
+	if exist "%%a:\" (set "var=!var!%%a:\ ")
+)
+endlocal&set "%1=%var%"
 goto :eof
 :winnt
 @echo;Incompatible with the current system operating environment
