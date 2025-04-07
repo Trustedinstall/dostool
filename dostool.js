@@ -3829,7 +3829,7 @@ for %%a in (
 			set "%%a24h=!%%a24h:"=!"
 		)
 		if not defined %%a (
-			set "%%a=1"
+			set "%%a=0"
 			set "%%a24h=0.0"
 		)
 		for /f "tokens=1,2 delims=." %%b in ("!%%a24h!") do (
@@ -3838,7 +3838,7 @@ for %%a in (
 		)
 	) else (
 		echo;%%a.json œ¬‘ÿ ß∞‹
-		set "%%a=1"
+		set "%%a=0"
 		set "%%a24h=0.0"
 	)
 )
