@@ -18,8 +18,8 @@
 :chushihua
 @if not exist "%windir%\system32\cmd.exe" goto winnt
 @echo off&title 　&setlocal enabledelayedexpansion
-if /i "%1" equ "-ks" (goto ks)
-if /i "%1" equ "-chrome" (goto chrome)
+if /i "%1" equ "ks" (goto ks)
+if /i "%1" equ "chrome" (goto chrome)
 if /i "!systemdrive!" equ "x:" (goto ks)
 if exist "!windir!\system32\fltmc.exe" (
 	>nul 2>nul fltmc&&goto ks
@@ -39,12 +39,12 @@ if exist "!temp!\dos_reading_cache.tmp" (
 )
 exit 0
 :stwt
-start /min !comspec! /c mshta vbscript:createobject("shell.application").shellexecute("!localappdata!\Microsoft\WindowsApps\wt.exe","!weizhi! -ks","","runas",1)(window.close)
-rem >nul 2>nul start /min powershell -mta -nologo -noprofile start-process -filepath "wt" -argumentlist '""!weizhi!" -ks"' -verb runas
+start /min !comspec! /c mshta vbscript:createobject("shell.application").shellexecute("!localappdata!\Microsoft\WindowsApps\wt.exe","!weizhi! ks","","runas",1)(window.close)
+rem >nul 2>nul start /min powershell -mta -nologo -noprofile start-process -filepath "wt" -argumentlist '""!weizhi!" ks"' -verb runas
 goto :eof
 :stcmd
-start /min !comspec! /c mshta vbscript:createobject("shell.application").shellexecute("!weizhi!","-ks","","runas",1)(window.close)
-rem >nul 2>nul start /min powershell -mta -nologo -noprofile start-process -filepath "!comspec!" -argumentlist '"/c "!weizhi!" -ks"' -verb runas
+start /min !comspec! /c mshta vbscript:createobject("shell.application").shellexecute("!weizhi!","ks","","runas",1)(window.close)
+rem >nul 2>nul start /min powershell -mta -nologo -noprofile start-process -filepath "!comspec!" -argumentlist '"/c "!weizhi!" ks"' -verb runas
 goto :eof
 :ks
 (
@@ -52,7 +52,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250301
-set versize=154333
+set versize=154630
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -1524,14 +1524,14 @@ if exist "!windir!\system32\curl.exe" (
 		rem <nul set /p "=本机IPV4地址: ""
 		rem curl https://4.ipw.cn
 		rem curl https://ipv4.ip.sb
-		curl https://myip.ipip.net
+		curl --connect-timeout 2 https://myip.ipip.net
 		<nul set /p "="
 		echo;
 	)
 	>nul ping /n 1 240c::6666
 	if not errorlevel 1 (
 		<nul set /p "=本机IPV6地址: "
-		curl https://6.ipw.cn
+		curl --connect-timeout 2 https://6.ipw.cn
 		rem curl https://ipv6.ip.sb
 		echo;
 	)
@@ -1936,7 +1936,7 @@ echo;
 if exist "!windir!\system32\curl.exe" (
 	>nul ping /n 1 www.baidu.com
 	if not errorlevel 1 (
-		for /f "delims=" %%a in ('curl -s https://4.ipw.cn') do (
+		for /f "delims=" %%a in ('curl -s --connect-timeout 2 https://4.ipw.cn') do (
 			<nul set /p "=外部IP地址:"
 			echo;	%%a
 			echo;
@@ -3544,9 +3544,12 @@ for /f "delims=" %%a in ('dir /a /s /b "!url!"') do (
 title 整理碎片...
 defrag "!url!" /u /v
 echo;停止sysmain服务并清空缓存...
-set sysmain=0
-sc query sysmain|find "RUNNING"&&(
-	>nul 2>nul sc stop sysmain 4:5:2 "DOS工具箱 - 智能NTFS压缩 - 清空缓存"&&set sysmain=1
+set sysmain=
+for /f "tokens=3 delims=: " %%a in ('sc query sysmain') do (
+	if /i "%%a" equ "running" (set sysmain=1)
+)
+if defined sysmain(
+	>nul 2>nul sc stop sysmain 4:5:2 "DOS工具箱 - 智能NTFS压缩 - 清空缓存"
 )
 call :pwiex clearcache
 title 记录文件压缩前的读取时间...
@@ -3795,7 +3798,7 @@ set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,
 if exist "!windir!\system32\curl.exe" (
 	call :curlproxy
 	pushd "%temp%\down"
-	curl !proxy! !doh! !ua! -Z --compressed -C - --retry 2 --retry-delay 1 --connect-timeout 5 ^
+	curl !proxy! !doh! !ua! -Z --compressed -C - --retry 3 --retry-delay 1 --connect-timeout 5 ^
 	-o all.json		!mainurl1! ^
 	-o 门罗币XMR.json	!mainurl!monero ^
 	-o 比特币BTC.json	!mainurl!bitcoin ^
@@ -4641,7 +4644,7 @@ if exist "chrome.exe" (
 		if exist "!chrome!" (
 			goto startchrome
 		) else (
-			if "%1" neq "-chrome" (
+			if "%1" neq "chrome" (
 				<nul set /p "=没有找到浏览器路径"
 				call :out 2
 				endlocal
@@ -4660,7 +4663,7 @@ for /f "delims=" %%a in ("!chrome!") do (
 			cls
 			echo;%%~nxa正在运行,请关闭浏览器后重试.
 			<nul set /p "=按任意键返回"&>nul pause
-			if "%1" neq "-chrome" (
+			if "%1" neq "chrome" (
 				endlocal
 				goto memuv2
 			) else (
@@ -4698,7 +4701,7 @@ if "!chrome-command-line!" equ "1" (
 	>chrome-command-line <nul set /p "=chrome !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors!"
 )
 start /max "" "!chrome!" --profile-directory=Default --test-type !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors! %2
-if "%1" neq "-chrome" (endlocal&goto memuv2) else (exit 0)
+if "%1" neq "chrome" (endlocal&goto memuv2) else (exit 0)
 :74
 setlocal
 title 逐一复制文件并压缩!system!
@@ -4810,7 +4813,7 @@ for /f "delims=" %%b in ("!jiami!") do (
 	set /a "batpdjg=%%~zb%%2"
 	if "!batpdjg!" equ "1" (set "batpdjg= ") else (set "batpdjg=")
 	set aaa=
-	for /l %%A in (0,1,128) do (set "aaa=!aaa!%%%%a ")
+	for /l %%b in (0,1,128) do (set "aaa=!aaa!%%%%a ")
 	set "aaa=!aaa:~0,-1!!batpdjg!"
 	>"%temp%\1.tmp" (
 	echo;!aaa!
@@ -4893,8 +4896,11 @@ goto 77
 setlocal
 title 执行w32tm /resync对时!system!
 cls
-sc query w32time|>nul 2>nul find "RUNNING"
-if errorlevel 1 (
+set timesvr=
+for /f "tokens=3 delims=: " %%a in ('sc query w32time') do (
+	if /i "%%a" equ "running" (set timesvr=1)
+)
+if not defined timesvr (
 	echo;w32time服务未运行，正在启动...
 	sc start w32time
 	if errorlevel 1 (
@@ -4906,20 +4912,25 @@ if errorlevel 1 (
 ) else (
 	echo;w32time服务正在运行
 )
-set attempts=0
-for /f "tokens=2 delims=:," %%a in ('"w32tm /query /configuration|findstr /i "NtpServer: ""') do (
-	echo;当前在使用的NTP服务器:%%a
+set attempts=
+for /f "tokens=1,2 delims=:," %%a in ('w32tm /query /configuration') do (
+	>nul 2>nul set "%%a=%%b"
 )
+echo;当前时间服务器: !ntpserver:~1!
 :78.1
-w32tm /resync||(
+for /f "delims=" %%a in ('w32tm /resync') do (
+	set "tbjg=%%a"
+	echo;%%a
+)
+if "!tbjg:~0,2!" neq "成功" (
 	set /a "attempts+=1"
 	if !attempts! lss 3 (
-		echo;第 !attempts! 次尝试同步时间失败
+		echo;尝试同步时间失败[!attempts!/3]
 		echo;
-		call :out 1
 		goto 78.1
 	) else (
-		echo;第 !attempts! 次尝试同步时间失败，已达到最大重试次数。
+		echo;尝试同步时间失败[!attempts!/3]
+		echo;已达到最大重试次数
 	)
 )
 if "!stop!" equ "1" (>nul 2>nul sc stop w32time 4:5:2 "DOS工具箱 - 执行w32tm /resync对时 - 还原w32time服务状态")
@@ -5451,7 +5462,7 @@ set "qrgb=!qrgb:.=;!"
 goto :eof
 :su
 rem 使用goto调用:su
->"%temp%\su.bat" <nul set /p "=!comspec! /c %0 -ks"
+>"%temp%\su.bat" <nul set /p "=!comspec! /c %0 ks"
 powershell -mta -nologo -noprofile -command "$command=[IO.File]::ReadAllText('%0') -split '#su\#.*'; iex ($command[1])"
 rem 延迟删除文件确保能被上一条指令读取
 call :out 1
