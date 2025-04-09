@@ -51,8 +51,8 @@ goto :eof
 setlocal
 set "dosqssj=!time!"
 >nul chcp 936
-set ver=20250301
-set versize=154537
+set ver=20250401
+set versize=149766
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -2457,7 +2457,7 @@ call :sjc !dosqssj! !time! jg format
 cls
 echo;关于DOS工具箱
 %hx%
-echo;版本:		1.9.7 (!ver!.!versize!)
+echo;版本:		1.9.6 (!ver!.!versize!)
 if defined system (
 	echo;操作系统:	!system:~3! !bit!位
 ) else (
@@ -3783,139 +3783,6 @@ goto memuv2
 :67
 setlocal
 cls
-title 显示货币汇率!system!
-set "mainurl=https://api.coincap.io/v2/assets/"
-set "mainurl1=https://api.coincap.io/v2/rates/"
-echo;下载汇率文件(总共6个文件)...
-call :md "%temp%\down"||(
-	echo;不能创建临时文件夹: "%temp%\down"
-	call :out 2
-	endlocal
-	goto :memuv2
-)
-set "doh=--doh-url https://101.101.101.101/dns-query"
-set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36""
-if exist "!windir!\system32\curl.exe" (
-	call :curlproxy
-	pushd "%temp%\down"
-	curl !proxy! !doh! !ua! -Z --compressed -C - --retry 3 --retry-delay 1 --connect-timeout 5 ^
-	-o all.json		!mainurl1! ^
-	-o 门罗币XMR.json	!mainurl!monero ^
-	-o 比特币BTC.json	!mainurl!bitcoin ^
-	-o 以太坊ETH.json	!mainurl!ethereum ^
-	-o 狗狗币DOGE.json	!mainurl!dogecoin ^
-	-o 文件币FILE.json	!mainurl!filecoin
-	popd
-) else (
-	bitsadmin /transfer 下载汇率文件... /priority FOREGROUND ^
-	!mainurl1!			"%temp%\down\all.json" ^
-	!mainurl!monero		"%temp%\down\门罗币XMR.json" ^
-	!mainurl!bitcoin	"%temp%\down\比特币BTC.json" ^
-	!mainurl!ethereum	"%temp%\down\以太坊ETH.json" ^
-	!mainurl!dogecoin	"%temp%\down\狗狗币DOGE.json" ^
-	!mainurl!filecoin	"%temp%\down\文件币FILE.json"
-)
-cls
-echo;处理汇率文件...
-for %%a in (
-	门罗币XMR
-	比特币BTC
-	以太坊ETH
-	狗狗币DOGE
-	文件币FILE
-) do (
-	if exist "%temp%\down\%%a.json" (
-		for /f "usebackq tokens=19,21 delims=:," %%b in ("%temp%\down\%%a.json") do (
-			set "%%a=%%b"
-			set "%%a24h=%%c"
-			set "%%a=!%%a:"=!"
-			set "%%a24h=!%%a24h:"=!"
-		)
-		if not defined %%a (
-			set "%%a=0"
-			set "%%a24h=0.0"
-		)
-		for /f "tokens=1,2 delims=." %%b in ("!%%a24h!") do (
-			set "%%a24h=%%c"
-			set "%%a24h=%%b.!%%a24h:~0,3!"
-		)
-	) else (
-		echo;%%a.json 下载失败
-		set "%%a=0"
-		set "%%a24h=0.0"
-	)
-)
-if exist "!temp!\down\all.json" (
-	for %%i in (
-		euro
-		gold-ounce
-		silver-ounce
-		japanese-yen
-		hong-kong-dollar
-		new-taiwan-dollar
-		british-pound-sterling
-		chinese-yuan-renminbi
-	) do (
-		for /f "tokens=*" %%a in ('powershell -command "(Get-Content -Encoding UTF8 '%temp%\down\all.json'|ConvertFrom-Json).data|Where-Object {$_.id -eq '%%i'}|Select-Object -ExpandProperty rateUsd"') do (
-			>nul 2>nul set "%%i=%%a"
-		)
-	)
-	call :div !gold-ounce! 31.1034768 3 黄金XAU
-	call :div !silver-ounce! 31.1034768 3 白银XAG
-	call :div 1 !chinese-yuan-renminbi! 3 美元USD
-	call :div !euro! !chinese-yuan-renminbi! 9 欧元EUR
-	call :div !japanese-yen! !chinese-yuan-renminbi! 9 日元JPY
-	call :div !hong-kong-dollar! !chinese-yuan-renminbi! 9 港币HKD
-	call :div !new-taiwan-dollar! !chinese-yuan-renminbi! 9 台币TWD
-	call :div !british-pound-sterling! !chinese-yuan-renminbi! 9 英镑GBP
-	for %%a in (黄金XAU 白银XAG) do (
-		call :xcf !%%a! !美元USD! %%a
-	)
-)
->nul rd /s /q "%temp%\down"
-cls
-for %%a in (
-	黄金XAU
-	白银XAG
-	美元USD
-	欧元EUR
-	英镑GBP
-	日元JPY
-	港币HKD
-	台币TWD
-) do (
-	echo;%%a	→ 人民币CNY
-	echo;	1 → !%%a!
-	echo;
-)
-set cs=0
-for %%a in (
-	比特币BTC
-	以太坊ETH
-	门罗币XMR
-	狗狗币DOGE
-	文件币FILE
-) do (
-	set /a "cs+=1"
-	call :div !%%a! !chinese-yuan-renminbi! 9 %%a
-	echo;%%a → 人民币CNY
-	<nul set /p "=!cswz1![]	"
-	<nul set /p "=1  → !%%a!	24小时涨跌幅: "
-	if "!%%a24h:~0,1!" equ "-" (
-		call :colortxt a !%%a24h!
-	) else (
-		call :colortxt c +!%%a24h!
-	)
-	echo;%%
-	if "!cs!" neq "5" (echo;)
-)
-%hx%
-%pause%
-endlocal
-goto memuv2
-:68
-setlocal
-cls
 title 创建虚拟盘符!system!
 echo;虚拟盘符只能在当前DOS工具箱内访问
 %hx%
@@ -3929,15 +3796,15 @@ for %%a in (
 %hx%
 set cho=120
 %sel%
-if "!shuru!" equ "1" (goto 68.1)
-if "!shuru!" equ "2" (goto 68.2)
+if "!shuru!" equ "1" (goto 67.1)
+if "!shuru!" equ "2" (goto 67.2)
 if "!shuru!" equ "3" (endlocal&goto memuv2)
 if "!shuru!" equ "0" (endlocal&goto memuv2)
 <nul set /p "=请输入正确的选项！"
 call :out 2
 endlocal
-goto 68
-:68.1
+goto 67
+:67.1
 title 将路径与盘符关联!system!
 cls
 call :sypf sypf
@@ -3953,19 +3820,19 @@ call :ljjc gllj dir&&(
 	<nul set /p "=无效路径"
 	call :out 2
 	endlocal
-	goto 68
+	goto 67
 )
 subst !newpf!: !gllj!||(
 	<nul set /p "=创建失败"
 	call :out 2
 	endlocal
-	goto 68
+	goto 67
 )
 <nul set /p "=创建成功"
 call :out 2
 endlocal
-goto 68
-:68.2
+goto 67
+:67.2
 title 删除虚拟盘符!system!
 cls
 echo;虚拟盘符:
@@ -3977,13 +3844,13 @@ subst !xzxnp!: /d||(
 	<nul set /p "=卸载失败"
 	call :out 2
 	endlocal
-	goto 68
+	goto 67
 )
 <nul set /p "=卸载成功"
 call :out 2
 endlocal
-goto 68
-:69
+goto 67
+:68
 setlocal
 title 解压msi安装文件!system!
 cls
@@ -3997,14 +3864,14 @@ call :ljjc msiurl&&(
 	<nul set /p "=无效路径"
 	call :out 2
 	endlocal
-	goto 69
+	goto 68
 )
 for /f "delims=" %%a in ("!msiurl!") do (
 	if /i "%%~xa" neq ".msi" (
 		<nul set /p "=不是msi文件"
 		call :out 2
 		endlocal
-		goto 69
+		goto 68
 	)
 )
 set msidir=
@@ -4027,7 +3894,7 @@ if exist "!msidir!" (
 %pause%
 endlocal
 goto memuv2
-:70
+:69
 setlocal
 title 生成CMD控制台色彩表!system!
 cls
@@ -4150,7 +4017,7 @@ for /l %%b in (1,1,4) do (
 %pause%
 endlocal
 goto memuv2
-:71
+:70
 setlocal
 title KMS激活Windows!system!
 cls
@@ -4192,15 +4059,15 @@ for %%a in (
 %hx%
 set cho=120
 %sel%
-if "!shuru!" equ "1" (set "server=kms.loli.best"&goto 71.1)
-if "!shuru!" equ "2" (set "server=kms.03k.org"&goto 71.1)
+if "!shuru!" equ "1" (set "server=kms.loli.best"&goto 70.1)
+if "!shuru!" equ "2" (set "server=kms.03k.org"&goto 70.1)
 if "!shuru!" equ "3" (endlocal&goto memuv2)
 if "!shuru!" equ "0" (endlocal&goto memuv2)
 <nul set /p "=无效输入"
 call :out 2
 endlocal
-goto 71
-:71.1
+goto 70
+:70.1
 cls
 <nul set /p "=KMS服务器: "
 call :colortxt a !server!
@@ -4217,7 +4084,7 @@ echo;如果显示激活失败[错误: 0xC004F074]，应更换KMS服务器.
 %pause%
 endlocal
 goto memuv2
-:72
+:71
 setlocal
 title curl多进程下载!system!
 cls
@@ -4229,17 +4096,17 @@ if not exist "!windir!\system32\curl.exe" (
 		goto memuv2
 	)
 )
-:72.1
+:71.1
 cls
 set "doh=--doh-url https://101.101.101.101/dns-query"
-set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36""
+set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36""
 set filename=
 set url=
 set /p "url=输入下载链接(e=返回): "
 if not defined url (
 	<nul set /p "=链接不能为空!"
 	call :out 2
-	goto 72.1
+	goto 71.1
 )
 if /i "!url!" equ "e" (
 	endlocal
@@ -4251,7 +4118,7 @@ if not defined tr (set tr=16)
 call :checkvar tr num&&(
 	<nul set /p "=只能输入正整数!"
 	call :out 2
-	goto 72.1
+	goto 71.1
 )
 set dir=
 set /p "dir=输入保存路径(默认当前DOS工具箱所在路径): "
@@ -4259,7 +4126,7 @@ if not defined dir (set "dir=%~dp0")
 call :ljjc dir dir&&(
 	<nul set /p "=路径无效"
 	call :out 2
-	goto 72.1
+	goto 71.1
 )
 cls
 echo;开始获取文件信息...
@@ -4328,8 +4195,8 @@ echo;保存路径:	!dir!
 <nul set /p "=按任意键开始下载"&>nul pause
 cls
 echo;开始下载文件...
-if not defined filesize (goto 72.3)
-if "!tr!" equ "1" (goto 72.3)
+if not defined filesize (goto 71.3)
+if "!tr!" equ "1" (goto 71.3)
 title curl多进程下载 - 等待文件下载完成(按e返回菜单)!system!
 call :md "%temp%\down"||(
 	echo;不能创建临时文件夹: "%temp%\down"
@@ -4346,7 +4213,7 @@ for /l %%a in (1,1,!tr!) do (
 )
 pushd "%temp%\down"
 cls
-:72.2
+:71.2
 (
 cls
 <nul set /p "=!cswz!s!cswz!0;0H"
@@ -4406,7 +4273,7 @@ if "!jccs!" neq "!tr!" (
 			if /i "%%~a" neq "curl.exe" (set /a "nocurl+=1")
 		)
 	)
-	if "!nocurl!" neq "!tr!" (goto 72.2)
+	if "!nocurl!" neq "!tr!" (goto 71.2)
 )
 set "jssj=!time!"
 cls
@@ -4414,7 +4281,7 @@ echo;合并文件中...
 copy /b /z !file! "!dir!\!filename!"
 popd
 rd /s /q "%temp%\down"
-:72.4
+:71.4
 cls
 title curl多进程下载!system!
 if exist "!dir!\!filename!" (
@@ -4450,15 +4317,15 @@ if exist "!dir!\!filename!" (
 %pause%
 endlocal
 goto memuv2
-:72.3
+:71.3
 call :lj dir dir
 set "kssj=!time!"
 curl !proxy! !doh! !ua! --compressed -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o "!filename!" --output-dir "!dir!" "!url!"
 set "jssj=!time!"
-goto 72.4
+goto 71.4
 :chrome
 @echo off&setlocal enabledelayedexpansion&>nul chcp 936
-:73
+:72
 setlocal
 set "域名重定向=!temp!\域名重定向.txt"
 set "域名重解析=!temp!\域名重解析.txt"
@@ -4702,16 +4569,16 @@ if "!chrome-command-line!" equ "1" (
 )
 start /max "" "!chrome!" --profile-directory=Default --test-type !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors! %2
 if "%1" neq "chrome" (endlocal&goto memuv2) else (exit 0)
-:74
+:73
 setlocal
 title 逐一复制文件并压缩!system!
 cls
 set source_dir=
 set target_dir=
 set /p "source_dir=输入源目录: "
-call :ljjc source_dir dir&&goto 74.3
+call :ljjc source_dir dir&&goto 73.3
 set /p "target_dir=输入目标目录: "
-call :ljjc target_dir dir&&goto 74.3
+call :ljjc target_dir dir&&goto 73.3
 pushd "!source_dir!"
 echo;取消文件隐藏属性...
 for /f "delims=" %%a in ('dir /ah /s /b') do (attrib -h "%%a")
@@ -4723,14 +4590,14 @@ for /r %%f in (*) do (
 	if not exist "!target_path!" (md "!target_path!")
 	echo;"%%f" → "!target_path!%%~nxf"
 	copy /y /z "%%f" "!target_path!%%~nxf"
-	call :74.2 "!target_path!%%~nxf" %%~zf %%~xf
+	call :73.2 "!target_path!%%~nxf" %%~zf %%~xf
 )
 popd
 %hx%
 %pause%
 endlocal
 goto memuv2
-:74.2
+:73.2
 if %2 gtr 4096 (
 	for %%a in (
 		.7z .ogg .mpg .gif .zip .rar .png .jpg .wmf .wmv .bik .bk2 .mp3
@@ -4741,12 +4608,12 @@ if %2 gtr 4096 (
 	compact /c /exe:lzx "%~1"
 )
 goto :eof
-:74.3
+:73.3
 <nul set /p "=无效输入"
 call :out 2
 endlocal
-goto 74
-:75
+goto 73
+:74
 setlocal
 cls
 title 打开证书管理单元!system!
@@ -4766,8 +4633,8 @@ if "!shuru!" equ "2" (start certlm.msc&goto memuv2)
 if "!shuru!" equ "3" (endlocal&goto memuv2)
 if "!shuru!" equ "0" (endlocal&goto memuv2)
 endlocal
-goto 75
-:76
+goto 74
+:75
 setlocal
 color 0a
 title bat加密!system!
@@ -4785,28 +4652,28 @@ for %%a in (
 %hx%
 set cho=1230
 %sel%
-if "!shuru!" equ "1" (goto 76.1)
-if "!shuru!" equ "2" (goto 76.2)
-if "!shuru!" equ "3" (goto 76.3)
+if "!shuru!" equ "1" (goto 75.1)
+if "!shuru!" equ "2" (goto 75.2)
+if "!shuru!" equ "3" (goto 75.3)
 if "!shuru!" equ "4" (endlocal&goto memuv2)
 if "!shuru!" equ "0" (endlocal&goto memuv2)
 <nul set /p "=请输入正确的选项！"
 call :out 2
 endlocal
-goto 76
-:76.1
+goto 75
+:75.1
 title bat文件加密(方法1)!system!
 cls
 set jiami=
 set /p "jiami=拖动需要加密的文件到此窗口(e=返回): "
 if /i "!jiami!" equ "e" (
 	endlocal
-	goto 76
+	goto 75
 )
 call :ljjc jiami&&(
 	<nul set /p "=无效路径"
 	call :out 2
-	goto 76.1
+	goto 75.1
 )
 cls
 for /f "delims=" %%b in ("!jiami!") do (
@@ -4826,20 +4693,20 @@ cls
 <nul set /p "=加密完成"
 call :out 2
 endlocal
-goto 76
-:76.2
+goto 75
+:75.2
 title bat文件解密!system!
 cls
 set jiemi=
 set /p "jiemi=拖动需要解密的文件到此窗口(e=返回): "
 if /i "!jiemi!" equ "e" (
 	endlocal
-	goto 76
+	goto 75
 )
 call :ljjc jiemi&&(
 	<nul set /p "=无效路径"
 	call :out 2
-	goto 76.2
+	goto 75.2
 )
 cls
 for /f "delims=" %%a in ("!jiemi!") do (
@@ -4851,20 +4718,20 @@ cls
 <nul set /p "=解密完成"
 call :out 2
 endlocal
-goto 76
-:76.3
+goto 75
+:75.3
 cls
 title bat文件加密(方法2)!system!
 set jiami=
 set /p "jiami=拖动需要加密的文件到此窗口(e=返回): "
 if /i "!jiami!" equ "e" (
 	endlocal
-	goto 76
+	goto 75
 )
 call :ljjc jiami&&(
 	<nul set /p "=无效路径"
 	call :out 2
-	goto 76.3
+	goto 75.3
 )
 cls
 for /f "delims=" %%a in ("!jiami!") do (
@@ -4877,22 +4744,22 @@ cls
 <nul set /p "=加密完成"
 call :out 2
 endlocal
-goto 76
-:77
+goto 75
+:76
 setlocal
 title vbs计算器!system!
 set vbsbds=
 set vbsjieguo=
 cls
 set /p "vbsbds=输入表达式(e=返回菜单): "
-if not defined vbsbds (endlocal&goto 77)
+if not defined vbsbds (endlocal&goto 76)
 if /i "!vbsbds!" equ "e" (endlocal&goto memuv2)
 >"%temp%\temp.vbs" echo;msgbox !vbsbds!,"65","VBS计算器"
 "%temp%\temp.vbs"
 del /f /q "%temp%\temp.vbs"
 endlocal
-goto 77
-:78
+goto 76
+:77
 setlocal
 title 执行w32tm /resync对时!system!
 cls
@@ -4917,7 +4784,7 @@ for /f "tokens=1,2 delims=:," %%a in ('w32tm /query /configuration') do (
 	>nul 2>nul set "%%a=%%b"
 )
 echo;当前时间服务器: !ntpserver:~1!
-:78.1
+:77.1
 for /f "delims=" %%a in ('w32tm /resync') do (
 	set "tbjg=%%a"
 	echo;%%a
@@ -4927,7 +4794,7 @@ if "!tbjg:~0,2!" neq "成功" (
 	if !attempts! lss 3 (
 		echo;尝试同步时间失败[!attempts!/3]
 		echo;
-		goto 78.1
+		goto 77.1
 	) else (
 		echo;尝试同步时间失败[!attempts!/3]
 		echo;已达到最大重试次数
@@ -4938,7 +4805,7 @@ if "!stop!" equ "1" (>nul 2>nul sc stop w32time 4:5:2 "DOS工具箱 - 执行w32tm /re
 %pause%
 endlocal
 goto memuv2
-:79
+:78
 setlocal
 title 随机生成MAC地址!system!
 cls
@@ -4949,7 +4816,7 @@ call :checkvar mac num&&(
 	<nul set /p "=无效输入"
 	call :out 2
 	endlocal
-	goto 79
+	goto 78
 )
 for /l %%a in (1,1,!mac!) do (call :ranmac)
 %hx%
@@ -4977,7 +4844,7 @@ setlocal
 cls
 title 更新DOS工具箱 - 当前版本: !ver!!system!
 set "doh=--doh-url https://101.101.101.101/dns-query"
-set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36""
+set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36""
 set resolve=--resolve raw.github.io:443:^
 185.199.110.133,^
 185.199.109.133,^
@@ -5305,7 +5172,6 @@ for %%a in (
 	"8.3短文件名管理"
 	"智能NTFS压缩"
 	"计算文件哈希值"
-	"显示货币汇率"
 	"创建虚拟盘符"
 	"解压msi安装文件"
 	"生成CMD控制台色彩表"
@@ -6125,61 +5991,6 @@ if /i "!caption!" equ "Microsoft Windows 11 Education" (set "system= - Windows 1
 if /i "!caption!" equ "Microsoft Windows 11 Enterprise" (set "system= - Windows 11 企业版"&goto :eof)
 set "system= - !caption:~10!"
 goto :eof
-:xcf
-setlocal
-set "num1=%1"
-set "num2=%2"
-if defined num1 (
-	for /f "delims=-.0123456789" %%a in ("!num1!") do (goto :eof)
-	for /f "tokens=1,2 delims=." %%a in ("!num1!") do (
-		set "num1a=%%a"
-		set "num1b=%%b"
-	)
-) else (
-	goto :eof
-)
-if "!num1a!" equ "0" (set "num1a=")
-:xcf_loop1
-if "!num1b:~-1!" equ "0" (
-	set "num1b=!num1b:~0,-1!"
-	goto xcf_loop1
-)
-if defined num1b (call :strlen num1b dot1) else (set dot1=0)
-if "!num2!" equ "0" (
-	goto :eof
-) else (
-	for /f "delims=-.0123456789" %%a in ("!num2!") do (goto :eof)
-	for /f "tokens=1,2 delims=." %%a in ("!num2!") do (
-		set "num2a=%%a"
-		set "num2b=%%b"
-	)
-)
-if "!num2a!" equ "0" (set "num2a=")
-:xcf_loop2
-if "!num2b:~-1!" equ "0" (
-	set "num2b=!num2b:~0,-1!"
-	goto xcf_loop2
-)
-if defined num2b (call :strlen num2b dot2) else (set dot2=0)
-set /a "dot=dot1+dot2"
-set /a "num=!num1a!!num1b!*!num2a!!num2b!"
-set "numa=!num:~0,-%dot%!"
-set "numb=!num:~-%dot%!"
-:xcf_loop
-if "!numb:~-1!" equ "0" (
-	set "numb=!numb:~0,-1!"
-	goto xcf_loop
-)
-if "!dot!" neq "0" (set "num=!numa!.!numb!")
-if "!num:~-1!" equ "." (set "num=!num:~0,-1!")
-if "!num:~0,1!" equ "." (set "num=!num:.=0.!")
-if "!num:~0,2!" equ "-." (set "num=-0.!num:~2!")
-if "%3" neq "" (
-	endlocal&set "%3=%num%"
-) else (
-	echo;!num!
-)
-goto :eof
 :convertu
 setlocal
 if "%~1" equ "" (goto :eof)
@@ -6232,7 +6043,7 @@ set "filename=%~3"
 set "dir=%~4"
 set "par=%~5"
 set "doh=--doh-url https://101.101.101.101/dns-query"
-set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36""
+set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36""
 if not defined url (
 	echo;链接不能为空!
 	goto :eof
