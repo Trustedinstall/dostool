@@ -39,12 +39,12 @@ if exist "!temp!\dos_reading_cache.tmp" (
 )
 exit 0
 :stwt
-start /min !comspec! /c mshta vbscript:createobject("shell.application").shellexecute("!localappdata!\Microsoft\WindowsApps\wt.exe","!weizhi! ks","","runas",1)(window.close)
-rem >nul 2>nul start /min powershell -mta -nologo -noprofile start-process -filepath "wt" -argumentlist '""!weizhi!" ks"' -verb runas
+start /min mshta vbscript:createobject("shell.application").shellexecute("wt","!weizhi! ks","","runas",1)(window.close)
+rem >nul 2>nul start /min powershell -mta -nologo start-process -filepath "wt" -argumentlist '"!weizhi!" ks' -verb runas
 goto :eof
 :stcmd
-start /min !comspec! /c mshta vbscript:createobject("shell.application").shellexecute("!weizhi!","ks","","runas",1)(window.close)
-rem >nul 2>nul start /min powershell -mta -nologo -noprofile start-process -filepath "!comspec!" -argumentlist '"/c "!weizhi!" ks"' -verb runas
+start /min mshta vbscript:createobject("shell.application").shellexecute("!weizhi!","ks","","runas",1)(window.close)
+rem >nul 2>nul start /min powershell -mta -nologo start-process -filepath "!comspec!" -argumentlist '/c "!weizhi!" ks' -verb runas
 goto :eof
 :ks
 (
@@ -52,7 +52,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250301
-set versize=154630
+set versize=154537
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
