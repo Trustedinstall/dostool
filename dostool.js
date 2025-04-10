@@ -52,7 +52,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250401
-set versize=149766
+set versize=149856
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -4473,6 +4473,9 @@ if not exist "!强制使用quic!" (
 		"challenges.cloudflare.com"
 		"www.openstreetmap.org"
 		"tile.openstreetmap.org"
+		"a.tile.openstreetmap.org"
+		"b.tile.openstreetmap.org"
+		"c.tile.openstreetmap.org"
 		"ipfs.io"
 		"cloudflare-ipfs.com"
 		"croxyproxy.com"
