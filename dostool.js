@@ -52,7 +52,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250401
-set versize=149877
+set versize=149878
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -5051,7 +5051,7 @@ for %%i in (
 	end_second
 	end_millisecond
 ) do (
-	if "!%%i:~0,1!" equ "0" (set "%%i=!%%i:~1!")
+	if "!%%i:~0,1!" equ "0" (set "%%i=!%%i:~-1!")
 )
 set /a "time_difference-=start_hour*3600000+start_minute*60000+start_second*1000+start_millisecond*10"
 set /a "time_difference+=end_hour*3600000+end_minute*60000+end_second*1000+end_millisecond*10"
