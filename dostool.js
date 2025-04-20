@@ -52,7 +52,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250401
-set versize=149878
+set versize=150888
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -5437,9 +5437,9 @@ If (Test-Path $InfFileLocation) {
 setlocal
 set "Bytes=%1"
 set "danwei=%2"
-if /i "!danwei!" equ "kb" (set /a "bytes*=1024")
-if /i "!danwei!" equ "mb" (set /a "bytes*=1048576")
-if /i "!danwei!" equ "gb" (set /a "bytes*=1073741824")
+if /i "!danwei!" equ "kb" (call :scf !bytes! 1024 bytes)
+if /i "!danwei!" equ "mb" (call :scf !bytes! 1048576 bytes)
+if /i "!danwei!" equ "gb" (call :scf !bytes! 1073741824 bytes)
 if "%3" equ "" (goto :eof)
 call :div !Bytes! 1152921504606846976 2 OK
 if "!OK:~0,2!" equ "0." (
@@ -5479,6 +5479,60 @@ if "!OK:~0,2!" equ "0." (
 	endlocal&set "%3=%OK% KB"
 	goto :eof
 )
+:scf
+setlocal
+if "%~1" equ "0" (
+	endlocal&set "%~3=0"
+	goto :eof
+)
+if "%~2" equ "0" (
+	endlocal&set "%~3=0"
+	goto :eof
+)
+set f=
+set jia=
+set ji=
+set n1=0
+set n2=0
+set vard1=
+set vard2=
+set "var1=%~1"
+set "var2=%~2"
+for /l %%a in (0 1 9) do (
+	set "var1=!var1:%%a= %%a !"
+	set "var2=!var2:%%a= %%a !"
+)
+for %%a in (!var1!) do (
+	set /a "n1+=1"
+	set "vard1=%%a !vard1!"
+)
+for %%a in (!var2!) do (
+	set /a "n2+=1"
+	set "vard2=%%a !vard2!"
+)
+if !n1! gtr !n2! (
+	set "vard1=%vard2%"
+	set "vard2=%vard1%"
+)
+for %%a in (!vard1!) do (
+	set t=
+	set /a j=0
+	for %%b in (!vard2!) do (
+		if "!jia!" equ "" (set jia=0)
+		set /a "a=%%a*%%b+j+!jia:~-1!"
+		set "t=!a:~-1!!t!"
+		set "a=0!a!"
+		set "j=!a:~-2,1!"
+		set "jia=!jia:~0,-1!"
+	)
+	set "ji=!t:~-1!!ji!"
+	if "!j:~0,1!" equ "0" (set ss=) else (set "ss=!j:~0,1!")
+	set "jia=!ss!!t:~0,-1!"
+)
+if not "!j:~0,1!" equ "0" (set "t=!j:~0,1!!t!")
+set "ji=!t!!ji:~1!"
+endlocal&set "%~3=%ji%"
+goto :eof
 :div
 setlocal
 if "%4" equ "" (goto :eof)
