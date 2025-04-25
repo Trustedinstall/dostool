@@ -52,7 +52,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250401
-set versize=150888
+set versize=150880
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -4770,7 +4770,9 @@ set timesvr=
 for /f "tokens=3 delims=: " %%a in ('sc query w32time') do (
 	if /i "%%a" equ "running" (set timesvr=1)
 )
-if not defined timesvr (
+if defined timesvr (
+	echo;w32time服务正在运行
+) else (
 	echo;w32time服务未运行，正在启动...
 	sc start w32time
 	if errorlevel 1 (
@@ -4779,8 +4781,6 @@ if not defined timesvr (
 		echo;w32time服务已成功启动
 		set stop=1
 	)
-) else (
-	echo;w32time服务正在运行
 )
 set attempts=
 for /f "tokens=1,2 delims=:," %%a in ('w32tm /query /configuration') do (
@@ -6164,10 +6164,10 @@ set /a "newtr=tr+1"
 set file=
 for /l %%a in (1,1,!tr!) do (set "file=!file!%%a+")
 set "file=!file:~0,-1!"
-if not exist "%temp%\down\" (
-	if exist "%temp%\down" (del /f /q "%temp%\down")
-) else (
+if exist "%temp%\down\" (
 	rd /s /q "%temp%\down"
+) else (
+	if exist "%temp%\down" (del /f /q "%temp%\down")
 )
 md "%temp%\down"||(
 	echo;不能创建临时文件夹: "%temp%\down"
