@@ -51,13 +51,12 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250401
-set versize=150846
+set versize=150828
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
 set hx=echo;_______________________________________________________________________________
 set "pause=<nul set /p "=按任意键返回"&>nul pause"
-set "weizhi=%~0"
 if exist "!temp!\dos_reading_cache.tmp" (
 	for /f "delims=" %%a in ('type "!temp!\dos_reading_cache.tmp"') do (
 		>nul 2>nul set "%%a"
