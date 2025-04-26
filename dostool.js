@@ -26,7 +26,6 @@ if exist "!windir!\system32\fltmc.exe" (
 ) else (
 	goto ks
 )
-set "weizhi=%~0"
 if exist "!localappdata!\Microsoft\WindowsApps\wt.exe" (call :stwt) else (call :stcmd)
 rem 在权限申请进程中预读命令提升后面初始化速度
 if exist "!temp!\dos_reading_cache.tmp" (
@@ -39,12 +38,12 @@ if exist "!temp!\dos_reading_cache.tmp" (
 )
 exit 0
 :stwt
-start /min mshta vbscript:createobject("shell.application").shellexecute("wt","!weizhi! ks","","runas",1)(window.close)
-rem >nul 2>nul start /min powershell -mta -nologo start-process -filepath "wt" -argumentlist '"!weizhi!" ks' -verb runas
+start /min mshta vbscript:createobject("shell.application").shellexecute("wt","%~dpnx0 ks","","runas",1)(window.close)
+rem >nul 2>nul start /min powershell -mta -nologo start-process -filepath "wt" -argumentlist '"%~dpnx0" ks' -verb runas
 goto :eof
 :stcmd
-start /min mshta vbscript:createobject("shell.application").shellexecute("!weizhi!","ks","","runas",1)(window.close)
-rem >nul 2>nul start /min powershell -mta -nologo start-process -filepath "!comspec!" -argumentlist '/c "!weizhi!" ks' -verb runas
+start /min mshta vbscript:createobject("shell.application").shellexecute("%~dpnx0","ks","","runas",1)(window.close)
+rem >nul 2>nul start /min powershell -mta -nologo start-process -filepath "!comspec!" -argumentlist '/c "%~dpnx0" ks' -verb runas
 goto :eof
 :ks
 (
@@ -52,7 +51,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250401
-set versize=150880
+set versize=150846
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -5330,9 +5329,8 @@ set "qrgb=!qrgb:.=;!"
 <nul set /p "=!cswz!48;2;!brgb!;38;2;!qrgb!m!zt!!cswz!!ysbak!"
 goto :eof
 :su
-rem 使用goto调用:su
->"%temp%\su.bat" <nul set /p "=!comspec! /c %0 ks"
-powershell -mta -nologo -noprofile -command "$command=[IO.File]::ReadAllText('%0') -split '#su\#.*'; iex ($command[1])"
+>"%temp%\su.bat" <nul set /p "=!comspec! /c "%~dpnx0" ks"
+powershell -mta -nologo -noprofile -command "$command=[IO.File]::ReadAllText('%~dpnx0') -split '#su\#.*'; iex ($command[1])"
 rem 延迟删除文件确保能被上一条指令读取
 call :out 1
 del /f /q "%temp%\su.bat";"%Temp%\CMSTP.inf"
@@ -6217,7 +6215,7 @@ if "!dir:~-1!" equ "\" (set "dir=!dir:~0,-1!")
 curl !proxy! !doh! !par! !ua! --compressed -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o "!filename!" --output-dir "!dir!" "!url!"
 goto :eof
 :pwiex
-powershell -mta -nologo -noprofile -command "$command=[IO.File]::ReadAllText('"%weizhi%"') -split '#%~1\#.*';iex ($command[1])"
+powershell -mta -nologo -noprofile -command "$command=[IO.File]::ReadAllText('%~dpnx0') -split '#%~1\#.*';iex ($command[1])"
 goto :eof
 :out
 setlocal
