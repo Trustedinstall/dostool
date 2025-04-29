@@ -19,7 +19,6 @@
 @if not exist "%windir%\system32\cmd.exe" goto winnt
 @echo off&title 　&setlocal enabledelayedexpansion
 if /i "%1" equ "ks" (goto ks)
-if /i "%1" equ "chrome" (goto chrome)
 if /i "!systemdrive!" equ "x:" (goto ks)
 if exist "!windir!\system32\fltmc.exe" (
 	>nul 2>nul fltmc&&goto ks
@@ -51,7 +50,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250401
-set versize=150828
+set versize=150526
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -4321,8 +4320,6 @@ set "kssj=!time!"
 curl !proxy! !doh! !ua! --compressed -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o "!filename!" --output-dir "!dir!" "!url!"
 set "jssj=!time!"
 goto 71.4
-:chrome
-@echo off&setlocal enabledelayedexpansion&>nul chcp 936
 :72
 setlocal
 set "域名重定向=!temp!\域名重定向.txt"
@@ -4512,15 +4509,10 @@ if exist "chrome.exe" (
 		if exist "!chrome!" (
 			goto startchrome
 		) else (
-			if "%1" neq "chrome" (
-				<nul set /p "=没有找到浏览器路径"
-				call :out 2
-				endlocal
-				goto memuv2
-			) else (
-				msg %username% 没有找到浏览器路径
-				exit 0
-			)
+			<nul set /p "=没有找到浏览器路径"
+			call :out 2
+			endlocal
+			goto memuv2
 		)
 	)
 )
@@ -4531,12 +4523,8 @@ for /f "delims=" %%a in ("!chrome!") do (
 			cls
 			echo;%%~nxa正在运行,请关闭浏览器后重试.
 			<nul set /p "=按任意键返回"&>nul pause
-			if "%1" neq "chrome" (
-				endlocal
-				goto memuv2
-			) else (
-				exit 0
-			)
+			endlocal
+			goto memuv2
 		)
 	)
 )
@@ -4569,7 +4557,8 @@ if "!chrome-command-line!" equ "1" (
 	>chrome-command-line <nul set /p "=chrome !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors!"
 )
 start /max "" "!chrome!" --profile-directory=Default --test-type !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors! %2
-if "%1" neq "chrome" (endlocal&goto memuv2) else (exit 0)
+endlocal
+goto memuv2
 :73
 setlocal
 title 逐一复制文件并压缩!system!
