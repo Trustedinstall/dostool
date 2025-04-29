@@ -50,7 +50,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250401
-set versize=150498
+set versize=150470
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -97,7 +97,6 @@ if exist "!windir!\system32\choice.exe" (
 	set "sel=call :set"
 )
 call :list
-if /i "%2" neq "" (goto %2)
 )
 :memuv2
 title DOS工具箱!system!
@@ -182,7 +181,7 @@ if defined a!pd! (
 )
 call :memuv2.2
 set caidan=
-set /p "caidan=请输入你的选择:"
+set /p "caidan=请输入你的选择: "
 if not defined caidan (goto memuv2.1)
 if "!caidan:~1!" equ "" (
 	call :checkvar caidan num||(
