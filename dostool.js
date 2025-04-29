@@ -50,7 +50,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250401
-set versize=150526
+set versize=150498
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -4520,9 +4520,8 @@ if exist "chrome.exe" (
 for /f "delims=" %%a in ("!chrome!") do (
 	for /f "tokens=1 delims=," %%b in ('tasklist /fi "imagename eq %%~nxa" /fo csv /nh') do (
 		if /i "%%~b" equ "%%~nxa" (
-			cls
-			echo;%%~nxa正在运行,请关闭浏览器后重试.
-			<nul set /p "=按任意键返回"&>nul pause
+			<nul set /p "=%%~nxa正在运行,请关闭浏览器后重试."
+			call :out 2
 			endlocal
 			goto memuv2
 		)
@@ -4556,7 +4555,7 @@ if exist "!强制使用quic!" (
 if "!chrome-command-line!" equ "1" (
 	>chrome-command-line <nul set /p "=chrome !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors!"
 )
-start /max "" "!chrome!" --profile-directory=Default --test-type !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors! %2
+start /max "" "!chrome!" --profile-directory=Default --test-type !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors!
 endlocal
 goto memuv2
 :73
