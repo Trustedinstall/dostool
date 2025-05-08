@@ -15,6 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
+						
 :chushihua
 @if not exist "%windir%\system32\cmd.exe" goto winnt
 @echo off&title 　&setlocal enabledelayedexpansion
@@ -50,7 +51,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250401
-set versize=150470
+set versize=150830
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -3224,7 +3225,7 @@ for /f "delims=" %%a in ('mountvol') do (
 	if "!var:~-2!" equ "}\" (
 		<nul set /p "=!var!"
 	) else (
-		if "!var:~-2!" equ ":\" (
+		if "!var:~-1!" equ "\" (
 			for /f "tokens=1-4" %%a in ("!var!") do (
 				if /i "%%a" equ "efi" (echo;%%a %%b %%c) else (echo;!var!)
 			)
@@ -3253,10 +3254,16 @@ call :sypf sypf
 echo;!sypf!
 %hx%
 set xszz=
-set /p "xszz=输入需要显示的盘符: "
+set /p "xszz=输入需要显示的盘符或路径: "
 cls
-if defined xszz (<nul set /p "=!xszz!:")
-mountvol !xszz!: /l
+if defined xszz (
+	if "!xszz:~1!" equ "" (set "xszz=!xszz!:")
+	<nul set /p "=!xszz!"
+) else (
+	endlocal
+	goto 61
+)
+mountvol !xszz! /l
 %hx%
 %pause%
 endlocal
@@ -3272,7 +3279,7 @@ for /f "delims=" %%a in ('mountvol') do (
 		set "b!xx1!=!var!"
 		<nul set /p "=[!xx1!]!var!"
 	) else (
-		if "!var:~-2!" equ ":\" (
+		if "!var:~-1!" equ "\" (
 			for /f "tokens=1-4" %%a in ("!var!") do (
 				if /i "%%a" equ "efi" (echo;%%a %%b %%c) else (echo;!var!)
 			)
@@ -3288,9 +3295,15 @@ set /p "cjpf=选择装入点: "
 if not defined cjpf (goto 61.4)
 if "!cjpf!" equ "0" (endlocal&goto 61)
 set xzpf=
-set /p "xzpf=输入盘符: "
+set /p "xzpf=输入盘符或路径: "
 if not defined xzpf (goto 61.4)
-mountvol !xzpf!: !b%cjpf%!
+if "!xzpf:~1!" equ "" (
+	set "xzpf=!xzpf!:"
+) else (
+	call :lj xzpf xzpf
+	if not exist "!xzpf!\" (md "!xzpf!")
+)
+mountvol !xzpf! !b%cjpf%!
 if not errorlevel 1 (echo;操作完成)
 %hx%
 %pause%
@@ -3303,8 +3316,10 @@ call :sypf sypf
 echo;!sypf!
 %hx%
 set scpf=
-set /p "scpf=输入需要删除的盘符: "
-mountvol !scpf!: /d
+set /p "scpf=输入需要删除的盘符或路径: "
+if not defined scpf (endlocal&goto 61)
+if "!scpf:~1!" equ "" (set "scpf=!scpf!:")
+mountvol !scpf! /d
 if not errorlevel 1 (echo;操作完成)
 %hx%
 %pause%
@@ -3315,9 +3330,10 @@ title 为EFI分区分配盘符!system!
 cls
 echo;管理员权限创建的EFI分区盘符只对有管理员权限的进程可见
 set xzpf=
-set /p "xzpf=输入分配给EFI分区的盘符: "
-if not defined xzpf (goto 61.6)
-mountvol !xzpf!: /s
+set /p "xzpf=输入分配给EFI分区的盘符或路径: "
+if not defined xzpf (endlocal&goto 61)
+if "!xzpf:~1!" equ "" (set "xzpf=!xzpf!:")
+mountvol !xzpf! /s
 if not errorlevel 1 (echo;操作完成)
 %hx%
 %pause%
