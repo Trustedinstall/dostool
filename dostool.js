@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-									
+
 :chushihua
 @if not exist "%windir%\system32\cmd.exe" goto winnt
 @echo off&title 　&setlocal enabledelayedexpansion
@@ -51,7 +51,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250401
-set versize=151030
+set versize=151200
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -3136,14 +3136,20 @@ goto memuv2
 :58
 setlocal
 cls
-title 创建符号链接!system!
+title 创建符号链接或目录链接!system!
+set jord=
+set /p "jord=输入链接类型(j=目录链接 d=符号链接): "
 set swjj=
 set cwjj=
 set /p "swjj=输入要链接的文件夹路径: "
 set /p "cwjj=输入链接文件夹的输出路径: "
 call :lj swjj swjj
 call :lj cwjj cwjj
-mklink /d "!cwjj!" "!swjj!"
+if /i "!jord!" equ "j" (
+	mklink /j "!cwjj!" "!swjj!"
+) else (
+	if /i "!jord!" equ "d" (mklink /d "!cwjj!" "!swjj!")
+)
 %hx%
 %pause%
 endlocal
@@ -5175,7 +5181,7 @@ for %%a in (
 	"创建指定文件的快捷方式到桌面"
 	"打开系统配置"
 	"字数统计"
-	"创建符号链接"
+	"创建符号链接或目录链接"
 	"打开管理控制台"
 	"解除Streams文件锁定"
 	"创建、删除或列出卷装入点"
