@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-						
+									
 :chushihua
 @if not exist "%windir%\system32\cmd.exe" goto winnt
 @echo off&title 　&setlocal enabledelayedexpansion
@@ -51,7 +51,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250401
-set versize=150830
+set versize=151030
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -4111,7 +4111,7 @@ if not exist "!windir!\system32\curl.exe" (
 :71.1
 cls
 set "doh=--doh-url https://101.101.101.101/dns-query"
-set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36""
+set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36""
 set filename=
 set url=
 set /p "url=输入下载链接(e=返回): "
@@ -4503,8 +4503,16 @@ rem 忽略证书错误 0=禁用 1=启用
 set "pass_cert_error=0"
 rem 生成chrome-command-line文件 0=禁用 1=启用
 set "chrome-command-line=0"
+rem 设置用户数据路径
+set user-data-dir=
 rem 设置支持chrome命令行的浏览器的路径
 set "chromium=!ProgramFiles(x86)!\Microsoft\Edge\Application\msedge.exe"
+call :ljjc user-data-dir dir
+if errorlevel 1 (
+	set "user-data-dir=--user-data-dir="!user-data-dir!""
+) else (
+	set user-data-dir=
+)
 if "!pass_cert_error!" equ "1" (
 	set "ignore-certificate-errors=--ignore-certificate-errors"
 )
@@ -4570,7 +4578,7 @@ if exist "!强制使用quic!" (
 if "!chrome-command-line!" equ "1" (
 	>chrome-command-line <nul set /p "=chrome !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors!"
 )
-start /max "" "!chrome!" --profile-directory=Default --test-type !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors!
+start /max "" "!chrome!" --profile-directory=Default !user-data-dir! --test-type !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors!
 endlocal
 goto memuv2
 :73
@@ -4848,7 +4856,7 @@ setlocal
 cls
 title 更新DOS工具箱 - 当前版本: !ver!!system!
 set "doh=--doh-url https://101.101.101.101/dns-query"
-set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36""
+set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36""
 set resolve=--resolve raw.github.io:443:^
 185.199.110.133,^
 185.199.109.133,^
@@ -5042,7 +5050,7 @@ for /f "tokens=1-8 delims=:. " %%a in ("%~1 %~2") do (
 	set "end_second=%%g"
 	set "end_millisecond=%%h"
 )
-for %%i in (
+for %%a in (
 	start_hour
 	start_minute
 	start_second
@@ -5052,7 +5060,7 @@ for %%i in (
 	end_second
 	end_millisecond
 ) do (
-	if "!%%i:~0,1!" equ "0" (set "%%i=!%%i:~-1!")
+	if "!%%a:~0,1!" equ "0" (set "%%a=!%%a:~-1!")
 )
 set /a "time_difference-=start_hour*3600000+start_minute*60000+start_second*1000+start_millisecond*10"
 set /a "time_difference+=end_hour*3600000+end_minute*60000+end_second*1000+end_millisecond*10"
@@ -5677,7 +5685,7 @@ if "!mod!" neq "0" (
 	if !num! lss %3 (goto cf_4)
 )
 :cf_3
-for /l %%i in (1,1,%3) do (set "zero_str=!zero_str!0")
+for /l %%a in (1,1,%3) do (set "zero_str=!zero_str!0")
 set "dec_str=!dec_str!!zero_str!"
 set "%4=!int_str!.!dec_str:~0,%3!"
 goto :eof
@@ -6100,7 +6108,7 @@ set "filename=%~3"
 set "dir=%~4"
 set "par=%~5"
 set "doh=--doh-url https://101.101.101.101/dns-query"
-set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36""
+set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36""
 if not defined url (
 	echo;链接不能为空!
 	goto :eof
