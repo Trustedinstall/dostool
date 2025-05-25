@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-
+	
 :chushihua
 @if not exist "%windir%\system32\cmd.exe" goto winnt
 @echo off&title 　&setlocal enabledelayedexpansion
@@ -51,7 +51,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250401
-set versize=151200
+set versize=151330
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -4505,11 +4505,13 @@ if not exist "!强制使用quic!" (
 	)
 )
 cd /d "%~dp0"
-rem 忽略证书错误 0=禁用 1=启用
+rem 忽略证书错误 (0=禁用 1=启用)
 set "pass_cert_error=0"
-rem 生成chrome-command-line文件 0=禁用 1=启用
+rem 检测浏览器进程是否存在 (0=禁用 1=启用)
+set "brpro=0"
+rem 生成chrome-command-line文件 (0=禁用 1=启用)
 set "chrome-command-line=0"
-rem 设置用户数据路径
+rem 设置用户数据路径 (值为空或无效时使用默认路径)
 set user-data-dir=
 rem 设置支持chrome命令行的浏览器的路径
 set "chromium=!ProgramFiles(x86)!\Microsoft\Edge\Application\msedge.exe"
@@ -4546,13 +4548,15 @@ if exist "chrome.exe" (
 	)
 )
 :startchrome
-for /f "delims=" %%a in ("!chrome!") do (
-	for /f "tokens=1 delims=," %%b in ('tasklist /fi "imagename eq %%~nxa" /fo csv /nh') do (
-		if /i "%%~b" equ "%%~nxa" (
-			<nul set /p "=%%~nxa正在运行,请关闭浏览器后重试."
-			call :out 2
-			endlocal
-			goto memuv2
+if "!brpro!" equ "1" (
+	for /f "delims=" %%a in ("!chrome!") do (
+		for /f "tokens=1 delims=," %%b in ('tasklist /fi "imagename eq %%~nxa" /fo csv /nh') do (
+			if /i "%%~b" equ "%%~nxa" (
+				<nul set /p "=%%~nxa正在运行,请关闭浏览器后重试."
+				call :out 2
+				endlocal
+				goto memuv2
+			)
 		)
 	)
 )
