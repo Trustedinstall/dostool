@@ -4893,7 +4893,7 @@ if exist "!windir!\system32\curl.exe" (
 	call :curlproxy
 	echo;使用链接:	!gxurlhost1!
 	echo;Host域名:	!githost:~10,-1!
-	curl !proxy! !doh! !githost! !ua! --compressed -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 --max-time 10 !resolve! -o dostoolupdate "!gxurlhost1!"
+	curl !proxy! !doh! !githost! !ua! --compressed -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 3 --max-time 10 !resolve! -o dostoolupdate "!gxurlhost1!"
 	if exist "%temp%\dostoolupdate" (
 		for /f "usebackq delims=: tokens=1-3" %%a in ("%temp%\dostoolupdate") do (
 			set "gxver=%%a"
@@ -4906,7 +4906,7 @@ if exist "!windir!\system32\curl.exe" (
 		goto updatecheck
 	) else (
 		echo;使用链接:	!gxurl1!
-		curl !proxy! !doh! !ua! --compressed -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 --max-time 10 -o dostoolupdate "!gxurl1!"
+		curl !proxy! !doh! !ua! --compressed -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 3 --max-time 10 -o dostoolupdate "!gxurl1!"
 		if exist "%temp%\dostoolupdate" (
 			for /f "usebackq delims=: tokens=1-3" %%a in ("%temp%\dostoolupdate") do (
 				set "gxver=%%a"
@@ -4921,7 +4921,7 @@ if exist "!windir!\system32\curl.exe" (
 		) else (
 			echo;使用链接:	!gxurlhost2!
 			echo;Host域名:	!jshost:~10,-1!
-			curl !proxy! !doh! !jshost! !ua! --compressed -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 --max-time 10 !resolve! -o dostoolupdate "!gxurlhost2!"
+			curl !proxy! !doh! !jshost! !ua! --compressed -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 3 --max-time 10 !resolve! -o dostoolupdate "!gxurlhost2!"
 			if exist "%temp%\dostoolupdate" (
 				for /f "usebackq delims=: tokens=1-3" %%a in ("%temp%\dostoolupdate") do (
 					set "gxver=%%a"
@@ -4934,7 +4934,7 @@ if exist "!windir!\system32\curl.exe" (
 				goto updatecheck
 			) else (
 				echo;使用链接:	!gxurl2!
-				curl !proxy! !doh! !ua! --compressed -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 --max-time 10 -o dostoolupdate "!gxurl2!"
+				curl !proxy! !doh! !ua! --compressed -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 3 --max-time 10 -o dostoolupdate "!gxurl2!"
 				if exist "%temp%\dostoolupdate" (
 					for /f "usebackq delims=: tokens=1-3" %%a in ("%temp%\dostoolupdate") do (
 						set "gxver=%%a"
