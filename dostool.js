@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-	
+							
 :chushihua
 @if not exist "%windir%\system32\cmd.exe" goto winnt
 @echo off&title 　&setlocal enabledelayedexpansion
@@ -51,7 +51,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250401
-set versize=151330
+set versize=151520
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -1521,14 +1521,14 @@ if exist "!windir!\system32\curl.exe" (
 		rem <nul set /p "=本机IPV4地址: ""
 		rem curl https://4.ipw.cn
 		rem curl https://ipv4.ip.sb
-		curl --connect-timeout 2 https://myip.ipip.net
+		curl --connect-timeout 2 --max-time 10 "https://myip.ipip.net"
 		<nul set /p "="
 		echo;
 	)
 	>nul ping /n 1 240c::6666
 	if not errorlevel 1 (
 		<nul set /p "=本机IPV6地址: "
-		curl --connect-timeout 2 https://6.ipw.cn
+		curl --connect-timeout 2 --max-time 10 "https://6.ipw.cn"
 		rem curl https://ipv6.ip.sb
 		echo;
 	)
@@ -1933,7 +1933,7 @@ echo;
 if exist "!windir!\system32\curl.exe" (
 	>nul ping /n 1 www.baidu.com
 	if not errorlevel 1 (
-		for /f "delims=" %%a in ('curl -s --connect-timeout 2 https://4.ipw.cn') do (
+		for /f "delims=" %%a in ('curl -s --connect-timeout 2 --max-time 10 "https://4.ipw.cn"') do (
 			<nul set /p "=外部IP地址:"
 			echo;	%%a
 			echo;
@@ -4107,7 +4107,7 @@ setlocal
 title curl多进程下载!system!
 cls
 if not exist "!windir!\system32\curl.exe" (
-	if not exist .\curl.exe (
+	if not exist "curl.exe" (
 		<nul set /p "=没有找到curl.exe"
 		call :out 2
 		endlocal
@@ -4151,7 +4151,7 @@ echo;开始获取文件信息...
 set filename=
 if exist "%temp%\tag" (del /f /q "%temp%\tag")
 call :curlproxy
-curl !proxy! !doh! !ua! -I -# -L -o tag --connect-timeout 5 --output-dir "%temp%" "!url!"
+curl !proxy! !doh! !ua! -I -# -L -o tag --connect-timeout 5 --max-time 10 --output-dir "%temp%" "!url!"
 if not exist "%temp%\tag" (
 	echo;没有获取到文件信息
 	%hx%
@@ -4893,7 +4893,7 @@ if exist "!windir!\system32\curl.exe" (
 	call :curlproxy
 	echo;使用链接:	!gxurlhost1!
 	echo;Host域名:	!githost:~10,-1!
-	curl !proxy! !doh! !githost! !ua! --compressed -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 !resolve! -o dostoolupdate !gxurlhost1!
+	curl !proxy! !doh! !githost! !ua! --compressed -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 --max-time 10 !resolve! -o dostoolupdate "!gxurlhost1!"
 	if exist "%temp%\dostoolupdate" (
 		for /f "usebackq delims=: tokens=1-3" %%a in ("%temp%\dostoolupdate") do (
 			set "gxver=%%a"
@@ -4906,7 +4906,7 @@ if exist "!windir!\system32\curl.exe" (
 		goto updatecheck
 	) else (
 		echo;使用链接:	!gxurl1!
-		curl !proxy! !doh! !ua! --compressed -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o dostoolupdate !gxurl1!
+		curl !proxy! !doh! !ua! --compressed -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 --max-time 10 -o dostoolupdate "!gxurl1!"
 		if exist "%temp%\dostoolupdate" (
 			for /f "usebackq delims=: tokens=1-3" %%a in ("%temp%\dostoolupdate") do (
 				set "gxver=%%a"
@@ -4921,7 +4921,7 @@ if exist "!windir!\system32\curl.exe" (
 		) else (
 			echo;使用链接:	!gxurlhost2!
 			echo;Host域名:	!jshost:~10,-1!
-			curl !proxy! !doh! !jshost! !ua! --compressed -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 !resolve! -o dostoolupdate !gxurlhost2!
+			curl !proxy! !doh! !jshost! !ua! --compressed -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 --max-time 10 !resolve! -o dostoolupdate "!gxurlhost2!"
 			if exist "%temp%\dostoolupdate" (
 				for /f "usebackq delims=: tokens=1-3" %%a in ("%temp%\dostoolupdate") do (
 					set "gxver=%%a"
@@ -4934,7 +4934,7 @@ if exist "!windir!\system32\curl.exe" (
 				goto updatecheck
 			) else (
 				echo;使用链接:	!gxurl2!
-				curl !proxy! !doh! !ua! --compressed -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o dostoolupdate !gxurl2!
+				curl !proxy! !doh! !ua! --compressed -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 --max-time 10 -o dostoolupdate "!gxurl2!"
 				if exist "%temp%\dostoolupdate" (
 					for /f "usebackq delims=: tokens=1-3" %%a in ("%temp%\dostoolupdate") do (
 						set "gxver=%%a"
@@ -5030,7 +5030,7 @@ if exist "!windir!\system32\curl.exe" (
 	pushd "%temp%"
 	echo;使用链接:	!url!
 	if defined host (echo;Host域名:	!host:~10,-1!)
-	curl !proxy! !doh! !host! !ua! --compressed -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 !resolve! -o dostool !url!
+	curl !proxy! !doh! !host! !ua! --compressed -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 --max-time 30 !resolve! -o dostool "!url!"
 	popd
 ) else (
 	certutil -urlcache -split -f !url! "%temp%\dostool"
@@ -6107,7 +6107,7 @@ goto :eof
 :curldxc
 setlocal
 if not exist "!windir!\system32\curl.exe" (
-	if not exist .\curl.exe (
+	if not exist "curl.exe" (
 		echo;没有找到curl.exe
 		goto :eof
 	)
@@ -6149,7 +6149,7 @@ for /f "skip=1 tokens=3" %%a in ('"reg query "HKCU\Software\Microsoft\Windows\Cu
 if defined doh (
 	echo;测试DoH端口是否有效...
 	for /f "tokens=2 delims=/" %%a in ("!doh!") do (
-		curl !proxy! -s --connect-timeout 2 --retry 1 -I -o nul "https://%%a"
+		curl !proxy! -s --connect-timeout 2 --retry 1 --max-time 10 -I -o nul "https://%%a"
 		if errorlevel 1 (
 			echo;使用系统默认DNS
 			set doh=
@@ -6158,7 +6158,7 @@ if defined doh (
 		)
 	)
 )
-curl !proxy! !doh! !par! !ua! -I -# -L -o tag --connect-timeout 5 --output-dir "%temp%" "!url!"
+curl !proxy! !doh! !par! !ua! -I -# -L -o tag --connect-timeout 5 --max-time 10 --output-dir "%temp%" "!url!"
 if not exist "%temp%\tag" (
 	echo;没有获取到文件信息
 	goto :eof
@@ -6323,7 +6323,7 @@ for /f "skip=1 tokens=3" %%a in ('"reg query "HKCU\Software\Microsoft\Windows\Cu
 if defined doh (
 	echo;测试DoH端口是否有效...
 	for /f "tokens=2 delims=/" %%a in ("!doh!") do (
-		curl !proxy! -s --connect-timeout 2 --retry 1 -I -o nul "https://%%a"
+		curl !proxy! -s --connect-timeout 2 --retry 1 --max-time 10 -I -o nul "https://%%a"
 		if errorlevel 1 (
 			echo;使用系统默认DNS
 			set doh=
