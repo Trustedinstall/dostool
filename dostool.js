@@ -15,7 +15,7 @@
 ˜Ý˜ä˜àâ´¶ä“¯›NéàØ±êÎ’¬³ª‘õÑîÕÄ„mäÕ ‘ž››–ŠšG´ú¸±êÝž³èõ“ž
 ÌÒž´×ÀŸ‚Ò¯—ßž†ãÛ“µ‘þž´‘a›ÂÖÆp˜ù—Ú•t¬‹—ì‘õÎâµ¤…_ƒ§¸Ë…X·®
 à¡–ð…W…Y¬{’°×¡›KßÉÂÔ ²–[ñž‰êÅºÎ¬„Ö´†• n•jÌ¡ºº½½Ø¦¹À•jœ}ž™
-						
+
 :chushihua
 @if not exist "%windir%\system32\cmd.exe" goto winnt
 @echo off&title ¡¡&setlocal enabledelayedexpansion
@@ -51,7 +51,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250401
-set versize=151690
+set versize=151700
 set xz0=0
 set nx1=[+]ÏÂÒ»Ò³
 set nx2=[-]ÉÏÒ»Ò³
@@ -1490,7 +1490,8 @@ echo;Ê¹ÓÃdirÃüÁîËÑË÷¿ÕÎÄ¼þ¼Ð...
 goto loop2
 :loop1
 set empty=0
->"!temp!\empty_dir.txt" "!EverythingInstallPath!\es.exe" "!caozuo!" empty: ^!attrib:l"
+set "gth=^!"
+>"!temp!\empty_dir.txt" "!EverythingInstallPath!\es.exe" "!caozuo!" empty: !gth!attrib:l
 for /f "usebackq delims=" %%a in ("!temp!\empty_dir.txt") do (
 	rd /q "%%a"&&(
 		set empty=1
