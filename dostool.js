@@ -15,7 +15,7 @@
 ò›ò‰ò‡‚¥∂‰ìØõNÈ‡ÿ±ÍŒí¨≥™ëı—Ó’ƒÑm‰’†ëûõõñùäöG¥˙∏±êÍÅ›û≥Ëıìû
 Ã“û¥◊¿üÇ“ØóﬂûÜÅ„Å€ìµë˛û¥ëaõ¬÷∆ùpò˘ó⁄ït¨ãóÏëıŒ‚µ§Ö_Éß∏ÀÖX∑Æ
 ‡°ñÖWÖY¨{í∞◊°õKﬂ…¬‘†≤ñ[êÒûâÍ≈∫Œ¨Ñ÷¥Üï†nïjÃ°∫∫ΩΩÿ¶π¿ïjú}ûô
-									
+		
 :chushihua
 @if not exist "%windir%\system32\cmd.exe" goto winnt
 @echo off&title °°&setlocal enabledelayedexpansion
@@ -4060,7 +4060,7 @@ for %%a in (
 ) do (
 	>nul 2>nul set "%%~a"
 )
-for /f "tokens=3" %%a in ('"2>nul reg QUERY "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v EditionID"') do (
+for /f "skip=2 tokens=3" %%a in ('"2>nul reg QUERY "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v EditionID"') do (
 	set "sysid=%%a"
 )
 set server=
@@ -4529,7 +4529,7 @@ if exist "chrome.exe" (
 	set chrome=chrome.exe
 	goto startchrome
 ) else (
-	for /f "skip=1 tokens=3" %%a in ('"2>nul reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe" /v Path"') do (
+	for /f "skip=2 tokens=3" %%a in ('"2>nul reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe" /v Path"') do (
 		set "chrome=%%a"
 	)
 	for /f "delims=" %%a in ("!chrome!") do (set "chrome=%%~fa")
@@ -6137,9 +6137,9 @@ if not exist "!dir!\" (
 	goto :eof
 )
 if exist "%temp%\tag" (del /f /q "%temp%\tag")
-for /f "skip=1 tokens=3" %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
+for /f "skip=2 tokens=3" %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
 	if "%%a" equ "0x1" (
-		for /f "skip=1 tokens=3" %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
+		for /f "skip=2 tokens=3" %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
 			set "proxy=-x %%b"
 			echo; π”√¥˙¿Ì:	%%b
 		)
@@ -6311,9 +6311,9 @@ if exist "!url!\" (
 md "!url!"
 endlocal&exit /b %errorlevel%
 :curlproxy
-for /f "skip=1 tokens=3" %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
+for /f "skip=2 tokens=3" %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
 	if "%%a" equ "0x1" (
-		for /f "skip=1 tokens=3" %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
+		for /f "skip=2 tokens=3" %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
 			set "proxy=-x %%b"
 			echo; π”√¥˙¿Ì:	%%b
 		)
