@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-		
+					
 :chushihua
 @if not exist "%windir%\system32\cmd.exe" goto winnt
 @echo off&title 　&setlocal enabledelayedexpansion
@@ -50,8 +50,8 @@ goto :eof
 setlocal
 set "dosqssj=!time!"
 >nul chcp 936
-set ver=20250401
-set versize=151720
+set ver=20250601
+set versize=152790
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -4344,13 +4344,12 @@ set "jssj=!time!"
 goto 71.4
 :72
 setlocal
-set "域名重定向=!temp!\域名重定向.txt"
-set "域名重解析=!temp!\域名重解析.txt"
-set "强制使用quic=!temp!\强制使用quic.txt"
-if not exist "!域名重定向!" (
-	>"!域名重定向!" (
+if not exist "!temp!\sni.txt" (
+	>"!temp!\sni.txt" (
 	rem 使用 @ 替代域名中的 * 通配符
 	for %%a in (
+		"[域名重定向]"
+
 		"#wikipedia"
 		"@.wikipedia.org=wikidata.org"
 		"@.wikiquote.org=wikidata.org"
@@ -4435,14 +4434,9 @@ if not exist "!域名重定向!" (
 		"#duckduckgo"
 		"duckduckgo.com=duck.co"
 		"@.duckduckgo.com=duck.co"
-	) do (
-		echo;%%~a
-	)
-	)
-)
-if not exist "!域名重解析!" (
-	>"!域名重解析!" (
-	for %%a in (
+
+		"[域名重解析]"
+
 		"#wikipedia"
 		"#wikidata.org=[2620:0:863:ed1a::1]"
 		"#wikidata.org=208.80.153.224"
@@ -4469,14 +4463,9 @@ if not exist "!域名重解析!" (
 
 		"#nyaa"
 		"nyaa.ddos-guard.net=nyaa.si"
-	) do (
-		echo;%%~a
-	)
-	)
-)
-if not exist "!强制使用quic!" (
-	>"!强制使用quic!" (
-	for %%a in (
+
+		"[强制使用quic]"
+
 		"#不支持通配符"
 		"www.google.com.hk"
 		"www.google.com.tw"
@@ -4516,6 +4505,8 @@ rem 设置用户数据路径 (值为空或无效时使用默认路径)
 set user-data-dir=
 rem 设置支持chrome命令行的浏览器的路径
 set "chromium=!ProgramFiles(x86)!\Microsoft\Edge\Application\msedge.exe"
+rem 规则文件路径
+set "dfurl=!temp!\sni.txt"
 call :ljjc user-data-dir dir
 if errorlevel 1 (
 	set "user-data-dir=--user-data-dir="!user-data-dir!""
@@ -4561,33 +4552,40 @@ if "!brpro!" equ "1" (
 		)
 	)
 )
-if exist "!域名重定向!" (
-	for /f "eol=# tokens=1,2 delims== " %%a in (!域名重定向!) do (
+call :ini "!dfurl!" host_rules 域名重定向
+call :ini "!dfurl!" host_resolver_rules 域名重解析
+call :ini "!dfurl!" origin_to_force_quic_on 强制使用quic
+for /l %%a in (1,1,!host_rules!) do (
+	for /f "tokens=1,2 delims== " %%a in ("!host_rules%%a!") do (
 		set "host-rules=!host-rules!MAP %%a %%b, "
 	)
-	set "host-rules=!host-rules:~0,-2!"
-	set "host-rules=--host-rules="!host-rules:@=*!""
 )
-if exist "!域名重解析!" (
-	for /f "eol=# tokens=1,2 delims== " %%a in (!域名重解析!) do (
+if defined host-rules (
+	set "host-rules=--host-rules="!host-rules:~0,-2!""
+	set "host-rules=!host-rules:@=*!"
+)
+for /l %%a in (1,1,!host_resolver_rules!) do (
+	for /f "tokens=1,2 delims== " %%a in ("!host_resolver_rules%%a!") do (
 		set "host-resolver-rules=!host-resolver-rules!MAP %%a %%b, "
 	)
-	set "host-resolver-rules=!host-resolver-rules:~0,-2!"
-	set "host-resolver-rules=--host-resolver-rules="!host-resolver-rules!""
 )
-if exist "!强制使用quic!" (
-	for /f "eol=# tokens=1,2 delims=:" %%a in (!强制使用quic!) do (
+if defined host-resolver-rules (
+	set "host-resolver-rules=--host-resolver-rules="!host-resolver-rules:~0,-2!""
+)
+for /l %%a in (1,1,!origin_to_force_quic_on!) do (
+	for /f "tokens=1,2 delims=:" %%a in ("!origin_to_force_quic_on%%a!") do (
 		if "%%b" equ "" (
 			set "origin-to-force-quic-on=!origin-to-force-quic-on!%%a:443, "
 		) else (
 			set "origin-to-force-quic-on=!origin-to-force-quic-on!%%a:%%b, "
 		)
 	)
-	set "origin-to-force-quic-on=!origin-to-force-quic-on:~0,-2!"
-	set "origin-to-force-quic-on=--enable-quic --origin-to-force-quic-on="!origin-to-force-quic-on!""
+)
+if defined origin-to-force-quic-on (
+	set "origin-to-force-quic-on=--enable-quic --origin-to-force-quic-on="!origin-to-force-quic-on:~0,-2!""
 )
 if "!chrome-command-line!" equ "1" (
-	>chrome-command-line <nul set /p "=chrome !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors!"
+	>chrome-command-line <nul set /p "=chrome --test-type !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors!"
 )
 start /max "" "!chrome!" --profile-directory=Default !user-data-dir! --test-type !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors!
 endlocal
@@ -6377,6 +6375,60 @@ for %%a in (
 	if exist "%%a:\" (set "var=!var!%%a:\ ")
 )
 endlocal&set "%1=%var%"
+goto :eof
+:ini
+if exist "%~1\" (
+	goto :eof
+) else (
+	if not exist "%~1" (goto :eof)
+)
+if "%~2" equ "" (goto :eof)
+set %~2=
+if "%~3" equ "" (
+	for /f "usebackq eol=# delims=" %%a in ("%~1") do (
+		set "__line=%%a"
+		if "!__line:~0,1!!__line:~-1!" neq "[]" (
+			if "!__line:~0,1!" neq ";" (
+				set /a "%~2+=1"
+				set "%~2!%~2!=%%a"
+			)
+		)
+	)
+	set __line=
+	goto :eof
+)
+set "__section=[%~3]"
+set __start=
+for /f "usebackq eol=# delims=" %%a in ("%~1") do (
+	if /i "%%a" equ "!__section!" (
+		set __start=1
+		set __section=
+	) else (
+		if "!__start!" equ "1" (
+			set "__line=%%a"
+			if "!__line:~0,1!!__line:~-1!" equ "[]" (
+				set __line=
+				set __start=
+				goto :eof
+			)
+			if "!__line:~0,1!" neq ";" (
+				if "%~4" equ "" (
+					set /a "%~2+=1"
+					set "%~2!%~2!=%%a"
+				) else (
+					for /f "tokens=1* delims== " %%a in ("%%a") do (
+						if /i "%%a" equ "%~4" (
+							set /a "%~2+=1"
+							set "%~2!%~2!=%%a=%%b"
+						)
+					)
+				)
+			)
+		)
+	)
+)
+set __line=
+set __start=
 goto :eof
 :winnt
 @echo;Incompatible with the current system operating environment
