@@ -51,7 +51,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250601
-set versize=152790
+set versize=152810
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -3308,7 +3308,7 @@ if "!xzpf:~1!" equ "" (
 	set "xzpf=!xzpf!:"
 ) else (
 	call :lj xzpf xzpf
-	if not exist "!xzpf!\" (md "!xzpf!")
+	>nul 2>nul dir /a:d /b "!xzpf!"||md "!xzpf!"
 )
 mountvol !xzpf! !b%cjpf%!
 if not errorlevel 1 (echo;操作完成)
@@ -3613,7 +3613,7 @@ call :sjc !kssj! !jssj! raw
 echo;读取用时: !raw! ms
 goto :eof
 :listfile
-if not exist "%~1\" (
+>nul 2>nul dir /a:d /b "%~1"||(
 	if %2 gtr 4096 (
 		if !size! leq 104857600 (
 			for %%a in (
@@ -6130,7 +6130,7 @@ for /f "tokens=2 delims==" %%a in ('set tr') do (
 	)
 )
 if not defined dir (set "dir=%%~dp0")
-if not exist "!dir!\" (
+>nul 2>nul dir /a:d /b "!dir!"||(
 	echo;文件夹 "!dir!" 不存在
 	goto :eof
 )
@@ -6181,11 +6181,8 @@ set /a "newtr=tr+1"
 set file=
 for /l %%a in (1,1,!tr!) do (set "file=!file!%%a+")
 set "file=!file:~0,-1!"
-if exist "%temp%\down\" (
-	rd /s /q "%temp%\down"
-) else (
-	if exist "%temp%\down" (del /f /q "%temp%\down")
-)
+>nul 2>nul dir /a:d /b "%temp%\down"&&rd /s /q "%temp%\down"
+if exist "%temp%\down" (del /f /q "%temp%\down")
 md "%temp%\down"||(
 	echo;不能创建临时文件夹: "%temp%\down"
 	goto :eof
@@ -6266,19 +6263,17 @@ for /f "delims=" %%a in ("!%1!") do (
 	if not exist "!var!" (exit /b 0)
 )
 if "%2" equ "dir" (
-	if exist "!var!\" (
+	>nul 2>nul dir /a:d /b "!var!"&&(
 		endlocal&set "%1=%var%"
 		exit /b 1
-	) else (
-		exit /b 0
 	)
+	exit /b 0
 ) else (
-	if exist "!var!\" (
-		exit /b 0
-	) else (
+	>nul 2>nul dir /a:d /b "!var!"||(
 		endlocal&set "%1=%var%"
 		exit /b 1
 	)
+	exit /b 0
 )
 :ranmac
 setlocal
@@ -6301,11 +6296,8 @@ if "%~1" equ "" (goto :eof)
 setlocal
 set "url=%~1"
 if "!url:-1!" equ "\" (set "url=!url:0,-1!")
-if exist "!url!\" (
-	rd /s /q "!url!"
-) else (
-	if exist "!url!" (del /f /q "!url!")
-)
+>nul 2>nul dir /a:d /b "!url!"&&rd /s /q "!url!"
+if exist "!url!" (del /f /q "!url!")
 md "!url!"
 endlocal&exit /b %errorlevel%
 :curlproxy
@@ -6377,11 +6369,8 @@ for %%a in (
 endlocal&set "%1=%var%"
 goto :eof
 :ini
-if exist "%~1\" (
-	goto :eof
-) else (
-	if not exist "%~1" (goto :eof)
-)
+>nul 2>nul dir /a:d /b "%~1"&&goto :eof
+if not exist "%~1" (goto :eof)
 if "%~2" equ "" (goto :eof)
 set %~2=
 if "%~3" equ "" (
