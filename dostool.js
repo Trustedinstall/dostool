@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-					
+				
 :chushihua
 @if not exist "%windir%\system32\cmd.exe" goto winnt
 @echo off&title 　&setlocal enabledelayedexpansion
@@ -51,7 +51,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250601
-set versize=152810
+set versize=152600
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -670,7 +670,7 @@ for %%a in (
 )
 %hx%
 set cho=123456780
-%sel%
+%sel% shuru
 if "!shuru!" equ "1" (goto 21.1)
 if "!shuru!" equ "2" (goto 21.2)
 if "!shuru!" equ "3" (goto 21.3)
@@ -836,7 +836,7 @@ for %%a in (
 )
 %hx%
 set cho=1234567890
-%sel%
+%sel% shuru
 if "!shuru!" equ "1" (goto guanji.1)
 if "!shuru!" equ "2" (goto guanji.2)
 if "!shuru!" equ "3" (goto guanji.3)
@@ -966,7 +966,7 @@ for %%a in (
 )
 %hx%
 set cho=1234560
-%sel%
+%sel% shuru
 if "!shuru!" equ "1" (goto 23.1)
 if "!shuru!" equ "2" (goto 23.2)
 if "!shuru!" equ "3" (goto 23.6)
@@ -1029,7 +1029,7 @@ echo;文件路径: !jclj1!
 %hx%
 echo;(e=返回)(d=打开文件位置)
 set cho=ed
-%sel%
+%sel% shuru
 if "!shuru!" equ "1" (endlocal&goto 23)
 if "!shuru!" equ "2" (goto 23.8)
 if /i "!shuru!" equ "e" (endlocal&goto 23)
@@ -1206,7 +1206,7 @@ for %%a in (
 )
 %hx%
 set cho=1234560
-%sel%
+%sel% shuru
 if "!shuru!" equ "1" (goto 24.1)
 if "!shuru!" equ "2" (goto 24.2)
 if "!shuru!" equ "3" (goto 24.3)
@@ -1341,7 +1341,7 @@ for %%a in (
 )
 %hx%
 set cho=120
-%sel%
+%sel% shuru
 if "!shuru!" equ "1" (goto 26.1)
 if "!shuru!" equ "2" (goto 26.2)
 if "!shuru!" equ "3" (endlocal&goto memuv2)
@@ -2220,7 +2220,7 @@ for %%a in (
 )
 %hx%
 set cho=12340
-%sel%
+%sel% shuru
 if "!shuru!" equ "1" (goto 32.1)
 if "!shuru!" equ "2" (goto 32.2)
 if "!shuru!" equ "3" (goto 32.3)
@@ -2391,7 +2391,7 @@ for %%a in (
 )
 %hx%
 set cho=120
-%sel%
+%sel% shuru
 if "!shuru!" equ "1" (goto 10z)
 if "!shuru!" equ "2" (goto 2z)
 if "!shuru!" equ "3" (endlocal&goto memuv2)
@@ -2517,7 +2517,7 @@ for %%a in (
 )
 %hx%
 set cho=12340
-%sel%
+%sel% shuru
 if "!shuru!" equ "1" (goto yasuo)
 if "!shuru!" equ "2" (goto jieya)
 if "!shuru!" equ "3" (goto yasuowjj)
@@ -2851,7 +2851,7 @@ for %%a in (
 )
 %hx%
 set cho=1230
-%sel%
+%sel% shuru
 if "!shuru!" equ "1" (goto kqwifi)
 if "!shuru!" equ "2" (goto gbwifi)
 if "!shuru!" equ "3" (goto wlpz)
@@ -3083,7 +3083,7 @@ for %%a in (
 )
 %hx%
 set cho=1230
-%sel%
+%sel% shuru
 if "!shuru!" equ "1" (
 	start slmgr.vbs -dli
 	endlocal
@@ -3197,7 +3197,7 @@ for %%a in (
 )
 %hx%
 set cho=123456780
-%sel%
+%sel% shuru
 if "!shuru!" equ "1" (goto 61.1)
 if "!shuru!" equ "2" (goto 61.2)
 if "!shuru!" equ "3" (goto 61.3)
@@ -3393,7 +3393,7 @@ for %%a in (
 )
 %hx%
 set cho=120
-%sel%
+%sel% shuru
 if "!shuru!" equ "1" (goto 63-1)
 if "!shuru!" equ "2" (goto 63-2)
 if "!shuru!" equ "3" (endlocal&goto memuv2)
@@ -3503,7 +3503,7 @@ for %%a in (
 )
 %hx%
 set cho=120
-%sel%
+%sel% shuru
 if "!shuru!" equ "1" (goto 64-1)
 if "!shuru!" equ "2" (goto 64-2)
 if "!shuru!" equ "3" (endlocal&goto memuv2)
@@ -3814,7 +3814,7 @@ for %%a in (
 )
 %hx%
 set cho=120
-%sel%
+%sel% shuru
 if "!shuru!" equ "1" (goto 67.1)
 if "!shuru!" equ "2" (goto 67.2)
 if "!shuru!" equ "3" (endlocal&goto memuv2)
@@ -4077,7 +4077,7 @@ for %%a in (
 )
 %hx%
 set cho=120
-%sel%
+%sel% shuru
 if "!shuru!" equ "1" (set "server=kms.loli.best"&goto 70.1)
 if "!shuru!" equ "2" (set "server=kms.03k.org"&goto 70.1)
 if "!shuru!" equ "3" (endlocal&goto memuv2)
@@ -4148,6 +4148,7 @@ call :ljjc dir dir&&(
 	goto 71.1
 )
 cls
+echo;链接:	!url!
 echo;开始获取文件信息...
 set filename=
 if exist "%temp%\tag" (del /f /q "%temp%\tag")
@@ -4648,7 +4649,7 @@ for %%a in (
 )
 %hx%
 set cho=120
-%sel%
+%sel% shuru
 if "!shuru!" equ "1" (start certmgr.msc&goto memuv2)
 if "!shuru!" equ "2" (start certlm.msc&goto memuv2)
 if "!shuru!" equ "3" (endlocal&goto memuv2)
@@ -4672,7 +4673,7 @@ for %%a in (
 )
 %hx%
 set cho=1230
-%sel%
+%sel% shuru
 if "!shuru!" equ "1" (goto 75.1)
 if "!shuru!" equ "2" (goto 75.2)
 if "!shuru!" equ "3" (goto 75.3)
@@ -4845,13 +4846,10 @@ for /l %%a in (1,1,!mac!) do (call :ranmac)
 endlocal
 goto memuv2
 :hash
-setlocal
-set "shuanfa=%2"
-if not defined shuanfa (set "shuanfa=sha256")
 if exist "!windir!\system32\certutil.exe" (
-	for /f "skip=1 eol=C" %%a in ('certutil -hashfile "%~1" !shuanfa!') do (
+	for /f "skip=1 eol=C" %%a in ('certutil -hashfile "%~1" %2') do (
 		if "%3" neq "" (
-			endlocal&set "%3=%%a"
+			set "%3=%%a"
 			goto :eof
 		) else (
 			echo;%%a
@@ -5114,15 +5112,12 @@ set $=!$!fedcba9876543210&set/aN+=0x!$:~16,1!
 endlocal&If %2. neq . (set/a%2=%N%)else echo;%N%
 goto :eof
 :ys
-setlocal
-for /f "tokens=1-4 delims=:." %%a in ("!time!") do (
-	set /a "start=1%%a*360000+1%%b*6000+1%%c*100+1%%d"
-)
+set /a "__yss=1%time:~0,2%*360000+1%time:~3,2%*6000+1%time:~6,2%*100+1%time:~-2%"
 :ys_loop
-for /f "tokens=1-4 delims=:." %%a in ("!time!") do (
-	set /a "sub=(1%%a*360000+1%%b*6000+1%%c*100+1%%d)-start"
-)
-if !sub! lss %1 (goto ys_loop)
+set /a "__yse=(1%time:~0,2%*360000+1%time:~3,2%*6000+1%time:~6,2%*100+1%time:~-2%)-__yss"
+if !__yse! lss %1 (goto ys_loop)
+set __yss=
+set __yse=
 goto :eof
 :list
 set start=1
@@ -5229,7 +5224,6 @@ popd
 goto :eof
 :colortxt2
 set "bj=%1"
-set "zt=%~2"
 if 0x%bj:~0,1% gtr 0x9 (goto colortxt2.2)
 if 0x%bj:~0,1% gtr 0x4 (goto colortxt2.1)
 if "!bj:~0,1!" equ "0" (
@@ -5336,16 +5330,15 @@ if /i "!bj:~1,1!" equ "" (
 	)
 )
 :colortxt2.6
-<nul set /p "=!cswz!!bj1!!bj2!!zt!!cswz!!ysbak!"
+<nul set /p "=!cswz!!bj1!!bj2!%~2!cswz!!ysbak!"
 goto :eof
 :rgb
 setlocal
 set "brgb=%1"
 set "qrgb=%2"
-set "zt=%~3"
 set "brgb=!brgb:.=;!"
 set "qrgb=!qrgb:.=;!"
-<nul set /p "=!cswz!48;2;!brgb!;38;2;!qrgb!m!zt!!cswz!!ysbak!"
+<nul set /p "=!cswz!48;2;!brgb!;38;2;!qrgb!m%~3!cswz!!ysbak!"
 goto :eof
 :su
 >"%temp%\su.bat" <nul set /p "=!comspec! /c "%~dpnx0" ks"
@@ -5452,6 +5445,8 @@ If (Test-Path $InfFileLocation) {
 #su#
 :xdwjs
 setlocal
+if "%1" equ "" (goto :eof)
+if "%3" equ "" (goto :eof)
 set "Bytes=%1"
 set "danwei=%2"
 if /i "!danwei!" equ "kb" (call :scf !bytes! 1024 bytes)
@@ -5710,15 +5705,13 @@ public class User32 {
 [User32]::SendMessage(-1,0x0112,0xF170,2)
 #offdisplay#
 :choice
-setlocal
+set %1=
 choice /c !cho! /n /m "输入选项: "
-endlocal&set "shuru=%errorlevel%"
+set "%1=%errorlevel%"
 goto :eof
 :set
-setlocal
-set shurux=
-set /p "shurux=输入选项: "
-endlocal&set "shuru=%shurux%"
+set %1=
+set /p "%1=输入选项: "
 goto :eof
 :checkvar
 setlocal
@@ -6147,8 +6140,8 @@ for /f "skip=2 tokens=3" %%a in ('"reg query "HKCU\Software\Microsoft\Windows\Cu
 )
 if defined doh (
 	echo;测试DoH端口是否有效...
-	for /f "tokens=2 delims=/" %%a in ("!doh!") do (
-		curl !proxy! -s --connect-timeout 2 --retry 1 --max-time 10 -I -o nul "https://%%a"
+	for /f "tokens=2* delims=/" %%a in ("!doh!") do (
+		curl !proxy! -s --connect-timeout 2 --retry 1 --max-time 10 -I -o nul "https://%%a/%%b"
 		if errorlevel 1 (
 			echo;使用系统默认DNS
 			set doh=
@@ -6164,10 +6157,8 @@ if not exist "%temp%\tag" (
 )
 for /f "tokens=2" %%a in ('findstr /c:"Accept-Ranges:" "%temp%\tag"') do (set "trflag=%%a")
 for /f "tokens=2" %%a in ('findstr /c:"Content-Length:" "%temp%\tag"') do (set "filesize=%%a")
-for /f "tokens=2 delims==" %%a in ('findstr /c:"filename=" "%temp%\tag"') do (set "filename=%%a")
 del /f /q "%temp%\tag"
 if "!trflag!" neq "bytes" (set tr=1)
-if not defined filename (set "filename=%~3")
 if not defined filesize (goto curldxc_3)
 if "!tr!" equ "1" (goto curldxc_3)
 set /a "fd=filesize/tr"
@@ -6234,15 +6225,15 @@ goto :eof
 powershell -mta -nologo -noprofile -command "$command=[IO.File]::ReadAllText('%~dpnx0') -split '#%~1\#.*';iex ($command[1])"
 goto :eof
 :out
-setlocal
 if exist "!windir!\system32\timeout.exe" (
 	>nul timeout /t %1 /nobreak
 ) else (
 	if exist "!windir!\system32\ping.exe" (
 		>nul ping /n %1 127.0.0.1
 	) else (
-		set /a "ms=%1*100"
-		call :ys !ms!
+		set /a "__out=%1*100"
+		call :ys !__out!
+		set __out=
 	)
 )
 goto :eof
@@ -6313,8 +6304,8 @@ for /f "skip=2 tokens=3" %%a in ('"reg query "HKCU\Software\Microsoft\Windows\Cu
 )
 if defined doh (
 	echo;测试DoH端口是否有效...
-	for /f "tokens=2 delims=/" %%a in ("!doh!") do (
-		curl !proxy! -s --connect-timeout 2 --retry 1 --max-time 10 -I -o nul "https://%%a"
+	for /f "tokens=2* delims=/" %%a in ("!doh!") do (
+		curl !proxy! -s --connect-timeout 2 --retry 1 --max-time 10 -I -o nul "https://%%a/%%b"
 		if errorlevel 1 (
 			echo;使用系统默认DNS
 			set doh=
@@ -6355,8 +6346,6 @@ if exist "!windir!\System32\fsutil.exe" (
 		goto :eof
 	)
 )
-setlocal
-set var=
 for %%a in (
 	a b c d e
 	f g h i j
@@ -6364,9 +6353,8 @@ for %%a in (
 	p q r s t
 	u v w x y z
 ) do (
-	if exist "%%a:\" (set "var=!var!%%a:\ ")
+	if exist "%%a:\" (set "%1=!%1!%%a:\ ")
 )
-endlocal&set "%1=%var%"
 goto :eof
 :ini
 >nul 2>nul dir /a:d /b "%~1"&&goto :eof
