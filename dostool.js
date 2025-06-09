@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-				
+								
 :chushihua
 @if not exist "%windir%\system32\cmd.exe" goto winnt
 @echo off&title 　&setlocal enabledelayedexpansion
@@ -51,7 +51,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250601
-set versize=152600
+set versize=154310
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -184,14 +184,9 @@ call :memuv2.2
 set caidan=
 set /p "caidan=请输入你的选择: "
 if not defined caidan (goto memuv2.1)
+call :var caidan
 if "!caidan:~1!" equ "" (
-	call :checkvar caidan num||(
-		if defined xz!caidan! (
-			goto !xz%caidan%!
-		) else (
-			goto memuv2.1
-		)
-	)
+	if defined xz!caidan! (goto !xz%caidan%!)
 	for %%a in (- a) do (
 		if "!caidan!" equ "%%~a" (
 			set /a "pd=start-1"
@@ -223,21 +218,7 @@ if /i "!caidan:~0,2!" equ "go" (
 	)
 	goto memuv2.1
 )
-if /i "!caidan!" equ "gx" (
-	set "verbak=!ver!"
-	goto update
-)
-if /i "!caidan!" equ "qzgx" (
-	set verbak=0
-	goto update
-)
-if /i "!caidan!" equ "js" (goto 49)
-if /i "!caidan!" equ "kcd" (goto kcd)
-if /i "!caidan!" equ "gcd" (goto gcd)
-if /i "!caidan!" equ "guanji" (goto guanji)
-if /i "!caidan!" equ "guanyu" (goto guanyu)
-if /i "!caidan!" equ "csh" (endlocal&goto chushihua)
-if /i "!caidan!" equ "offxsq" (call :pwiex offdisplay&goto memuv2)
+if defined !caidan! (!%caidan%!)
 :memuv2.1
 <nul set /p "=请输入正确的选项！"
 call :out 2
@@ -435,6 +416,7 @@ echo;!sypf!
 echo;如果不能正常转换，请使用磁盘错误修复
 set zhuanhuancipan=
 set /p "zhuanhuancipan=输入需要转换的盘符: "
+call :var zhuanhuancipan
 cls
 convert !zhuanhuancipan!: /fs:ntfs /v /x
 %hx%
@@ -451,6 +433,7 @@ echo;!sypf!
 %hx%
 set cipanxioufu=
 set /p "cipanxioufu=输入需要修复的盘符: "
+call :var cipanxioufu
 cls
 call :isntfs !cipanxioufu!:
 if errorlevel 1 (
@@ -471,6 +454,7 @@ call :bel
 cls
 set geshihuaxuanxiang=
 set /p "geshihuaxuanxiang=格式化有一定的危险性，是否继续(y/n): "
+call :var geshihuaxuanxiang
 if /i "!geshihuaxuanxiang!" equ "y" (goto 12.1)
 if /i "!geshihuaxuanxiang!" equ "n" (endlocal&goto memuv2)
 <nul set /p "=请输入正确的选项！"
@@ -485,6 +469,7 @@ echo;!sypf!
 %hx%
 set geshihua=
 set /p "geshihua=输入需要格式化的盘符: "
+call :var geshihua
 cls
 if defined geshihua (
 	if exist "!geshihua!:\" (
@@ -506,6 +491,7 @@ echo;有效数值范围(-2147483648至2147483647)(c=清屏 e=返回)
 :13.1
 set biaodashi=
 set /p "biaodashi=输入表达式: "
+call :var biaodashi
 if /i "!biaodashi!" equ "c" (endlocal&goto 13)
 if /i "!biaodashi!" equ "e" (endlocal&goto memuv2)
 set /a "jieguo=!biaodashi!"
@@ -530,6 +516,8 @@ set zuidazhi=
 set zuixiaozhi=
 set /p "zuidazhi=输入随机数的最大值: "
 set /p "zuixiaozhi=输入随机数的最小值: "
+call :var zuidazhi
+call :var zuixiaozhi
 %hx%
 :15.1
 set /a "cs+=1"
@@ -611,6 +599,7 @@ reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Ex
 %hx%
 set zhucebiaoqingli=
 set /p "zhucebiaoqingli=注册表需要手动清理.是否打开注册表(y/n):"
+call :var zhucebiaoqingli
 if /i "!zhucebiaoqingli!" equ "y" (goto 16.2)
 if /i "!zhucebiaoqingli!" equ "n" (goto 16.3)
 <nul set /p "=请输入正确的选项！"
@@ -709,6 +698,8 @@ set xinyonghuming=
 set xinyonghumima=
 set /p "xinyonghuming=用户名: "
 set /p "xinyonghumima=密码: "
+call :var xinyonghuming
+call :var xinyonghumima
 %hx%
 cls
 net user !xinyonghuming! !xinyonghumima! /add
@@ -726,6 +717,7 @@ echo;当前已登录的用户: !username!
 %hx%
 set shanchuyonghu=
 set /p "shanchuyonghu=输入要删除的用户: "
+call :var shanchuyonghu
 cls
 net user !shanchuyonghu! /del
 %hx%
@@ -742,6 +734,7 @@ echo;当前已登录的用户: !username!
 %hx%
 set tishengyonghu=
 set /p "tishengyonghu=输入要提升的用户名: "
+call :var tishengyonghu
 cls
 net localgroup administrators !tishengyonghu! /add
 %hx%
@@ -760,6 +753,8 @@ set xiougaimima=
 set xinmima=
 set /p "xiougaimima=输入要修改的用户名: "
 set /p "xinmima=输入新密码: "
+call :var xiougaimima
+call :var xinmima
 cls
 net user !xiougaimima! !xinmima!
 %hx%
@@ -775,6 +770,7 @@ echo;当前已登录的用户: !username!
 %hx%
 set chakanyonghuxinxi=
 set /p "chakanyonghuxinxi=输入要查看的用户名: "
+call :var chakanyonghuxinxi
 cls
 net user !chakanyonghuxinxi!
 %hx%
@@ -790,6 +786,7 @@ echo;当前已登录的用户: !username!
 %hx%
 set jhzh=
 set /p "jhzh=输入要操作的用户名: "
+call :var jhzh
 cls
 net user !jhzh! /active:yes
 %hx%
@@ -805,6 +802,7 @@ echo;当前已登录的用户: !username!
 %hx%
 set tyzh=
 set /p "tyzh=输入要操作的用户名: "
+call :var tyzh
 cls
 net user !tyzh! /active:no
 %hx%
@@ -862,6 +860,7 @@ title 关机!system!
 cls
 set guanjidaojishi=
 set /p "guanjidaojishi=设置关机倒计时，有效范围(0-315360000)秒(e=返回): "
+call :var guanjidaojishi
 if /i "!guanjidaojishi!" equ "e" (endlocal&goto guanji)
 call :checkvar guanjidaojishi num&&(
 	<nul set /p "=不是有效数字！"
@@ -876,6 +875,7 @@ title 重启!system!
 cls
 set chongqidaojishi=
 set /p "chongqidaojishi=设置重启倒计时，有效范围(0-315360000)秒(e=返回): "
+call :var chongqidaojishi
 if "!chongqidaojishi!" equ "e" (endlocal&goto guanji)
 call :checkvar chongqidaojishi num&&(
 	<nul set /p "=不是有效数字！"
@@ -890,6 +890,7 @@ title 注销!system!
 cls
 set zhuxiao=
 set /p "zhuxiao=是否立即注销(y/n): "
+call :var zhuxiao
 if /i "!zhuxiao!" equ "y" (logoff&exit 0)
 if /i "!zhuxiao!" equ "n" (endlocal&goto guanji)
 <nul set /p "=请输入正确的选项！"
@@ -907,6 +908,7 @@ title 开启休眠!system!
 cls
 set size=
 set /p "size=设置休眠文件占用总内存比例(40~100)(默认100)(e=返回): "
+call :var size
 if /i "!size!" equ "e" (endlocal&goto guanji)
 call :checkvar size num&&(
 	<nul set /p "=不是有效数字！"
@@ -985,6 +987,7 @@ tasklist
 %hx%
 set jcjs=
 set /p "jcjs=输入要结束的进程PID或名称(e=返回)(f=刷新): "
+call :var jcjs
 if not defined jcjs (goto 23.1)
 if /i "!jcjs!" equ "f" (goto 23.1)
 if /i "!jcjs!" equ "e" (endlocal&goto 23)
@@ -997,6 +1000,7 @@ tasklist /svc
 %hx%
 set jcjs=
 set /p "jcjs=输入要结束的进程PID或名称(e=返回)(f=刷新): "
+call :var jcjs
 if not defined jcjs (goto 23.2)
 if /i "!jcjs!" equ "f" (goto 23.2)
 if /i "!jcjs!" equ "e" (endlocal&goto 23)
@@ -1010,6 +1014,7 @@ tasklist
 %hx%
 set jclj=
 set /p "jclj=输入要显示的进程PID(e=返回)(f=刷新): "
+call :var jclj
 if not defined jclj (goto 23.6)
 if /i "!jclj!" equ "f" (goto 23.6)
 if /i "!jclj!" equ "e" (endlocal&goto 23)
@@ -1049,6 +1054,7 @@ tasklist
 %hx%
 set jclj=
 set /p "jclj=输入要显示的进程PID(e=返回)(f=刷新): "
+call :var jclj
 if not defined jclj (goto 23.10)
 if /i "!jclj!" equ "f" (goto 23.10)
 if /i "!jclj!" equ "e" (endlocal&goto 23)
@@ -1110,6 +1116,7 @@ netstat -aon
 %hx%
 set 字符串=
 set /p "字符串=输入要查找的字符串(e=返回)(f=刷新): "
+call :var 字符串
 if not defined 字符串 (goto 23.3)
 if "!字符串!" equ "f" (goto 23.3)
 if /i "!字符串!" equ "e" (endlocal&goto 23)
@@ -1237,6 +1244,7 @@ echo;!sypf!
 %hx%
 set qdqlx=
 set /p "qdqlx=输入要查询的驱动器: "
+call :var qdqlx
 if not defined qdqlx (goto 24.2)
 cls
 fsutil fsinfo drivetype !qdqlx!:
@@ -1253,6 +1261,7 @@ echo;!sypf!
 %hx%
 set qdqlx=
 set /p "qdqlx=输入要查询的驱动器: "
+call :var qdqlx
 if not defined qdqlx (goto 24.3)
 cls
 fsutil fsinfo volumeinfo !qdqlx!:
@@ -1269,6 +1278,7 @@ echo;!sypf!
 %hx%
 set qdqlx=
 set /p "qdqlx=输入要查询的驱动器: "
+call :var qdqlx
 if not defined qdqlx (goto 24.4)
 cls
 fsutil fsinfo ntfsinfo !qdqlx!:
@@ -1285,6 +1295,7 @@ echo;!sypf!
 %hx%
 set qdqlx=
 set /p "qdqlx=输入要查询的驱动器: "
+call :var qdqlx
 if not defined qdqlx (goto 24.5)
 cls
 fsutil fsinfo refsinfo !qdqlx!:
@@ -1301,6 +1312,7 @@ echo;!sypf!
 %hx%
 set qdqlx=
 set /p "qdqlx=输入要查询的驱动器: "
+call :var qdqlx
 if not defined qdqlx (goto 24.6)
 cls
 fsutil fsinfo sectorinfo !qdqlx!:
@@ -1314,10 +1326,12 @@ title 创建指定大小的文件!system!
 cls
 set cjlj=
 set /p "cjlj=输入文件路径(e=返回): "
+call :var cjlj
 if not defined cjlj (endlocal&goto 25)
 if /i "!cjlj!" equ "e" (endlocal&goto memuv2)
 set cjdx=
 set /p "cjdx=输入文件大小(单位:字节)(e=返回): "
+call :var cjdx
 if not defined cjdx (endlocal&goto 25)
 if /i "!cjdx!" equ "e" (endlocal&goto memuv2)
 call :checkvar cjdx num&&(endlocal&goto 25)
@@ -1411,6 +1425,7 @@ echo;!sypf!
 %hx%
 set fenxi=
 set /p "fenxi=输入需要分析的盘符:"
+call :var fenxi
 if "!fenxi!" equ "1" (goto 27.1)
 if "!fenxi!" equ "0" (endlocal&goto memuv2)
 cls
@@ -1419,6 +1434,7 @@ defrag /a !fenxi!:
 :27.3
 set zhengli=
 set /p "zhengli=是否开始磁盘碎片清理(y/n):"
+call :var zhengli
 if /i "!zhengli!" equ "y" (goto 27.2)
 if /i "!zhengli!" equ "n" (endlocal&goto 27)
 <nul set /p "=请输入正确的选项！"
@@ -1539,6 +1555,8 @@ set ping=
 set pingcishu=
 set /p "ping=输入目标IP或者网址: "
 set /p "pingcishu=输入ping次数: "
+call :var ping
+call :var pingcishu
 echo;
 echo;正在测试!ping!的网络延迟...
 ping /n !pingcishu! !ping! /a
@@ -2236,15 +2254,19 @@ title 定时提醒指定内容!system!
 cls
 set txnrmc=
 set /p "txnrmc=指定任务名称: "
+call :var txnrmc
 %hx%
 set txnr=
 set /p "txnr=输入你需要提醒的内容: "
+call :var txnr
 %hx%
 set txnrrq=
 set /p "txnrrq=设置提醒日期(格式: yyyy/mm/dd 例如2015/08/05): "
+call :var txnrrq
 %hx%
 set txnrsj=
 set /p "txnrsj=设置提醒时间(格式: hh:mm:ss 例如09:03:05): "
+call :var txnrsj
 cls
 if not exist "%temp%\DOS工具箱临时目录" (call :md "%temp%\DOS工具箱临时目录")
 >"%temp%\DOS工具箱临时目录\说明.txt" echo;该文件夹是DOS工具箱的临时文件夹,删除后将无法提醒已有的内容！
@@ -2272,16 +2294,20 @@ title 定时运行指定文件!system!
 cls
 set dsyxmc=
 set /p "dsyxmc=指定任务名称: "
+call :var dsyxmc
 %hx%
 set dsyxlj=
 set /p "dsyxlj=拖动需要定时运行的文件到此窗口: "
+call :var dsyxlj
 call :lj dsyxlj dsyxlj
 %hx%
 set dsyxrq=
 set /p "dsyxrq=设置提醒日期(格式: yyyy/mm/dd 例如2015/08/05): "
+call :var dsyxrq
 %hx%
 set dsyxsj=
 set /p "dsyxsj=设置提醒时间(格式: hh:mm:ss 例如09:03:05): "
+call :var dsyxsj
 cls
 if not exist "%temp%\DOS工具箱临时目录" (call :md "%temp%\DOS工具箱临时目录")
 >"%temp%\DOS工具箱临时目录\说明.txt" echo;该文件夹是DOS工具箱的临时文件夹,删除后将无法提醒已有的内容！
@@ -2307,6 +2333,7 @@ schtasks /query
 %hx%
 set rwsc=
 set /p "rwsc=输入要删除的任务名称: "
+call :var rwsc
 cls
 schtasks /delete /tn "!rwsc!" /f
 del /f /q "%temp%\DOS工具箱临时目录\!rwsc! - 定时提醒文件.bat";^
@@ -2345,6 +2372,13 @@ set mmxz=
 set mmjg=
 set mmjs=aA0bB1cC2dD3eE4fF5gG6hH7iI8jJ9kK0lL1mM2nN3oO4pP5qQ6rR7sS8tT9uU0vV1wW2xX3yY4zZ5
 set /p "mmws=输入生成的密码位数: "
+call :checkvar mmws mmws
+if not errorlevel 0 (
+	echo;只能输入正整数
+	%pause%
+	endlocal
+	goto 34
+)
 cls
 for /l %%a in (1,1,!mmws!) do (
 	set /a "mmxz=!random!%%63"
@@ -2600,12 +2634,15 @@ echo;此功能只能用于NTFS或REFS分区
 %hx%
 set ntfswjqx=
 set /p "ntfswjqx=拖动需要获取所有权限的文件或者文件夹到此窗口(e=返回菜单): "
+call :var ntfswjqx
 if not defined ntfswjqx (endlocal&goto 40)
 if /i "!ntfswjqx!" equ "e" (
 	endlocal
 	goto memuv2
 )
 call :lj ntfswjqx ntfswjqx
+set "ntfswjqx=!ntfswjqx:*=!"
+set "ntfswjqx=!ntfswjqx:?=!"
 if not exist "!ntfswjqx!" (
 	<nul set /p "=路径不存在"
 	call :out 2
@@ -2665,6 +2702,7 @@ title 语音阅读器!system!
 cls
 set ydnr=
 set /p "ydnr=输入要阅读的内容: "
+call :var ydnr
 start mshta vbscript:createobject("sapi.spvoice").speak("!ydnr!")(window.close)
 %hx%
 %pause%
@@ -2705,6 +2743,7 @@ title 文件搜索!system!
 cls
 set sswjm=
 set /p "sswjm=输入要搜索的文件名(默认在当前目录中搜索): "
+call :var sswjm
 %hx%
 dir /a /s "!sswjm!"
 %hx%
@@ -2760,6 +2799,7 @@ if not exist "!rarpd!" (
 )
 set yswjlj=
 set /p "yswjlj=拖动要破解的压缩包到此窗口(e=返回菜单): "
+call :var yswjlj
 if /i "!yswjlj!" equ "e" (
 	endlocal
 	goto memuv2
@@ -2786,6 +2826,7 @@ for /f "delims=" %%a in ("!yswjlj!") do (
 :rarwjok
 set pjzd=
 set /p "pjzd=拖动字典文件到此窗口(e=返回菜单): "
+call :var pjzd
 if /i "!pjzd!" equ "e" (
 	endlocal
 	goto memuv2
@@ -2868,6 +2909,8 @@ set wifissid=
 set wifimiam=
 set /p "wifissid=输入Wifi名称(SSID): "
 set /p "wifimima=输入Wifi密码(密码位数:8到63位): "
+call :var wifissid
+call :var wifimima
 cls
 net start sharedaccess
 netsh wlan stop hostednetwork
@@ -2916,6 +2959,7 @@ title 反编译chm文件!system!
 cls
 set chmlj=
 set /p "chmlj=反拖动要反编译的chm文件到此窗口(e=返回): "
+call :var chmlj
 if /i "!chmlj!" equ "e" (
 	endlocal
 	goto memuv2
@@ -2949,6 +2993,7 @@ for /f "delims=" %%a in ("!chmlj!") do (
 endlocal
 goto memuv2
 :49
+:js
 title 关闭无响应进程!system!
 cls
 taskkill /f /fi "status eq not responding"
@@ -2963,6 +3008,8 @@ echo;拖动要比较的文件到此窗口(比较过程中连按 "Ctrl+C" 2次可结束比较)
 %hx%
 set /p "wj1=第一个要比较的文件: "
 set /p "wj2=第二个要比较的文件: "
+call :var wj1
+call :var wj2
 call :lj wj1 wj1
 call :lj wj2 wj2
 %hx%
@@ -3111,6 +3158,7 @@ cls
 title 创建指定文件的快捷方式到桌面!system!
 set kjfs=
 set /p "kjfs=拖动目标文件到此窗口: "
+call :var kjfs
 if not defined kjfs (endlocal&goto 55)
 call :lj kjfs kjfs
 for /f "delims=" %%a in ("!kjfs!") do (set "kjfsmc=%%~na")
@@ -3140,10 +3188,13 @@ cls
 title 创建符号链接或目录链接!system!
 set jord=
 set /p "jord=输入链接类型(j=目录链接 d=符号链接): "
+call :var jord
 set swjj=
 set cwjj=
 set /p "swjj=输入要链接的文件夹路径: "
 set /p "cwjj=输入链接文件夹的输出路径: "
+call :var swjj
+call :var cwjj
 call :lj swjj swjj
 call :lj cwjj cwjj
 if /i "!jord!" equ "j" (
@@ -3262,6 +3313,7 @@ echo;!sypf!
 %hx%
 set xszz=
 set /p "xszz=输入需要显示的盘符或路径: "
+call :var xszz
 cls
 if defined xszz (
 	if "!xszz:~1!" equ "" (set "xszz=!xszz!:")
@@ -3299,10 +3351,12 @@ echo;[0]返回上级菜单
 %hx%
 set cjpf=
 set /p "cjpf=选择装入点: "
+call :var cjpf
 if not defined cjpf (goto 61.4)
 if "!cjpf!" equ "0" (endlocal&goto 61)
 set xzpf=
 set /p "xzpf=输入盘符或路径: "
+call :var xzpf
 if not defined xzpf (goto 61.4)
 if "!xzpf:~1!" equ "" (
 	set "xzpf=!xzpf!:"
@@ -3324,6 +3378,7 @@ echo;!sypf!
 %hx%
 set scpf=
 set /p "scpf=输入需要删除的盘符或路径: "
+call :var scpf
 if not defined scpf (endlocal&goto 61)
 if "!scpf:~1!" equ "" (set "scpf=!scpf!:")
 mountvol !scpf! /d
@@ -3338,6 +3393,7 @@ cls
 echo;管理员权限创建的EFI分区盘符只对有管理员权限的进程可见
 set xzpf=
 set /p "xzpf=输入分配给EFI分区的盘符或路径: "
+call :var xzpf
 if not defined xzpf (endlocal&goto 61)
 if "!xzpf:~1!" equ "" (set "xzpf=!xzpf!:")
 mountvol !xzpf! /s
@@ -3352,21 +3408,22 @@ title 注册表搜索!system!
 cls
 set zcbss=
 set /p "zcbss=输入你要搜索的名称: "
+call :var zcbss
 %hx%
 echo;(1/5)在HKEY_CLASSES_ROOT中搜索...
-reg query hkcr /f !zcbss! /s
+reg query hkcr /f "!zcbss!" /s
 %hx%
 echo;(2/5)在HKEY_CURRENT_USER中搜索...
-reg query hkcu /f !zcbss! /s
+reg query hkcu /f "!zcbss!" /s
 %hx%
 echo;(3/5)在HKEY_LOCAL_MACHINE中搜索...
-reg query hklm /f !zcbss! /s
+reg query hklm /f "!zcbss!" /s
 %hx%
 echo;(4/5)在HKEY_USERS中搜索...
-reg query hku /f !zcbss! /s
+reg query hku /f "!zcbss!" /s
 %hx%
 echo;(5/5)在HKEY_CURRENT_CONFIG中搜索...
-reg query hkcc /f !zcbss! /s
+reg query hkcc /f "!zcbss!" /s
 %hx%
 %pause%
 endlocal
@@ -3408,6 +3465,7 @@ if exist "%temp%\codetmp" (del /f /q "%temp%\codetmp")
 title Base64解码!system!
 set basebm=
 set /p "basebm=输入要解码的字符串或文件路径: "
+call :var basebm
 if not defined basebm (goto 63-1)
 if not exist "!basebm!" (
 	>"%temp%\tmp" echo;!basebm!
@@ -3431,9 +3489,11 @@ echo;
 %hx%
 set bxz=
 set /p "bxz=输入y保存编码,其他输入返回上级菜单: "
+call :var bxz
 if "!bxz!" equ "y" (
 	set basebc=
 	set /p "basebc=输入保存路径:"
+	call :var basebc
 	call :lj basebc basebc
 	%hx%
 	copy /y /z "%temp%\codetmp" "!basebc!"
@@ -3476,9 +3536,11 @@ for /f "delims=" %%a in (%temp%\codetmp) do (
 %hx%
 set bxz=
 set /p "bxz=输入y保存编码,其他输入返回上级菜单: "
+call :var bxz
 if "!bxz!" equ "y" (
 	set basebc=
 	set /p "basebc=输入保存路径: "
+	call :var basebc
 	call :lj basebc basebc
 	%hx%
 	copy /y /z "%temp%\codetmp" "!basebc!"
@@ -3518,6 +3580,7 @@ call :sypf sypf
 echo;!sypf!
 set query83=
 set /p "query83=输入要查询的盘符: "
+call :var query83
 fsutil 8dot3name query !query83!:
 %hx%
 %pause%
@@ -3835,6 +3898,8 @@ set newpf=
 set /p "newpf=输入要创建的新盘符:"
 set gllj=
 set /p "gllj=输入要关联的路径: "
+call :var newpf
+call :var gllj
 call :ljjc gllj dir&&(
 	<nul set /p "=无效路径"
 	call :out 2
@@ -3859,6 +3924,7 @@ subst
 %hx%
 set xzxnp=
 set /p "xzxnp=输入要卸载的盘符: "
+call :var xzxnp
 subst !xzxnp!: /d||(
 	<nul set /p "=卸载失败"
 	call :out 2
@@ -3875,6 +3941,7 @@ title 解压msi安装文件!system!
 cls
 set msiurl=
 set /p "msiurl=输入msi文件路径(e=返回菜单): "
+call :var msiurl
 if /i "!msiurl!" equ "e" (
 	endlocal
 	goto memuv2
@@ -3895,6 +3962,7 @@ for /f "delims=" %%a in ("!msiurl!") do (
 )
 set msidir=
 set /p "msidir=输入msi文件解压路径(不能解压到已存在的文件夹, 默认路径为msi文件所在路径)(e=返回菜单): "
+call :var msidir
 if /i "!msidir!" equ "e" (
 	endlocal
 	goto memuv2
@@ -4688,6 +4756,7 @@ title bat文件加密(方法1)!system!
 cls
 set jiami=
 set /p "jiami=拖动需要加密的文件到此窗口(e=返回): "
+call :var jiami
 if /i "!jiami!" equ "e" (
 	endlocal
 	goto 75
@@ -4721,6 +4790,7 @@ title bat文件解密!system!
 cls
 set jiemi=
 set /p "jiemi=拖动需要解密的文件到此窗口(e=返回): "
+call :var jiemi
 if /i "!jiemi!" equ "e" (
 	endlocal
 	goto 75
@@ -4746,6 +4816,7 @@ cls
 title bat文件加密(方法2)!system!
 set jiami=
 set /p "jiami=拖动需要加密的文件到此窗口(e=返回): "
+call :var jiami
 if /i "!jiami!" equ "e" (
 	endlocal
 	goto 75
@@ -5002,6 +5073,7 @@ if !checkver! gtr 0 (
 	%hx%
 	set shuru=
 	set /p "shuru=按回车键更新，按e返回菜单:"
+	call :var shuru
 	if not defined shuru (goto startupdate)
 	if /i "!shuru!" equ "e" (
 		endlocal
@@ -5204,7 +5276,32 @@ for %%a in (
 	set /a "maxa+=1"
 	set "a!maxa!=%%~a"
 )
+for %%a in (
+	"js"
+	"gx"
+	"csh"
+	"kcd"
+	"gcd"
+	"qzgx"
+	"guanji"
+	"guanyu"
+	"offxsq"
+) do (
+	set "%%~a=goto %%~a"
+)
 goto :eof
+:gx
+set "verbak=!ver!"
+goto update
+:qzgx
+set verbak=0
+goto update
+:csh
+endlocal
+goto chushihua
+:offxsq
+call :pwiex offdisplay
+goto memuv2
 :colortxt
 setlocal
 if "!winv!" equ "0" (goto colortxt2)
@@ -5705,6 +5802,7 @@ public class User32 {
 [User32]::SendMessage(-1,0x0112,0xF170,2)
 #offdisplay#
 :choice
+if not defined cho set ("cho=1234567890")
 set %1=
 choice /c !cho! /n /m "输入选项: "
 set "%1=%errorlevel%"
@@ -5712,6 +5810,7 @@ goto :eof
 :set
 set %1=
 set /p "%1=输入选项: "
+call :var %1
 goto :eof
 :checkvar
 setlocal
@@ -5826,6 +5925,14 @@ if defined %1 (
 exit /b 0
 :checkvar_exit1
 exit /b 1
+:var
+if defined %1 (
+	set "%1=!%1:"=!"
+	for /f "delims=&|%%!!" %%a in (""!%1!"") do (
+		set "%1=%%~a"
+	)
+)
+goto :eof
 :sqrt
 setlocal
 set "s=%1"
@@ -6250,6 +6357,8 @@ setlocal
 if not defined %1 (exit /b 0)
 for /f "delims=" %%a in ("!%1!") do (
 	set "var=%%~fa"
+	set "var=!var:*=!"
+	set "var=!var:?=!"
 	if "!var:~-1!" equ "\" (set "var=!var:~0,-1!")
 	if not exist "!var!" (exit /b 0)
 )
