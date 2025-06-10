@@ -15,7 +15,7 @@
 ò›ò‰ò‡‚¥∂‰ìØõNÈ‡ÿ±ÍŒí¨≥™ëı—Ó’ƒÑm‰’†ëûõõñùäöG¥˙∏±êÍÅ›û≥Ëıìû
 Ã“û¥◊¿üÇ“ØóﬂûÜÅ„Å€ìµë˛û¥ëaõ¬÷∆ùpò˘ó⁄ït¨ãóÏëıŒ‚µ§Ö_Éß∏ÀÖX∑Æ
 ‡°ñÖWÖY¨{í∞◊°õKﬂ…¬‘†≤ñ[êÒûâÍ≈∫Œ¨Ñ÷¥Üï†nïjÃ°∫∫ΩΩÿ¶π¿ïjú}ûô
-								
+										
 :chushihua
 @if not exist "%windir%\system32\cmd.exe" goto winnt
 @echo off&title °°&setlocal enabledelayedexpansion
@@ -51,7 +51,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250601
-set versize=154310
+set versize=153910
 set xz0=0
 set nx1=[+]œ¬“ª“≥
 set nx2=[-]…œ“ª“≥
@@ -3989,30 +3989,28 @@ color 07
 set cs=0
 for /l %%a in (40,1,47) do (
 	for /l %%b in (90,1,97) do (
-		if %%a lss 10 (set "xh1=0%%a") else (set "xh1=%%a")
-		if %%b lss 10 (set "xh2=0%%b") else (set "xh2=%%b")
-		if "!xh1!" equ "40" (
+		if "%%a" equ "40" (
 			set bj=0
 		) else (
-			if "!xh1!" equ "41" (
+			if "%%a" equ "41" (
 				set bj=4
 			) else (
-				if "!xh1!" equ "42" (
+				if "%%a" equ "42" (
 					set bj=2
 				) else (
-					if "!xh1!" equ "43" (
+					if "%%a" equ "43" (
 						set bj=6
 					) else (
-						if "!xh1!" equ "44" (
+						if "%%a" equ "44" (
 							set bj=1
 						) else (
-							if "!xh1!" equ "45" (
+							if "%%a" equ "45" (
 								set bj=5
 							) else (
-								if "!xh1!" equ "46" (
+								if "%%a" equ "46" (
 									set bj=3
 								) else (
-									if "!xh1!" equ "47" (
+									if "%%a" equ "47" (
 										set bj=7
 									)
 								)
@@ -4022,28 +4020,28 @@ for /l %%a in (40,1,47) do (
 				)
 			)
 		)
-		if "!xh2!" equ "90" (
+		if "%%b" equ "90" (
 			set zt=8
 		) else (
-			if "!xh2!" equ "91" (
+			if "%%b" equ "91" (
 				set zt=c
 			) else (
-				if "!xh2!" equ "92" (
+				if "%%b" equ "92" (
 					set zt=a
 				) else (
-					if "!xh2!" equ "93" (
+					if "%%b" equ "93" (
 						set zt=e
 					) else (
-						if "!xh2!" equ "94" (
+						if "%%b" equ "94" (
 							set zt=9
 						) else (
-							if "!xh2!" equ "95" (
+							if "%%b" equ "95" (
 								set zt=d
 							) else (
-								if "!xh2!" equ "96" (
+								if "%%b" equ "96" (
 									set zt=b
 								) else (
-									if "!xh2!" equ "97" (
+									if "%%b" equ "97" (
 										set zt=f
 									)
 								)
@@ -4054,10 +4052,10 @@ for /l %%a in (40,1,47) do (
 			)
 		)
 		if !cs! lss 7 (
-			<nul set /p "=!cswz!!xh2!;!xh1!m  !bj!!zt!  !cswz!0m"
+			<nul set /p "=!cswz!%%b;%%am  !bj!!zt!  !cswz!0m"
 			set /a "cs+=1"
 		) else (
-			echo;!cswz!!xh2!;!xh1!m  !bj!!zt!  !cswz!0m
+			echo;!cswz!%%b;%%am  !bj!!zt!  !cswz!0m
 			set cs=0
 		)
 	)
@@ -4065,26 +4063,22 @@ for /l %%a in (40,1,47) do (
 set cs=0
 for /l %%a in (40,1,47) do (
 	for /l %%b in (90,1,97) do (
-		if %%a lss 10 (set "xh1=0%%a") else (set "xh1=%%a")
-		if %%b lss 10 (set "xh2=0%%b") else (set "xh2=%%b")
 		if !cs! lss 7 (
-			<nul set /p "=!cswz!!xh2!;!xh1!m !xh2!;!xh1!!cswz!0m"
+			<nul set /p "=!cswz!%%b;%%am %%b;%%a!cswz!0m"
 			set /a "cs+=1"
 		) else (
-			echo;!cswz!!xh2!;!xh1!m !xh2!;!xh1!!cswz!0m
+			echo;!cswz!%%b;%%am %%b;%%a!cswz!0m
 			set cs=0
 		)
 	)
 )
 for /l %%a in (90,1,97) do (
 	for /l %%b in (40,1,47) do (
-		if %%a lss 10 (set "xh1=0%%a") else (set "xh1=%%a")
-		if %%b lss 10 (set "xh2=0%%b") else (set "xh2=%%b")
 		if !cs! lss 7 (
-			<nul set /p "=!cswz!!xh2!;!xh1!m !xh2!;!xh1!!cswz!0m"
+			<nul set /p "=!cswz!%%b;%%am %%b;%%a!cswz!0m"
 			set /a "cs+=1"
 		) else (
-			echo;!cswz!!xh2!;!xh1!m !xh2!;!xh1!!cswz!0m
+			echo;!cswz!%%b;%%am %%b;%%a!cswz!0m
 			set cs=0
 		)
 	)
