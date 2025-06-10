@@ -218,7 +218,7 @@ if /i "!caidan:~0,2!" equ "go" (
 	)
 	goto memuv2.1
 )
-if defined !caidan! (!%caidan%!)
+if defined !caidan! (goto !%caidan%!)
 :memuv2.1
 <nul set /p "=请输入正确的选项！"
 call :out 2
@@ -5281,7 +5281,7 @@ for %%a in (
 	"guanyu"
 	"offxsq"
 ) do (
-	set "%%~a=goto %%~a"
+	set "%%~a=%%~a"
 )
 goto :eof
 :gx
