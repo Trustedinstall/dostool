@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-										
+	
 :chushihua
 @if not exist "%windir%\system32\cmd.exe" goto winnt
 @echo off&title 　&setlocal enabledelayedexpansion
@@ -51,7 +51,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250601
-set versize=153910
+set versize=153880
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -2372,8 +2372,7 @@ set mmxz=
 set mmjg=
 set mmjs=aA0bB1cC2dD3eE4fF5gG6hH7iI8jJ9kK0lL1mM2nN3oO4pP5qQ6rR7sS8tT9uU0vV1wW2xX3yY4zZ5
 set /p "mmws=输入生成的密码位数: "
-call :checkvar mmws mmws
-if not errorlevel 0 (
+call :checkvar mmws num&&(
 	echo;只能输入正整数
 	%pause%
 	endlocal
