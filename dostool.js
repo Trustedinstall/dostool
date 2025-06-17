@@ -15,7 +15,7 @@
 ˜İ˜ä˜àâ´¶ä“¯›NéàØ±êÎ’¬³ª‘õÑîÕÄ„mäÕ ‘››–ŠšG´ú¸±êİ³èõ“
 ÌÒ´×ÀŸ‚Ò¯—ß†ãÛ“µ‘ş´‘a›ÂÖÆp˜ù—Ú•t¬‹—ì‘õÎâµ¤…_ƒ§¸Ë…X·®
 à¡–ğ…W…Y¬{’°×¡›KßÉÂÔ ²–[ñ‰êÅºÎ¬„Ö´†• n•jÌ¡ºº½½Ø¦¹À•jœ}™
-							
+	
 :chushihua
 @if not exist "%windir%\system32\cmd.exe" goto winnt
 @echo off&title ¡¡&setlocal enabledelayedexpansion
@@ -4511,17 +4511,17 @@ if not exist "!temp!\sni.txt" (
 
 		"#youtube google"
 		"#mt7.gstatic.com=[2404:6800:4008:c19::5a]"
-		"mt7.gstatic.com=216.58.194.30"
+		"mt7.gstatic.com=216.58.199.248"
 		"#alt6.gstatic.com=[2404:6800:4008:c19::5a]"
-		"alt6.gstatic.com=216.58.194.30"
+		"alt6.gstatic.com=216.58.199.248"
 		"#click.google-analytics.com=[2404:6800:4008:c19::5a]"
-		"click.google-analytics.com=216.58.194.30"
+		"click.google-analytics.com=216.58.199.248"
 		"#pagead1.googleadservices.com=[2404:6800:4008:c19::5a]"
-		"pagead1.googleadservices.com=216.58.194.30"
+		"pagead1.googleadservices.com=216.58.199.248"
 		"#pagead2.googlesyndication.com=[2404:6800:4008:c19::5a]"
-		"pagead2.googlesyndication.com=216.58.194.30"
+		"pagead2.googlesyndication.com=216.58.199.248"
 		"#static.doubleclick.net=[2404:6800:4008:c19::5a]"
-		"static.doubleclick.net=216.58.194.30"
+		"static.doubleclick.net=216.58.199.248"
 
 		"#nyaa"
 		"nyaa.ddos-guard.net=nyaa.si"
