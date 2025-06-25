@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-	
+									
 :chushihua
 @if not exist "%windir%\system32\cmd.exe" goto winnt
 @echo off&title 　&setlocal enabledelayedexpansion
@@ -51,7 +51,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250601
-set versize=153880
+set versize=154110
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -4406,8 +4406,8 @@ set "jssj=!time!"
 goto 71.4
 :72
 setlocal
-if not exist "!temp!\sni.txt" (
-	>"!temp!\sni.txt" (
+if not exist "!temp!\sni.ini" (
+	>"!temp!\sni.ini" (
 	rem 使用 @ 替代域名中的 * 通配符
 	for %%a in (
 		"[域名重定向]"
@@ -4445,8 +4445,8 @@ if not exist "!temp!\sni.txt" (
 		"#google"
 		"google.com=pagead1.googleadservices.com"
 		"@.google.com=pagead1.googleadservices.com"
-		"@.google.com.hk=pagead1.googleadservices.com"
-		"@.google.com.tw=pagead1.googleadservices.com"
+		"@.google.com.hk=www.googletagmanager.com"
+		"@.google.com.tw=www.googletagmanager.com"
 		"@.googleapis.com=static.doubleclick.net"
 		"@.googleusercontent.com=static.doubleclick.net"
 		"@.gstatic.com=pagead2.googlesyndication.com"
@@ -4511,17 +4511,19 @@ if not exist "!temp!\sni.txt" (
 
 		"#youtube google"
 		"#mt7.gstatic.com=[2404:6800:4008:c19::5a]"
-		"mt7.gstatic.com=64.233.167.196"
+		"mt7.gstatic.com=216.239.36.53"
 		"#alt6.gstatic.com=[2404:6800:4008:c19::5a]"
-		"alt6.gstatic.com=64.233.167.196"
+		"alt6.gstatic.com=216.239.36.53"
 		"#click.google-analytics.com=[2404:6800:4008:c19::5a]"
-		"click.google-analytics.com=64.233.167.196"
+		"click.google-analytics.com=216.239.36.53"
 		"#pagead1.googleadservices.com=[2404:6800:4008:c19::5a]"
-		"pagead1.googleadservices.com=64.233.167.196"
+		"pagead1.googleadservices.com=216.239.36.53"
 		"#pagead2.googlesyndication.com=[2404:6800:4008:c19::5a]"
-		"pagead2.googlesyndication.com=64.233.167.196"
+		"pagead2.googlesyndication.com=216.239.36.53"
 		"#static.doubleclick.net=[2404:6800:4008:c19::5a]"
-		"static.doubleclick.net=64.233.167.196"
+		"static.doubleclick.net=216.239.36.53"
+		"#www.googletagmanager.com=[2404:6800:4008:c19::5a]"
+		"www.googletagmanager.com=216.239.36.53"
 
 		"#nyaa"
 		"nyaa.ddos-guard.net=nyaa.si"
@@ -4529,6 +4531,11 @@ if not exist "!temp!\sni.txt" (
 		"[强制使用quic]"
 
 		"#不支持通配符"
+		"alt6.gstatic.com"
+		"click.google-analytics.com"
+		"pagead2.googlesyndication.com"
+		"pagead1.googleadservices.com"
+		"static.doubleclick.net"
 		"www.google.com.hk"
 		"www.google.com.tw"
 		"www.google.com"
@@ -4568,7 +4575,7 @@ set user-data-dir=
 rem 设置支持chrome命令行的浏览器的路径
 set "chromium=!ProgramFiles(x86)!\Microsoft\Edge\Application\msedge.exe"
 rem 规则文件路径
-set "dfurl=!temp!\sni.txt"
+set "dfurl=!temp!\sni.ini"
 call :ljjc user-data-dir dir
 if errorlevel 1 (
 	set "user-data-dir=--user-data-dir="!user-data-dir!""
@@ -6350,7 +6357,6 @@ setlocal
 if not defined %1 (exit /b 0)
 for /f "delims=" %%a in ("!%1!") do (
 	set "var=%%~fa"
-	set "var=!var:*=!"
 	set "var=!var:?=!"
 	if "!var:~-1!" equ "\" (set "var=!var:~0,-1!")
 	if not exist "!var!" (exit /b 0)
@@ -6412,7 +6418,7 @@ if defined doh (
 			echo;使用系统默认DNS
 			set doh=
 		) else (
-			echo;使用DoH: !doh:~10!
+			echo;使用DoH: https://%%a/%%b
 		)
 	)
 )
