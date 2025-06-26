@@ -51,7 +51,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250601
-set versize=154110
+set versize=154140
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -4536,6 +4536,7 @@ if not exist "!temp!\sni.ini" (
 		"pagead2.googlesyndication.com"
 		"pagead1.googleadservices.com"
 		"static.doubleclick.net"
+		"www.googletagmanager.com"
 		"www.google.com.hk"
 		"www.google.com.tw"
 		"www.google.com"
