@@ -15,9 +15,9 @@
 ˜İ˜ä˜àâ´¶ä“¯›NéàØ±êÎ’¬³ª‘õÑîÕÄ„mäÕ ‘››–ŠšG´ú¸±êİ³èõ“
 ÌÒ´×ÀŸ‚Ò¯—ß†ãÛ“µ‘ş´‘a›ÂÖÆp˜ù—Ú•t¬‹—ì‘õÎâµ¤…_ƒ§¸Ë…X·®
 à¡–ğ…W…Y¬{’°×¡›KßÉÂÔ ²–[ñ‰êÅºÎ¬„Ö´†• n•jÌ¡ºº½½Ø¦¹À•jœ}™
-									
+
 :chushihua
-@if not exist "%windir%\system32\cmd.exe" goto winnt
+@if not "%os%" == "Windows_NT" goto winnt
 @echo off&title ¡¡&setlocal enabledelayedexpansion
 if /i "%1" equ "ks" (goto ks)
 if /i "!systemdrive!" equ "x:" (goto ks)
@@ -51,7 +51,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250601
-set versize=154140
+set versize=154120
 set xz0=0
 set nx1=[+]ÏÂÒ»Ò³
 set nx2=[-]ÉÏÒ»Ò³
