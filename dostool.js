@@ -15,7 +15,7 @@
 ò›ò‰ò‡‚¥∂‰ìØõNÈ‡ÿ±ÍŒí¨≥™ëı—Ó’ƒÑm‰’†ëûõõñùäöG¥˙∏±êÍÅ›û≥Ëıìû
 Ã“û¥◊¿üÇ“ØóﬂûÜÅ„Å€ìµë˛û¥ëaõ¬÷∆ùpò˘ó⁄ït¨ãóÏëıŒ‚µ§Ö_Éß∏ÀÖX∑Æ
 ‡°ñÖWÖY¨{í∞◊°õKﬂ…¬‘†≤ñ[êÒûâÍ≈∫Œ¨Ñ÷¥Üï†nïjÃ°∫∫ΩΩÿ¶π¿ïjú}ûô
-
+									
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&title °°&setlocal enabledelayedexpansion
@@ -51,7 +51,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250601
-set versize=154120
+set versize=154170
 set xz0=0
 set nx1=[+]œ¬“ª“≥
 set nx2=[-]…œ“ª“≥
@@ -4459,6 +4459,7 @@ if not exist "!temp!\sni.ini" (
 		"@.android.com=alt6.gstatic.com"
 		"chrome.com=mt7.gstatic.com"
 		"@.chrome.com=mt7.gstatic.com"
+		"@.goog=pagead1.googleadservices.com"
 
 		"#github"
 		"github.com=octocaptcha.com"
