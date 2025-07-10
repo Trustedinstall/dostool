@@ -15,7 +15,7 @@
 ˜Ý˜ä˜àâ´¶ä“¯›NéàØ±êÎ’¬³ª‘õÑîÕÄ„mäÕ ‘ž››–ŠšG´ú¸±êÝž³èõ“ž
 ÌÒž´×ÀŸ‚Ò¯—ßž†ãÛ“µ‘þž´‘a›ÂÖÆp˜ù—Ú•t¬‹—ì‘õÎâµ¤…_ƒ§¸Ë…X·®
 à¡–ð…W…Y¬{’°×¡›KßÉÂÔ ²–[ñž‰êÅºÎ¬„Ö´†• n•jÌ¡ºº½½Ø¦¹À•jœ}ž™
-									
+				
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&title ¡¡&setlocal enabledelayedexpansion
@@ -51,7 +51,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250601
-set versize=154170
+set versize=154180
 set xz0=0
 set nx1=[+]ÏÂÒ»Ò³
 set nx2=[-]ÉÏÒ»Ò³
@@ -72,10 +72,11 @@ if exist "!temp!\dos_reading_cache.tmp" (
 		)
 	)
 )
+if not defined caption (
+	if /i "!systemdrive!" equ "x:" (set "system= - Windows PE")
+)
 for /f "tokens=3" %%a in ("!caption!") do (
-	2>nul call :pd%%a||(
-		if /i "!systemdrive!" equ "x:" (set "system= - Windows PE") else (set "system= - !caption:~10!")
-	)
+	2>nul call :pd%%a||set "system= - !caption:~10!"
 	set caption=
 )
 if "!chassistypes!" neq "{3}" (
