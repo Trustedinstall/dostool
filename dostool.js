@@ -15,7 +15,7 @@
 ò›ò‰ò‡‚¥∂‰ìØõNÈ‡ÿ±ÍŒí¨≥™ëı—Ó’ƒÑm‰’†ëûõõñùäöG¥˙∏±êÍÅ›û≥Ëıìû
 Ã“û¥◊¿üÇ“ØóﬂûÜÅ„Å€ìµë˛û¥ëaõ¬÷∆ùpò˘ó⁄ït¨ãóÏëıŒ‚µ§Ö_Éß∏ÀÖX∑Æ
 ‡°ñÖWÖY¨{í∞◊°õKﬂ…¬‘†≤ñ[êÒûâÍ≈∫Œ¨Ñ÷¥Üï†nïjÃ°∫∫ΩΩÿ¶π¿ïjú}ûô
-				
+
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&title °°&setlocal enabledelayedexpansion
@@ -51,7 +51,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250601
-set versize=154180
+set versize=154190
 set xz0=0
 set nx1=[+]œ¬“ª“≥
 set nx2=[-]…œ“ª“≥
@@ -4513,19 +4513,19 @@ if not exist "!temp!\sni.ini" (
 
 		"#youtube google"
 		"#mt7.gstatic.com=[2404:6800:4008:c19::5a]"
-		"mt7.gstatic.com=216.239.36.53"
+		"mt7.gstatic.com=142.251.170.161"
 		"#alt6.gstatic.com=[2404:6800:4008:c19::5a]"
-		"alt6.gstatic.com=216.239.36.53"
+		"alt6.gstatic.com=142.251.170.161"
 		"#click.google-analytics.com=[2404:6800:4008:c19::5a]"
-		"click.google-analytics.com=216.239.36.53"
+		"click.google-analytics.com=142.251.170.161"
 		"#pagead1.googleadservices.com=[2404:6800:4008:c19::5a]"
-		"pagead1.googleadservices.com=216.239.36.53"
+		"pagead1.googleadservices.com=142.251.170.161"
 		"#pagead2.googlesyndication.com=[2404:6800:4008:c19::5a]"
-		"pagead2.googlesyndication.com=216.239.36.53"
+		"pagead2.googlesyndication.com=142.251.170.161"
 		"#static.doubleclick.net=[2404:6800:4008:c19::5a]"
-		"static.doubleclick.net=216.239.36.53"
+		"static.doubleclick.net=142.251.170.161"
 		"#www.googletagmanager.com=[2404:6800:4008:c19::5a]"
-		"www.googletagmanager.com=216.239.36.53"
+		"www.googletagmanager.com=142.251.170.161"
 
 		"#nyaa"
 		"nyaa.ddos-guard.net=nyaa.si"
