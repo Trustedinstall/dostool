@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-
+									
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&title 　&setlocal enabledelayedexpansion
@@ -51,7 +51,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250601
-set versize=154190
+set versize=154180
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -1167,6 +1167,7 @@ for /f "tokens=2 delims==" %%a in ('"2>nul Wmic path Win32_PerfFormattedData_Tcp
 )
 call :xdwjs !upspeed! b upspeed
 call :xdwjs !downspeed! b downspeed
+cls
 echo;!netcard!
 echo;
 echo;上传速度:	!upspeed!/s	下载速度:	!downspeed!/s
@@ -1190,8 +1191,7 @@ if !lyl! leq 25 (
 <nul set /p "=%%"
 echo;
 %hx%
-echo;按e返回菜单
-<nul set /p "=!cswz!s!cswz!0;0H"
+<nul set /p "=按e返回菜单"
 >nul choice /c 1e /t 1 /d 1
 if "!errorlevel!" equ "1" (goto 23.4.1)
 endlocal
