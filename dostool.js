@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-									
+								
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&title 　&setlocal enabledelayedexpansion
@@ -51,7 +51,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250601
-set versize=154180
+set versize=154350
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -4670,6 +4670,14 @@ set source_dir=
 set target_dir=
 set /p "source_dir=输入源目录: "
 call :ljjc source_dir dir&&goto 73.3
+for %%a in ("!source_dir!") do (
+	if "%%~nxa" equ "" (
+		set "sdirname=%%~da"
+		set "sdirname=!sdirname:~0,-1!"
+	) else (
+		set "sdirname=%%~nxa"
+	)
+)
 set /p "target_dir=输入目标目录: "
 call :ljjc target_dir dir&&goto 73.3
 pushd "!source_dir!"
@@ -4677,9 +4685,9 @@ echo;取消文件隐藏属性...
 for /f "delims=" %%a in ('dir /ah /s /b') do (attrib -h "%%a")
 for /r %%f in (*) do (
 	cls
-	set "relative_path=%%~pf"
+	set "relative_path=%%~dpf"
 	set "relative_path=!relative_path:%source_dir%=!"
-	set "target_path=!target_dir!!relative_path!"
+	set "target_path=!target_dir!\!sdirname!!relative_path!"
 	if not exist "!target_path!" (md "!target_path!")
 	echo;"%%f" → "!target_path!%%~nxf"
 	copy /y /z "%%f" "!target_path!%%~nxf"
