@@ -15,7 +15,7 @@
 ò›ò‰ò‡‚¥∂‰ìØõNÈ‡ÿ±ÍŒí¨≥™ëı—Ó’ƒÑm‰’†ëûõõñùäöG¥˙∏±êÍÅ›û≥Ëıìû
 Ã“û¥◊¿üÇ“ØóﬂûÜÅ„Å€ìµë˛û¥ëaõ¬÷∆ùpò˘ó⁄ït¨ãóÏëıŒ‚µ§Ö_Éß∏ÀÖX∑Æ
 ‡°ñÖWÖY¨{í∞◊°õKﬂ…¬‘†≤ñ[êÒûâÍ≈∫Œ¨Ñ÷¥Üï†nïjÃ°∫∫ΩΩÿ¶π¿ïjú}ûô
-								
+					
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&title °°&setlocal enabledelayedexpansion
@@ -51,7 +51,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250601
-set versize=154700
+set versize=154810
 set xz0=0
 set nx1=[+]œ¬“ª“≥
 set nx2=[-]…œ“ª“≥
@@ -4494,6 +4494,9 @@ if not exist "!temp!\sni.ini" (
 		"@.vercel.app=no-sni.vercel-infra.com"
 
 		"#lain.la"
+		"*.lain.la=lain.la"
+
+		"#pkuanvil"
 		"pkuanvil.com=gcore.com"
 		"@.pkuanvil.com=gcore.com"
 
@@ -4545,6 +4548,7 @@ if not exist "!temp!\sni.ini" (
 		"[«ø÷∆ π”√quic]"
 
 		"#≤ª÷ß≥÷Õ®≈‰∑˚"
+		"mt7.gstatic.com"
 		"alt6.gstatic.com"
 		"click.google-analytics.com"
 		"pagead2.googlesyndication.com"
@@ -4568,11 +4572,13 @@ if not exist "!temp!\sni.ini" (
 		"c.tile.openstreetmap.org"
 		"ipfs.io"
 		"cloudflare-ipfs.com"
-		"croxyproxy.com"
+		"www.croxyproxy.com"
 		"cdnjs.cloudflare.com"
 		"cdn.jsdelivr.net"
 		"chatgpt.aitianhu.com"
 		"outlook.live.com"
+		"thepiratebay.org"
+		"zh.annas-archive.org"
 	) do (
 		echo;%%~a
 	)
