@@ -51,7 +51,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250601
-set versize=154350
+set versize=154700
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -4433,6 +4433,12 @@ if not exist "!temp!\sni.ini" (
 		"account.proton.me=a.pr.tn"
 		"account-api.proton.me=b.pr.tn"
 		"mail.proton.me=c.pr.tn"
+		"wallet.proton.me=d.pr.tn"
+		"docs.proton.me=e.pr.tn"
+		"pass.proton.me=f.pr.tn"
+		"drive.proton.me=g.pr.tn"
+		"calendar.proton.me=h.pr.tn"
+		"lumo.proton.me=i.pr.tn"
 
 		"#youtube"
 		"@.youtube.com=click.google-analytics.com"
@@ -4510,6 +4516,12 @@ if not exist "!temp!\sni.ini" (
 		"a.pr.tn=account.proton.me"
 		"b.pr.tn=account-api.proton.me"
 		"c.pr.tn=mail.proton.me"
+		"d.pr.tn=wallet.proton.me"
+		"e.pr.tn=docs.proton.me"
+		"f.pr.tn=pass.proton.me"
+		"g.pr.tn=drive.proton.me"
+		"h.pr.tn=calendar.proton.me"
+		"i.pr.tn=lumo.proton.me"
 
 		"#youtube google"
 		"#mt7.gstatic.com=[2404:6800:4008:c19::5a]"
