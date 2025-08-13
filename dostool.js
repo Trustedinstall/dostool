@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-						
+	
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&title 　&setlocal enabledelayedexpansion
@@ -51,7 +51,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250601
-set versize=154560
+set versize=154710
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -4215,7 +4215,7 @@ echo;开始获取文件信息...
 set filename=
 if exist "%temp%\tag" (del /f /q "%temp%\tag")
 call :curlproxy
-curl !proxy! !doh! !ua! -I -# -L --remove-on-error -o tag --connect-timeout 5 --max-time 10 --output-dir "%temp%" "!url!"
+curl !proxy! !doh! !ua! -I#L --remove-on-error -o tag --connect-timeout 5 --max-time 10 --output-dir "%temp%" "!url!"
 if not exist "%temp%\tag" (
 	echo;没有获取到文件信息
 	%hx%
@@ -4289,7 +4289,7 @@ call :md "%temp%\down"||(
 set "kssj=!time!"
 for /l %%a in (1,1,!tr!) do (
 	start /min /low "curl多进程下载_%%a" ^
-	curl !proxy! !doh! !ua! -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir "%temp%\down" "!url!"
+	curl !proxy! !doh! !ua! -#L --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir "%temp%\down" "!url!"
 	set /a "oldfd=newfd+1"
 	if "%%a" equ "!pdtr!" (set newfd=) else (set /a "newfd=oldfd+fd-1")
 )
@@ -4402,7 +4402,7 @@ goto memuv2
 :71.3
 call :lj dir dir
 set "kssj=!time!"
-curl !proxy! !doh! !ua! --compressed -# -R --remove-on-error -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o "!filename!" --output-dir "!dir!" "!url!"
+curl !proxy! !doh! !ua! --compressed -#RL -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o "!filename!" --output-dir "!dir!" "!url!"
 set "jssj=!time!"
 goto 71.4
 :72
@@ -4677,7 +4677,14 @@ if defined origin-to-force-quic-on (
 if "!chrome-command-line!" equ "1" (
 	>chrome-command-line <nul set /p "=chrome --test-type !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors!"
 )
-start /max "" "!chrome!" --profile-directory=Default !user-data-dir! --test-type !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors!
+set "tmpcmd=!temp!\用域前置参数启动Chromium类浏览器.cmd"
+>"!tmpcmd!" (
+	echo;@echo off^&setlocal enabledelayedexpansion^&title 用域前置参数启动Chromium类浏览器!system!^&chcp 936^>nul
+	echo;start "" "!chrome!" --profile-directory=Default !user-data-dir! --start-maximized --test-type !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors!
+	echo;exit 0
+)
+explorer "!tmpcmd!"
+del /f /q "!tmpcmd!"
 endlocal
 goto memuv2
 :73
@@ -4964,7 +4971,7 @@ cls
 title 更新DOS工具箱 - 当前版本: !ver!!system!
 set "doh=--doh-url https://101.101.101.101/dns-query"
 set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36""
-set "curlpix=--compressed --remove-on-error -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 3 --max-time 10"
+set "curlpix=--compressed -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 3 --max-time 10"
 set resolve=--resolve raw.github.io:443:^
 185.199.108.133,^
 185.199.109.133,^
@@ -5129,7 +5136,7 @@ if exist "!windir!\system32\curl.exe" (
 	pushd "%temp%"
 	echo;使用链接:	!url!
 	if defined host (echo;Host域名:	!host:~10,-1!)
-	curl !proxy! !doh! !host! !ua! --compressed -R --remove-on-error -L -# -C - --retry 2 --retry-delay 1 --connect-timeout 5 --max-time 30 !resolve! -o dostool "!url!"
+	curl !proxy! !doh! !host! !ua! --compressed -RL# -C - --retry 2 --retry-delay 1 --connect-timeout 5 --max-time 30 !resolve! -o dostool "!url!"
 	popd
 ) else (
 	certutil -urlcache -split -f !url! "%temp%\dostool"
@@ -6278,7 +6285,7 @@ for /f "skip=2 tokens=3" %%a in ('"reg query "HKCU\Software\Microsoft\Windows\Cu
 if defined doh (
 	echo;测试DoH端口是否有效...
 	for /f "tokens=2* delims=/" %%a in ("!doh!") do (
-		curl !proxy! -s --connect-timeout 2 --retry 1 --max-time 10 -I -o nul "https://%%a/%%b"
+		curl !proxy! -sI --connect-timeout 2 --retry 1 --max-time 10 -o nul "https://%%a/%%b"
 		if errorlevel 1 (
 			echo;使用系统默认DNS
 			set doh=
@@ -6287,7 +6294,7 @@ if defined doh (
 		)
 	)
 )
-curl !proxy! !doh! !par! !ua! -I -# -L --remove-on-error -o tag --connect-timeout 5 --max-time 10 --output-dir "%temp%" "!url!"
+curl !proxy! !doh! !par! !ua! -I#L --remove-on-error -o tag --connect-timeout 5 --max-time 10 --output-dir "%temp%" "!url!"
 if not exist "%temp%\tag" (
 	echo;没有获取到文件信息
 	goto :eof
@@ -6316,7 +6323,7 @@ md "%temp%\down"||(
 	goto :eof
 )
 for /l %%a in (1,1,!tr!) do (
-	start /b /low "curl多进程下载_%%a" curl !proxy! !doh! !par! !ua! -s -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir "%temp%\down" "!url!"
+	start /b /low "curl多进程下载_%%a" curl !proxy! !doh! !par! !ua! -sL --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir "%temp%\down" "!url!"
 	set /a "oldfd=newfd+1"
 	if "%%a" equ "!pdtr!" (
 		set newfd=
@@ -6356,7 +6363,7 @@ rd /s /q "%temp%\down"
 goto :eof
 :curldxc_3
 if "!dir:~-1!" equ "\" (set "dir=!dir:~0,-1!")
-curl !proxy! !doh! !par! !ua! --compressed -R --remove-on-error -# -L -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o "!filename!" --output-dir "!dir!" "!url!"
+curl !proxy! !doh! !par! !ua! --compressed -#RL -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o "!filename!" --output-dir "!dir!" "!url!"
 goto :eof
 :pwiex
 powershell -mta -nologo -noprofile -command "$command=[IO.File]::ReadAllText('%~dpnx0') -split '#%~1\#.*';iex ($command[1])"
@@ -6443,7 +6450,7 @@ for /f "skip=2 tokens=3" %%a in ('"reg query "HKCU\Software\Microsoft\Windows\Cu
 if defined doh (
 	echo;测试DoH端口是否有效...
 	for /f "tokens=2* delims=/" %%a in ("!doh!") do (
-		curl !proxy! -s --connect-timeout 2 --retry 1 --max-time 10 -I -o nul "https://%%a/%%b"
+		curl !proxy! -sI --connect-timeout 2 --retry 1 --max-time 10 -o nul "https://%%a/%%b"
 		if errorlevel 1 (
 			echo;使用系统默认DNS
 			set doh=
