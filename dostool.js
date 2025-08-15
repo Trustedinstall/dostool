@@ -15,7 +15,7 @@
 ò›ò‰ò‡‚¥∂‰ìØõNÈ‡ÿ±ÍŒí¨≥™ëı—Ó’ƒÑm‰’†ëûõõñùäöG¥˙∏±êÍÅ›û≥Ëıìû
 Ã“û¥◊¿üÇ“ØóﬂûÜÅ„Å€ìµë˛û¥ëaõ¬÷∆ùpò˘ó⁄ït¨ãóÏëıŒ‚µ§Ö_Éß∏ÀÖX∑Æ
 ‡°ñÖWÖY¨{í∞◊°õKﬂ…¬‘†≤ñ[êÒûâÍ≈∫Œ¨Ñ÷¥Üï†nïjÃ°∫∫ΩΩÿ¶π¿ïjú}ûô
-	
+
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&title °°&setlocal enabledelayedexpansion
@@ -51,7 +51,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250601
-set versize=154710
+set versize=155070
 set xz0=0
 set nx1=[+]œ¬“ª“≥
 set nx2=[-]…œ“ª“≥
@@ -6366,7 +6366,26 @@ if "!dir:~-1!" equ "\" (set "dir=!dir:~0,-1!")
 curl !proxy! !doh! !par! !ua! --compressed -#RL -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o "!filename!" --output-dir "!dir!" "!url!"
 goto :eof
 :pwiex
-powershell -mta -nologo -noprofile -command "$command=[IO.File]::ReadAllText('%~dpnx0') -split '#%~1\#.*';iex ($command[1])"
+setlocal
+set "this=%~f0"
+set "sect=%~1"
+shift
+set arg=
+:pwiex_loop
+if "%~1" neq "" (
+	if defined arg (
+		set "arg=!arg!,'%~1'"
+	) else (
+		set "arg='%~1'"
+	)
+	shift
+	goto pwiex_loop
+)
+powershell -mta -nologo -noprofile -command ^
+	"$text = [IO.File]::ReadAllText('!this!');" ^
+	"$parts = $text -split '#!sect!#';" ^
+	"$body = $parts[1] -split '#\w+#',2 | Select-Object -First 1;" ^
+	"Invoke-Command -ScriptBlock ([ScriptBlock]::Create($body)) -ArgumentList @(!arg!)"
 goto :eof
 :out
 if exist "!windir!\system32\timeout.exe" (
