@@ -51,7 +51,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250601
-set versize=155075
+set versize=155925
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -1520,7 +1520,7 @@ if "!empty!" equ "1" (goto loop1)
 del /f /q "!temp!\empty_dir.txt"
 goto 28.1
 :loop2
-for /f "delims=" %%a in ('"dir /ad-l /s /b "!caozuo!"|sort /r"') do (
+for /f "delims=" %%a in ('"dir /a:d-l /s /b "!caozuo!"|sort /r"') do (
 	2>nul rd /q "%%a"&&echo;已删除空文件夹 "%%a"
 )
 :28.1
@@ -4707,17 +4707,38 @@ set /p "target_dir=输入目标目录: "
 call :ljjc target_dir dir&&goto 73.3
 pushd "!source_dir!"
 echo;取消文件隐藏属性...
-for /f "delims=" %%a in ('dir /ah /s /b') do (attrib -h "%%a")
-for /r %%f in (*) do (
+for /f "delims=" %%a in ('"2>nul dir /a:h /s /b"') do (attrib -h "%%a")
+if exist "!temp!\list.txt" (del /f /q "!temp!\list.txt")
+echo;检测Everything的安装路径与运行状态...
+for /f "skip=2 tokens=3" %%a in ('"2>nul reg query "HKEY_LOCAL_MACHINE\SOFTWARE\voidtools\Everything" /v InstallLocation"') do (
+	if exist "%%a\Everything.exe" (
+		for /f "tokens=1 delims=," %%b in ('tasklist /fi "status eq running" /fi "username eq "%username%"" /fi "imagename eq everything.exe" /fo csv /nh') do (
+			if /i "%%~b" equ "everything.exe" (
+				if exist "%%a\es.exe" (
+					cls
+					echo;使用Everything读取文件列表
+					>"!temp!\list.txt" "%%a\es.exe" -path "!source_dir!" /a-d -sort-size-descending -full-path-and-name
+				)
+			)
+		)
+	)
+)
+if not exist "!temp!\list.txt" (
 	cls
-	set "relative_path=%%~dpf"
+	echo;使用dir命令读取文件列表
+	>"!temp!\list.txt" dir /a:-d /b /s /o:-s
+)
+for /f "usebackq delims=" %%a in ("!temp!\list.txt") do (
+	cls
+	set "relative_path=%%~dpa"
 	set "relative_path=!relative_path:%source_dir%=!"
 	set "target_path=!target_dir!\!sdirname!!relative_path!"
 	if not exist "!target_path!" (md "!target_path!")
-	echo;"%%f" → "!target_path!%%~nxf"
-	copy /y /z "%%f" "!target_path!%%~nxf"
-	call :73.2 "!target_path!%%~nxf" %%~zf %%~xf
+	echo;"%%a" → "!target_path!%%~nxa"
+	copy /y /z "%%a" "!target_path!%%~nxa"
+	call :73.2 "!target_path!%%~nxa" %%~za %%~xa
 )
+del /f /q "!temp!\list.txt"
 popd
 %hx%
 %pause%
@@ -5578,9 +5599,9 @@ If (Test-Path $InfFileLocation) {
 }
 #su#
 :xdwjs
-setlocal
 if "%1" equ "" (goto :eof)
 if "%3" equ "" (goto :eof)
+setlocal
 set "Bytes=%1"
 set "danwei=%2"
 if /i "!danwei!" equ "kb" (call :scf !bytes! 1024 bytes)
@@ -5850,8 +5871,10 @@ set /p "%1=输入选项: "
 call :var %1
 goto :eof
 :checkvar
-setlocal
-if "%1" equ "" (goto :eof) else (set "val=!%1!")
+if "%1" equ "" (goto :eof) else (
+	setlocal
+	set "val=!%1!"
+)
 if "%2" equ "num" (goto checkvar_num)
 if "%2" equ "num." (goto checkvar_num.)
 if "%2" equ "-num" (goto checkvar_-num)
@@ -6203,8 +6226,8 @@ if /i "!caption!" equ "Microsoft Windows 11 Enterprise" (set "system= - Windows 
 set "system= - !caption:~10!"
 goto :eof
 :convertu
-setlocal
 if "%~1" equ "" (goto :eof)
+setlocal
 set "tmp=%~1"
 for %%a in (
 	"a=A" "b=B" "c=C" "d=D" "e=E"
@@ -6222,8 +6245,8 @@ if "%2" neq "" (
 )
 goto :eof
 :convertl
-setlocal
 if "%~1" equ "" (goto :eof)
+setlocal
 set "tmp=%~1"
 for %%a in (
 	"A=a" "B=b" "C=c" "D=d" "E=e"
@@ -6367,10 +6390,10 @@ curl !proxy! !doh! !par! !ua! --compressed -#RL -C - --retry 2 --retry-delay 1 -
 goto :eof
 :pwiex
 setlocal
+set arg=
 set "this=%~f0"
 set "sect=%~1"
 shift
-set arg=
 :pwiex_loop
 if "%~1" neq "" (
 	if defined arg (
@@ -6480,20 +6503,16 @@ if defined doh (
 )
 goto :eof
 :isntfs
-setlocal
 if "%1" neq "" (
+	setlocal
 	set "var=%1"
-	>nul 2>nul fsutil fsinfo ntfsinfo !var:\=!&&(
-		exit /b 1
-	)
+	>nul 2>nul fsutil fsinfo ntfsinfo !var:\=!&&exit /b 1
 	exit /b 0
 )
 goto :eof
 :isrefs
 if "%1" neq "" (
-	>nul 2>nul fsutil fsinfo refsinfo %1&&(
-		exit /b 1
-	)
+	>nul 2>nul fsutil fsinfo refsinfo %1&&exit /b 1
 	exit /b 0
 )
 goto :eof
