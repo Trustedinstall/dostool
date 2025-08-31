@@ -51,7 +51,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250601
-set versize=155925
+set versize=156295
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -1539,14 +1539,14 @@ if exist "!windir!\system32\curl.exe" (
 		rem <nul set /p "=本机IPV4地址: ""
 		rem curl https://4.ipw.cn
 		rem curl https://ipv4.ip.sb
-		curl --connect-timeout 2 --max-time 10 "https://myip.ipip.net"
+		curl --ca-native --connect-timeout 2 --max-time 10 "https://myip.ipip.net"
 		<nul set /p "="
 		echo;
 	)
 	>nul ping /n 1 240c::6666
 	if not errorlevel 1 (
 		<nul set /p "=本机IPV6地址: "
-		curl --connect-timeout 2 --max-time 10 "https://6.ipw.cn"
+		curl --ca-native --connect-timeout 2 --max-time 10 "https://6.ipw.cn"
 		rem curl https://ipv6.ip.sb
 		echo;
 	)
@@ -1953,7 +1953,7 @@ echo;
 if exist "!windir!\system32\curl.exe" (
 	>nul ping /n 1 www.baidu.com
 	if not errorlevel 1 (
-		for /f "delims=" %%a in ('curl -s --connect-timeout 2 --max-time 10 "https://4.ipw.cn"') do (
+		for /f "delims=" %%a in ('curl -s --ca-native --connect-timeout 2 --max-time 10 "https://4.ipw.cn"') do (
 			<nul set /p "=外部IP地址:"
 			echo;	%%a
 			echo;
@@ -4215,7 +4215,7 @@ echo;开始获取文件信息...
 set filename=
 if exist "%temp%\tag" (del /f /q "%temp%\tag")
 call :curlproxy
-curl !proxy! !doh! !ua! -I#L --remove-on-error -o tag --connect-timeout 5 --max-time 10 --output-dir "%temp%" "!url!"
+curl !proxy! !doh! !ua! -I#L --ca-native --remove-on-error -o tag --connect-timeout 5 --max-time 10 --output-dir "%temp%" "!url!"
 if not exist "%temp%\tag" (
 	echo;没有获取到文件信息
 	%hx%
@@ -4289,7 +4289,7 @@ call :md "%temp%\down"||(
 set "kssj=!time!"
 for /l %%a in (1,1,!tr!) do (
 	start /min /low "curl多进程下载_%%a" ^
-	curl !proxy! !doh! !ua! -#L --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir "%temp%\down" "!url!"
+	curl !proxy! !doh! !ua! -#L --ca-native --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir "%temp%\down" "!url!"
 	set /a "oldfd=newfd+1"
 	if "%%a" equ "!pdtr!" (set newfd=) else (set /a "newfd=oldfd+fd-1")
 )
@@ -4402,7 +4402,7 @@ goto memuv2
 :71.3
 call :lj dir dir
 set "kssj=!time!"
-curl !proxy! !doh! !ua! --compressed -#RL -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o "!filename!" --output-dir "!dir!" "!url!"
+curl !proxy! !doh! !ua! --compressed -#RL -C - --ca-native --retry 2 --retry-delay 1 --connect-timeout 5 -o "!filename!" --output-dir "!dir!" "!url!"
 set "jssj=!time!"
 goto 71.4
 :72
@@ -4992,7 +4992,7 @@ cls
 title 更新DOS工具箱 - 当前版本: !ver!!system!
 set "doh=--doh-url https://101.101.101.101/dns-query"
 set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36""
-set "curlpix=--compressed -L -# -C - --retry 1 --retry-delay 1 --connect-timeout 3 --max-time 10"
+set "curlpix=--compressed -L -# -C - --ca-native --retry 1 --retry-delay 1 --connect-timeout 3 --max-time 10"
 set resolve=--resolve raw.github.io:443:^
 185.199.108.133,^
 185.199.109.133,^
@@ -5157,7 +5157,7 @@ if exist "!windir!\system32\curl.exe" (
 	pushd "%temp%"
 	echo;使用链接:	!url!
 	if defined host (echo;Host域名:	!host:~10,-1!)
-	curl !proxy! !doh! !host! !ua! --compressed -RL# -C - --retry 2 --retry-delay 1 --connect-timeout 5 --max-time 30 !resolve! -o dostool "!url!"
+	curl !proxy! !doh! !host! !ua! --compressed -RL# -C - --ca-native --retry 2 --retry-delay 1 --connect-timeout 5 --max-time 30 !resolve! -o dostool "!url!"
 	popd
 ) else (
 	certutil -urlcache -split -f !url! "%temp%\dostool"
@@ -5857,7 +5857,7 @@ public class User32 {
 	public static extern int SendMessage(int hWnd,int hMsg,int wParam,int lParam);
 }
 "@
-[User32]::SendMessage(-1,0x0112,0xF170,2)
+[void][User32]::SendMessage(-1,0x0112,0xF170,2)
 #offdisplay#
 :choice
 if not defined cho set ("cho=1234567890")
@@ -6308,7 +6308,7 @@ for /f "skip=2 tokens=3" %%a in ('"reg query "HKCU\Software\Microsoft\Windows\Cu
 if defined doh (
 	echo;测试DoH端口是否有效...
 	for /f "tokens=2* delims=/" %%a in ("!doh!") do (
-		curl !proxy! -sI --connect-timeout 2 --retry 1 --max-time 10 -o nul "https://%%a/%%b"
+		curl !proxy! -sI --ca-native --connect-timeout 2 --retry 1 --max-time 10 -o nul "https://%%a/%%b"
 		if errorlevel 1 (
 			echo;使用系统默认DNS
 			set doh=
@@ -6317,7 +6317,7 @@ if defined doh (
 		)
 	)
 )
-curl !proxy! !doh! !par! !ua! -I#L --remove-on-error -o tag --connect-timeout 5 --max-time 10 --output-dir "%temp%" "!url!"
+curl !proxy! !doh! !par! !ua! -I#L --ca-native --remove-on-error -o tag --connect-timeout 5 --max-time 10 --output-dir "%temp%" "!url!"
 if not exist "%temp%\tag" (
 	echo;没有获取到文件信息
 	goto :eof
@@ -6346,7 +6346,7 @@ md "%temp%\down"||(
 	goto :eof
 )
 for /l %%a in (1,1,!tr!) do (
-	start /b /low "curl多进程下载_%%a" curl !proxy! !doh! !par! !ua! -sL --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir "%temp%\down" "!url!"
+	start /b /low "curl多进程下载_%%a" curl !proxy! !doh! !par! !ua! -sL --ca-native --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir "%temp%\down" "!url!"
 	set /a "oldfd=newfd+1"
 	if "%%a" equ "!pdtr!" (
 		set newfd=
@@ -6386,9 +6386,10 @@ rd /s /q "%temp%\down"
 goto :eof
 :curldxc_3
 if "!dir:~-1!" equ "\" (set "dir=!dir:~0,-1!")
-curl !proxy! !doh! !par! !ua! --compressed -#RL -C - --retry 2 --retry-delay 1 --connect-timeout 5 -o "!filename!" --output-dir "!dir!" "!url!"
+curl !proxy! !doh! !par! !ua! --compressed -#RL -C - --ca-native --retry 2 --retry-delay 1 --connect-timeout 5 -o "!filename!" --output-dir "!dir!" "!url!"
 goto :eof
 :pwiex
+if "%~1" equ "" (goto :eof)
 setlocal
 set arg=
 set "this=%~f0"
@@ -6396,10 +6397,17 @@ set "sect=%~1"
 shift
 :pwiex_loop
 if "%~1" neq "" (
+	set "text=%~1"
+	set "text=!text:'=''!"
+	set "text=!text:`=``!"
+	set "text=!text:"=""!"
+	set "text=!text:$=$$!"
+	set "text=!text:%%=%%%%!"
+	set "text=!text:^^=``^^!"
 	if defined arg (
-		set "arg=!arg!,'%~1'"
+		set "arg=!arg!,'!text!'"
 	) else (
-		set "arg='%~1'"
+		set "arg='!text!'"
 	)
 	shift
 	goto pwiex_loop
@@ -6492,7 +6500,7 @@ for /f "skip=2 tokens=3" %%a in ('"reg query "HKCU\Software\Microsoft\Windows\Cu
 if defined doh (
 	echo;测试DoH端口是否有效...
 	for /f "tokens=2* delims=/" %%a in ("!doh!") do (
-		curl !proxy! -sI --connect-timeout 2 --retry 1 --max-time 10 -o nul "https://%%a/%%b"
+		curl !proxy! -sI --ca-native --connect-timeout 2 --retry 1 --max-time 10 -o nul "https://%%a/%%b"
 		if errorlevel 1 (
 			echo;使用系统默认DNS
 			set doh=
