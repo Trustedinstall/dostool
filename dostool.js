@@ -26,7 +26,19 @@ if exist "!windir!\system32\fltmc.exe" (
 ) else (
 	goto ks
 )
-if exist "!localappdata!\Microsoft\WindowsApps\wt.exe" (call :stwt) else (call :stcmd)
+if exist "!localappdata!\Microsoft\WindowsApps\wt.exe" (
+	if exist "!windir!\system32\mshta.exe" (
+		start /min mshta vbscript:createobject^("shell.application"^).shellexecute^("wt","%~dpnx0 ks","","runas",1^)^(window.close^)
+	) else (
+		>nul 2>nul start /min powershell -mta -nologo start-process -filepath "wt" -argumentlist '"%~dpnx0" ks' -verb runas
+	)
+) else (
+	if exist "!windir!\system32\mshta.exe" (
+		start /min mshta vbscript:createobject^("shell.application"^).shellexecute^("%~dpnx0","ks","","runas",1^)^(window.close^)
+	) else (
+		>nul 2>nul start /min powershell -mta -nologo start-process -filepath "!comspec!" -argumentlist '/c "%~dpnx0" ks' -verb runas
+	)
+)
 rem 在权限申请进程中预读命令提升后面初始化速度
 if exist "!temp!\dos_reading_cache.tmp" (
 	>nul type "!temp!\dos_reading_cache.tmp"
@@ -37,21 +49,13 @@ if exist "!temp!\dos_reading_cache.tmp" (
 	)
 )
 exit 0
-:stwt
-start /min mshta vbscript:createobject("shell.application").shellexecute("wt","%~dpnx0 ks","","runas",1)(window.close)
-rem >nul 2>nul start /min powershell -mta -nologo start-process -filepath "wt" -argumentlist '"%~dpnx0" ks' -verb runas
-goto :eof
-:stcmd
-start /min mshta vbscript:createobject("shell.application").shellexecute("%~dpnx0","ks","","runas",1)(window.close)
-rem >nul 2>nul start /min powershell -mta -nologo start-process -filepath "!comspec!" -argumentlist '/c "%~dpnx0" ks' -verb runas
-goto :eof
 :ks
 (
 setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250601
-set versize=156295
+set versize=155260
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -2670,23 +2674,27 @@ if /i "!system:~11,1!" equ "x" (
 	2>nul dir /a /s /b "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp"
 )
 echo;
-for /f "delims=" %%a in ('"2>nul reg query HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run"') do (if "%%a" neq "" (echo;%%a))
-for /f "delims=" %%a in ('"2>nul reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"') do (if "%%a" neq "" (echo;%%a))
-for /f "delims=" %%a in ('"2>nul reg query HKEY_CURRENT_USER\Software\Microsoft\WindowsNT\CurrentVersion\Windows\load"') do (if "%%a" neq "" (echo;%%a))
-for /f "delims=" %%a in ('"2>nul reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsNT\CurrentVersion\Winlogon\Userinit"') do (if "%%a" neq "" (echo;%%a))
-for /f "delims=" %%a in ('"2>nul reg query HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run"') do (if "%%a" neq "" (echo;%%a))
-for /f "delims=" %%a in ('"2>nul reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run"') do (if "%%a" neq "" (echo;%%a))
-for /f "delims=" %%a in ('"2>nul reg query HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunServicesOnce"') do (if "%%a" neq "" (echo;%%a))
-for /f "delims=" %%a in ('"2>nul reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunServicesOnce"') do (if "%%a" neq "" (echo;%%a))
-for /f "delims=" %%a in ('"2>nul reg query HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunServices"') do (if "%%a" neq "" (echo;%%a))
-for /f "delims=" %%a in ('"2>nul reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunServices"') do (if "%%a" neq "" (echo;%%a))
-for /f "delims=" %%a in ('"2>nul reg query HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce\Setup"') do (if "%%a" neq "" (echo;%%a))
-for /f "delims=" %%a in ('"2>nul reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce\Setup"') do (if "%%a" neq "" (echo;%%a))
-for /f "delims=" %%a in ('"2>nul reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce"') do (if "%%a" neq "" (echo;%%a))
-for /f "delims=" %%a in ('"2>nul reg query HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce"') do (if "%%a" neq "" (echo;%%a))
-for /f "delims=" %%a in ('"2>nul reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnceEx"') do (if "%%a" neq "" (echo;%%a))
+for %%a in (
+	"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run"
+	"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
+	"HKEY_CURRENT_USER\Software\Microsoft\WindowsNT\CurrentVersion\Windows\load"
+	"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsNT\CurrentVersion\Winlogon\Userinit"
+	"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run"
+	"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run"
+	"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunServicesOnce"
+	"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunServicesOnce"
+	"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunServices"
+	"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunServices"
+	"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce\Setup"
+	"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce\Setup"
+	"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce"
+	"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce"
+	"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnceEx"
+	"HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run"
+) do (
+	for /f "delims=" %%a in ('"2>nul reg query %%a"') do (echo;%%a)
+)
 for /f "delims=" %%a in ('"2>nul reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v taskman"') do (if "%%a" neq "" (echo;%%a))
-for /f "delims=" %%a in ('"2>nul reg query HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run"') do (if "%%a" neq "" (echo;%%a))
 %hx%
 %pause%
 goto memuv2
