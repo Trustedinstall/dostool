@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-	
+
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&title 　&setlocal enabledelayedexpansion
@@ -28,15 +28,15 @@ if exist "!windir!\system32\fltmc.exe" (
 )
 if exist "!localappdata!\Microsoft\WindowsApps\wt.exe" (
 	if exist "!windir!\system32\mshta.exe" (
-		start /min mshta vbscript:createobject^("shell.application"^).shellexecute^("wt","%~dpnx0 ks","","runas",1^)^(window.close^)
+		start /min mshta vbscript:createobject^("shell.application"^).shellexecute^("wt","%~0 ks","","runas",1^)^(window.close^)
 	) else (
-		>nul 2>nul start /min powershell -mta -nologo start-process -filepath "wt" -argumentlist '"%~dpnx0" ks' -verb runas
+		>nul 2>nul start /min powershell -mta -nologo start-process -filepath "wt" -argumentlist '"%~0" ks' -verb runas
 	)
 ) else (
 	if exist "!windir!\system32\mshta.exe" (
-		start /min mshta vbscript:createobject^("shell.application"^).shellexecute^("%~dpnx0","ks","","runas",1^)^(window.close^)
+		start /min mshta vbscript:createobject^("shell.application"^).shellexecute^("%~0","ks","","runas",1^)^(window.close^)
 	) else (
-		>nul 2>nul start /min powershell -mta -nologo start-process -filepath "!comspec!" -argumentlist '/c "%~dpnx0" ks' -verb runas
+		>nul 2>nul start /min powershell -mta -nologo start-process -filepath "!comspec!" -argumentlist '/c "%~0" ks' -verb runas
 	)
 )
 rem 在权限申请进程中预读命令提升后面初始化速度
@@ -44,8 +44,10 @@ if exist "!temp!\dos_reading_cache.tmp" (
 	>nul type "!temp!\dos_reading_cache.tmp"
 ) else (
 	if exist "!windir!\system32\wbem\wmic.exe" (
-		>"!temp!\dos_reading_cache.tmp" wmic os get caption /value
-		>>"!temp!\dos_reading_cache.tmp" wmic path Win32_SystemEnclosure get ChassisTypes /value
+		>"!temp!\dos_reading_cache.tmp" (
+			wmic os get caption /value
+			wmic path Win32_SystemEnclosure get ChassisTypes /value
+		)
 	)
 )
 exit 0
@@ -55,7 +57,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250601
-set versize=155260
+set versize=154680
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -359,14 +361,14 @@ goto memuv2
 :5
 title 解除任务管理器被禁用!system!
 cls
-reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v DisableTaskmgr /t reg_dword /d 00000000 /f
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v DisableTaskmgr /t reg_dword /d 00000000 /f
 %hx%
 %pause%
 goto memuv2
 :6
 title 显示被隐藏文件(中了该类病毒后)!system!
 cls
-reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\Hidden\SHOWALL" /v CheckedValue /t reg_dword /d 00000001 /f
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\Hidden\SHOWALL" /v CheckedValue /t reg_dword /d 00000001 /f
 %hx%
 %pause%
 goto memuv2
@@ -506,7 +508,7 @@ goto 13.1
 :14
 title 解除命令提示符被禁用!system!
 cls
-reg add "HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\System" /v DisableCMD /t reg_dword /d 00000000 /f
+reg add "HKCU\Software\Policies\Microsoft\Windows\System" /v DisableCMD /t reg_dword /d 00000000 /f
 %hx%
 %pause%
 goto memuv2
@@ -597,9 +599,9 @@ for /f "delims=" %%a in ('"for %%a in (!sypf!) do (dir /a /s /b %%aautorun.inf)"
 )
 for %%a in (!sypf!) do (del /f /s /q %%a(Empty).lnk)
 call :16.5
-reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\Hidden\SHOWALL" /v CheckedValue /t reg_dword /d 00000001 /f
-reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\Current Version\Policies\Explorer" /v nosetfolders /t reg_dword /d 00000000 /f
-reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v NoControlPanel /t reg_dword /d 00000000 /f
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\Hidden\SHOWALL" /v CheckedValue /t reg_dword /d 00000001 /f
+reg add "HKCU\Software\Microsoft\Windows\Current Version\Policies\Explorer" /v nosetfolders /t reg_dword /d 00000000 /f
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v NoControlPanel /t reg_dword /d 00000000 /f
 :16.1
 %hx%
 set zhucebiaoqingli=
@@ -630,7 +632,7 @@ echo;HKCU,Software\Microsoft\Windows\CurrentVersion\Policies\System,Disableregis
 )
 rundll32 syssetup,SetupInfObjectInstallAction DefaultInstall 128 !windir!\temp\reg.inf
 del /f /q !windir!\temp\reg.inf
-reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v DisableRegistryTools /t reg_dword /d 00000000 /f
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v DisableRegistryTools /t reg_dword /d 00000000 /f
 goto :eof
 :17
 start regedit
@@ -1492,16 +1494,15 @@ if "!jg!" equ "1" (
 )
 cls
 echo;检测Everything的安装路径与运行状态...
-for /f "skip=2 tokens=3" %%a in ('"2>nul reg query "HKEY_LOCAL_MACHINE\SOFTWARE\voidtools\Everything" /v InstallLocation"') do (
-	if exist "%%a\Everything.exe" (
-		for /f "tokens=1 delims=," %%b in ('tasklist /fi "status eq running" /fi "username eq "%username%"" /fi "imagename eq everything.exe" /fo csv /nh') do (
-			if /i "%%~b" equ "everything.exe" (
-				if exist "%%a\es.exe" (
-					set "EverythingInstallPath=%%a"
-					cls
-					echo;使用Everything搜索空文件夹...
-					goto loop1
-				)
+call :regq "HKLM\SOFTWARE\voidtools\Everything" "InstallLocation" eveurl
+if exist "!eveurl!\Everything.exe" (
+	for /f "tokens=1 delims=," %%a in ('tasklist /fi "status eq running" /fi "username eq "%username%"" /fi "imagename eq everything.exe" /fo csv /nh') do (
+		if /i "%%~a" equ "everything.exe" (
+			if exist "!eveurl!\es.exe" (
+				set "EverythingInstallPath=!eveurl!"
+				cls
+				echo;使用Everything搜索空文件夹...
+				goto loop1
 			)
 		)
 	)
@@ -2675,26 +2676,26 @@ if /i "!system:~11,1!" equ "x" (
 )
 echo;
 for %%a in (
-	"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run"
-	"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
-	"HKEY_CURRENT_USER\Software\Microsoft\WindowsNT\CurrentVersion\Windows\load"
-	"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsNT\CurrentVersion\Winlogon\Userinit"
-	"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run"
-	"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run"
-	"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunServicesOnce"
-	"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunServicesOnce"
-	"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunServices"
-	"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunServices"
-	"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce\Setup"
-	"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce\Setup"
-	"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce"
-	"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce"
-	"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnceEx"
-	"HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run"
+	"HKCU\Software\Microsoft\Windows\CurrentVersion\Run"
+	"HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
+	"HKCU\Software\Microsoft\WindowsNT\CurrentVersion\Windows\load"
+	"HKLM\SOFTWARE\Microsoft\WindowsNT\CurrentVersion\Winlogon\Userinit"
+	"HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run"
+	"HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run"
+	"HKCU\Software\Microsoft\Windows\CurrentVersion\RunServicesOnce"
+	"HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunServicesOnce"
+	"HKCU\Software\Microsoft\Windows\CurrentVersion\RunServices"
+	"HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunServices"
+	"HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce\Setup"
+	"HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce\Setup"
+	"HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce"
+	"HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce"
+	"HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnceEx"
+	"HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run"
 ) do (
 	for /f "delims=" %%a in ('"2>nul reg query %%a"') do (echo;%%a)
 )
-for /f "delims=" %%a in ('"2>nul reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v taskman"') do (if "%%a" neq "" (echo;%%a))
+for /f "delims=" %%a in ('"2>nul reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v taskman"') do (if "%%a" neq "" (echo;%%a))
 %hx%
 %pause%
 goto memuv2
@@ -2781,22 +2782,18 @@ setlocal
 title 暴力破解压缩包密码!system!
 cls
 set rarazlj=
-for /f "skip=2 tokens=3" %%a in ('"2>nul reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\WinRAR.exe" /v path"') do (
-	set "rarazlj=%%a"
-	set "rarpd=!rarazlj!\Rar.exe"
-	set "rarpd7z=!rarazlj!\winrar.exe"
-)
+call :regq "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\WinRAR.exe" "path" rarazlj
+set "rarpd=!rarazlj!\Rar.exe"
+set "rarpd7z=!rarazlj!\winrar.exe"
 cls
 if not exist "!rarpd!" (
 	echo;没有安装WinRAR.
 	echo;搜索7-Zip...
 	set 7zlj=
-	for /f "skip=2 tokens=3" %%a in ('"2>nul reg query "HKEY_LOCAL_MACHINE\SOFTWARE\7-Zip" /v path"') do (
-		set "7zlj=%%a"
-		set "7zlj=!7zlj!7z.exe"
-		set "rarpd=!7zlj!"
-		set "rarpd7z=!7zlj!"
-	)
+	call :regq "HKLM\SOFTWARE\7-Zip" "path" 7zlj
+	set "7zlj=!7zlj!7z.exe"
+	set "rarpd=!7zlj!"
+	set "rarpd7z=!7zlj!"
 )
 if not exist "!rarpd!" (
 	echo;没有找到7-Zip
@@ -2926,8 +2923,8 @@ netsh wlan set hostednetwork mode=allow ssid="!wifissid!" key=!wifimima!
 netsh wlan start hostednetwork
 %hx%
 echo;如果无法连接请手动获取IP地址(如果开启系统防火墙也会无法连接成功)
-echo;Wifi名称(SSID): !wifissid!
-echo;Wifi密码: !wifimima!
+echo;Wifi名称(SSID): "!wifissid!"
+echo;Wifi密码: "!wifimima!"
 %hx%
 %pause%
 endlocal
@@ -4130,9 +4127,7 @@ for %%a in (
 ) do (
 	>nul 2>nul set "%%~a"
 )
-for /f "skip=2 tokens=3" %%a in ('"2>nul reg QUERY "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v EditionID"') do (
-	set "sysid=%%a"
-)
+call :regq "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" "EditionID" sysid
 set server=
 if defined !sysid! (echo;系统名称: !system:~3!) else (call :colortxt c 没有当前系统的激活密钥&echo;)
 >nul ping /4 /n 1 www.baidu.com||call :colortxt c 没有网络连接&echo;
@@ -4188,7 +4183,7 @@ if not exist "!windir!\system32\curl.exe" (
 :71.1
 cls
 set "doh=--doh-url https://101.101.101.101/dns-query"
-set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36""
+set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36""
 set filename=
 set url=
 set /p "url=输入下载链接(e=返回): "
@@ -4618,8 +4613,8 @@ if exist "chrome.exe" (
 	set chrome=chrome.exe
 	goto startchrome
 ) else (
-	for /f "skip=2 tokens=3" %%a in ('"2>nul reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe" /v Path"') do (
-		set "chrome=%%a"
+	for /f "skip=1 tokens=2*" %%a in ('"2>nul reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe" /v Path"') do (
+		set "chrome=%%b"
 	)
 	for /f "delims=" %%a in ("!chrome!") do (set "chrome=%%~fa")
 	if exist "!chrome!\Chrome.exe" (
@@ -4718,15 +4713,14 @@ echo;取消文件隐藏属性...
 for /f "delims=" %%a in ('"2>nul dir /a:h /s /b"') do (attrib -h "%%a")
 if exist "!temp!\list.txt" (del /f /q "!temp!\list.txt")
 echo;检测Everything的安装路径与运行状态...
-for /f "skip=2 tokens=3" %%a in ('"2>nul reg query "HKEY_LOCAL_MACHINE\SOFTWARE\voidtools\Everything" /v InstallLocation"') do (
-	if exist "%%a\Everything.exe" (
-		for /f "tokens=1 delims=," %%b in ('tasklist /fi "status eq running" /fi "username eq "%username%"" /fi "imagename eq everything.exe" /fo csv /nh') do (
-			if /i "%%~b" equ "everything.exe" (
-				if exist "%%a\es.exe" (
-					cls
-					echo;使用Everything读取文件列表
-					>"!temp!\list.txt" "%%a\es.exe" -path "!source_dir!" /a-d -sort-size-descending -full-path-and-name
-				)
+call :regq "HKLM\SOFTWARE\voidtools\Everything" "InstallLocation" eveurl
+if exist "!eveurl!\Everything.exe" (
+	for /f "tokens=1 delims=," %%a in ('tasklist /fi "status eq running" /fi "username eq "%username%"" /fi "imagename eq everything.exe" /fo csv /nh') do (
+		if /i "%%~a" equ "everything.exe" (
+			if exist "!eveurl!\es.exe" (
+				cls
+				echo;使用Everything读取文件列表
+				>"!temp!\list.txt" "!eveurl!\es.exe" -path "!source_dir!" /a-d -sort-size-descending -full-path-and-name
 			)
 		)
 	)
@@ -4999,7 +4993,7 @@ setlocal
 cls
 title 更新DOS工具箱 - 当前版本: !ver!!system!
 set "doh=--doh-url https://101.101.101.101/dns-query"
-set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36""
+set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36""
 set "curlpix=--compressed -L -# -C - --ca-native --retry 1 --retry-delay 1 --connect-timeout 3 --max-time 10"
 set resolve=--resolve raw.github.io:443:^
 185.199.108.133,^
@@ -5893,31 +5887,31 @@ if "%2" equ "year" (goto checkvar_year)
 goto :eof
 :checkvar_num
 if defined %1 (
-	for /f "delims=0123456789" %%a in ("!%1!") do (goto checkvar_exit0)
+	for /f "delims=0123456789" %%a in ("!%1!") do (exit /b 0)
 ) else (
-	goto checkvar_exit0
+	exit /b 0
 )
-goto checkvar_exit1
+exit /b 1
 :checkvar_num.
 if defined %1 (
-	for /f "delims=.0123456789" %%a in ("!%1!") do (goto checkvar_exit0)
+	for /f "delims=.0123456789" %%a in ("!%1!") do (exit /b 0)
 ) else (
-	goto checkvar_exit0
+	exit /b 0
 )
 for /f "tokens=1,2 delims=." %%a in ("!%1!") do (
 	if "%%a" neq "" (set "val1=%%a") else (set "val1=0")
-	if "%%b" neq "" (set "val2=%%b") else (goto checkvar_exit0)
+	if "%%b" neq "" (set "val2=%%b") else (exit /b 0)
 )
-if "!val1!!val2!" neq "" (goto checkvar_exit1) else (goto checkvar_exit0)
+if "!val1!!val2!" neq "" (exit /b 1) else (exit /b 0)
 goto :eof
 :checkvar_-num
 if defined %1 (
-	for /f "delims=0123456789-" %%a in ("!%1!") do (goto checkvar_exit0)
+	for /f "delims=0123456789-" %%a in ("!%1!") do (exit /b 0)
 ) else (
-	goto checkvar_exit0
+	exit /b 0
 )
 for /f "tokens=1 delims=-" %%a in ("!%1!") do (
-	if "!%1:~0,1!" equ "-" (goto checkvar_exit1) else (goto checkvar_exit0)
+	if "!%1:~0,1!" equ "-" (exit /b 1) else (exit /b 0)
 )
 goto :eof
 :checkvar_-num.
@@ -5925,45 +5919,45 @@ set "val1=!val:~1!"
 set "val2=!val:.=!"
 if defined val1 (
 	call :checkvar val1 num.||(
-		call :checkvar val2 -num jg||goto checkvar_exit1
+		call :checkvar val2 -num jg||exit /b 1
 	)
 )
-goto checkvar_exit0
+exit /b 0
 :checkvar_az
 if defined %1 (
-	for /f "delims=aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ" %%a in ("!%1!") do (goto checkvar_exit0)
-	goto checkvar_exit1
+	for /f "delims=aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ" %%a in ("!%1!") do (exit /b 0)
+	exit /b 1
 )
 goto :eof
 :checkvar_aznum
 if defined %1 (
-	for /f "delims=0123456789aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ" %%a in ("!%1!") do (goto checkvar_exit0)
-	goto checkvar_exit1
+	for /f "delims=0123456789aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ" %%a in ("!%1!") do (exit /b 0)
+	exit /b 1
 )
-goto checkvar_exit0
+exit /b 0
 :checkvar_year
 if defined %1 (
-	for /f "delims=0123456789" %%a in ("!%1!") do (goto checkvar_exit0)
+	for /f "delims=0123456789" %%a in ("!%1!") do (exit /b 0)
 	call :strlen %1 jg
-	if "!jg!" neq "8" (goto checkvar_exit0)
+	if "!jg!" neq "8" (exit /b 0)
 	set "year=!%1:~0,4!"
 	set "month=!%1:~4,2!"
 	set "day=!%1:~6,2!"
-	if 1!month! lss 101 (goto checkvar_exit0)
-	if 1!month! gtr 112 (goto checkvar_exit0)
-	if 1!day! lss 101 (goto checkvar_exit0)
-	if 1!day! gtr 131 (goto checkvar_exit0)
+	if 1!month! lss 101 (exit /b 0)
+	if 1!month! gtr 112 (exit /b 0)
+	if 1!day! lss 101 (exit /b 0)
+	if 1!day! gtr 131 (exit /b 0)
 	if "!month!" equ "04" (
-		if 1!day! gtr 130 (goto checkvar_exit0)
+		if 1!day! gtr 130 (exit /b 0)
 	)
 	if "!month!" equ "06" (
-		if 1!day! gtr 130 (goto checkvar_exit0)
+		if 1!day! gtr 130 (exit /b 0)
 	)
 	if "!month!" equ "09" (
-		if 1!day! gtr 130 (goto checkvar_exit0)
+		if 1!day! gtr 130 (exit /b 0)
 	)
 	if "!month!" equ "11" (
-		if 1!day! gtr 130 (goto checkvar_exit0)
+		if 1!day! gtr 130 (exit /b 0)
 	)
 	if "!month!" equ "02" (
 		set /a "leap=year%%4"
@@ -5971,28 +5965,24 @@ if defined %1 (
 		set /a "leap400=year%%400"
 		if "!leap!" equ "0" (
 			if "!leap100!" neq "0" (
-				if 1!day! gtr 129 (goto checkvar_exit0)
+				if 1!day! gtr 129 (exit /b 0)
 			)
 		) else (
-			if 1!day! gtr 128 (goto checkvar_exit0)
+			if 1!day! gtr 128 (exit /b 0)
 		)
 		if "!leap100!" equ "0" (
 			if "!leap400!" neq "0" (
-				if 1!day! gtr 128 (goto checkvar_exit0)
+				if 1!day! gtr 128 (exit /b 0)
 			)
 		)
 		if "!leap400!" equ "0" (
-			if 1!day! gtr 129 (goto checkvar_exit0)
+			if 1!day! gtr 129 (exit /b 0)
 		)
 	)
-	goto checkvar_exit1
+	exit /b 1
 ) else (
-	goto checkvar_exit0
+	exit /b 0
 )
-:checkvar_exit0
-exit /b 0
-:checkvar_exit1
-exit /b 1
 :var
 if defined %1 (
 	set "%1=!%1:"=!"
@@ -6285,7 +6275,7 @@ set "filename=%~3"
 set "dir=%~4"
 set "par=%~5"
 set "doh=--doh-url https://101.101.101.101/dns-query"
-set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36""
+set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36""
 if not defined url (
 	echo;链接不能为空!
 	goto :eof
@@ -6303,9 +6293,9 @@ if not defined dir (set "dir=%%~dp0")
 	goto :eof
 )
 if exist "%temp%\tag" (del /f /q "%temp%\tag")
-for /f "skip=2 tokens=3" %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
+for /f "skip=1 tokens=3" %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
 	if "%%a" equ "0x1" (
-		for /f "skip=2 tokens=3" %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
+		for /f "skip=1 tokens=3" %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
 			set "proxy=-x %%b"
 			echo;使用代理:	%%b
 		)
@@ -6495,9 +6485,9 @@ if exist "!url!" (del /f /q "!url!")
 md "!url!"
 endlocal&exit /b %errorlevel%
 :curlproxy
-for /f "skip=2 tokens=3" %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
+for /f "skip=1 tokens=3" %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
 	if "%%a" equ "0x1" (
-		for /f "skip=2 tokens=3" %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
+		for /f "skip=1 tokens=3" %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
 			set "proxy=-x %%b"
 			echo;使用代理:	%%b
 		)
@@ -6605,6 +6595,23 @@ for /f "usebackq eol=# delims=" %%a in ("%~1") do (
 )
 set __line=
 set __start=
+goto :eof
+:regq
+if "%~1" equ "" (goto :eof)
+if "%~2" equ "" (goto :eof)
+if "%~3" neq "" (
+	for /f "skip=1 tokens=2*" %%a in ('"2>nul reg query "%~1" /v "%~2""') do (set "%~3=%%b")
+) else (
+	for /f "skip=1 tokens=2*" %%a in ('"2>nul reg query "%~1" /v "%~2""') do (echo;%%b)
+)
+goto :eof
+:regqnul
+if "%~1" equ "" (goto :eof)
+if "%~2" neq "" (
+	for /f "skip=1 tokens=2*" %%a in ('"2>nul reg query "%~1" /ve"') do (set "%~2=%%b")
+) else (
+	for /f "skip=1 tokens=2*" %%a in ('"2>nul reg query "%~1" /ve"') do (echo;%%b)
+)
 goto :eof
 :winnt
 @echo;Incompatible with the current system operating environment
