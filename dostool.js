@@ -57,7 +57,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250601
-set versize=154680
+set versize=154755
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -4409,6 +4409,7 @@ curl !proxy! !doh! !ua! --compressed -#RL -C - --ca-native --retry 2 --retry-del
 set "jssj=!time!"
 goto 71.4
 :72
+rem Chromium内核从141版本开始不支持域前置功能
 setlocal
 if not exist "!temp!\sni.ini" (
 	>"!temp!\sni.ini" (
@@ -4569,6 +4570,7 @@ if not exist "!temp!\sni.ini" (
 		"www.v2ex.com"
 		"challenges.cloudflare.com"
 		"www.openstreetmap.org"
+		"tile.openstreetmap.org"
 		"tile.openstreetmap.org"
 		"a.tile.openstreetmap.org"
 		"b.tile.openstreetmap.org"
@@ -6536,11 +6538,11 @@ if exist "!windir!\System32\fsutil.exe" (
 	)
 )
 for %%a in (
-	a b c d e
-	f g h i j
-	k l m n o
-	p q r s t
-	u v w x y z
+	A B C D E
+	F G H I J
+	K L M N O
+	P Q R S T
+	U V W X Y Z
 ) do (
 	if exist "%%a:\" (set "%1=!%1!%%a:\ ")
 )
