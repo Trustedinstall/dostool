@@ -15,7 +15,7 @@
 ò›ò‰ò‡‚¥∂‰ìØõNÈ‡ÿ±ÍŒí¨≥™ëı—Ó’ƒÑm‰’†ëûõõñùäöG¥˙∏±êÍÅ›û≥Ëıìû
 Ã“û¥◊¿üÇ“ØóﬂûÜÅ„Å€ìµë˛û¥ëaõ¬÷∆ùpò˘ó⁄ït¨ãóÏëıŒ‚µ§Ö_Éß∏ÀÖX∑Æ
 ‡°ñÖWÖY¨{í∞◊°õKﬂ…¬‘†≤ñ[êÒûâÍ≈∫Œ¨Ñ÷¥Üï†nïjÃ°∫∫ΩΩÿ¶π¿ïjú}ûô
-
+									
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&title °°&setlocal enabledelayedexpansion
@@ -57,7 +57,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250601
-set versize=154755
+set versize=154770
 set xz0=0
 set nx1=[+]œ¬“ª“≥
 set nx2=[-]…œ“ª“≥
@@ -4464,7 +4464,7 @@ if not exist "!temp!\sni.ini" (
 		"@.cloudfunctions.net=alt6.gstatic.com"
 		"@.blogspot.com=click.google-analytics.com"
 		"@.googlesource.com=pagead1.googleadservices.com"
-		"@.chromium.org=google-analytics.com"
+		"@.chromium.org=click.google-analytics.com"
 		"@.google=pagead1.googleadservices.com"
 		"android.com=alt6.gstatic.com"
 		"@.android.com=alt6.gstatic.com"
