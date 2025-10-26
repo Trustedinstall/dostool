@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-		
+			
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&title 　&setlocal enabledelayedexpansion
@@ -57,7 +57,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250601
-set versize=154775
+set versize=154750
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -5501,7 +5501,7 @@ set "qrgb=!qrgb:.=;!"
 goto :eof
 :su
 >"%temp%\su.cmd" <nul set /p "=!comspec! /c "%~dpnx0" ks"
-powershell -mta -nologo -noprofile -command "$command=[IO.File]::ReadAllText('%~dpnx0') -split '#su\#.*'; iex ($command[1])"
+powershell -mta -nologo -noprofile -command "$cmd=[IO.File]::ReadAllText('%~dpnx0') -split '#su\#.*'; iex ($cmd[1])"
 rem 延迟删除文件确保能被上一条指令读取
 call :out 1
 del /f /q "%temp%\su.cmd";"%Temp%\CMSTP.inf"
@@ -6213,14 +6213,14 @@ set "system= - !caption:~10!"
 goto :eof
 :pd10
 if /i "!caption!" equ "Microsoft Windows 10 Home" (set "system= - Windows 10 家庭版"&goto :eof)
-if /i "!caption!" equ "Microsoft Windows 10 Professional" (set "system= - Windows 10 专业版"&goto :eof)
+if /i "!caption!" equ "Microsoft Windows 10 Pro" (set "system= - Windows 10 专业版"&goto :eof)
 if /i "!caption!" equ "Microsoft Windows 10 Education" (set "system= - Windows 10 教育版"&goto :eof)
 if /i "!caption!" equ "Microsoft Windows 10 Enterprise" (set "system= - Windows 10 企业版"&goto :eof)
 set "system= - !caption:~10!"
 goto :eof
 :pd11
 if /i "!caption!" equ "Microsoft Windows 11 Home" (set "system= - Windows 11 家庭版"&goto :eof)
-if /i "!caption!" equ "Microsoft Windows 11 Professional" (set "system= - Windows 11 专业版"&goto :eof)
+if /i "!caption!" equ "Microsoft Windows 11 Pro" (set "system= - Windows 11 专业版"&goto :eof)
 if /i "!caption!" equ "Microsoft Windows 11 Education" (set "system= - Windows 11 教育版"&goto :eof)
 if /i "!caption!" equ "Microsoft Windows 11 Enterprise" (set "system= - Windows 11 企业版"&goto :eof)
 set "system= - !caption:~10!"
