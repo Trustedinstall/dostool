@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-									
+		
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&title 　&setlocal enabledelayedexpansion
@@ -57,7 +57,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250601
-set versize=154770
+set versize=154775
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -4182,7 +4182,7 @@ if not exist "!windir!\system32\curl.exe" (
 )
 :71.1
 cls
-set "doh=--doh-url https://101.101.101.101/dns-query"
+set "doh=--doh-url https://doh.applied-privacy.net/query"
 set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36""
 set filename=
 set url=
@@ -4994,7 +4994,7 @@ goto :eof
 setlocal
 cls
 title 更新DOS工具箱 - 当前版本: !ver!!system!
-set "doh=--doh-url https://101.101.101.101/dns-query"
+set "doh=--doh-url https://doh.applied-privacy.net/query"
 set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36""
 set "curlpix=--compressed -L -# -C - --ca-native --retry 1 --retry-delay 1 --connect-timeout 3 --max-time 10"
 set resolve=--resolve raw.github.io:443:^
@@ -6276,7 +6276,7 @@ set "tr=%2"
 set "filename=%~3"
 set "dir=%~4"
 set "par=%~5"
-set "doh=--doh-url https://101.101.101.101/dns-query"
+set "doh=--doh-url https://doh.applied-privacy.net/query"
 set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36""
 if not defined url (
 	echo;链接不能为空!
