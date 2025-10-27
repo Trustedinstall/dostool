@@ -15,7 +15,7 @@
 ˜Ý˜ä˜àâ´¶ä“¯›NéàØ±êÎ’¬³ª‘õÑîÕÄ„mäÕ ‘ž››–ŠšG´ú¸±êÝž³èõ“ž
 ÌÒž´×ÀŸ‚Ò¯—ßž†ãÛ“µ‘þž´‘a›ÂÖÆp˜ù—Ú•t¬‹—ì‘õÎâµ¤…_ƒ§¸Ë…X·®
 à¡–ð…W…Y¬{’°×¡›KßÉÂÔ ²–[ñž‰êÅºÎ¬„Ö´†• n•jÌ¡ºº½½Ø¦¹À•jœ}ž™
-			
+				
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&title ¡¡&setlocal enabledelayedexpansion
@@ -57,7 +57,7 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 set ver=20250601
-set versize=154810
+set versize=154975
 set xz0=0
 set nx1=[+]ÏÂÒ»Ò³
 set nx2=[-]ÉÏÒ»Ò³
@@ -1119,7 +1119,12 @@ goto 23
 :23.3
 title ÏÔÊ¾TCP/UDPÁ¬½Ó!system!
 cls
-netstat -aon
+netstat -ano
+set cs=
+for /f "skip=4 tokens=4" %%a in ('"2>nul netstat -ano"') do (
+	if /i "%%a" equ "ESTABLISHED" (set /a "cs+=1")
+)
+if defined cs (echo;TCPÁ¬½ÓÊýÁ¿: !cs!)
 %hx%
 set ×Ö·û´®=
 set /p "×Ö·û´®=ÊäÈëÒª²éÕÒµÄ×Ö·û´®(e=·µ»Ø)(f=Ë¢ÐÂ): "
@@ -1128,7 +1133,7 @@ if not defined ×Ö·û´® (goto 23.3)
 if "!×Ö·û´®!" equ "f" (goto 23.3)
 if /i "!×Ö·û´®!" equ "e" (endlocal&goto 23)
 cls
-netstat -aon|findstr /i /c:"!×Ö·û´®!"
+netstat -ano|findstr /i /c:"!×Ö·û´®!"
 %hx%
 %pause%
 endlocal
