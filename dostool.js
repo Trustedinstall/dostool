@@ -1119,11 +1119,11 @@ goto 23
 :23.3
 title 显示TCP/UDP连接!system!
 cls
-netstat -ano
 set cs=
 for /f "skip=4 tokens=4" %%a in ('"2>nul netstat -ano"') do (
 	if /i "%%a" equ "ESTABLISHED" (set /a "cs+=1")
 )
+netstat -ano
 if defined cs (echo;TCP连接数量: !cs!)
 %hx%
 set 字符串=
