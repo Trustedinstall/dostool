@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-	
+			
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&title 　&setlocal enabledelayedexpansion
@@ -1089,7 +1089,7 @@ if defined workingsetsize (
 )
 if defined pagefileusage (
 	call :xdwjs !pagefileusage! kb pagefileusage
-	echo;页面文件使用:	!pagefileusage!
+	echo;已提交大小:	!pagefileusage!
 )
 if defined creationdate (echo;进程启动日期:	!creationdate:~0,4!年!creationdate:~4,2!月!creationdate:~6,2!日 !creationdate:~8,2!:!creationdate:~10,2!:!creationdate:~12,2!)
 if defined priority (echo;优先级:		!priority!)
