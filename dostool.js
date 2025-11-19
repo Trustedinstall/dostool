@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-			
+		
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&title 　&setlocal enabledelayedexpansion
@@ -56,8 +56,8 @@ exit 0
 setlocal
 set "dosqssj=!time!"
 >nul chcp 936
-set ver=20250601
-set versize=155000
+set ver=20251201
+set versize=156455
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -2021,6 +2021,7 @@ for /f "tokens=2 delims==" %%a in ('"2>nul wmic memorychip get capacity /value"'
 		if "!dw!" neq "0" (echo;		!dw!)
 	)
 )
+echo;
 set cs=
 for /f "tokens=2 delims==" %%a in ('"2>nul wmic memorychip get speed /value"') do (
 	set /a "cs+=1"
@@ -2034,6 +2035,69 @@ for /f "tokens=2 delims==" %%a in ('"2>nul wmic memorychip get speed /value"') d
 		)
 	)
 )
+echo;
+set cs=
+for /f "tokens=2 delims==" %%a in ('"2>nul wmic pagefile get name /value"') do (
+	set /a "cs+=1"
+	set "var=%%a"
+	if "!var:~0,-1!" neq "" (
+		if "!cs!" equ "1" (
+			<nul set /p "=分页文件:"
+			echo;	!var:~0,-1!
+		) else (
+			echo;		!var:~0,-1!
+		)
+	)
+)
+echo;
+set cs=
+for /f "tokens=2 delims==" %%a in ('"2>nul wmic pagefile get AllocatedBaseSize /value"') do (
+	set /a "cs+=1"
+	set "var=%%a"
+	if "!var:~0,-1!" neq "" (
+		if "!cs!" equ "1" (
+			<nul set /p "=已分配大小:"
+			call :xdwjs !var:~0,-1! mb AllocatedBaseSize
+			echo;	!AllocatedBaseSize!
+		) else (
+			call :xdwjs !var:~0,-1! mb AllocatedBaseSize
+			echo;		!AllocatedBaseSize!
+		)
+	)
+)
+echo;
+set cs=
+for /f "tokens=2 delims==" %%a in ('"2>nul wmic pagefile get CurrentUsage /value"') do (
+	set /a "cs+=1"
+	set "var=%%a"
+	if "!var:~0,-1!" neq "" (
+		if "!cs!" equ "1" (
+			<nul set /p "=当前使用量:"
+			call :xdwjs !var:~0,-1! mb CurrentUsage
+			echo;	!CurrentUsage!
+		) else (
+			call :xdwjs !var:~0,-1! mb CurrentUsage
+			echo;		!CurrentUsage!
+		)
+	)
+)
+echo;
+set cs=
+for /f "tokens=2 delims==" %%a in ('"2>nul wmic pagefile get PeakUsage /value"') do (
+	set /a "cs+=1"
+	set "var=%%a"
+	if "!var:~0,-1!" neq "" (
+		if "!cs!" equ "1" (
+			<nul set /p "=峰值使用量:"
+			call :xdwjs !var:~0,-1! mb PeakUsage
+			echo;	!PeakUsage!
+		) else (
+			call :xdwjs !var:~0,-1! mb PeakUsage
+			echo;		!PeakUsage!
+		)
+	)
+)
+echo;
 if exist "!windir!\system32\systeminfo.exe" (systeminfo|find "内存")
 %hx%
 mode
