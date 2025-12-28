@@ -15,7 +15,7 @@
 ò›ò‰ò‡‚¥∂‰ìØõNÈ‡ÿ±ÍŒí¨≥™ëı—Ó’ƒÑm‰’†ëûõõñùäöG¥˙∏±êÍÅ›û≥Ëıìû
 Ã“û¥◊¿üÇ“ØóﬂûÜÅ„Å€ìµë˛û¥ëaõ¬÷∆ùpò˘ó⁄ït¨ãóÏëıŒ‚µ§Ö_Éß∏ÀÖX∑Æ
 ‡°ñÖWÖY¨{í∞◊°õKﬂ…¬‘†≤ñ[êÒûâÍ≈∫Œ¨Ñ÷¥Üï†nïjÃ°∫∫ΩΩÿ¶π¿ïjú}ûô
-				
+		
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -67,7 +67,7 @@ set "dosqssj=!time!"
 title DOSπ§æﬂœ‰
 >nul chcp 936
 set ver=20260101
-set versize=174025
+set versize=174020
 set xz0=0
 set nx1=[+]œ¬“ª“≥
 set nx2=[-]…œ“ª“≥
@@ -6654,9 +6654,7 @@ exit /b 1
 :var
 if not defined %1 (goto :eof)
 set "%1=!%1:"=!"
-for /f "delims=&|%%!!" %%a in (""!%1!"") do (
-	set "%1=%%~a"
-)
+for /f "delims=()&|%%!!" %%a in (""!%1!"") do (set "%1=%%~a")
 goto :eof
 :sqrt
 if "%1" equ "" (goto :eof)
