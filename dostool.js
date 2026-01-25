@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-		
+					
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -67,7 +67,7 @@ set "dosqssj=!time!"
 title DOS工具箱
 >nul chcp 936
 set ver=20260101
-set versize=174020
+set versize=173340
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -1298,7 +1298,7 @@ call :out 2
 endlocal
 goto 24
 :24.1
-titel 列出所有驱动器!system!
+title 列出所有驱动器!system!
 cls
 call :sypf sypf
 echo;!sypf!
@@ -5001,7 +5001,7 @@ for /l %%a in (1,1,!tr!) do (
 			set /a "jccs+=1"
 		) else (
 			set fhz=
-			call :cf !ssdx! !pdfd! 2 fhz
+			call :fdiv !ssdx! !pdfd! 2 fhz
 			set "jcjd=!fhz:~2,2!"
 			if "!jcjd:~0,1!" equ "0" (set "jcjd=!jcjd:~1,1!")
 			set jdt=
@@ -5016,7 +5016,7 @@ for /l %%a in (1,1,!tr!) do (
 			set /a "jccs+=1"
 		) else (
 			set fhz=
-			call :cf !ssdx! !fd! 2 fhz
+			call :fdiv !ssdx! !fd! 2 fhz
 			set "jcjd=!fhz:~2,2!"
 			if "!jcjd:~0,1!" equ "0" (set "jcjd=!jcjd:~1,1!")
 			set jdt=
@@ -5058,8 +5058,8 @@ if exist "!dir!\!filename!" (
 		echo;计算下载速度...
 		call :sjc !kssj! !jssj! raw
 		call :sjc !kssj! !jssj! xzys format
-		call :div !raw! 1000 3 xzsd
-		call :div %%~za !xzsd! 3 sd
+		call :fdiv !raw! 1000 3 xzsd
+		call :fdiv %%~za !xzsd! 3 sd
 		call :xdwjs !sd! d dw
 		call :bel
 		cls
@@ -6287,37 +6287,37 @@ if "%3" equ "" (goto :eof)
 setlocal
 set "Bytes=%1"
 set "danwei=%2"
-if /i "!danwei!" equ "kb" (call :scf !bytes! 1024 bytes)
-if /i "!danwei!" equ "mb" (call :scf !bytes! 1048576 bytes)
-if /i "!danwei!" equ "gb" (call :scf !bytes! 1073741824 bytes)
+if /i "!danwei!" equ "kb" (call :mul !bytes! 1024 bytes)
+if /i "!danwei!" equ "mb" (call :mul !bytes! 1048576 bytes)
+if /i "!danwei!" equ "gb" (call :mul !bytes! 1073741824 bytes)
 if "%3" equ "" (goto :eof)
-call :div !Bytes! 1152921504606846976 2 OK
+call :fdiv !Bytes! 1152921504606846976 2 OK
 if "!OK:~0,2!" equ "0." (
-	call :div !Bytes! 1125899906842624 2 OK
+	call :fdiv !Bytes! 1125899906842624 2 OK
 ) else (
 	endlocal&set "%3=%OK% EB"
 	goto :eof
 )
 if "!OK:~0,2!" equ "0." (
-	call :div !Bytes! 1099511627776 2 OK
+	call :fdiv !Bytes! 1099511627776 2 OK
 ) else (
 	endlocal&set "%3=%OK% PB"
 	goto :eof
 )
 if "!OK:~0,2!" equ "0." (
-	call :div !Bytes! 1073741824 2 OK
+	call :fdiv !Bytes! 1073741824 2 OK
 ) else (
 	endlocal&set "%3=%OK% TB"
 	goto :eof
 )
 if "!OK:~0,2!" equ "0." (
-	call :div !Bytes! 1048576 2 OK
+	call :fdiv !Bytes! 1048576 2 OK
 ) else (
 	endlocal&set "%3=%OK% GB"
 	goto :eof
 )
 if "!OK:~0,2!" equ "0." (
-	call :div !Bytes! 1024 2 OK
+	call :fdiv !Bytes! 1024 2 OK
 ) else (
 	endlocal&set "%3=%OK% MB"
 	goto :eof
@@ -6329,7 +6329,7 @@ if "!OK:~0,2!" equ "0." (
 	endlocal&set "%3=%OK% KB"
 	goto :eof
 )
-:scf
+:mul
 if "%~1" equ "0" (
 	set "%~3=0"
 	goto :eof
@@ -6383,7 +6383,7 @@ if not "!j:~0,1!" equ "0" (set "t=!j:~0,1!!t!")
 set "ji=!t!!ji:~1!"
 endlocal&set "%~3=%ji%"
 goto :eof
-:div
+:fdiv
 if "%4" equ "" (goto :eof)
 setlocal
 set "Div.1=%1"
@@ -6498,41 +6498,6 @@ for /f "tokens=* delims=0" %%i in ("!Div.3!") do (set "Div.3=%%i")
 if "!Div.3:~0,1!" equ "." (set "Div.3=0!Div.3!")
 if "!Div.3!" equ "" (set Div.3=0)
 endlocal&set "%4=%Div.3%"
-goto :eof
-:cf
-if "%1" equ "" (goto :eof)
-if "%2" equ "" (goto :eof)
-if "%3" equ "" (goto :eof)
-setlocal
-call :cf_1 %1 %2 %3 jg
-endlocal&set "%4=%jg%"
-goto :eof
-:cf_1
-set num=0
-set dec_str=
-set input=
-if "%4" equ "" (goto :eof)
-set /a "int_str=%1/%2"
-set /a "mod=%1%%%2"
-if "!mod!" equ "0" (goto cf_3)
-:cf_4
-set "mod=!mod!0"
-if !mod! lss %2 (
-	set "dec_str=!dec_str!0"
-	goto cf_4
-) else (
-	set /a "dec=mod/%2"
-	set "dec_str=!dec_str!!dec!"
-	set /a "mod=mod%%%2"
-)
-set /a "num+=1"
-if "!mod!" neq "0" (
-	if !num! lss %3 (goto cf_4)
-)
-:cf_3
-for /l %%a in (1,1,%3) do (set "zero_str=!zero_str!0")
-set "dec_str=!dec_str!!zero_str!"
-set "%4=!int_str!.!dec_str:~0,%3!"
 goto :eof
 #offdisplay#
 Add-Type @"
