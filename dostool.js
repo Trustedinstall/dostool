@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-					
+	
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -67,7 +67,7 @@ set "dosqssj=!time!"
 title DOS工具箱
 >nul chcp 936
 set ver=20260101
-set versize=173340
+set versize=173410
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -1560,7 +1560,7 @@ cls
 echo;检测Everything的安装路径与运行状态...
 call :regq "HKLM\SOFTWARE\voidtools\Everything" "InstallLocation" eveurl
 if exist "!eveurl!\Everything.exe" (
-	for /f "tokens=1 delims=," %%a in ('tasklist /fi "status eq running" /fi "username eq "%username%"" /fi "imagename eq everything.exe" /fo csv /nh') do (
+	for /f "tokens=1 delims=," %%a in ('tasklist /fi "status eq running" /fi "username eq %username%" /fi "imagename eq everything.exe" /fo csv /nh') do (
 		if /i "%%~a" equ "everything.exe" (
 			if exist "!eveurl!\es.exe" (
 				set "EverythingInstallPath=!eveurl!"
@@ -5401,7 +5401,7 @@ if exist "!temp!\list.txt" (del /f /q "!temp!\list.txt")
 echo;检测Everything的安装路径与运行状态...
 call :regq "HKLM\SOFTWARE\voidtools\Everything" "InstallLocation" eveurl
 if exist "!eveurl!\Everything.exe" (
-	for /f "tokens=1 delims=," %%a in ('tasklist /fi "status eq running" /fi "username eq "%username%"" /fi "imagename eq everything.exe" /fo csv /nh') do (
+	for /f "tokens=1 delims=," %%a in ('tasklist /fi "status eq running" /fi "username eq %username%" /fi "imagename eq everything.exe" /fo csv /nh') do (
 		if /i "%%~a" equ "everything.exe" (
 			if exist "!eveurl!\es.exe" (
 				cls
@@ -6846,6 +6846,7 @@ if /i "!system!" equ "Windows 8.1 Enterprise" (set "system= - Windows 8.1 企业版
 set "system= - !system!"
 goto :eof
 :pd10
+for /f "tokens=3 delims=.]" %%a in ('ver') do (if %%a geq 22000 (goto pd11))
 if /i "!system!" equ "Windows 10 Home" (set "system= - Windows 10 家庭版"&goto :eof)
 if /i "!system!" equ "Windows 10 Pro" (set "system= - Windows 10 专业版"&goto :eof)
 if /i "!system!" equ "Windows 10 Education" (set "system= - Windows 10 教育版"&goto :eof)
@@ -6853,10 +6854,10 @@ if /i "!system!" equ "Windows 10 Enterprise" (set "system= - Windows 10 企业版"&
 set "system= - !system!"
 goto :eof
 :pd11
-if /i "!system!" equ "Windows 11 Home" (set "system= - Windows 11 家庭版"&goto :eof)
-if /i "!system!" equ "Windows 11 Pro" (set "system= - Windows 11 专业版"&goto :eof)
-if /i "!system!" equ "Windows 11 Education" (set "system= - Windows 11 教育版"&goto :eof)
-if /i "!system!" equ "Windows 11 Enterprise" (set "system= - Windows 11 企业版"&goto :eof)
+if /i "!system!" equ "Windows 10 Home" (set "system= - Windows 11 家庭版"&goto :eof)
+if /i "!system!" equ "Windows 10 Pro" (set "system= - Windows 11 专业版"&goto :eof)
+if /i "!system!" equ "Windows 10 Education" (set "system= - Windows 11 教育版"&goto :eof)
+if /i "!system!" equ "Windows 10 Enterprise" (set "system= - Windows 11 企业版"&goto :eof)
 set "system= - !system!"
 goto :eof
 :convertu
