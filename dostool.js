@@ -64,10 +64,10 @@ goto :eof
 (
 setlocal
 set "dosqssj=!time!"
-title DOS工具箱
 >nul chcp 936
-set ver=20260101
-set versize=173915
+title DOS工具箱
+set ver=20260201
+set versize=173830
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -80,12 +80,10 @@ for /f "tokens=2" %%a in ("!system!") do (
 )
 if /i "!systemdrive!" equ "x:" (set "system= - Windows PE")
 for /f "tokens=3 delims=.]" %%a in ('ver') do (
-	if %%a lss 10586 (set winv=1) else (set winv=0)
+	if %%a geq 10586 (set winv=1)
+	if %%a geq 22000 (set "system=!system:Windows 10=Windows 11!")
 )
-for /f %%a in ('"echo;prompt $E|cmd"') do (
-	set "cswz=%%a["
-	set "cswz1=%%a"
-)
+for /f %%a in ('"echo;prompt $E|cmd"') do (set "cswz=%%a[")
 if exist "!windir!\system32\choice.exe" (
 	set "sel=call :choice"
 ) else (
@@ -121,7 +119,7 @@ if "!color!" equ "0" (
 		)
 	)
 )
-if "!winv!" equ "0" (set "fy=!cswz!!ysbak:~0,3!91m_!cswz!!ysbak!!cswz!!ysbak:~0,3!92m_!cswz!!ysbak!!cswz!!ysbak:~0,3!93m_!cswz!!ysbak!")
+if defined winv (set "fy=!cswz!!ysbak:~0,3!91m_!cswz!!ysbak!!cswz!!ysbak:~0,3!92m_!cswz!!ysbak!!cswz!!ysbak:~0,3!93m_!cswz!!ysbak!")
 color !color!!color1!
 if !start! lss 1 (set start=1)
 if not defined a!start! (
@@ -134,7 +132,7 @@ if not defined a!start! (
 )
 set /a "end=start+8"
 set /a "memuys=start/9+1"
-if "!winv!" equ "0" (
+if defined winv (
 	echo;				菜单 - 第!cswz!!ysbak:~0,3!92m!memuys!!cswz!!ysbak!页
 ) else (
 	echo;				菜单 - 第!memuys!页
@@ -155,20 +153,20 @@ set /a "pd=end+1"
 if defined a!pd! (
 	set /a "pd=start-1"
 	if !pd! lss 1 (
-		if "!winv!" equ "0" (
+		if defined winv (
 			echo;[0]退出								!cswz!42;97m!nx1!!cswz!!ysbak!
 		) else (
 			echo;[0]退出								!nx1!
 		)
 	) else (
-		if "!winv!" equ "0" (
+		if defined winv (
 			echo;[0]退出						!cswz!42;97m!nx1!	!nx2!!cswz!!ysbak!
 		) else (
 			echo;[0]退出						!nx1!	!nx2!
 		)
 	)
 ) else (
-	if "!winv!" equ "0" (
+	if defined winv (
 		echo;[0]退出								!cswz!42;97m!nx2!!cswz!!ysbak!
 	) else (
 		echo;[0]退出								!nx2!
@@ -218,7 +216,7 @@ if defined !caidan! (goto !%caidan%!)
 call :out 2
 goto memuv2
 :memuv2.2
-if "!winv!" equ "0" (
+if defined winv (
 	if defined fyacs (
 		echo;!fya!
 		set fyacs=
@@ -392,7 +390,7 @@ title 命令提示符!system!
 for /f "delims=" %%a in ('hostname') do (set "hostname=%%a")
 cls
 ver
-if "!winv!" equ "0" (
+if defined winv (
 	cmd /k prompt !cswz!!ysbak:~0,3!92m%username%!cswz!!ysbak!@%hostname%:$p#$s
 ) else (
 	cmd /k prompt %username%@%hostname%:$p#$s
@@ -2898,7 +2896,7 @@ if defined line (echo;!line!)
 choice /c YN /n /m 这里有你想的数吗?(Y=有,N=没有)[7\7]
 if "!errorlevel!" equ "1" (set /a "num+=64")
 cls
-if "!winv!" equ "0" (
+if defined winv (
 	echo;经过电脑复杂的计算后,得出你大脑里想的那个数是: !cswz!41;92m!num!!cswz!!ysbak!
 ) else (
 	echo;经过电脑复杂的计算后,得出你大脑里想的那个数是: !num!
@@ -6065,7 +6063,7 @@ call :pwiex offdisplay
 goto memuv2
 :colortxt
 setlocal
-if "!winv!" equ "0" (goto colortxt2)
+if defined winv (goto colortxt2)
 set "bj=%1"
 if "!bj:~1,1!" equ "" (
 	set "bj1=!color!"
@@ -6075,7 +6073,7 @@ if "!bj:~1,1!" equ "" (
 	set "bj2=!bj:~1,1!"
 )
 pushd "%temp%"
->"%~2" <nul set /p "=!cswz1!"
+>"%~2" <nul set /p "=!cswz:~0,-1!"
 findstr /v /a:!bj1!!bj2! /r "^$" "%~2" nul
 >nul 2>nul del /f /q "%~2"
 popd
@@ -6866,7 +6864,6 @@ if /i "!system!" equ "Windows 8.1 Enterprise" (set "system= - Windows 8.1 企业版
 set "system= - !system!"
 goto :eof
 :pd10
-for /f "tokens=3 delims=.]" %%a in ('ver') do (if %%a geq 22000 (goto pd11))
 if /i "!system!" equ "Windows 10 Home" (set "system= - Windows 10 家庭版"&goto :eof)
 if /i "!system!" equ "Windows 10 Pro" (set "system= - Windows 10 专业版"&goto :eof)
 if /i "!system!" equ "Windows 10 Education" (set "system= - Windows 10 教育版"&goto :eof)
@@ -6874,10 +6871,10 @@ if /i "!system!" equ "Windows 10 Enterprise" (set "system= - Windows 10 企业版"&
 set "system= - !system!"
 goto :eof
 :pd11
-if /i "!system!" equ "Windows 10 Home" (set "system= - Windows 11 家庭版"&goto :eof)
-if /i "!system!" equ "Windows 10 Pro" (set "system= - Windows 11 专业版"&goto :eof)
-if /i "!system!" equ "Windows 10 Education" (set "system= - Windows 11 教育版"&goto :eof)
-if /i "!system!" equ "Windows 10 Enterprise" (set "system= - Windows 11 企业版"&goto :eof)
+if /i "!system!" equ "Windows 11 Home" (set "system= - Windows 11 家庭版"&goto :eof)
+if /i "!system!" equ "Windows 11 Pro" (set "system= - Windows 11 专业版"&goto :eof)
+if /i "!system!" equ "Windows 11 Education" (set "system= - Windows 11 教育版"&goto :eof)
+if /i "!system!" equ "Windows 11 Enterprise" (set "system= - Windows 11 企业版"&goto :eof)
 set "system= - !system!"
 goto :eof
 :convertu
