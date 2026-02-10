@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-
+		
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -67,18 +67,21 @@ set "dosqssj=!time!"
 >nul chcp 936
 title DOS工具箱
 set ver=20260201
-set versize=173830
+set versize=172810
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
 set hx=echo;_______________________________________________________________________________
 set "pause=<nul set /p "=按任意键返回"&>nul pause"
 set "pws=powershell -mta -nologo -noprofile -command"
-call :regq "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" ProductName system
-for /f "tokens=2" %%a in ("!system!") do (
-	2>nul call :pd%%a||set "system= - !system!"
+if /i "!systemdrive!" equ "x:" (
+	set "system= - Windows PE"
+) else (
+	call :regq "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" ProductName system
+	for /f "tokens=2" %%a in ("!system!") do (
+		2>nul call :pd%%a||set "system= - !system!"
+	)
 )
-if /i "!systemdrive!" equ "x:" (set "system= - Windows PE")
 for /f "tokens=3 delims=.]" %%a in ('ver') do (
 	if %%a geq 10586 (set winv=1)
 	if %%a geq 22000 (set "system=!system:Windows 10=Windows 11!")
@@ -4864,7 +4867,7 @@ if not exist "!windir!\system32\curl.exe" (
 )
 :71.1
 cls
-set "doh=--doh-url https://77.88.8.88/dns-query"
+set "doh=--doh-url https://v.recipes/dns-ecs"
 set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36""
 set filename=
 set url=
@@ -5689,9 +5692,9 @@ goto :eof
 setlocal
 cls
 title 更新DOS工具箱 - 当前版本: !ver!!system!
-set "doh=--doh-url https://77.88.8.88/dns-query"
+set "doh=--doh-url https://v.recipes/dns-ecs"
 set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36""
-set "curlpix=--compressed -L -# -C - --ca-native --retry 1 --retry-delay 1 --connect-timeout 3 --max-time 10"
+set "curlpix=--compressed -L# -C - --ca-native --retry 1 --retry-delay 1 --connect-timeout 3 --max-time 10"
 set resolve=--resolve raw.github.io:443:^
 185.199.108.133,^
 185.199.109.133,^
@@ -5701,116 +5704,79 @@ set resolve=--resolve raw.github.io:443:^
 2606:50c0:8001::154,^
 2606:50c0:8002::154,^
 2606:50c0:8003::154
-set "jshost=-H "host: cdn.jsdelivr.net""
-set "githost=-H "host: raw.githubusercontent.com""
-set "gxurlhost1=https://raw.github.io/Trustedinstall/dostool/main/update.js"
-set "gxurlhost2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js"
+set "githost=-H "Host: raw.githubusercontent.com""
+set "gxurlhost=https://raw.github.io/Trustedinstall/dostool/main/update.js"
+set "gxdoshost=https://raw.github.io/Trustedinstall/dostool/main/dostool.js"
 set "gxurl1=https://raw.githubusercontent.com/Trustedinstall/dostool/main/update.js"
 set "gxurl2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js"
-set "gxdoshost1=https://raw.github.io/Trustedinstall/dostool/main/dostool.js"
-set "gxdoshost2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js"
 set "gxdos1=https://raw.githubusercontent.com/Trustedinstall/dostool/main/dostool.js"
 set "gxdos2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js"
+set host=
+set url=
 echo;检查最新版本...
 if exist "%temp%\dostoolupdate" (del /f /q "%temp%\dostoolupdate")
 if exist "!windir!\system32\curl.exe" (
 	pushd "%temp%"
 	call :curlproxy
-	echo;使用链接:	!gxurlhost1!
+	echo;使用链接:	!gxurlhost!
 	echo;Host域名:	!githost:~10,-1!
-	curl !proxy! !doh! !githost! !ua! !curlpix! !resolve! -o dostoolupdate "!gxurlhost1!"
+	curl !proxy! !doh! !githost! !ua! !curlpix! !resolve! -o dostoolupdate "!gxurlhost!"
 	if exist "%temp%\dostoolupdate" (
-		for /f "usebackq delims=: tokens=1-3" %%a in ("%temp%\dostoolupdate") do (
+		for /f "usebackq tokens=1-3 delims=:" %%a in ("%temp%\dostoolupdate") do (
 			set "gxver=%%a"
 			set "doshash=%%b"
 			set "dossize=%%c"
 			set "host=!githost!"
-			set "url=!gxdoshost1!"
+			set "url=!gxdoshost!"
 		)
-		popd
-		goto updatecheck
 	) else (
 		echo;使用链接:	!gxurl1!
 		curl !proxy! !doh! !ua! !curlpix! -o dostoolupdate "!gxurl1!"
 		if exist "%temp%\dostoolupdate" (
-			for /f "usebackq delims=: tokens=1-3" %%a in ("%temp%\dostoolupdate") do (
+			for /f "usebackq tokens=1-3 delims=:" %%a in ("%temp%\dostoolupdate") do (
 				set "gxver=%%a"
 				set "doshash=%%b"
 				set "dossize=%%c"
-				set host=
-				set resolve=
 				set "url=!gxdos1!"
 			)
-			popd
-			goto updatecheck
 		) else (
-			echo;使用链接:	!gxurlhost2!
-			echo;Host域名:	!jshost:~10,-1!
-			curl !proxy! !doh! !jshost! !ua! !curlpix! !resolve! -o dostoolupdate "!gxurlhost2!"
+			echo;使用链接:	!gxurl2!
+			curl !proxy! !doh! !ua! !curlpix! -o dostoolupdate "!gxurl2!"
 			if exist "%temp%\dostoolupdate" (
-				for /f "usebackq delims=: tokens=1-3" %%a in ("%temp%\dostoolupdate") do (
+				for /f "usebackq tokens=1-3 delims=:" %%a in ("%temp%\dostoolupdate") do (
 					set "gxver=%%a"
 					set "doshash=%%b"
 					set "dossize=%%c"
-					set "host=!jshost!"
-					set "url=!gxdoshost2!"
+					set "url=!gxdos2!"
 				)
-				popd
-				goto updatecheck
 			) else (
-				echo;使用链接:	!gxurl2!
-				curl !proxy! !doh! !ua! !curlpix! -o dostoolupdate "!gxurl2!"
-				if exist "%temp%\dostoolupdate" (
-					for /f "usebackq delims=: tokens=1-3" %%a in ("%temp%\dostoolupdate") do (
-						set "gxver=%%a"
-						set "doshash=%%b"
-						set "dossize=%%c"
-						set host=
-						set resolve=
-						set "url=!gxdos2!"
-					)
-					popd
-					goto updatecheck
-				) else (
-					echo;没有检查到更新版本
-					%hx%
-					%pause%
-					endlocal
-					set verbak=
-					goto memuv2
-				)
+				goto noupdate
 			)
 		)
 	)
+	popd
 ) else (
 	echo;使用链接:	!gxurl1!
 	certutil -urlcache -split -f !gxurl1! "%temp%\dostoolupdate"
 	if exist "%temp%\dostoolupdate" (
-		for /f "usebackq delims=: tokens=1-3" %%a in ("%temp%\dostoolupdate") do (
+		for /f "usebackq tokens=1-3 delims=:" %%a in ("%temp%\dostoolupdate") do (
 			set "gxver=%%a"
 			set "doshash=%%b"
 			set "dossize=%%c"
 			set "url=!gxdos1!"
 		)
-		goto updatecheck
 	) else (
 		echo;使用链接:	!gxurl2!
 		certutil -urlcache -split -f !gxurl2! "%temp%\dostoolupdate"
 		if exist "%temp%\dostoolupdate" (
-			for /f "usebackq delims=: tokens=1-3" %%a in ("%temp%\dostoolupdate") do (
+			for /f "usebackq tokens=1-3 delims=:" %%a in ("%temp%\dostoolupdate") do (
 				set "gxver=%%a"
 				set "doshash=%%b"
 				set "dossize=%%c"
 				set "url=!gxdos2!"
 			)
-			goto updatecheck
 		) else (
-			echo;没有检查到更新版本
-			%hx%
-			%pause%
-			endlocal
-			set verbak=
-			goto memuv2
+			goto noupdate
 		)
 	)
 )
@@ -5841,12 +5807,7 @@ if !checkver! gtr 0 (
 	call :out 2
 	goto updatecheck
 ) else (
-	echo;没有检查到更新版本
-	%hx%
-	%pause%
-	endlocal
-	set verbak=
-	goto memuv2
+	goto noupdate
 )
 :startupdate
 cls
@@ -5866,14 +5827,18 @@ if /i "!hash!" equ "!doshash!" (
 	endlocal
 	endlocal
 	copy /z /y "%temp%\dostool" %0&del /f /q "%temp%\dostool"&goto chushihua
-) else (
-	call :colortxt c 文件无效
-	echo;
-	call :out 2
-	endlocal
-	set verbak=
-	goto memuv2
 )
+call :colortxt c 文件无效
+echo;
+goto filefail
+:noupdate
+echo;没有检查到更新版本
+:filefail
+%hx%
+%pause%
+endlocal
+set verbak=
+goto memuv2
 :sjc
 if "%1" equ "" (goto :eof)
 if "%2" equ "" (goto :eof)
@@ -6928,7 +6893,7 @@ set "tr=%2"
 set "filename=%~3"
 set "dir=%~4"
 set "par=%~5"
-set "doh=--doh-url https://77.88.8.88/dns-query"
+set "doh=--doh-url https://v.recipes/dns-ecs"
 set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36""
 if not defined url (
 	echo;链接不能为空!
