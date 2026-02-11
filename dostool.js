@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-		
+	
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -67,7 +67,7 @@ set "dosqssj=!time!"
 >nul chcp 936
 title DOS工具箱
 set ver=20260201
-set versize=172810
+set versize=171970
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -5695,7 +5695,20 @@ title 更新DOS工具箱 - 当前版本: !ver!!system!
 set "doh=--doh-url https://v.recipes/dns-ecs"
 set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36""
 set "curlpix=--compressed -L# -C - --ca-native --retry 1 --retry-delay 1 --connect-timeout 3 --max-time 10"
-set resolve=--resolve raw.github.io:443:^
+set updatename=update.js
+set updos=dostool.js
+set curl=
+set host=
+set url=
+set gxver=
+echo;检查最新版本...
+if exist "%temp%\dostoolupdate" (del /f /q "%temp%\dostoolupdate")
+call :findcommand curl.exe curl
+if defined curl (
+	set df=raw.github.io
+	set "githost=-H "Host: raw.githubusercontent.com""
+	set "gxurl=https://!df!/Trustedinstall/dostool/main"
+	set resolve=--resolve !df!:443:^
 185.199.108.133,^
 185.199.109.133,^
 185.199.110.133,^
@@ -5704,80 +5717,30 @@ set resolve=--resolve raw.github.io:443:^
 2606:50c0:8001::154,^
 2606:50c0:8002::154,^
 2606:50c0:8003::154
-set "githost=-H "Host: raw.githubusercontent.com""
-set "gxurlhost=https://raw.github.io/Trustedinstall/dostool/main/update.js"
-set "gxdoshost=https://raw.github.io/Trustedinstall/dostool/main/dostool.js"
-set "gxurl1=https://raw.githubusercontent.com/Trustedinstall/dostool/main/update.js"
-set "gxurl2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/update.js"
-set "gxdos1=https://raw.githubusercontent.com/Trustedinstall/dostool/main/dostool.js"
-set "gxdos2=https://cdn.jsdelivr.net/gh/Trustedinstall/dostool/dostool.js"
-set host=
-set url=
-echo;检查最新版本...
-if exist "%temp%\dostoolupdate" (del /f /q "%temp%\dostoolupdate")
-if exist "!windir!\system32\curl.exe" (
-	pushd "%temp%"
-	call :curlproxy
-	echo;使用链接:	!gxurlhost!
+	echo;使用链接:	!gxurl!
 	echo;Host域名:	!githost:~10,-1!
-	curl !proxy! !doh! !githost! !ua! !curlpix! !resolve! -o dostoolupdate "!gxurlhost!"
+	call :curlproxy
+	"!curl!" !proxy! !doh! !githost! !resolve! !ua! !curlpix! --output-dir "!temp!" -o dostoolupdate "!gxurl!/!updatename!"
 	if exist "%temp%\dostoolupdate" (
-		for /f "usebackq tokens=1-3 delims=:" %%a in ("%temp%\dostoolupdate") do (
-			set "gxver=%%a"
-			set "doshash=%%b"
-			set "dossize=%%c"
-			set "host=!githost!"
-			set "url=!gxdoshost!"
-		)
-	) else (
-		echo;使用链接:	!gxurl1!
-		curl !proxy! !doh! !ua! !curlpix! -o dostoolupdate "!gxurl1!"
-		if exist "%temp%\dostoolupdate" (
-			for /f "usebackq tokens=1-3 delims=:" %%a in ("%temp%\dostoolupdate") do (
-				set "gxver=%%a"
-				set "doshash=%%b"
-				set "dossize=%%c"
-				set "url=!gxdos1!"
-			)
-		) else (
-			echo;使用链接:	!gxurl2!
-			curl !proxy! !doh! !ua! !curlpix! -o dostoolupdate "!gxurl2!"
-			if exist "%temp%\dostoolupdate" (
-				for /f "usebackq tokens=1-3 delims=:" %%a in ("%temp%\dostoolupdate") do (
-					set "gxver=%%a"
-					set "doshash=%%b"
-					set "dossize=%%c"
-					set "url=!gxdos2!"
-				)
-			) else (
-				goto noupdate
-			)
-		)
+		call :readupdate
+		set "host=!githost!"
+		set "url=!gxurl!/!updos!"
+		goto updatecheck
 	)
-	popd
-) else (
-	echo;使用链接:	!gxurl1!
-	certutil -urlcache -split -f !gxurl1! "%temp%\dostoolupdate"
-	if exist "%temp%\dostoolupdate" (
-		for /f "usebackq tokens=1-3 delims=:" %%a in ("%temp%\dostoolupdate") do (
-			set "gxver=%%a"
-			set "doshash=%%b"
-			set "dossize=%%c"
-			set "url=!gxdos1!"
-		)
+)
+for %%a in (
+	"https://raw.githubusercontent.com/Trustedinstall/dostool/main"
+	"https://cdn.jsdelivr.net/gh/Trustedinstall/dostool"
+) do (
+	echo;使用链接:	%%~a
+	if defined curl (
+		"!curl!" !proxy! !doh! !ua! !curlpix! --output-dir "!temp!" -o dostoolupdate "%%~a/!updatename!"
 	) else (
-		echo;使用链接:	!gxurl2!
-		certutil -urlcache -split -f !gxurl2! "%temp%\dostoolupdate"
-		if exist "%temp%\dostoolupdate" (
-			for /f "usebackq tokens=1-3 delims=:" %%a in ("%temp%\dostoolupdate") do (
-				set "gxver=%%a"
-				set "doshash=%%b"
-				set "dossize=%%c"
-				set "url=!gxdos2!"
-			)
-		) else (
-			goto noupdate
-		)
+		certutil -urlcache -split -f "%%~a/!updatename!" "!temp!\dostoolupdate"
+	)
+	if exist "%temp%\dostoolupdate" (
+		call :readupdate
+		set "url=%%~a/!updos!"
 	)
 )
 :updatecheck
@@ -5807,20 +5770,19 @@ if !checkver! gtr 0 (
 	call :out 2
 	goto updatecheck
 ) else (
+	echo;没有检查到更新版本
 	goto noupdate
 )
 :startupdate
 cls
 echo;正在下载更新...
 if exist "%temp%\dostool" (del /f /q "%temp%\dostool")
-if exist "!windir!\system32\curl.exe" (
-	pushd "%temp%"
-	echo;使用链接:	!url!
+echo;使用链接:	!url!
+if defined curl (
 	if defined host (echo;Host域名:	!host:~10,-1!)
-	curl !proxy! !doh! !host! !ua! --compressed -RL# -C - --ca-native --retry 2 --retry-delay 1 --connect-timeout 5 --max-time 30 !resolve! -o dostool "!url!"
-	popd
+	"!curl!" !proxy! !doh! !host! !resolve! !ua! --compressed -RL# -C - --ca-native --retry 2 --retry-delay 1 --connect-timeout 5 --max-time 30 --output-dir "!temp!" -o dostool "!url!"
 ) else (
-	certutil -urlcache -split -f !url! "%temp%\dostool"
+	certutil -urlcache -split -f "!url!" "%temp%\dostool"
 )
 call :hash "%temp%\dostool" sha1 hash
 if /i "!hash!" equ "!doshash!" (
@@ -5830,15 +5792,19 @@ if /i "!hash!" equ "!doshash!" (
 )
 call :colortxt c 文件无效
 echo;
-goto filefail
 :noupdate
-echo;没有检查到更新版本
-:filefail
 %hx%
 %pause%
 endlocal
 set verbak=
 goto memuv2
+:readupdate
+for /f "usebackq tokens=1-3 delims=:" %%a in ("%temp%\dostoolupdate") do (
+	set "gxver=%%a"
+	set "doshash=%%b"
+	set "dossize=%%c"
+)
+goto :eof
 :sjc
 if "%1" equ "" (goto :eof)
 if "%2" equ "" (goto :eof)
@@ -7227,5 +7193,23 @@ for /f "skip=1 tokens=2*" %%a in ('"2>nul reg query "%~1" /ve"') do (
 	if "%~2" neq "" (set "%~2=%%b") else (echo;%%b)
 )
 goto :eof
+:findcommand
+if "%~nx1" equ "" (exit /b 1)
+if exist "%~nx1" (
+	>nul 2>nul dir /a:d /b "%~nx1"||(
+		if "%2" neq "" (set "%2=%~nx1")
+		exit /b 0
+	)
+) else (
+	for %%a in ("%~nx1") do (
+		if "%%~$path:a" neq "" (
+			>nul 2>nul dir /a:d /b "%%~$path:a"||(
+				if "%2" neq "" (set "%2=%%~$path:a")
+				exit /b 0
+			)
+		)
+	)
+)
+exit /b 1
 :winnt
 @echo;Incompatible with the current system operating environment
