@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-	
+		
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -67,7 +67,7 @@ set "dosqssj=!time!"
 >nul chcp 936
 title DOS工具箱
 set ver=20260201
-set versize=171970
+set versize=172155
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -571,14 +571,18 @@ del /f /q "!windir!\youtube.cab";^
 		"!windir!\inf\autoplay.inf"
 echo;正在全盘扫描...
 call :sypf sypf
-for /f "delims=" %%a in ('"for %%a in (!sypf!) do (dir /a /s /b %%a*.exe)"') do (
+for /f "delims=" %%a in (
+	'"for %%a in (!sypf!) do (dir /a /s /b %%a*.exe)"'
+) do (
 	if "%%~za" equ "486912" (
 		attrib -s -h -r "%%a"
 		del /f /q "%%a"
 		echo;已删除%%a
 	)
 )
-for /f "delims=" %%a in ('"for %%a in (!sypf!) do (dir /a /s /b %%aautorun.inf)"') do (
+for /f "delims=" %%a in (
+	'"for %%a in (!sypf!) do (dir /a /s /b %%aautorun.inf)"'
+) do (
 	if "%%~za" equ "234" (
 		attrib -s -h -r "%%a"
 		del /f /q "%%a"
@@ -1013,7 +1017,9 @@ call :var jclj
 if not defined jclj (goto 23.6)
 if /i "!jclj!" equ "f" (goto 23.6)
 if /i "!jclj!" equ "e" (endlocal&goto 23)
-for /f "tokens=2 delims=," %%a in ('tasklist /fi "pid eq !jclj!" /fo csv /nh') do (set "pid=%%~a")
+for /f "tokens=2 delims=," %%a in (
+	'tasklist /fi "pid eq !jclj!" /fo csv /nh'
+) do (set "pid=%%~a")
 if "!pid!" neq "!jclj!" (
 	<nul set /p "=没有此进程"
 	call :out 2
@@ -1022,12 +1028,16 @@ if "!pid!" neq "!jclj!" (
 cls
 for %%a in (wmic.exe) do (
 	if "%%~$path:a" neq "" (
-		for /f "tokens=2 delims==" %%a in ('"2>nul wmic process where processid=!jclj! get executablepath /value"') do (
+		for /f "tokens=2 delims==" %%a in (
+			'"2>nul wmic process where processid=!jclj! get executablepath /value"'
+		) do (
 			set "jclj1=%%a"
 			set "jclj1=!jclj1:~0,-1!"
 		)
 	) else (
-		for /f "delims=" %%a in ('2^>nul %pws% "Try { (Get-Process -Id !jclj! -ErrorAction Stop).Path } Catch { $p = Get-CimInstance Win32_Process -Filter \"ProcessId = !jclj!\"; if ($p) { $p.ExecutablePath } }"') do (
+		for /f "delims=" %%a in (
+			'2^>nul %pws% "Try { (Get-Process -Id !jclj! -ErrorAction Stop).Path } Catch { $p = Get-CimInstance Win32_Process -Filter \"ProcessId = !jclj!\"; if ($p) { $p.ExecutablePath } }"'
+		) do (
 			set "jclj1=%%a"
 		)
 	)
@@ -1060,7 +1070,9 @@ call :var jclj
 if not defined jclj (goto 23.10)
 if /i "!jclj!" equ "f" (goto 23.10)
 if /i "!jclj!" equ "e" (endlocal&goto 23)
-for /f "tokens=2 delims=," %%a in ('tasklist /fi "pid eq !jclj!" /fo csv /nh') do (set "pid=%%~a")
+for /f "tokens=2 delims=," %%a in (
+	'tasklist /fi "pid eq !jclj!" /fo csv /nh'
+) do (set "pid=%%~a")
 if "!pid!" neq "!jclj!" (
 	<nul set /p "=没有此进程"
 	call :out 2
@@ -1112,7 +1124,9 @@ if defined commandline (
 ) else (
 	for %%a in (wmic.exe) do (
 		if "%%~$path:a" neq "" (
-			for /f "tokens=2* delims==" %%a in ('"2>nul wmic process where processid=!jclj! get commandline /value"') do (
+			for /f "tokens=2* delims==" %%a in (
+				'"2>nul wmic process where processid=!jclj! get commandline /value"'
+			) do (
 				set "commandline=%%a"
 				set "commandline=!commandline:~0,-1!"
 				echo;命令行:		!commandline!
@@ -1209,7 +1223,9 @@ cls
 set xh=
 for %%a in (wmic.exe) do (
 	if "%%~$path:a" neq "" (
-		for /f "tokens=2 delims==" %%a in ('"2>nul wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get BytesReceivedPersec,BytesSentPersec /value"') do (
+		for /f "tokens=2 delims==" %%a in (
+			'"2>nul wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get BytesReceivedPersec,BytesSentPersec /value"'
+		) do (
 			set /a "xh+=1"
 			if "!xh!" equ "1" (
 				set "downspeed=%%a"
@@ -1218,7 +1234,9 @@ for %%a in (wmic.exe) do (
 			if "!xh!" equ "2" (
 				set "upspeed=%%a"
 				set "upspeed=!upspeed:~0,-1!"
-				for /f "tokens=2 delims==" %%a in ('2^>nul wmic Path Win32_PerfFormattedData_PerfOS_Processor Where "Name='_Total'" Get PercentIdleTime /value') do (
+				for /f "tokens=2 delims==" %%a in (
+					'2^>nul wmic Path Win32_PerfFormattedData_PerfOS_Processor Where "Name='_Total'" Get PercentIdleTime /value'
+				) do (
 					set "bfb=%%a"
 					set "bfb=!bfb:~0,-1!"
 					set /a "lyl=100-bfb"
@@ -1561,7 +1579,9 @@ cls
 echo;检测Everything的安装路径与运行状态...
 call :regq "HKLM\SOFTWARE\voidtools\Everything" "InstallLocation" eveurl
 if exist "!eveurl!\Everything.exe" (
-	for /f "tokens=1 delims=," %%a in ('tasklist /fi "status eq running" /fi "username eq %username%" /fi "imagename eq everything.exe" /fo csv /nh') do (
+	for /f "tokens=1 delims=," %%a in (
+		'tasklist /fi "status eq running" /fi "username eq %username%" /fi "imagename eq everything.exe" /fo csv /nh'
+	) do (
 		if /i "%%~a" equ "everything.exe" (
 			if exist "!eveurl!\es.exe" (
 				set "EverythingInstallPath=!eveurl!"
@@ -1590,7 +1610,9 @@ if "!empty!" equ "1" (goto loop1)
 del /f /q "!temp!\empty_dir.txt"
 goto 28.1
 :loop2
-for /f "delims=" %%a in ('"dir /a:d-l /s /b "!caozuo!"|sort /r"') do (
+for /f "delims=" %%a in (
+	'"dir /a:d-l /s /b "!caozuo!"|sort /r"'
+) do (
 	2>nul rd /q "%%a"&&echo;已删除空文件夹 "%%a"
 )
 :28.1
@@ -2023,7 +2045,9 @@ echo;
 if exist "!windir!\system32\curl.exe" (
 	>nul ping /n 1 www.baidu.com
 	if not errorlevel 1 (
-		for /f "delims=" %%a in ('curl -s --ca-native --connect-timeout 2 --max-time 10 "https://4.ipw.cn"') do (
+		for /f "delims=" %%a in (
+			'curl -s --ca-native --connect-timeout 2 --max-time 10 "https://4.ipw.cn"'
+		) do (
 			<nul set /p "=外部IP地址:"
 			echo;	%%a
 			echo;
@@ -2471,7 +2495,9 @@ echo;
 if exist "!windir!\system32\curl.exe" (
 	>nul ping /n 1 www.baidu.com
 	if not errorlevel 1 (
-		for /f "delims=" %%a in ('curl -s --ca-native --connect-timeout 2 --max-time 10 "https://4.ipw.cn"') do (
+		for /f "delims=" %%a in (
+			'curl -s --ca-native --connect-timeout 2 --max-time 10 "https://4.ipw.cn"'
+		) do (
 			<nul set /p "=外部IP地址:"
 			echo;	%%a
 			echo;
@@ -3375,7 +3401,9 @@ for %%a in (
 ) do (
 	for /f "delims=" %%a in ('"2>nul reg query %%a"') do (echo;%%a)
 )
-for /f "delims=" %%a in ('"2>nul reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v taskman"') do (if "%%a" neq "" (echo;%%a))
+for /f "delims=" %%a in (
+	'"2>nul reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v taskman"'
+) do (if "%%a" neq "" (echo;%%a))
 %hx%
 %pause%
 goto memuv2
@@ -5039,7 +5067,9 @@ if "!errorlevel!" equ "2" (
 if "!jccs!" neq "!tr!" (
 	set nocurl=
 	for /l %%a in (1,1,!tr!) do (
-		for /f "tokens=1 delims=," %%a in ('tasklist /fi "imagename eq curl.exe" /fi "windowtitle eq curl多进程下载_%%a" /fo csv /nh') do (
+		for /f "tokens=1 delims=," %%a in (
+			'tasklist /fi "imagename eq curl.exe" /fi "windowtitle eq curl多进程下载_%%a" /fo csv /nh'
+		) do (
 			if /i "%%~a" neq "curl.exe" (set /a "nocurl+=1")
 		)
 	)
@@ -5300,7 +5330,9 @@ if exist "chrome.exe" (
 	set chrome=chrome.exe
 	goto startchrome
 ) else (
-	for /f "skip=1 tokens=2*" %%a in ('"2>nul reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe" /v Path"') do (
+	for /f "skip=1 tokens=2*" %%a in (
+		'"2>nul reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe" /v Path"'
+	) do (
 		set "chrome=%%b"
 	)
 	for /f "delims=" %%a in ("!chrome!") do (set "chrome=%%~fa")
@@ -5330,7 +5362,9 @@ for %%a in ("!chrome!") do (
 		)
 	)
 	if "!brpro!" equ "1" (
-		for /f "tokens=1 delims=," %%b in ('tasklist /fi "imagename eq %%~nxa" /fo csv /nh') do (
+		for /f "tokens=1 delims=," %%b in (
+			'tasklist /fi "imagename eq %%~nxa" /fo csv /nh'
+		) do (
 			if /i "%%~b" equ "%%~nxa" (
 				<nul set /p "=%%~nxa 正在运行,请关闭浏览器后重试."
 				call :out 2
@@ -5342,7 +5376,9 @@ for %%a in ("!chrome!") do (
 )
 if "!brpro!" equ "1" (
 	for /f "delims=" %%a in ("!chrome!") do (
-		for /f "tokens=1 delims=," %%b in ('tasklist /fi "imagename eq %%~nxa" /fo csv /nh') do (
+		for /f "tokens=1 delims=," %%b in (
+			'tasklist /fi "imagename eq %%~nxa" /fo csv /nh'
+		) do (
 			if /i "%%~b" equ "%%~nxa" (
 				<nul set /p "=%%~nxa正在运行,请关闭浏览器后重试."
 				call :out 2
@@ -5422,7 +5458,9 @@ if exist "!temp!\list.txt" (del /f /q "!temp!\list.txt")
 echo;检测Everything的安装路径与运行状态...
 call :regq "HKLM\SOFTWARE\voidtools\Everything" "InstallLocation" eveurl
 if exist "!eveurl!\Everything.exe" (
-	for /f "tokens=1 delims=," %%a in ('tasklist /fi "status eq running" /fi "username eq %username%" /fi "imagename eq everything.exe" /fo csv /nh') do (
+	for /f "tokens=1 delims=," %%a in (
+		'tasklist /fi "status eq running" /fi "username eq %username%" /fi "imagename eq everything.exe" /fo csv /nh'
+	) do (
 		if /i "%%~a" equ "everything.exe" (
 			if exist "!eveurl!\es.exe" (
 				cls
@@ -6878,9 +6916,13 @@ if not defined dir (set "dir=%%~dp0")
 	goto :eof
 )
 if exist "%temp%\tag" (del /f /q "%temp%\tag")
-for /f "skip=1 tokens=3" %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
+for /f "skip=1 tokens=3" %%a in (
+	'"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"'
+) do (
 	if "%%a" equ "0x1" (
-		for /f "skip=1 tokens=3" %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
+		for /f "skip=1 tokens=3" %%b in (
+			'"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"'
+		) do (
 			set "proxy=-x %%b"
 			echo;使用代理:	%%b
 		)
@@ -6958,7 +7000,9 @@ for /l %%a in (1,1,!tr!) do (
 if "!次数!" neq "!tr!" (
 	set nocurl=
 	for /l %%a in (1,1,!tr!) do (
-		for /f "tokens=1 delims=," %%a in ('tasklist /fi "imagename eq curl.exe" /fi "windowtitle eq curl多进程下载_%%a" /fo csv /nh') do (
+		for /f "tokens=1 delims=," %%a in (
+			'tasklist /fi "imagename eq curl.exe" /fi "windowtitle eq curl多进程下载_%%a" /fo csv /nh'
+		) do (
 			if /i "%%~a" neq "curl.exe" (set /a "nocurl+=1")
 		)
 	)
@@ -7068,9 +7112,13 @@ if exist "!url!" (del /f /q "!url!")
 md "!url!"
 endlocal&exit /b %errorlevel%
 :curlproxy
-for /f "skip=1 tokens=3" %%a in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"') do (
+for /f "skip=1 tokens=3" %%a in (
+	'"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"'
+) do (
 	if "%%a" equ "0x1" (
-		for /f "skip=1 tokens=3" %%b in ('"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"') do (
+		for /f "skip=1 tokens=3" %%b in (
+			'"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyServer"'
+		) do (
 			set "proxy=-x %%b"
 			echo;使用代理:	%%b
 		)
