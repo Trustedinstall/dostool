@@ -67,7 +67,7 @@ set "dosqssj=!time!"
 >nul chcp 936
 title DOS工具箱
 set ver=20260201
-set versize=172155
+set versize=171905
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -149,7 +149,7 @@ for /l %%a in (!start!,1,!end!) do (
 		set "xz!xx!=%%a"
 		echo;[!xx!]!a%%a!
 	) else (
-		set xz!xx!=
+		set "xz!xx!="
 	)
 )
 set /a "pd=end+1"
@@ -6318,11 +6318,11 @@ if "!OK:~0,2!" equ "0." (
 )
 :mul
 if "%~1" equ "0" (
-	set "%~3=0"
+	2>nul set "%~3=0"
 	goto :eof
 )
 if "%~2" equ "0" (
-	set "%~3=0"
+	2>nul set "%~3=0"
 	goto :eof
 )
 setlocal
@@ -6353,7 +6353,7 @@ if !n1! gtr !n2! (
 )
 for %%a in (!vard1!) do (
 	set t=
-	set /a j=0
+	set j=0
 	for %%b in (!vard2!) do (
 		if not defined jia (set jia=0)
 		set /a "a=%%a*%%b+j+!jia:~-1!"
@@ -6371,26 +6371,29 @@ set "ji=!t!!ji:~1!"
 endlocal&set "%~3=%ji%"
 goto :eof
 :fdiv
-if "%4" equ "" (goto :eof)
+if "%1" equ "" (goto :eof)
+if "%2" equ "" (goto :eof)
+for /f "tokens=* delims=0." %%a in ("%2") do (
+	if "%%a" equ "" (goto :eof)
+)
+for /f "delims=0123456789" %%a in ("%3") do (goto :eof)
 setlocal
 set "Div.1=%1"
 set "Div.2=%2"
 set Div.3=
-set Div.I=0
 set "Div.D=%3"
-set Div.1.Len.0=
-set Div.2.Len.0=
+set Div.1.Len.0=0
+set Div.2.Len.0=0
 set Div.Z=00000000
-for /l %%i in (1 1 9) do (set Div.Num.%%i=)
 for /l %%i in (1 1 7) do (set "Div.Z=!Div.Z!!Div.Z!")
 set "Div.H=4096 2048 1024 512 256 128 64 32 16 8 4 2 1"
 for /l %%i in (1 1 2) do (
 	set Div.N=0
-	set Div.%%i.Len.2=0
+	set "Div.%%i.Len.2=0"
 	for %%j in (!Div.%%i:.^= !) do (
 		set /a "Div.N+=1"
 		set "Div.M=Div.M%%j"
-		set Div.%%i.Len.!Div.N!=0
+		set "Div.%%i.Len.!Div.N!=0"
 		for %%l in (!Div.H!) do (
 			if "!Div.M:~%%l!" neq "" (
 				set /a "Div.%%i.Len.!Div.N!+=%%l"
@@ -6430,15 +6433,7 @@ set /a "Div.1.Len.0+=Div.D"
 set "Div.1=0!Div.1!!Div.Z:~,%Div.D%!"
 set "Div.P=!Div.1:~,%Div.2.Len.0%!"
 set "Div.T=0000000!Div.2!"
-set /a "Div.J+=1"
 set /a "Div.Tem.Len=Div.2.Len.0+7"
-if "!Div.J!" equ "1" (
-	for %%i in (!1:~-1!) do (
-		for /f "delims=" %%j in ("!%%i!") do (
-			if "%%~Zj" equ "!%Div.I%!" (set "C=!Div.D!")
-		)
-	)
-)
 for /l %%i in (1 1 9) do (
 	set Div.V=0
 	for /l %%j in (8 8 !Div.Tem.Len!) do (
@@ -6452,13 +6447,6 @@ for /l %%i in (1 1 9) do (
 for /l %%l in (!Div.2.Len.0! 1 !Div.1.Len.0!) do (
 	set "Div.P=!Div.Z!!Div.P!!Div.1:~%%l,1!"
 	set "Div.P=!Div.P:~-%Div.Len%!"
-	if "!Div.J!" equ "1" (
-		set Div.I.Tem=
-		for %%i in (!%Div.I%!) do (set "Div.D.Tem=%%i")
-		for /l %%i in (0 1 9) do (set "Div.D.Tem=!Div.D.Tem:%%i=%%i !")
-		for %%i in (!Div.D.Tem!) do (set /a "Div.I.Tem=!Div.I.Tem!+%%i")
-		if "!Div.I.Tem!" neq "24" (set C=)
-	)
 	if "!Div.P!" geq "!Div.2!" (
 		set Div.R=1
 		set "Div.S=0000000!Div.P!"
@@ -6483,8 +6471,11 @@ if defined Div.D (
 )
 for /f "tokens=* delims=0" %%i in ("!Div.3!") do (set "Div.3=%%i")
 if "!Div.3:~0,1!" equ "." (set "Div.3=0!Div.3!")
-if "!Div.3!" equ "" (set Div.3=0)
-endlocal&set "%4=%Div.3%"
+if "%4" neq "" (
+	endlocal&set "%4=%Div.3%"
+) else (
+	echo;!Div.3!
+)
 goto :eof
 #offdisplay#
 Add-Type @"
@@ -6499,12 +6490,12 @@ public class User32 {
 #offdisplay#
 :choice
 if not defined cho set ("cho=1234567890")
-set %1=
+set "%1="
 choice /c !cho! /n /m "输入选项: "
 set "%1=%errorlevel%"
 goto :eof
 :set
-set %1=
+set "%1="
 set /p "%1=输入选项: "
 call :var %1
 goto :eof
@@ -6614,10 +6605,10 @@ if "%2" equ "" (goto :eof)
 setlocal
 set "s=%1"
 set "w=%2"
-if defined W (
-	for /l %%i in (1 1 !W!) do (set "s=!s!00")
+if defined w (
+	for /l %%i in (1 1 !w!) do (set "s=!s!00")
 ) else (
-	set W=0
+	set w=0
 )
 set "p=!s!"
 set len=0
@@ -6714,7 +6705,13 @@ for /l %%i in (!N! 2 !len!) do (
 	)
 	set "i=!i!!x!"
 )
-for /f "tokens=* delims=." %%i in ("!i:~,-%W%!.!i:~-%W%!") do (endlocal&set "%3=%%i")
+for /f "tokens=* delims=." %%i in ("!i:~,-%W%!.!i:~-%W%!") do (
+	if "%3" neq "" (
+		endlocal&set "%3=%%i"
+	) else (
+		echo;%%i
+	)
+)
 goto :eof
 :10to16
 if "%1" equ "" (goto :eof)
@@ -7181,7 +7178,7 @@ goto :eof
 >nul 2>nul dir /a:d /b "%~1"&&goto :eof
 if not exist "%~1" (goto :eof)
 if "%~2" equ "" (goto :eof)
-set %~2=
+set "%~2="
 if "%~3" equ "" (
 	for /f "usebackq eol=# delims=" %%a in ("%~1") do (
 		set "__line=%%a"
