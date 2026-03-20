@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-		
+			
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -67,7 +67,7 @@ set "dosqssj=!time!"
 >nul chcp 936
 title DOS工具箱
 set ver=20260201
-set versize=171905
+set versize=171815
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -4939,9 +4939,9 @@ if not exist "%temp%\tag" (
 	endlocal
 	goto memuv2
 )
-for /f "tokens=2" %%a in ('findstr /c:"Accept-Ranges:" "%temp%\tag"') do (set "trflag=%%a")
-for /f "tokens=2" %%a in ('findstr /c:"Content-Length:" "%temp%\tag"') do (set "filesize=%%a")
-for /f "tokens=2 delims==" %%a in ('findstr /c:"filename=" "%temp%\tag"') do (set "filename=%%a")
+for /f "tokens=2" %%a in ('findstr /i /c:"Accept-Ranges:" "%temp%\tag"') do (set "trflag=%%a")
+for /f "tokens=2" %%a in ('findstr /i /c:"Content-Length:" "%temp%\tag"') do (set "filesize=%%a")
+for /f "tokens=2 delims==" %%a in ('findstr /i /c:"filename=" "%temp%\tag"') do (set "filename=%%a")
 del /f /q "%temp%\tag"
 if "!trflag!" neq "bytes" (set tr=1)
 if defined filesize (
@@ -5158,6 +5158,7 @@ if not exist "!temp!\sni.ini" (
 		"drive.proton.me=g.pr.tn"
 		"calendar.proton.me=h.pr.tn"
 		"lumo.proton.me=i.pr.tn"
+		"sheets.proton.me=j.pr.tn"
 
 		"#youtube"
 		"@.youtube.com=click.google-analytics.com"
@@ -5244,6 +5245,7 @@ if not exist "!temp!\sni.ini" (
 		"g.pr.tn=drive.proton.me"
 		"h.pr.tn=calendar.proton.me"
 		"i.pr.tn=lumo.proton.me"
+		"j.pr.tn=sheets.proton.me"
 
 		"#youtube google"
 		"#mt7.gstatic.com=[2404:6800:4008:c15::5a]"
@@ -5284,12 +5286,6 @@ if not exist "!temp!\sni.ini" (
 		"cdn.v2ex.com"
 		"www.v2ex.com"
 		"challenges.cloudflare.com"
-		"www.openstreetmap.org"
-		"tile.openstreetmap.org"
-		"tile.openstreetmap.org"
-		"a.tile.openstreetmap.org"
-		"b.tile.openstreetmap.org"
-		"c.tile.openstreetmap.org"
 		"ipfs.io"
 		"cloudflare-ipfs.com"
 		"www.croxyproxy.com"
@@ -5882,7 +5878,9 @@ if !diff_seconds1! lss 10 (set "diff_seconds=0!diff_seconds1!")
 if !diff_milliseconds! lss 10 (set "diff_milliseconds=0!diff_milliseconds!")
 set "time_diff=!diff_hours!:!diff_minutes!:!diff_seconds!.!diff_milliseconds!"
 if "%4" equ "format" (
-	for /f "tokens=1-3 delims=:" %%a in ("!diff_hours1!:!diff_minutes1!:!diff_seconds1!.!diff_milliseconds!") do (
+	for /f "tokens=1-3 delims=:" %%a in (
+		"!diff_hours1!:!diff_minutes1!:!diff_seconds1!.!diff_milliseconds!"
+	) do (
 		if "%%a" equ "0" (
 			if "%%b" equ "0" (
 				set "time_diff=%%c秒"
@@ -6945,8 +6943,8 @@ if not exist "%temp%\tag" (
 	echo;没有获取到文件信息
 	goto :eof
 )
-for /f "tokens=2" %%a in ('findstr /c:"Accept-Ranges:" "%temp%\tag"') do (set "trflag=%%a")
-for /f "tokens=2" %%a in ('findstr /c:"Content-Length:" "%temp%\tag"') do (set "filesize=%%a")
+for /f "tokens=2" %%a in ('findstr /i /c:"Accept-Ranges:" "%temp%\tag"') do (set "trflag=%%a")
+for /f "tokens=2" %%a in ('findstr /i /c:"Content-Length:" "%temp%\tag"') do (set "filesize=%%a")
 del /f /q "%temp%\tag"
 if "!trflag!" neq "bytes" (set tr=1)
 if not defined filesize (goto curldxc_3)
