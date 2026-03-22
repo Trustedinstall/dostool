@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-			
+		
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -66,8 +66,8 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 title DOS工具箱
-set ver=20260201
-set versize=171815
+set ver=20260301
+set versize=173025
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -369,15 +369,25 @@ call :16.5
 goto memuv2
 :8
 setlocal
-title 计算开平方!system!
+title 牛顿法计算开方!system!
 cls
-set /p "s=输入被开平方的数: "
+set /p "s=被开方数: "
 call :checkvar s num&&goto 8.1
-set /p "w=精确到小数点后几位数: "
+set /p "m=开方数: "
+call :checkvar m num&&goto 8.1
+set /p "w=小数点精度: "
 call :checkvar w num&&goto 8.1
-call :sqrt !s! !w! jg
+set /p "i=迭代次数(小数值通常 8~16 次，大数值 16~32 次或更高): "
+call :checkvar i num&&goto 8.1
+echo;正在计算...
+call :fsqrt !s! !m! !w! !i! jg
+for /f "delims=0123456789" %%a in ("!jg!") do (call :clsz0 jg)
 cls
-echo;!s!的开平方结果是(精确到小数点后!w!位): !jg!
+if defined winv (
+	echo;!s! 的开 !m! 次方结果是: !cswz!41;92m!jg!!cswz!!ysbak! [精确到小数点后 !w! 位，迭代次数: !i!]
+) else (
+	echo;!s! 的开 !m! 次方结果是: !jg! [精确到小数点后 !w! 位，迭代次数: !i!]
+)
 %hx%
 %pause%
 endlocal
@@ -5927,7 +5937,7 @@ for %%a in (
 	"解除任务管理器被禁用"
 	"显示被隐藏文件(中了该类病毒后)"
 	"解除注册表被禁用"
-	"计算正整数开平方"
+	"牛顿法计算开方"
 	"切换到命令提示符"
 	"将磁盘格式转换为NTFS"
 	"磁盘错误修复"
@@ -6314,6 +6324,119 @@ if "!OK:~0,2!" equ "0." (
 	endlocal&set "%3=%OK% KB"
 	goto :eof
 )
+:fsqrt
+if "%~1" equ "" (goto :eof)
+if "%~2" equ "" (goto :eof)
+if "%~3" equ "" (goto :eof)
+if "%~4" equ "" (goto :eof)
+setlocal
+set "a=%~1"
+if "!a:~0,1!" equ "-" (goto :eof)
+if "%~2" equ "0" (
+	set b=1
+	goto fsqrt_end
+)
+call :fdiv !a! %~2 %~3 b
+set /a "m=%~2-1"
+if !m! lss 0 (set m=0)
+for /l %%a in (1,1,%~4) do (
+	call :fpow !b! !m! c
+	call :fdiv !a! !c! %~3 c
+	call :fmul !b! !m! d
+	call :fadd !c! !d! c
+	call :fdiv !c! %~2 %~3 b
+)
+:fsqrt_end
+if "%5" neq "" (
+	endlocal&set "%5=%b%"
+) else (
+	echo;!b!
+)
+goto :eof
+:fpow
+if "%~1" equ "" (goto :eof)
+if "%~2" equ "" (goto :eof)
+setlocal
+set "a=%~1"
+if "!a:~0,1!" equ "-" (goto :eof)
+if %~2 lss 0 (goto :eof)
+set /a "b=%~2-1"
+if !b! lss 0 (set a=1)
+for /l %%a in (1,1,!b!) do (
+	call :fmul !a! %~1 a
+)
+if "%3" neq "" (
+	endlocal&set "%3=%a%"
+) else (
+	echo;!a!
+)
+goto :eof
+:fadd
+setlocal
+(set L=&for /l %%a in (1,1,8) do set L=!L!00000000
+for /f "tokens=1-3 delims=." %%a in ("!L!%1.!L!") do set at=%%a&set aw=%%b%%c
+for /f "tokens=1-3 delims=." %%a in ("!L!%2.!L!") do set bt=%%a&set bw=%%b%%c
+set a=!at:~-64!!aw:~,64!&set b=!bt:~-64!!bw:~,64!&set e=&set v=200000000
+for /l %%a in (8,8,128)do set/a v=1!b:~-%%a,8!+1!a:~-%%a,8!+!v:~-9,-8!-2&set e=!v:~-8!!e!
+set e=!e:0= !&for /f "tokens=*" %%a in ("!e:~,-64!_.!e:~64!") do set e=%%~nxa
+set e=!e:_=!&for %%a in ("!e: =0!") do endlocal&(if %3.==. (echo;%%~a) else set %3=%%~a)
+goto :eof)
+:fmul
+setlocal
+set "num1=%1"
+set "num2=%2"
+if defined num1 (
+	for /f "delims=.0123456789" %%a in ("!num1!") do (goto :eof)
+	for /f "tokens=1,2 delims=." %%a in ("!num1!") do (
+		set "num1a=%%a"
+		set "num1b=%%b"
+	)
+) else (
+	goto :eof
+)
+if "!num1a!" equ "0" (set "num1a=")
+:__fml.1
+if "!num1b:~-1!" equ "0" (
+	set "num1b=!num1b:~0,-1!"
+	goto __fml.1
+)
+if defined num1b (call :strlen num1b dot1) else (set dot1=0)
+if "!num2!" equ "0" (
+	set num=0
+	goto fmul_end
+) else (
+	for /f "delims=.0123456789" %%a in ("!num2!") do (goto :eof)
+	for /f "tokens=1,2 delims=." %%a in ("!num2!") do (
+		set "num2a=%%a"
+		set "num2b=%%b"
+	)
+)
+if "!num2a!" equ "0" (set "num2a=")
+:__fml.2
+if "!num2b:~-1!" equ "0" (
+	set "num2b=!num2b:~0,-1!"
+	goto __fml.2
+)
+if defined num2b (call :strlen num2b dot2) else (set dot2=0)
+set /a "dot=dot1+dot2"
+call :mul !num1a!!num1b! !num2a!!num2b! num
+set "numa=!num:~0,-%dot%!"
+set "numb=!num:~-%dot%!"
+:__fml.0
+if "!numb:~-1!" equ "0" (
+	set "numb=!numb:~0,-1!"
+	goto __fml.0
+)
+if "!dot!" neq "0" (set "num=!numa!.!numb!")
+if "!num:~0,1!" equ "." (set "num=0!num!")
+if "!num:~-1!" equ "." (set "num=!num:~0,-1!")
+:fmul_end
+if "%3" neq "" (
+	endlocal&set "%3=%num%"
+) else (
+	echo;!num!
+)
+goto :eof
 :mul
 if "%~1" equ "0" (
 	2>nul set "%~3=0"
@@ -6372,7 +6495,10 @@ goto :eof
 if "%1" equ "" (goto :eof)
 if "%2" equ "" (goto :eof)
 for /f "tokens=* delims=0." %%a in ("%2") do (
-	if "%%a" equ "" (goto :eof)
+	if "%%a" equ "" (
+		echo;除数不能为零
+		goto :eof
+	)
 )
 for /f "delims=0123456789" %%a in ("%3") do (goto :eof)
 setlocal
@@ -6474,6 +6600,24 @@ if "%4" neq "" (
 ) else (
 	echo;!Div.3!
 )
+goto :eof
+:clsa0
+if "!%1:~0,1!" equ "0" (
+	if "%1" neq "0" (
+		set "%1=!%1:~1!"
+		goto clsa0
+	)
+)
+if "!%1:~0,1!" equ "." (set "%1=0!%1:~1!")
+goto :eof
+:clsz0
+if "!%1:~-1!" equ "0" (
+	if "%1" neq "0" (
+		set "%1=!%1:~0,-1!"
+		goto clsz0
+	)
+)
+if "!%1:~-1!" equ "." (set "%1=!%1:~0,-1!")
 goto :eof
 #offdisplay#
 Add-Type @"
@@ -6596,120 +6740,6 @@ exit /b 1
 if not defined %1 (goto :eof)
 set "%1=!%1:"=!"
 for /f "delims=()&|%%!!" %%a in (""!%1!"") do (set "%1=%%~a")
-goto :eof
-:sqrt
-if "%1" equ "" (goto :eof)
-if "%2" equ "" (goto :eof)
-setlocal
-set "s=%1"
-set "w=%2"
-if defined w (
-	for /l %%i in (1 1 !w!) do (set "s=!s!00")
-) else (
-	set w=0
-)
-set "p=!s!"
-set len=0
-set N=0
-for %%i in (4096 2048 1024 512 256 128 64 32 16 8 4 2 1) do (
-	if "!p:~%%i!" neq "" (
-		set /a "len+=%%i"
-		set "p=!p:~%%i!"
-	)
-)
-set /a "N-=~(len%%2)"
-set "M=!s:~,%N%!"
-for /l %%i in (1 1 9) do (
-	set /a "Mx=%%i*%%i"
-	if !Mx! leq !M! (
-		set "i=%%i"
-		set /a "j=100+M-Mx"
-	)
-)
-set /a "len-=1"
-set /a "Len_i=_N=i/5+1"
-set /a "p=i*20"
-set "j=!j:~-%_N%!"
-set "p=0!p!"
-set kl=0000000
-set /a "_N=8-_N"
-for /l %%i in (!N! 2 !len!) do (
-	set "j=!j!!s:~%%i,2!"
-	if "!j:0=!" neq "" (
-		set /a "Ln_i=Len_i+=2"
-		if !p! lss !j! (
-			set d=Z
-			set "in=!kl!!P!"
-			set /a "Ln_i+=7"
-			for /l %%j in (9 -1 2) do (
-				if !d! gtr !j! (
-					set "x=%%j"
-					set d=
-					set /a "b=x*x"
-					for /l %%k in (8 8 !Ln_i!) do (
-						set /a "b=1!in:~-%%k,8!*%%j+b"
-						set "d=!b:~-8!!d!"
-						set /a "b=!b:~,-8!-%%j"
-					)
-					set "d=!b!!d!"
-					for %%k in (!Len_i!) do (set "d=!d:~-%%k!")
-				)
-			)
-			if !d! gtr !j! (
-				set "d=!in!"
-				set x=1
-				set b=1
-			) else (
-				set "d=!kl!!d!"
-				set b=0
-			)
-			set "j=!kl!!j!"
-			set t=
-			for /l %%j in (8 8 !Ln_i!) do (
-				set /a "b=3!j:~-%%j,8!-1!d:~-%%j,8!-!b:~,1!%%2"
-				set "t=!b:~1!!t!"
-			)
-			for %%j in (!Len_i!) do (set "j=!t:~-%%j!")
-			set "j=!j:~1!"
-		) else (
-			set x=0
-		)
-		set /a "Len_i-=1"
-		if "!x!" neq "0" (
-			if "!x!" geq "5" (
-				set p=
-				set b=0
-				set "in=!kl!!i!!x!"
-				set /a "Ln_i=Len_i+_N"
-				for /l %%j in (8 8 !Ln_i!) do (
-					set /a "b=1!in:~-%%j,8!*2+!b:~,1!%%2"
-					set "p=!b:~1!!p!"
-				)
-				set /a "b=!b:~,1!%%2"
-				for %%j in (!Len_i!) do (set "p=!b:1=01!!p:~-%%j!0")
-			) else (
-				set /a "t=x*2"
-				set "p=!p:~,-1!!t!0"
-			)
-		) else (
-			set "p=!p!0"
-			set "j=!j:~1!"
-		)
-	) else (
-		set "j=!j:~1!"
-		set "p=!p!0"
-		set /a "Len_i+=1"
-		set x=0
-	)
-	set "i=!i!!x!"
-)
-for /f "tokens=* delims=." %%i in ("!i:~,-%W%!.!i:~-%W%!") do (
-	if "%3" neq "" (
-		endlocal&set "%3=%%i"
-	) else (
-		echo;%%i
-	)
-)
 goto :eof
 :10to16
 if "%1" equ "" (goto :eof)
