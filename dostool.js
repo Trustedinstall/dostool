@@ -6336,21 +6336,21 @@ if "%~2" equ "0" (
 	set b=1
 	goto fsqrt_end
 )
-call :fdiv !a! %~2 %~3 b
+call :fdiv %~1 %~2 %~3 a
 set /a "m=%~2-1"
 if !m! lss 0 (set m=0)
 for /l %%a in (1,1,%~4) do (
-	call :fpow !b! !m! c
-	call :fdiv !a! !c! %~3 c
-	call :fmul !b! !m! d
-	call :fadd !c! !d! c
-	call :fdiv !c! %~2 %~3 b
+	call :fpow !a! !m! b
+	call :fdiv %~1 !b! %~3 b
+	call :fmul !a! !m! c
+	call :fadd !b! !c! b
+	call :fdiv !b! %~2 %~3 a
 )
 :fsqrt_end
 if "%5" neq "" (
-	endlocal&set "%5=%b%"
+	endlocal&set "%5=%a%"
 ) else (
-	echo;!b!
+	echo;!a!
 )
 goto :eof
 :fpow
