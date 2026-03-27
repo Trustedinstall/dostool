@@ -15,7 +15,7 @@
 ˜Ý˜ä˜àâ´¶ä“¯›NéàØ±êÎ’¬³ª‘õÑîÕÄ„mäÕ ‘ž››–ŠšG´ú¸±êÝž³èõ“ž
 ÌÒž´×ÀŸ‚Ò¯—ßž†ãÛ“µ‘þž´‘a›ÂÖÆp˜ù—Ú•t¬‹—ì‘õÎâµ¤…_ƒ§¸Ë…X·®
 à¡–ð…W…Y¬{’°×¡›KßÉÂÔ ²–[ñž‰êÅºÎ¬„Ö´†• n•jÌ¡ºº½½Ø¦¹À•jœ}ž™
-		
+			
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -67,7 +67,7 @@ set "dosqssj=!time!"
 >nul chcp 936
 title DOS¹¤¾ßÏä
 set ver=20260301
-set versize=173025
+set versize=172895
 set xz0=0
 set nx1=[+]ÏÂÒ»Ò³
 set nx2=[-]ÉÏÒ»Ò³
@@ -1918,32 +1918,32 @@ for /f "delims=" %%a in ('"2>nul wmic diskdrive get interfacetype,size,totalsect
 		>nul 2>nul set "!var!"
 		if "!cs!" equ "5" (
 			call :xdwjs !size! b size
-			call :strlen firmwarerevision cd
-			if !cd! lss 8 (
+			call :strlen firmwarerevision dc
+			if !dc! lss 8 (
 				set "dsp=!firmwarerevision!		"
 			) else (
 				set "dsp=!firmwarerevision!	"
 			)
-			call :strlen interfacetype cd
-			if !cd! lss 8 (
+			call :strlen interfacetype dc
+			if !dc! lss 8 (
 				set "dsp=!dsp!!interfacetype!		"
 			) else (
 				set "dsp=!dsp!!interfacetype!	"
 			)
-			call :strlen size cd
-			if !cd! lss 8 (
+			call :strlen size dc
+			if !dc! lss 8 (
 				set "dsp=!dsp!!size!		"
 			) else (
 				set "dsp=!dsp!!size!	"
 			)
-			call :strlen totalsectors cd
-			if !cd! lss 8 (
+			call :strlen totalsectors dc
+			if !dc! lss 8 (
 				set "dsp=!dsp!!totalsectors!		"
 			) else (
 				set "dsp=!dsp!!totalsectors!	"
 			)
-			call :strlen partitions cd
-			if !cd! lss 8 (
+			call :strlen partitions dc
+			if !dc! lss 8 (
 				set "dsp=!dsp!!partitions!"
 			) else (
 				set "dsp=!dsp!!partitions!"
@@ -2393,32 +2393,32 @@ for /f "delims=" %%a in ('"call %0 pwiex diskinfo"') do (
 	>nul 2>nul set "%%a"
 	if "!cs!" equ "5" (
 		call :xdwjs !size! b size
-		call :strlen firmwarerevision cd
-		if !cd! lss 8 (
+		call :strlen firmwarerevision dc
+		if !dc! lss 8 (
 			set "dsp=!firmwarerevision!		"
 		) else (
 			set "dsp=!firmwarerevision!	"
 		)
-		call :strlen interfacetype cd
-		if !cd! lss 8 (
+		call :strlen interfacetype dc
+		if !dc! lss 8 (
 			set "dsp=!dsp!!interfacetype!		"
 		) else (
 			set "dsp=!dsp!!interfacetype!	"
 		)
-		call :strlen size cd
-		if !cd! lss 8 (
+		call :strlen size dc
+		if !dc! lss 8 (
 			set "dsp=!dsp!!size!		"
 		) else (
 			set "dsp=!dsp!!size!	"
 		)
-		call :strlen totalsectors cd
-		if !cd! lss 8 (
+		call :strlen totalsectors dc
+		if !dc! lss 8 (
 			set "dsp=!dsp!!totalsectors!		"
 		) else (
 			set "dsp=!dsp!!totalsectors!	"
 		)
-		call :strlen partitions cd
-		if !cd! lss 8 (
+		call :strlen partitions dc
+		if !dc! lss 8 (
 			set "dsp=!dsp!!partitions!"
 		) else (
 			set "dsp=!dsp!!partitions!"
@@ -5850,8 +5850,7 @@ for /f "usebackq tokens=1-3 delims=:" %%a in ("%temp%\dostoolupdate") do (
 )
 goto :eof
 :sjc
-if "%1" equ "" (goto :eof)
-if "%2" equ "" (goto :eof)
+if "%~2" equ "" (goto :eof)
 setlocal
 for /f "tokens=1-8 delims=:. " %%a in ("%~1 %~2") do (
 	set "start_hour=%%a"
@@ -6277,15 +6276,13 @@ If (Test-Path $InfFileLocation) {
 }
 #su#
 :xdwjs
-if "%1" equ "" (goto :eof)
-if "%3" equ "" (goto :eof)
+if "%~3" equ "" (goto :eof)
 setlocal
-set "Bytes=%1"
-set "danwei=%2"
+set "Bytes=%~1"
+set "danwei=%~2"
 if /i "!danwei!" equ "kb" (call :mul !bytes! 1024 bytes)
 if /i "!danwei!" equ "mb" (call :mul !bytes! 1048576 bytes)
 if /i "!danwei!" equ "gb" (call :mul !bytes! 1073741824 bytes)
-if "%3" equ "" (goto :eof)
 call :fdiv !Bytes! 1152921504606846976 2 OK
 if "!OK:~0,2!" equ "0." (
 	call :fdiv !Bytes! 1125899906842624 2 OK
@@ -6325,14 +6322,11 @@ if "!OK:~0,2!" equ "0." (
 	goto :eof
 )
 :fsqrt
-if "%~1" equ "" (goto :eof)
-if "%~2" equ "" (goto :eof)
-if "%~3" equ "" (goto :eof)
 if "%~4" equ "" (goto :eof)
 setlocal
 set "a=%~1"
 if "!a:~0,1!" equ "-" (goto :eof)
-if "%~2" equ "0" (
+if %2 equ 0 (
 	set b=1
 	goto fsqrt_end
 )
@@ -6354,17 +6348,14 @@ if "%5" neq "" (
 )
 goto :eof
 :fpow
-if "%~1" equ "" (goto :eof)
 if "%~2" equ "" (goto :eof)
 setlocal
 set "a=%~1"
 if "!a:~0,1!" equ "-" (goto :eof)
-if %~2 lss 0 (goto :eof)
+if %2 lss 0 (goto :eof)
 set /a "b=%~2-1"
 if !b! lss 0 (set a=1)
-for /l %%a in (1,1,!b!) do (
-	call :fmul !a! %~1 a
-)
+for /l %%a in (1,1,!b!) do (call :fmul !a! %~1 a)
 if "%3" neq "" (
 	endlocal&set "%3=%a%"
 ) else (
@@ -6382,36 +6373,38 @@ set e=!e:0= !&for /f "tokens=*" %%a in ("!e:~,-64!_.!e:~64!") do set e=%%~nxa
 set e=!e:_=!&for %%a in ("!e: =0!") do endlocal&(if %3.==. (echo;%%~a) else set %3=%%~a)
 goto :eof)
 :fmul
+if "%~2" equ "" (goto :eof)
 setlocal
-set "num1=%1"
-set "num2=%2"
-if defined num1 (
-	for /f "delims=.0123456789" %%a in ("!num1!") do (goto :eof)
-	for /f "tokens=1,2 delims=." %%a in ("!num1!") do (
+set "num1=%~1"
+set "num2=%~2"
+if %1 equ 0 (
+	set num=0
+	goto fmul_end
+) else (
+	for /f "delims=.0123456789" %%a in ("%~1") do (goto :eof)
+	for /f "tokens=1,2 delims=." %%a in ("%~1") do (
 		set "num1a=%%a"
 		set "num1b=%%b"
 	)
-) else (
-	goto :eof
 )
-if "!num1a!" equ "0" (set "num1a=")
+if !num1a! equ 0 (set "num1a=")
 :__fml.1
 if "!num1b:~-1!" equ "0" (
 	set "num1b=!num1b:~0,-1!"
 	goto __fml.1
 )
 if defined num1b (call :strlen num1b dot1) else (set dot1=0)
-if "!num2!" equ "0" (
+if %2 equ 0 (
 	set num=0
 	goto fmul_end
 ) else (
-	for /f "delims=.0123456789" %%a in ("!num2!") do (goto :eof)
-	for /f "tokens=1,2 delims=." %%a in ("!num2!") do (
+	for /f "delims=.0123456789" %%a in ("%~2") do (goto :eof)
+	for /f "tokens=1,2 delims=." %%a in ("%~2") do (
 		set "num2a=%%a"
 		set "num2b=%%b"
 	)
 )
-if "!num2a!" equ "0" (set "num2a=")
+if !num2a! equ 0 (set "num2a=")
 :__fml.2
 if "!num2b:~-1!" equ "0" (
 	set "num2b=!num2b:~0,-1!"
@@ -6438,12 +6431,21 @@ if "%3" neq "" (
 )
 goto :eof
 :mul
-if "%~1" equ "0" (
-	2>nul set "%~3=0"
+if "%~2" equ "" (goto :eof)
+if %1 equ 0 (
+	if "%~3" neq "" (
+		set "%~3=0"
+	) else (
+		echo;0
+	)
 	goto :eof
 )
-if "%~2" equ "0" (
-	2>nul set "%~3=0"
+if %2 equ 0 (
+	if "%~3" neq "" (
+		set "%~3=0"
+	) else (
+		echo;0
+	)
 	goto :eof
 )
 setlocal
@@ -6492,20 +6494,19 @@ set "ji=!t!!ji:~1!"
 endlocal&set "%~3=%ji%"
 goto :eof
 :fdiv
-if "%1" equ "" (goto :eof)
-if "%2" equ "" (goto :eof)
-for /f "tokens=* delims=0." %%a in ("%2") do (
+if "%~3" equ "" (goto :eof)
+for /f "tokens=* delims=0." %%a in ("%~2") do (
 	if "%%a" equ "" (
 		echo;³ýÊý²»ÄÜÎªÁã
 		goto :eof
 	)
 )
-for /f "delims=0123456789" %%a in ("%3") do (goto :eof)
+for /f "delims=0123456789" %%a in ("%~3") do (goto :eof)
 setlocal
-set "Div.1=%1"
-set "Div.2=%2"
+set "Div.1=%~1"
+set "Div.2=%~2"
 set Div.3=
-set "Div.D=%3"
+set "Div.D=%~3"
 set Div.1.Len.0=0
 set Div.2.Len.0=0
 set Div.Z=00000000
@@ -6642,7 +6643,9 @@ set /p "%1=ÊäÈëÑ¡Ïî: "
 call :var %1
 goto :eof
 :checkvar
-if "%1" equ "" (goto :eof) else (
+if "%2" equ "" (
+	goto :eof
+) else (
 	setlocal
 	set "val=!%1!"
 )
@@ -6742,9 +6745,9 @@ set "%1=!%1:"=!"
 for /f "delims=()&|%%!!" %%a in (""!%1!"") do (set "%1=%%~a")
 goto :eof
 :10to16
-if "%1" equ "" (goto :eof)
+if "%~1" equ "" (goto :eof)
 setlocal
-set "ran=%1"
+set "ran=%~1"
 set ss=
 :10to16_1
 set /a "s=!ran!%%16"
@@ -6785,9 +6788,9 @@ if "%2" neq "" (
 )
 goto :eof
 :10to2
-if "%1" equ "" (goto :eof)
+if "%~1" equ "" (goto :eof)
 setlocal
-set "num=%1"
+set "num=%~1"
 set num1=
 :10to2_1
 set /a "e=num%%2"
@@ -6801,9 +6804,9 @@ if "%2" neq "" (
 )
 goto :eof
 :10to8
-if "%1" equ "" (goto :eof)
+if "%~1" equ "" (goto :eof)
 setlocal
-set "num=%1"
+set "num=%~1"
 set num1=
 :10to8_2
 set /a "b=num%%8"
@@ -6817,11 +6820,11 @@ if "%2" neq "" (
 )
 goto :eof
 :2to10
-if "%1" equ "" (goto :eof)
+if "%~1" equ "" (goto :eof)
 setlocal
 set nn=
 set "nnn=1"
-set "n=%1"
+set "n=%~1"
 set "n=!n:0= 0!"
 set "n=!n:1= 1!"
 for %%a in (!n!) do (set "nn=%%a !nn!")
@@ -7254,7 +7257,6 @@ set __line=
 set __start=
 goto :eof
 :regq
-if "%~1" equ "" (goto :eof)
 if "%~2" equ "" (goto :eof)
 for /f "skip=1 tokens=2*" %%a in ('"2>nul reg query "%~1" /v "%~2""') do (
 	if "%~3" neq "" (set "%~3=%%b") else (echo;%%b)
