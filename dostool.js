@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-			
+		
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -67,7 +67,7 @@ set "dosqssj=!time!"
 >nul chcp 936
 title DOS工具箱
 set ver=20260301
-set versize=172895
+set versize=172845
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -349,14 +349,14 @@ goto memuv2
 :5
 title 解除任务管理器被禁用!system!
 cls
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v DisableTaskmgr /t reg_dword /d 00000000 /f
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v DisableTaskmgr /t reg_dword /d 0 /f
 %hx%
 %pause%
 goto memuv2
 :6
 title 显示被隐藏文件(中了该类病毒后)!system!
 cls
-reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\Hidden\SHOWALL" /v CheckedValue /t reg_dword /d 00000001 /f
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\Hidden\SHOWALL" /v CheckedValue /t reg_dword /d 1 /f
 %hx%
 %pause%
 goto memuv2
@@ -506,7 +506,7 @@ goto 13.1
 :14
 title 解除命令提示符被禁用!system!
 cls
-reg add "HKCU\Software\Policies\Microsoft\Windows\System" /v DisableCMD /t reg_dword /d 00000000 /f
+reg add "HKCU\Software\Policies\Microsoft\Windows\System" /v DisableCMD /t reg_dword /d 0 /f
 %hx%
 %pause%
 goto memuv2
@@ -601,9 +601,9 @@ for /f "delims=" %%a in (
 )
 for %%a in (!sypf!) do (del /f /s /q %%a(Empty).lnk)
 call :16.5
-reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\Hidden\SHOWALL" /v CheckedValue /t reg_dword /d 00000001 /f
-reg add "HKCU\Software\Microsoft\Windows\Current Version\Policies\Explorer" /v nosetfolders /t reg_dword /d 00000000 /f
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v NoControlPanel /t reg_dword /d 00000000 /f
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\Hidden\SHOWALL" /v CheckedValue /t reg_dword /d 1 /f
+reg add "HKCU\Software\Microsoft\Windows\Current Version\Policies\Explorer" /v nosetfolders /t reg_dword /d 0 /f
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v NoControlPanel /t reg_dword /d 0 /f
 :16.1
 %hx%
 set zhucebiaoqingli=
@@ -634,7 +634,7 @@ echo;HKCU,Software\Microsoft\Windows\CurrentVersion\Policies\System,Disableregis
 )
 rundll32 syssetup,SetupInfObjectInstallAction DefaultInstall 128 !windir!\temp\reg.inf
 del /f /q !windir!\temp\reg.inf
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v DisableRegistryTools /t reg_dword /d 00000000 /f
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v DisableRegistryTools /t reg_dword /d 0 /f
 goto :eof
 :17
 start regedit
@@ -5918,14 +5918,6 @@ set N=&for %%a in (4096 2048 1024 512 256 128 64 32 16)do if !$:~%%a!. NEQ . set
 set $=!$!fedcba9876543210&set/aN+=0x!$:~16,1!
 endlocal&If %2. neq . (set/a%2=%N%)else echo;%N%
 goto :eof
-:ys
-set /a "__yss=1%time:~0,2%*360000+1%time:~3,2%*6000+1%time:~6,2%*100+1%time:~-2%"
-:ys_loop
-set /a "__yse=(1%time:~0,2%*360000+1%time:~3,2%*6000+1%time:~6,2%*100+1%time:~-2%)-__yss"
-if !__yse! lss %1 (goto ys_loop)
-set __yss=
-set __yse=
-goto :eof
 :list
 set start=1
 for %%a in (
@@ -7087,6 +7079,14 @@ if exist "!windir!\system32\timeout.exe" (
 		set __out=
 	)
 )
+goto :eof
+:ys
+set /a "__yss=1%time:~0,2%*360000+1%time:~3,2%*6000+1%time:~6,2%*100+1%time:~-2%"
+:ys_loop
+set /a "__yse=(1%time:~0,2%*360000+1%time:~3,2%*6000+1%time:~6,2%*100+1%time:~-2%)-__yss"
+if !__yse! lss %1 (goto ys_loop)
+set __yss=
+set __yse=
 goto :eof
 :lj
 setlocal
