@@ -15,7 +15,7 @@
 ˜Ý˜ä˜àâ´¶ä“¯›NéàØ±êÎ’¬³ª‘õÑîÕÄ„mäÕ ‘ž››–ŠšG´ú¸±êÝž³èõ“ž
 ÌÒž´×ÀŸ‚Ò¯—ßž†ãÛ“µ‘þž´‘a›ÂÖÆp˜ù—Ú•t¬‹—ì‘õÎâµ¤…_ƒ§¸Ë…X·®
 à¡–ð…W…Y¬{’°×¡›KßÉÂÔ ²–[ñž‰êÅºÎ¬„Ö´†• n•jÌ¡ºº½½Ø¦¹À•jœ}ž™
-		
+	
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -67,7 +67,7 @@ set "dosqssj=!time!"
 >nul chcp 936
 title DOS¹¤¾ßÏä
 set ver=20260301
-set versize=172845
+set versize=172495
 set xz0=0
 set nx1=[+]ÏÂÒ»Ò³
 set nx2=[-]ÉÏÒ»Ò³
@@ -248,8 +248,7 @@ for %%a in (!sypf!) do (
 		if "%%b" equ "¿ÉÒÆ¶¯Çý¶¯Æ÷" (
 			for /f "delims=" %%b in ('dir /a /s /b %%alpk.dll') do (
 				if "%%~zb" equ "44032" (
-					attrib -s -h -r "%%b"
-					del /f /q "%%b"&&echo;ÒÑÉ¾³ý%%b
+					del /f /q /a "%%b"&&echo;ÒÑÉ¾³ý%%b
 				)
 			)
 		)
@@ -275,11 +274,8 @@ for %%a in (!sypf!) do (
 			call :isrefs %%a||call :wjqx "%%aautorun.inf"
 			call :isntfs %%a||call :wjqx "%%aRECYCLER"
 			call :isrefs %%a||call :wjqx "%%aRECYCLER"
-			attrib -s -h -r "%%aautorun.inf"
-			attrib -s -h -r "%%aRECYCLER"
-			del /f /q "%%aautorun.inf"
+			del /f /q /a "%%aautorun.inf";"%%aRECYCLER"
 			rd /s /q "%%aRECYCLER"
-			del /f /q "%%aRECYCLER"
 		)
 	)
 )
@@ -293,7 +289,7 @@ title ÇåÀíÏµÍ³À¬»ø!system!
 cls
 set sc=delasd123
 set scw=rdasd123
-%sc:~0,3% /f%ad% /s /%ad%q %systemdrive%\*.tm%ad%p;^
+%sc:~0,3% /f%ad% /s /%ad%q /a %systemdrive%\*.tm%ad%p;^
 						%systemdrive%\*log.txt;^
 						%systemdrive%\*.dmp;^
 						%systemdrive%\*.log;^
@@ -442,9 +438,9 @@ call :var cipanxioufu
 cls
 call :isntfs !cipanxioufu!:
 if errorlevel 1 (
-	chkdsk /x /f /sdcleanup !cipanxioufu!:
+	chkdsk /x /sdcleanup !cipanxioufu!:
 ) else (
-	chkdsk /f /x !cipanxioufu!:
+	chkdsk /x !cipanxioufu!:
 )
 %hx%
 echo;ÐÞ¸´Íê³É
@@ -543,19 +539,15 @@ echo;ÕýÔÚ½áÊøKHATRA²¡¶¾½ø³Ì...
 :16.4.1
 for /l %%a in (1,1,2) do (
 	taskkill /f /im xplorer.exe
-	attrib -s -h -r "!windir!\xplorer.exe"
-	del /f /q "!windir!\xplorer.exe"
+	del /f /q /a "!windir!\xplorer.exe"
 	md "!windir!\xplorer.exe"
 	taskkill /f /im ghost.exe
-	attrib -s -h -r "!windir!\system\ghost.exe"
-	del /f /q "!windir!\system\ghost.exe"
+	del /f /q /a "!windir!\system\ghost.exe"
 	md "!windir!\system\ghost.exe"
 	taskkill /f /im khatra.exe
-	attrib -s -h -r "!windir!\system32\khatra.exe"
-	del /f /q "!windir!\system32\khatra.exe"
+	del /f /q /a "!windir!\system32\khatra.exe"
 	md "!windir!\system32\khatra.exe"
-	attrib -s -h -r "%systemdrive%\khatra.exe"
-	del /f /q "%systemdrive%\khatra.exe"
+	del /f /q /a "%systemdrive%\khatra.exe"
 	md "%systemdrive%\khatra.exe"
 )
 echo;ÕýÔÚÉ¾³ýKHATRA²¡¶¾...
@@ -565,7 +557,7 @@ rd /s /q "%systemdrive%\khatra.exe";^
 		"!windir!\system32\khatra.exe";^
 		"!windir!\k.backup";^
 		"!windir!\system32\ntmsdata"
-del /f /q "!windir!\youtube.cab";^
+del /f /q /a "!windir!\youtube.cab";^
 		"!windir!\supermodels.cab";^
 		"!windir!\new-screamsaver.com.cab";^
 		"!windir!\New WinZip File.cab";^
@@ -585,8 +577,7 @@ for /f "delims=" %%a in (
 	'"for %%a in (!sypf!) do (dir /a /s /b %%a*.exe)"'
 ) do (
 	if "%%~za" equ "486912" (
-		attrib -s -h -r "%%a"
-		del /f /q "%%a"
+		del /f /q /a "%%a"
 		echo;ÒÑÉ¾³ý%%a
 	)
 )
@@ -594,12 +585,11 @@ for /f "delims=" %%a in (
 	'"for %%a in (!sypf!) do (dir /a /s /b %%aautorun.inf)"'
 ) do (
 	if "%%~za" equ "234" (
-		attrib -s -h -r "%%a"
-		del /f /q "%%a"
+		del /f /q /a "%%a"
 		echo;ÒÑÉ¾³ý%%a
 	)
 )
-for %%a in (!sypf!) do (del /f /s /q %%a(Empty).lnk)
+for %%a in (!sypf!) do (del /f /s /q /a %%a(Empty).lnk)
 call :16.5
 reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\Hidden\SHOWALL" /v CheckedValue /t reg_dword /d 1 /f
 reg add "HKCU\Software\Microsoft\Windows\Current Version\Policies\Explorer" /v nosetfolders /t reg_dword /d 0 /f
@@ -1500,9 +1490,8 @@ for %%a in (!sypf!) do (
 			if exist "%%aautorun.inf" (
 				call :isntfs %%a||call :wjqx "%%aautorun.inf"
 				call :isrefs %%a||call :wjqx "%%aautorun.inf"
-				attrib -s -h -r "%%aautorun.inf"
 			)
-			>nul 2>nul del /f /q "%%aautorun.inf"
+			>nul 2>nul del /f /q /a "%%aautorun.inf"
 			>nul 2>nul rd /s /q "%%aautorun.inf"
 		)
 	)
@@ -7136,7 +7125,7 @@ setlocal
 set "url=%~1"
 if "!url:-1!" equ "\" (set "url=!url:0,-1!")
 >nul 2>nul dir /a:d /b "!url!"&&rd /s /q "!url!"
-if exist "!url!" (del /f /q "!url!")
+if exist "!url!" (del /f /q /a "!url!")
 md "!url!"
 endlocal&exit /b %errorlevel%
 :curlproxy
