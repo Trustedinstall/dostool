@@ -67,7 +67,7 @@ set "dosqssj=!time!"
 >nul chcp 936
 title DOS工具箱
 set ver=20260301
-set versize=172495
+set versize=172460
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -443,7 +443,6 @@ if errorlevel 1 (
 	chkdsk /x !cipanxioufu!:
 )
 %hx%
-echo;修复完成
 %pause%
 endlocal
 goto memuv2
@@ -5028,30 +5027,28 @@ for /l %%a in (1,1,!tr!) do (
 			echo;进程%%a完成
 			set /a "jccs+=1"
 		) else (
-			set fhz=
-			call :fdiv !ssdx! !pdfd! 2 fhz
-			set "jcjd=!fhz:~2,2!"
-			if "!jcjd:~0,1!" equ "0" (set "jcjd=!jcjd:~1,1!")
+			call :fdiv !ssdx! !pdfd! 2 jcjd
+			set "jcjd=!jcjd:~2,2!"
+			if "!jcjd:~0,1!" equ "0" (set "jcjd= !jcjd:~1,1!")
 			set jdt=
 			for /l %%c in (1,2,!jcjd!) do (set "jdt=!jdt!:")
-			<nul set /p "=进程%%a的进度:	["
+			<nul set /p "=进程%%a的进度:	!jcjd!%% ["
 			call :colortxt a !jdt!
-			echo;][!fhz!~1]
+			echo;]
 		)
 	) else (
 		if "!ssdx!" equ "!fd!" (
 			echo;进程%%a完成
 			set /a "jccs+=1"
 		) else (
-			set fhz=
-			call :fdiv !ssdx! !fd! 2 fhz
-			set "jcjd=!fhz:~2,2!"
-			if "!jcjd:~0,1!" equ "0" (set "jcjd=!jcjd:~1,1!")
+			call :fdiv !ssdx! !fd! 2 jcjd
+			set "jcjd=!jcjd:~2,2!"
+			if "!jcjd:~0,1!" equ "0" (set "jcjd= !jcjd:~1,1!")
 			set jdt=
 			for /l %%c in (1,2,!jcjd!) do (set "jdt=!jdt!:")
-			<nul set /p "=进程%%a的进度:	["
+			<nul set /p "=进程%%a的进度:	!jcjd!%% ["
 			call :colortxt a !jdt!
-			echo;][!fhz!~1]
+			echo;]
 		)
 	)
 )
