@@ -5830,11 +5830,11 @@ goto memuv2
 :readupdate
 for /f "usebackq tokens=1-3 delims=:" %%a in ("%temp%\dostoolupdate") do (
 	set "gxver=%%a"
-	call :checkver gxver num&&set gxver=
+	call :checkvar gxver num&&set gxver=
 	set "doshash=%%b"
-	call :checkver doshash hash&&set doshash=
+	call :checkvar doshash hash&&set doshash=
 	set "dossize=%%c"
-	call :checkver dossize num&&set dossize=
+	call :checkvar dossize num&&set dossize=
 )
 goto :eof
 :sjc
