@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-	
+		
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -67,7 +67,7 @@ set "dosqssj=!time!"
 >nul chcp 936
 title DOS工具箱
 set ver=20260401
-set versize=173235
+set versize=173230
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -888,8 +888,8 @@ goto guanji
 title 注销!system!
 cls
 %sel% shuru "是否立即注销(y/n): " yn
-if /i "!shuru!" equ "1" (logoff&exit 0)
-if /i "!shuru!" equ "2" (endlocal&goto guanji)
+if "!shuru!" equ "1" (logoff&exit 0)
+if "!shuru!" equ "2" (endlocal&goto guanji)
 if /i "!shuru!" equ "y" (logoff&exit 0)
 if /i "!shuru!" equ "n" (endlocal&goto guanji)
 <nul set /p "=请输入正确的选项"
