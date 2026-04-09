@@ -66,8 +66,8 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 title DOS工具箱
-set ver=20260301
-set versize=172460
+set ver=20260401
+set versize=173235
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -215,7 +215,7 @@ if /i "!caidan:~0,2!" equ "go" (
 )
 if defined !caidan! (goto !%caidan%!)
 :memuv2.1
-<nul set /p "=请输入正确的选项！"
+<nul set /p "=请输入正确的选项"
 call :out 2
 goto memuv2
 :memuv2.2
@@ -380,7 +380,10 @@ call :fsqrt !s! !m! !w! !i! jg
 for /f "delims=0123456789" %%a in ("!jg!") do (call :clsz0 jg)
 cls
 if defined winv (
-	echo;!s! 的开 !m! 次方结果是: !cswz!41;92m!jg!!cswz!!ysbak! [精确到小数点后 !w! 位，迭代次数: !i!]
+	<nul set /p "=!s! 的开 !m! 次方结果是: "
+	call :colortxt a "!jg! "
+	<nul set /p "=[精确到小数点后 !w! 位，迭代次数: !i!]"
+	echo;
 ) else (
 	echo;!s! 的开 !m! 次方结果是: !jg! [精确到小数点后 !w! 位，迭代次数: !i!]
 )
@@ -452,12 +455,12 @@ color cf
 title 格式化!system!
 call :bel
 cls
-set geshihuaxuanxiang=
-set /p "geshihuaxuanxiang=格式化有一定的危险性，是否继续(y/n): "
-call :var geshihuaxuanxiang
-if /i "!geshihuaxuanxiang!" equ "y" (goto 12.1)
-if /i "!geshihuaxuanxiang!" equ "n" (endlocal&goto memuv2)
-<nul set /p "=请输入正确的选项！"
+%sel% shuru "格式化有一定的危险性，是否继续(y/n): " yn
+if "!shuru!" equ "1" (goto 12.1)
+if "!shuru!" equ "2" (endlocal&goto memuv2)
+if /i "!shuru!" equ "y" (goto 12.1)
+if /i "!shuru!" equ "n" (endlocal&goto memuv2)
+<nul set /p "=请输入正确的选项"
 call :out 2
 endlocal
 goto 12
@@ -595,12 +598,12 @@ reg add "HKCU\Software\Microsoft\Windows\Current Version\Policies\Explorer" /v n
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v NoControlPanel /t reg_dword /d 0 /f
 :16.1
 %hx%
-set zhucebiaoqingli=
-set /p "zhucebiaoqingli=注册表需要手动清理.是否打开注册表(y/n):"
-call :var zhucebiaoqingli
-if /i "!zhucebiaoqingli!" equ "y" (goto 16.2)
-if /i "!zhucebiaoqingli!" equ "n" (goto 16.3)
-<nul set /p "=请输入正确的选项！"
+%sel% shuru "注册表需要手动清理.是否打开注册表(y/n): " yn
+if "!shuru!" equ "1" (goto 16.2)
+if "!shuru!" equ "2" (goto 16.3)
+if /i "!shuru!" equ "y" (goto 16.2)
+if /i "!shuru!" equ "n" (goto 16.3)
+<nul set /p "=请输入正确的选项"
 call :out 2
 goto 16.1
 :16.2
@@ -656,8 +659,7 @@ for %%a in (
 	echo;%%~a
 )
 %hx%
-set cho=123456780
-%sel% shuru
+%sel% shuru "输入选项: " 123456780
 if "!shuru!" equ "1" (goto 21.1)
 if "!shuru!" equ "2" (goto 21.2)
 if "!shuru!" equ "3" (goto 21.3)
@@ -668,7 +670,7 @@ if "!shuru!" equ "7" (goto 21.7)
 if "!shuru!" equ "8" (goto 21.8)
 if "!shuru!" equ "9" (endlocal&goto memuv2)
 if "!shuru!" equ "0" (endlocal&goto memuv2)
-<nul set /p "=请输入正确的选项！"
+<nul set /p "=请输入正确的选项"
 call :out 2
 endlocal
 goto 21
@@ -831,8 +833,7 @@ for %%a in (
 	echo;%%~a
 )
 %hx%
-set cho=1234567890
-%sel% shuru
+%sel% shuru "输入选项: " 1234567890
 if "!shuru!" equ "1" (goto guanji.1)
 if "!shuru!" equ "2" (goto guanji.2)
 if "!shuru!" equ "3" (goto guanji.3)
@@ -849,7 +850,7 @@ if "!shuru!" equ "8" (
 if "!shuru!" equ "9" (goto guanji.9)
 if "!shuru!" equ "10" (endlocal&goto memuv2)
 if "!shuru!" equ "0" (endlocal&goto memuv2)
-<nul set /p "=请输入正确的选项！"
+<nul set /p "=请输入正确的选项"
 call :out 2
 endlocal
 goto guanji
@@ -861,7 +862,7 @@ set /p "guanjidaojishi=设置关机倒计时，有效范围(0-315360000)秒(e=返回): "
 call :var guanjidaojishi
 if /i "!guanjidaojishi!" equ "e" (endlocal&goto guanji)
 call :checkvar guanjidaojishi num&&(
-	<nul set /p "=不是有效数字！"
+	<nul set /p "=不是有效数字"
 	call :out 2
 	goto guanji.1
 )
@@ -876,7 +877,7 @@ set /p "chongqidaojishi=设置重启倒计时，有效范围(0-315360000)秒(e=返回): "
 call :var chongqidaojishi
 if "!chongqidaojishi!" equ "e" (endlocal&goto guanji)
 call :checkvar chongqidaojishi num&&(
-	<nul set /p "=不是有效数字！"
+	<nul set /p "=不是有效数字"
 	call :out 2
 	goto guanji.2
 )
@@ -886,12 +887,12 @@ goto guanji
 :guanji.3
 title 注销!system!
 cls
-set zhuxiao=
-set /p "zhuxiao=是否立即注销(y/n): "
-call :var zhuxiao
-if /i "!zhuxiao!" equ "y" (logoff&exit 0)
-if /i "!zhuxiao!" equ "n" (endlocal&goto guanji)
-<nul set /p "=请输入正确的选项！"
+%sel% shuru "是否立即注销(y/n): " yn
+if /i "!shuru!" equ "1" (logoff&exit 0)
+if /i "!shuru!" equ "2" (endlocal&goto guanji)
+if /i "!shuru!" equ "y" (logoff&exit 0)
+if /i "!shuru!" equ "n" (endlocal&goto guanji)
+<nul set /p "=请输入正确的选项"
 call :out 2
 goto guanji.3
 :guanji.4
@@ -909,7 +910,7 @@ set /p "size=设置休眠文件占用总内存比例(40~100)(默认100)(e=返回): "
 call :var size
 if /i "!size!" equ "e" (endlocal&goto guanji)
 call :checkvar size num&&(
-	<nul set /p "=不是有效数字！"
+	<nul set /p "=不是有效数字"
 	call :out 2
 	goto guanji.6
 )
@@ -965,8 +966,7 @@ for %%a in (
 	echo;%%~a
 )
 %hx%
-set cho=1234560
-%sel% shuru
+%sel% shuru "输入选项: " 1234560
 if "!shuru!" equ "1" (goto 23.1)
 if "!shuru!" equ "2" (goto 23.2)
 if "!shuru!" equ "3" (goto 23.6)
@@ -975,7 +975,7 @@ if "!shuru!" equ "5" (goto 23.3)
 if "!shuru!" equ "6" (goto 23.4)
 if "!shuru!" equ "7" (endlocal&goto memuv2)
 if "!shuru!" equ "0" (endlocal&goto memuv2)
-<nul set /p "=请输入正确的选项！"
+<nul set /p "=请输入正确的选项"
 call :out 2
 endlocal
 goto 23
@@ -1044,13 +1044,12 @@ for %%a in (wmic.exe) do (
 echo;文件路径: !jclj1!
 %hx%
 echo;(e=返回)(d=打开文件位置)
-set cho=ed
-%sel% shuru
+%sel% shuru "输入选项: " ed
 if "!shuru!" equ "1" (endlocal&goto 23)
 if "!shuru!" equ "2" (goto 23.8)
 if /i "!shuru!" equ "e" (endlocal&goto 23)
 if /i "!shuru!" equ "d" (goto 23.8)
-<nul set /p "=请输入正确的选项！"
+<nul set /p "=请输入正确的选项"
 call :out 2
 goto 23.6
 :23.8
@@ -1301,8 +1300,7 @@ for %%a in (
 	echo;%%~a
 )
 %hx%
-set cho=1234560
-%sel% shuru
+%sel% shuru "输入选项: " 1234560
 if "!shuru!" equ "1" (goto 24.1)
 if "!shuru!" equ "2" (goto 24.2)
 if "!shuru!" equ "3" (goto 24.3)
@@ -1311,7 +1309,7 @@ if "!shuru!" equ "5" (goto 24.5)
 if "!shuru!" equ "6" (goto 24.6)
 if "!shuru!" equ "7" (endlocal&goto memuv2)
 if "!shuru!" equ "0" (endlocal&goto memuv2)
-<nul set /p=请输入正确的选项！
+<nul set /p=请输入正确的选项
 call :out 2
 endlocal
 goto 24
@@ -1443,13 +1441,12 @@ for %%a in (
 	echo;%%~a
 )
 %hx%
-set cho=120
-%sel% shuru
+%sel% shuru "输入选项: " 120
 if "!shuru!" equ "1" (goto 26.1)
 if "!shuru!" equ "2" (goto 26.2)
 if "!shuru!" equ "3" (endlocal&goto memuv2)
 if "!shuru!" equ "0" (endlocal&goto memuv2)
-<nul set /p "=请输入正确的选项！"
+<nul set /p "=请输入正确的选项"
 call :out 2
 endlocal
 goto 26
@@ -1520,12 +1517,12 @@ cls
 defrag /a !fenxi!:
 %hx%
 :27.3
-set zhengli=
-set /p "zhengli=是否开始磁盘碎片清理(y/n):"
-call :var zhengli
-if /i "!zhengli!" equ "y" (goto 27.2)
-if /i "!zhengli!" equ "n" (endlocal&goto 27)
-<nul set /p "=请输入正确的选项！"
+%sel% shuru "是否开始磁盘碎片整理(y/n): " yn
+if "!shuru!" equ "1" (goto 27.2)
+if "!shuru!" equ "2" (endlocal&goto 27)
+if /i "!shuru!" equ "y" (goto 27.2)
+if /i "!shuru!" equ "n" (endlocal&goto 27)
+<nul set /p "=请输入正确的选项"
 call :out 2
 goto 27.3
 :27.1
@@ -2924,7 +2921,9 @@ choice /c YN /n /m 这里有你想的数吗?(Y=有,N=没有)[7\7]
 if "!errorlevel!" equ "1" (set /a "num+=64")
 cls
 if defined winv (
-	echo;经过电脑复杂的计算后,得出你大脑里想的那个数是: !cswz!41;92m!num!!cswz!!ysbak!
+	<nul set /p "=经过电脑复杂的计算后,得出你大脑里想的那个数是: "
+	call :colortxt a !num!
+	echo;
 ) else (
 	echo;经过电脑复杂的计算后,得出你大脑里想的那个数是: !num!
 )
@@ -2947,15 +2946,14 @@ for %%a in (
 	echo;%%~a
 )
 %hx%
-set cho=12340
-%sel% shuru
+%sel% shuru "输入选项: " 12340
 if "!shuru!" equ "1" (goto 32.1)
 if "!shuru!" equ "2" (goto 32.2)
 if "!shuru!" equ "3" (goto 32.3)
 if "!shuru!" equ "4" (goto 32.4)
 if "!shuru!" equ "5" (endlocal&goto memuv2)
 if "!shuru!" equ "0" (endlocal&goto memuv2)
-<nul set /p "=请输入正确的选项！"
+<nul set /p "=请输入正确的选项"
 call :out 2
 endlocal
 goto 32
@@ -3133,13 +3131,12 @@ for %%a in (
 	echo;%%~a
 )
 %hx%
-set cho=120
-%sel% shuru
+%sel% shuru "输入选项: " 120
 if "!shuru!" equ "1" (goto 10z)
 if "!shuru!" equ "2" (goto 2z)
 if "!shuru!" equ "3" (endlocal&goto memuv2)
 if "!shuru!" equ "0" (endlocal&goto memuv2)
-<nul set /p "=请输入正确的选择!"
+<nul set /p "=请输入正确的选择"
 call :out 2
 endlocal
 goto 36
@@ -3259,15 +3256,14 @@ for %%a in (
 	echo;%%~a
 )
 %hx%
-set cho=12340
-%sel% shuru
+%sel% shuru "输入选项: " 12340
 if "!shuru!" equ "1" (goto yasuo)
 if "!shuru!" equ "2" (goto jieya)
 if "!shuru!" equ "3" (goto yasuowjj)
 if "!shuru!" equ "4" (goto jieyawjj)
 if "!shuru!" equ "5" (endlocal&goto memuv2)
 if "!shuru!" equ "0" (endlocal&goto memuv2)
-<nul set /p "=请输入正确的选择！"
+<nul set /p "=请输入正确的选择"
 call :out 2
 endlocal
 goto 39
@@ -3529,7 +3525,7 @@ for /f "delims=" %%a in ("!yswjlj!") do (
 	for %%a in (.rar .zip) do (
 		if "%%~xa" equ "%%a" (goto rarwjok)
 	)
-	<nul set /p "=无效的文件格式！"
+	<nul set /p "=无效的文件格式"
 	call :out 2
 	endlocal
 	goto 46
@@ -3549,7 +3545,7 @@ call :ljjc pjzd&&(
 )
 for /f "delims=" %%a in ("!pjzd!") do (
 	if /i "%%~xa" neq ".txt" (
-		<nul set /p "=不是txt文件！"
+		<nul set /p "=不是txt文件"
 		call :out 2
 		goto rarwjok
 	)
@@ -3570,7 +3566,7 @@ for /f "usebackq delims=" %%a in ("!pjzd!") do (
 )
 :pjsb
 %hx%
-echo;破解失败！
+echo;破解失败
 echo;
 echo;字典里没有正确的密码
 %hx%
@@ -3580,7 +3576,7 @@ goto memuv2
 :pjcg
 cls
 call :bel
-echo;破解成功！
+echo;破解成功
 echo;
 echo;压缩包: "!yswjlj!"
 echo;解压密码是: "!pjmm!"
@@ -3602,14 +3598,13 @@ for %%a in (
 	echo;%%~a
 )
 %hx%
-set cho=1230
-%sel% shuru
+%sel% shuru "输入选项: " 1230
 if "!shuru!" equ "1" (goto kqwifi)
 if "!shuru!" equ "2" (goto gbwifi)
 if "!shuru!" equ "3" (goto wlpz)
 if "!shuru!" equ "4" (endlocal&goto memuv2)
 if "!shuru!" equ "0" (endlocal&goto memuv2)
-<nul set /p "=请输入正确的选项！"
+<nul set /p "=请输入正确的选项"
 call :out 2
 endlocal
 goto 47
@@ -3684,7 +3679,7 @@ call :ljjc chmlj&&(
 for /f "delims=" %%a in ("!chmlj!") do (
 	if /i "%%~xa" neq ".chm" (
 		%hx%
-		<nul set /p "=不是chm文件！"
+		<nul set /p "=不是chm文件"
 		call :out 2
 		endlocal
 		goto 48
@@ -3696,7 +3691,7 @@ for /f "delims=" %%a in ("!chmlj!") do (
 	rd /s /q !windir!\temp\chm
 	del /f /q !windir!\temp\tmp.chm
 	cls
-	echo;反编译成功！
+	echo;反编译成功
 	echo;以保存到"%~dp0%%~na_chm"
 )
 %hx%
@@ -3758,7 +3753,7 @@ title 已知年月日计算星期!system!
 set jsxq=
 set /p "jsxq=输入年月日(例如20150605): "
 call :checkvar jsxq year&&(
-	<nul set /p "=请输入正确的格式!"
+	<nul set /p "=请输入正确的格式"
 	call :out 2
 	endlocal
 	goto 53
@@ -3840,8 +3835,7 @@ for %%a in (
 	echo;%%~a
 )
 %hx%
-set cho=1230
-%sel% shuru
+%sel% shuru "输入选项: " 1230
 if "!shuru!" equ "1" (
 	start slmgr.vbs -dli
 	endlocal
@@ -3859,7 +3853,7 @@ if "!shuru!" equ "3" (
 )
 if "!shuru!" equ "4" (endlocal&goto memuv2)
 if "!shuru!" equ "0" (endlocal&goto memuv2)
-<nul set /p "=请输入正确的选项！"
+<nul set /p "=请输入正确的选项"
 call :out 2
 endlocal
 goto 54
@@ -3897,9 +3891,15 @@ goto memuv2
 setlocal
 cls
 title 创建符号链接或目录链接!system!
-set jord=
-set /p "jord=输入链接类型(j=目录链接 d=符号链接): "
-call :var jord
+%sel% jord "输入链接类型(j=目录链接 d=符号链接): " jd
+if "!jord!" equ "1" (set jord=j)
+if "!jord!" equ "2" (set jord=d)
+for /f "delims=jd" %%a in ("!jord!") do (
+	<nul set /p "=请输入正确的链接类型"
+	call :out 2
+	endlocal
+	goto 58
+)
 set swjj=
 set cwjj=
 set /p "swjj=输入要链接的文件夹路径: "
@@ -3958,8 +3958,7 @@ for %%a in (
 	echo;%%~a
 )
 %hx%
-set cho=123456780
-%sel% shuru
+%sel% shuru "输入选项: " 123456780
 if "!shuru!" equ "1" (goto 61.1)
 if "!shuru!" equ "2" (goto 61.2)
 if "!shuru!" equ "3" (goto 61.3)
@@ -3982,7 +3981,7 @@ if "!shuru!" equ "8" (
 )
 if "!shuru!" equ "9" (endlocal&goto memuv2)
 if "!shuru!" equ "0" (endlocal&goto memuv2)
-<nul set /p "=请输入正确的选项！"
+<nul set /p "=请输入正确的选项"
 call :out 2
 endlocal
 goto 61
@@ -4160,13 +4159,12 @@ for %%a in (
 	echo;%%~a
 )
 %hx%
-set cho=120
-%sel% shuru
+%sel% shuru "输入选项: " 120
 if "!shuru!" equ "1" (goto 63-1)
 if "!shuru!" equ "2" (goto 63-2)
 if "!shuru!" equ "3" (endlocal&goto memuv2)
 if "!shuru!" equ "0" (endlocal&goto memuv2)
-<nul set /p "=请输入正确的选项！"
+<nul set /p "=请输入正确的选项"
 call :out 2
 endlocal
 goto 63
@@ -4275,13 +4273,12 @@ for %%a in (
 	echo;%%~a
 )
 %hx%
-set cho=120
-%sel% shuru
+%sel% shuru "输入选项: " 120
 if "!shuru!" equ "1" (goto 64-1)
 if "!shuru!" equ "2" (goto 64-2)
 if "!shuru!" equ "3" (endlocal&goto memuv2)
 if "!shuru!" equ "0" (endlocal&goto memuv2)
-<nul set /p "=请输入正确的选项！"
+<nul set /p "=请输入正确的选项"
 call :out 2
 endlocal
 goto 64
@@ -4587,13 +4584,12 @@ for %%a in (
 	echo;%%~a
 )
 %hx%
-set cho=120
-%sel% shuru
+%sel% shuru "输入选项: " 120
 if "!shuru!" equ "1" (goto 67.1)
 if "!shuru!" equ "2" (goto 67.2)
 if "!shuru!" equ "3" (endlocal&goto memuv2)
 if "!shuru!" equ "0" (endlocal&goto memuv2)
-<nul set /p "=请输入正确的选项！"
+<nul set /p "=请输入正确的选项"
 call :out 2
 endlocal
 goto 67
@@ -4794,17 +4790,18 @@ for /l %%a in (90,1,97) do (
 		)
 	)
 )
-<nul set /p "=!cswz!s!cswz!27;0H"
+call :xysav
+call :xyset 27 1
 for /l %%b in (1,1,4) do (
-	echo;
 	for /l %%a in (255,-13,0) do (<nul set /p "=!cswz!48;2;255;0;%%am !cswz!0m")
 	for /l %%a in (0,13,255) do (<nul set /p "=!cswz!48;2;255;%%a;0m !cswz!0m")
 	for /l %%a in (255,-13,0) do (<nul set /p "=!cswz!48;2;%%a;255;0m !cswz!0m")
 	for /l %%a in (0,13,255) do (<nul set /p "=!cswz!48;2;0;255;%%am !cswz!0m")
 	for /l %%a in (255,-13,0) do (<nul set /p "=!cswz!48;2;0;%%a;255m !cswz!0m")
 	for /l %%a in (0,13,255) do (<nul set /p "=!cswz!48;2;%%a;0;255m !cswz!0m")
+	echo;
 )
-<nul set /p "=!cswz!u"
+call :xyres
 %hx%
 %pause%
 endlocal
@@ -4852,8 +4849,7 @@ for %%a in (
 	echo;%%~a
 )
 %hx%
-set cho=120
-%sel% shuru
+%sel% shuru "输入选项: " 120
 if "!shuru!" equ "1" (set "server=kms.loli.best"&goto 70.1)
 if "!shuru!" equ "2" (set "server=kms.03k.org"&goto 70.1)
 if "!shuru!" equ "3" (endlocal&goto memuv2)
@@ -4894,12 +4890,12 @@ if not exist "!windir!\system32\curl.exe" (
 :71.1
 cls
 set "doh=--doh-url https://v.recipes/dns-ecs"
-set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36""
+set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36""
 set filename=
 set url=
 set /p "url=输入下载链接(e=返回): "
 if not defined url (
-	<nul set /p "=链接不能为空!"
+	<nul set /p "=链接不能为空"
 	call :out 2
 	goto 71.1
 )
@@ -4911,7 +4907,7 @@ set tr=
 set /p "tr=输入下载进程数(默认16): "
 if not defined tr (set tr=16)
 call :checkvar tr num&&(
-	<nul set /p "=只能输入正整数!"
+	<nul set /p "=只能输入正整数"
 	call :out 2
 	goto 71.1
 )
@@ -4954,7 +4950,7 @@ if defined filesize (
 	set tr=1
 )
 if not defined filename (
-	set /p "filename=输入文件名: "
+	set /p "filename=输入文件名[默认名称: curl下载文件]: "
 	if not defined filename (set filename=curl下载文件)
 )
 set fd=
@@ -5003,7 +4999,9 @@ call :md "%temp%\down"||(
 set "kssj=!time!"
 for /l %%a in (1,1,!tr!) do (
 	start /min /low "curl多进程下载_%%a" ^
-	curl !proxy! !doh! !ua! -#L --ca-native --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir "%temp%\down" "!url!"
+	curl !proxy! !doh! !ua! ^
+	-#L --ca-native --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! ^
+	-o %%a --output-dir "%temp%\down" "!url!"
 	set /a "oldfd=newfd+1"
 	if "%%a" equ "!pdtr!" (set newfd=) else (set /a "newfd=oldfd+fd-1")
 )
@@ -5012,12 +5010,12 @@ cls
 :71.2
 (
 cls
-<nul set /p "=!cswz!s!cswz!0;0H"
+call :xysav
 set jccs=
 set jingdu=
-<nul set /p "=!cswz!0;76H"
+call :xyset 1 77
 call :colortxt a 等待文件下载完成[按e返回菜单]...
-<nul set /p "=!cswz!u"
+call :xyres
 )
 for /l %%a in (1,1,!tr!) do (
 	set "ssdx=%%~za"
@@ -5245,19 +5243,19 @@ if not exist "!temp!\sni.ini" (
 
 		"#youtube google"
 		"#mt7.gstatic.com=[2404:6800:4008:c15::5a]"
-		"mt7.gstatic.com=142.251.170.161"
+		"mt7.gstatic.com=216.239.36.53"
 		"#alt6.gstatic.com=[2404:6800:4008:c15::5a]"
-		"alt6.gstatic.com=142.251.170.161"
+		"alt6.gstatic.com=216.239.36.53"
 		"#click.google-analytics.com=[2404:6800:4008:c15::5a]"
-		"click.google-analytics.com=142.251.170.161"
+		"click.google-analytics.com=216.239.36.53"
 		"#pagead1.googleadservices.com=[2404:6800:4008:c15::5a]"
-		"pagead1.googleadservices.com=142.251.170.161"
+		"pagead1.googleadservices.com=216.239.36.53"
 		"#pagead2.googlesyndication.com=[2404:6800:4008:c15::5a]"
-		"pagead2.googlesyndication.com=142.251.170.161"
+		"pagead2.googlesyndication.com=216.239.36.53"
 		"#static.doubleclick.net=[2404:6800:4008:c15::5a]"
-		"static.doubleclick.net=142.251.170.161"
+		"static.doubleclick.net=216.239.36.53"
 		"#www.googletagmanager.com=[2404:6800:4008:c15::5a]"
-		"www.googletagmanager.com=142.251.170.161"
+		"www.googletagmanager.com=216.239.36.53"
 
 		"#nyaa"
 		"nyaa.ddos-guard.net=nyaa.si"
@@ -5512,8 +5510,7 @@ for %%a in (
 	echo;%%~a
 )
 %hx%
-set cho=120
-%sel% shuru
+%sel% shuru "输入选项: " 120
 if "!shuru!" equ "1" (start certmgr.msc&goto memuv2)
 if "!shuru!" equ "2" (start certlm.msc&goto memuv2)
 if "!shuru!" equ "3" (endlocal&goto memuv2)
@@ -5536,14 +5533,13 @@ for %%a in (
 	echo;%%~a
 )
 %hx%
-set cho=1230
-%sel% shuru
+%sel% shuru "输入选项: " 1230
 if "!shuru!" equ "1" (goto 75.1)
 if "!shuru!" equ "2" (goto 75.2)
 if "!shuru!" equ "3" (goto 75.3)
 if "!shuru!" equ "4" (endlocal&goto memuv2)
 if "!shuru!" equ "0" (endlocal&goto memuv2)
-<nul set /p "=请输入正确的选项！"
+<nul set /p "=请输入正确的选项"
 call :out 2
 endlocal
 goto 75
@@ -5723,8 +5719,8 @@ setlocal
 cls
 title 更新DOS工具箱 - 当前版本: !ver!!system!
 set "doh=--doh-url https://v.recipes/dns-ecs"
-set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36""
-set "curlpix=--compressed -L# -C - --ca-native --retry 1 --retry-delay 1 --connect-timeout 3 --max-time 10"
+set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36""
+set "curlpix=--remove-on-error --compressed -L# -C - --ca-native --retry 1 --retry-delay 1 --connect-timeout 3 --max-time 10"
 set updatename=update.js
 set updos=dostool.js
 set curl=
@@ -5755,18 +5751,18 @@ if defined curl (
 		call :readupdate
 		set "host=!githost!"
 		set "url=!gxurl!/!updos!"
-		goto updatecheck
 	)
-)
-for %%a in (
-	"https://raw.githubusercontent.com/Trustedinstall/dostool/main"
-	"https://cdn.jsdelivr.net/gh/Trustedinstall/dostool"
-) do (
-	echo;使用链接:	%%~a
-	if defined curl (
-		"!curl!" !proxy! !doh! !ua! !curlpix! --output-dir "!temp!" -o dostoolupdate "%%~a/!updatename!"
-	) else (
-		certutil -urlcache -split -f "%%~a/!updatename!" "!temp!\dostoolupdate"
+) else (
+	for %%a in (
+		"https://raw.githubusercontent.com/Trustedinstall/dostool/main"
+		"https://cdn.jsdelivr.net/gh/Trustedinstall/dostool"
+	) do (
+		echo;使用链接:	%%~a
+		if defined curl (
+			"!curl!" !proxy! !doh! !ua! !curlpix! --output-dir "!temp!" -o dostoolupdate "%%~a/!updatename!"
+		) else (
+			certutil -urlcache -split -f "%%~a/!updatename!" "!temp!\dostoolupdate"
+		)
 	)
 	if exist "%temp%\dostoolupdate" (
 		call :readupdate
@@ -5810,7 +5806,10 @@ if exist "%temp%\dostool" (del /f /q "%temp%\dostool")
 echo;使用链接:	!url!
 if defined curl (
 	if defined host (echo;Host域名:	!host:~10,-1!)
-	"!curl!" !proxy! !doh! !host! !resolve! !ua! --compressed -RL# -C - --ca-native --retry 2 --retry-delay 1 --connect-timeout 5 --max-time 30 --output-dir "!temp!" -o dostool "!url!"
+	"!curl!" !proxy! !doh! !host! !resolve! !ua! ^
+	--remove-on-error --compressed -RL# -C - ^
+	--ca-native --retry 2 --retry-delay 1 --connect-timeout 5 --max-time 30 ^
+	--output-dir "!temp!" -o dostool "!url!"
 ) else (
 	certutil -urlcache -split -f "!url!" "%temp%\dostool"
 )
@@ -5831,8 +5830,11 @@ goto memuv2
 :readupdate
 for /f "usebackq tokens=1-3 delims=:" %%a in ("%temp%\dostoolupdate") do (
 	set "gxver=%%a"
+	call :checkver gxver num&&set gxver=
 	set "doshash=%%b"
+	call :checkver doshash hash&&set doshash=
 	set "dossize=%%c"
+	call :checkver dossize num&&set dossize=
 )
 goto :eof
 :sjc
@@ -6410,23 +6412,15 @@ if "%3" neq "" (
 goto :eof
 :mul
 if "%~2" equ "" (goto :eof)
+setlocal
 if %1 equ 0 (
-	if "%~3" neq "" (
-		set "%~3=0"
-	) else (
-		echo;0
-	)
-	goto :eof
+	set ji=0
+	goto mul_end
 )
 if %2 equ 0 (
-	if "%~3" neq "" (
-		set "%~3=0"
-	) else (
-		echo;0
-	)
-	goto :eof
+	set ji=0
+	goto mul_end
 )
-setlocal
 set f=
 set jia=
 set ji=
@@ -6469,7 +6463,12 @@ for %%a in (!vard1!) do (
 )
 if not "!j:~0,1!" equ "0" (set "t=!j:~0,1!!t!")
 set "ji=!t!!ji:~1!"
-endlocal&set "%~3=%ji%"
+:mul_end
+if "%~3" neq "" (
+	endlocal&set "%~3=%ji%"
+) else (
+	echo;!ji!
+)
 goto :eof
 :fdiv
 if "%~3" equ "" (goto :eof)
@@ -6610,14 +6609,14 @@ public class User32 {
 [void][User32]::SendMessage(-1,0x0112,0xF170,2)
 #offdisplay#
 :choice
-if not defined cho set ("cho=1234567890")
-set "%1="
-choice /c !cho! /n /m "输入选项: "
-set "%1=%errorlevel%"
+setlocal
+if "%~3" equ "" (set cho=1234567890) else (set "cho=%~3")
+choice /c !cho! /n /m "%~2"
+endlocal&set "%1=%errorlevel%"
 goto :eof
 :set
 set "%1="
-set /p "%1=输入选项: "
+set /p "%1=%~2"
 call :var %1
 goto :eof
 :checkvar
@@ -6634,6 +6633,7 @@ if "%2" equ "-num." (goto checkvar_-num.)
 if "%2" equ "az" (goto checkvar_az)
 if "%2" equ "aznum" (goto checkvar_aznum)
 if "%2" equ "year" (goto checkvar_year)
+if "%2" equ "hash" (goto checkvar_hash)
 goto :eof
 :checkvar_num
 if not defined %1 (exit /b 0)
@@ -6671,6 +6671,10 @@ goto :eof
 :checkvar_aznum
 if not defined %1 (exit /b 0)
 for /f "delims=0123456789aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ" %%a in ("!%1!") do (exit /b 0)
+exit /b 1
+:checkvar_hash
+if not defined %1 (exit /b 0)
+for /f "delims=0123456789aAbBcCdDeEfF" %%a in ("!%1!") do (exit /b 0)
 exit /b 1
 :checkvar_year
 if not defined %1 (exit /b 0)
@@ -6904,15 +6908,15 @@ set "filename=%~3"
 set "dir=%~4"
 set "par=%~5"
 set "doh=--doh-url https://v.recipes/dns-ecs"
-set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36""
+set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36""
 if not defined url (
-	echo;链接不能为空!
+	echo;链接不能为空
 	goto :eof
 )
 if not defined tr (set tr=8)
 for /f "tokens=2 delims==" %%a in ('set tr') do (
 	for /f "delims=0123456789" %%a in ("%%a") do (
-		echo;线程数只能输入数字!
+		echo;线程数只能输入数字
 		goto :eof
 	)
 )
@@ -6978,7 +6982,9 @@ md "%temp%\down"||(
 	goto :eof
 )
 for /l %%a in (1,1,!tr!) do (
-	start /b /low "curl多进程下载_%%a" curl !proxy! !doh! !par! !ua! -sL --ca-native --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! -o %%a --output-dir "%temp%\down" "!url!"
+	start /b /low "curl多进程下载_%%a" curl !proxy! !doh! !par! !ua! ^
+	-sL --ca-native --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! ^
+	-o %%a --output-dir "%temp%\down" "!url!"
 	set /a "oldfd=newfd+1"
 	if "%%a" equ "!pdtr!" (
 		set newfd=
@@ -7272,5 +7278,15 @@ if exist "%~nx1" (
 	)
 )
 exit /b 1
+:xysav
+<nul set /p "=!cswz!s"
+goto :eof
+:xyres
+<nul set /p "=!cswz!u"
+goto :eof
+:xyset
+for /f "delims=0123456789" %%a in ("%~1%~2") do (goto :eof)
+<nul set /p "=!cswz!%~1;%~2H"
+goto :eof
 :winnt
 @echo;Incompatible with the current system operating environment
