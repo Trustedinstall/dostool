@@ -15,7 +15,7 @@
 ˜Ý˜ä˜àâ´¶ä“¯›NéàØ±êÎ’¬³ª‘õÑîÕÄ„mäÕ ‘ž››–ŠšG´ú¸±êÝž³èõ“ž
 ÌÒž´×ÀŸ‚Ò¯—ßž†ãÛ“µ‘þž´‘a›ÂÖÆp˜ù—Ú•t¬‹—ì‘õÎâµ¤…_ƒ§¸Ë…X·®
 à¡–ð…W…Y¬{’°×¡›KßÉÂÔ ²–[ñž‰êÅºÎ¬„Ö´†• n•jÌ¡ºº½½Ø¦¹À•jœ}ž™
-		
+	
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -67,7 +67,7 @@ set "dosqssj=!time!"
 >nul chcp 936
 title DOS¹¤¾ßÏä
 set ver=20260401
-set versize=173230
+set versize=173225
 set xz0=0
 set nx1=[+]ÏÂÒ»Ò³
 set nx2=[-]ÉÏÒ»Ò³
@@ -5243,19 +5243,19 @@ if not exist "!temp!\sni.ini" (
 
 		"#youtube google"
 		"#mt7.gstatic.com=[2404:6800:4008:c15::5a]"
-		"mt7.gstatic.com=216.239.36.53"
+		"mt7.gstatic.com=142.251.170.161"
 		"#alt6.gstatic.com=[2404:6800:4008:c15::5a]"
-		"alt6.gstatic.com=216.239.36.53"
+		"alt6.gstatic.com=142.251.170.161"
 		"#click.google-analytics.com=[2404:6800:4008:c15::5a]"
-		"click.google-analytics.com=216.239.36.53"
+		"click.google-analytics.com=142.251.170.161"
 		"#pagead1.googleadservices.com=[2404:6800:4008:c15::5a]"
-		"pagead1.googleadservices.com=216.239.36.53"
+		"pagead1.googleadservices.com=142.251.170.161"
 		"#pagead2.googlesyndication.com=[2404:6800:4008:c15::5a]"
-		"pagead2.googlesyndication.com=216.239.36.53"
+		"pagead2.googlesyndication.com=142.251.170.161"
 		"#static.doubleclick.net=[2404:6800:4008:c15::5a]"
-		"static.doubleclick.net=216.239.36.53"
+		"static.doubleclick.net=142.251.170.161"
 		"#www.googletagmanager.com=[2404:6800:4008:c15::5a]"
-		"www.googletagmanager.com=216.239.36.53"
+		"www.googletagmanager.com=142.251.170.161"
 
 		"#nyaa"
 		"nyaa.ddos-guard.net=nyaa.si"
@@ -7267,13 +7267,12 @@ if exist "%~nx1" (
 		if "%2" neq "" (set "%2=%~nx1")
 		exit /b 0
 	)
-) else (
-	for %%a in ("%~nx1") do (
-		if "%%~$path:a" neq "" (
-			>nul 2>nul dir /a:d /b "%%~$path:a"||(
-				if "%2" neq "" (set "%2=%%~$path:a")
-				exit /b 0
-			)
+)
+for %%a in ("%~nx1") do (
+	if "%%~$path:a" neq "" (
+		>nul 2>nul dir /a:d /b "%%~$path:a"||(
+			if "%2" neq "" (set "%2=%%~$path:a")
+			exit /b 0
 		)
 	)
 )
