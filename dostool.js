@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-			
+						
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -67,7 +67,7 @@ set "dosqssj=!time!"
 >nul chcp 936
 title DOS工具箱
 set ver=20260401
-set versize=173250
+set versize=176200
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -1620,21 +1620,22 @@ goto memuv2
 setlocal
 title ping测试网络延迟!system!
 cls
-if exist "!windir!\system32\curl.exe" (
+call :findcommand curl.exe curl&&(
+	echo;正在检测网络状态...
 	>nul ping /n 1 www.baidu.com
 	if not errorlevel 1 (
-		rem <nul set /p "=本机IPV4地址: ""
-		rem curl https://4.ipw.cn
-		rem curl https://ipv4.ip.sb
-		curl --ca-native --connect-timeout 2 --max-time 10 "https://myip.ipip.net"
-		echo;
+		call :ip 4 ip
+		if not errorlevel 1 (
+			echo;本机 IPV4 地址: !ip!
+		) else (
+			<nul set /p "=本机 IPV4 地址: "
+			"!curl!" --ca-native --connect-timeout 2 --max-time 5 "https://myip.ipip.net"
+			echo;
+		)
 	)
-	>nul ping /n 1 240c::6666
+	>nul ping /n 1 ipv6.msftconnecttest.com
 	if not errorlevel 1 (
-		<nul set /p "=本机IPV6地址: "
-		curl --ca-native --connect-timeout 2 --max-time 10 "https://6.ipw.cn"
-		rem curl https://ipv6.ip.sb
-		echo;
+		call :ip 6 ip&&echo;本机 IPV6 地址: !ip!
 	)
 )
 echo;
@@ -1646,7 +1647,7 @@ call :var ping
 call :var pingcishu
 echo;
 echo;正在测试!ping!的网络延迟...
-ping /n !pingcishu! !ping! /a
+if defined ping (ping /n !pingcishu! !ping! /a)
 %hx%
 %pause%
 endlocal
@@ -2037,16 +2038,10 @@ for /f "tokens=2 delims==" %%a in ('"2>nul Wmic Path Win32_NetworkAdapterConfigu
 	)
 )
 echo;
-if exist "!windir!\system32\curl.exe" (
+call :findcommand curl.exe&&(
 	>nul ping /n 1 www.baidu.com
 	if not errorlevel 1 (
-		for /f "delims=" %%a in (
-			'curl -s --ca-native --connect-timeout 2 --max-time 10 "https://4.ipw.cn"'
-		) do (
-			<nul set /p "=外部IP地址:"
-			echo;	%%a
-			echo;
-		)
+		call :ip 4 ip&&echo;外部IP地址:	!ip!
 	)
 )
 set cs=
@@ -2487,16 +2482,10 @@ for /f "tokens=2 delims==" %%a in ('"call %0 pwiex Gateway"') do (
 	)
 )
 echo;
-if exist "!windir!\system32\curl.exe" (
+call :findcommand curl.exe&&(
 	>nul ping /n 1 www.baidu.com
 	if not errorlevel 1 (
-		for /f "delims=" %%a in (
-			'curl -s --ca-native --connect-timeout 2 --max-time 10 "https://4.ipw.cn"'
-		) do (
-			<nul set /p "=外部IP地址:"
-			echo;	%%a
-			echo;
-		)
+		call :ip 4 ip&&echo;外部IP地址:	!ip!
 	)
 )
 set cs=
@@ -4879,13 +4868,11 @@ goto memuv2
 setlocal
 title curl多进程下载!system!
 cls
-if not exist "!windir!\system32\curl.exe" (
-	if not exist "curl.exe" (
-		<nul set /p "=没有找到curl.exe"
-		call :out 2
-		endlocal
-		goto memuv2
-	)
+call :findcommand curl.exe curl&&(
+	<nul set /p "=没有找到curl.exe"
+	call :out 2
+	endlocal
+	goto memuv2
 )
 :71.1
 cls
@@ -4925,7 +4912,7 @@ echo;开始获取文件信息...
 set filename=
 if exist "%temp%\tag" (del /f /q "%temp%\tag")
 call :curlproxy
-curl !proxy! !doh! !ua! -I#L --ca-native --remove-on-error -o tag --connect-timeout 5 --max-time 10 --output-dir "%temp%" "!url!"
+"!curl!" !proxy! !doh! !ua! -I#L --ca-native --remove-on-error -o tag --connect-timeout 5 --max-time 10 --output-dir "%temp%" "!url!"
 if not exist "%temp%\tag" (
 	echo;没有获取到文件信息
 	%hx%
@@ -4999,7 +4986,7 @@ call :md "%temp%\down"||(
 set "kssj=!time!"
 for /l %%a in (1,1,!tr!) do (
 	start /min /low "curl多进程下载_%%a" ^
-	curl !proxy! !doh! !ua! ^
+	"!curl!" !proxy! !doh! !ua! ^
 	-#L --ca-native --retry 2 --retry-delay 1 --connect-timeout 5 -r !oldfd!-!newfd! ^
 	-o %%a --output-dir "%temp%\down" "!url!"
 	set /a "oldfd=newfd+1"
@@ -6634,6 +6621,9 @@ if "%2" equ "az" (goto checkvar_az)
 if "%2" equ "aznum" (goto checkvar_aznum)
 if "%2" equ "year" (goto checkvar_year)
 if "%2" equ "hash" (goto checkvar_hash)
+if "%2" equ "ipv4" (goto checkvar_ipv4)
+if "%2" equ "ipv6" (goto checkvar_ipv6)
+if "%2" equ "mac" (goto checkvar_mac)
 goto :eof
 :checkvar_num
 if not defined %1 (exit /b 0)
@@ -6675,6 +6665,70 @@ exit /b 1
 :checkvar_hash
 if not defined %1 (exit /b 0)
 for /f "delims=0123456789aAbBcCdDeEfF" %%a in ("!%1!") do (exit /b 0)
+exit /b 1
+:checkvar_ipv4
+if not defined %1 (exit /b 0)
+for /f "delims=0123456789." %%a in ("!%1!") do (exit /b 0)
+if "!%1:~0,1!" equ "." (exit /b 0)
+if "!%1:~-1!" equ "." (exit /b 0)
+for /f "tokens=1-4* delims=." %%a in ("!%1!") do (
+	if "%%b" equ "" (exit /b 0)
+	if "%%c" equ "" (exit /b 0)
+	if "%%d" equ "" (exit /b 0)
+	if "%%e" neq "" (exit /b 0)
+	for %%a in (%%a %%b %%c %%d) do (
+		set "block=%%a"
+		call :clsa0 block
+		if !block! gtr 255 (exit /b 0)
+	)
+)
+exit /b 1
+:checkvar_ipv6
+if not defined %1 (exit /b 0)
+for /f "delims=0123456789aAbBcCdDeEfF:[]" %%a in ("!%1!") do (exit /b 0)
+for /f "tokens=1* delims=[]" %%a in ("!%1!") do (
+	if "%%b" neq "" (exit /b 0)
+	set "var=%%a"
+)
+if "!var::=!" equ "!var!" (exit /b 0)
+set flag=
+if "!var:~0,1!" equ ":" (
+	if "!var:~1,1!" neq ":" (exit /b 0)
+	if "!var:~2,1!" equ ":" (exit /b 0)
+	set flag=1
+)
+if "!var:~-1!" equ ":" (
+	if "!var:~-2!" neq "::" (exit /b 0)
+	if "!var:~-3!" equ ":::" (exit /b 0)
+	if "!var!" neq "::" (
+		if defined flag (exit /b 0)
+	) else (exit /b 1)
+)
+for /f "tokens=1,2* delims=#" %%a in ("!var:::=#!") do (
+	if "%%c" neq "" (exit /b 0)
+	for %%a in (!var::= !) do (
+		if 0x%%a gtr 0xffff (exit /b 0)
+	)
+)
+exit /b 1
+:checkvar_mac
+if not defined %1 (exit /b 0)
+for /f "delims=0123456789abcdefABCDEF-:" %%a in ("!%1!") do (exit /b 0)
+if "!%1:~0,1!" equ "-" (exit /b 0)
+if "!%1:~-1!" equ "-" (exit /b 0)
+if "!%1:~0,1!" equ ":" (exit /b 0)
+if "!%1:~-1!" equ ":" (exit /b 0)
+for /f "tokens=1-6* delims=-:" %%a in ("!%1!") do (
+	if "%%b" equ "" (exit /b 0)
+	if "%%c" equ "" (exit /b 0)
+	if "%%d" equ "" (exit /b 0)
+	if "%%e" equ "" (exit /b 0)
+	if "%%f" equ "" (exit /b 0)
+	if "%%g" neq "" (exit /b 0)
+	for %%a in (%%a %%b %%c %%d %%e %%f) do (
+		if 0x%%a gtr 0xff (exit /b 0)
+	)
+)
 exit /b 1
 :checkvar_year
 if not defined %1 (exit /b 0)
@@ -7287,5 +7341,62 @@ goto :eof
 for /f "delims=0123456789" %%a in ("%~1%~2") do (goto :eof)
 <nul set /p "=!cswz!%~1;%~2H"
 goto :eof
+:ip
+if "%~1" equ "" (exit /b 1)
+setlocal
+set ip=
+call :findcommand curl.exe curl
+if "%~1" equ "4" (
+	for %%a in (
+		"https://ip4.now"
+		"https://api-ipv4.ip.sb/ip"
+	) do (
+		if defined curl (
+			for /f "delims=" %%a in (
+				'""!curl!" -L4fs --compressed --ca-native --retry 1 --retry-delay 1 --connect-timeout 3 --max-time 5 "%%~a""'
+			) do (set "ip=%%a")
+			if defined ip (
+				call :checkvar_ipv4 ip||goto ip_end
+			)
+		) else (
+			>nul 2>nul certutil -urlcache -split -f "%%~a" "!temp!\ip"
+			for /f "usebackq delims=" %%a in ("!temp!\ip") do (set "ip=%%a")
+			if defined ip (
+				call :checkvar_ipv4 ip||goto ip_end
+			)
+		)
+	)
+)
+if "%~1" equ "6" (
+	for %%a in (
+		"https://ip6.now"
+		"https://api-ipv6.ip.sb/ip"
+	) do (
+		if defined curl (
+			for /f "delims=" %%a in (
+				'""!curl!" -L6fs --compressed --ca-native --retry 1 --retry-delay 1 --connect-timeout 3 --max-time 5 "%%~a""'
+			) do (set "ip=%%a")
+			if defined ip (
+				call :checkvar_ipv6 ip||goto ip_end
+			)
+		) else (
+			>nul 2>nul certutil -urlcache -split -f "%%~a" "!temp!\ip"
+			for /f "usebackq delims=" %%a in ("!temp!\ip") do (set "ip=%%a")
+			if defined ip (
+				call :checkvar_ipv6 ip||goto ip_end
+			)
+		)
+	)
+)
+:ip_end
+if defined ip (
+	if "%~2" equ "" (
+		echo;!ip!
+	) else (
+		endlocal&set "%~2=%ip%"
+	)
+	exit /b 0
+)
+exit /b 1
 :winnt
 @echo;Incompatible with the current system operating environment
