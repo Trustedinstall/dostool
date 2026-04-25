@@ -4868,7 +4868,7 @@ goto memuv2
 setlocal
 title curl多进程下载!system!
 cls
-call :findcommand curl.exe curl&&(
+call :findcommand curl.exe curl||(
 	<nul set /p "=没有找到curl.exe"
 	call :out 2
 	endlocal
