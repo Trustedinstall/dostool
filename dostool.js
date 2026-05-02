@@ -15,7 +15,7 @@
 ˜İ˜ä˜àâ´¶ä“¯›NéàØ±êÎ’¬³ª‘õÑîÕÄ„mäÕ ‘››–ŠšG´ú¸±êİ³èõ“
 ÌÒ´×ÀŸ‚Ò¯—ß†ãÛ“µ‘ş´‘a›ÂÖÆp˜ù—Ú•t¬‹—ì‘õÎâµ¤…_ƒ§¸Ë…X·®
 à¡–ğ…W…Y¬{’°×¡›KßÉÂÔ ²–[ñ‰êÅºÎ¬„Ö´†• n•jÌ¡ºº½½Ø¦¹À•jœ}™
-						
+			
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -67,7 +67,7 @@ set "dosqssj=!time!"
 >nul chcp 936
 title DOS¹¤¾ßÏä
 set ver=20260401
-set versize=176200
+set versize=175720
 set xz0=0
 set nx1=[+]ÏÂÒ»Ò³
 set nx2=[-]ÉÏÒ»Ò³
@@ -1117,24 +1117,8 @@ if defined writetransfercount (
 	echo;Ğ´Èë´«ÊäÁ¿:	!writetransfercount!
 )
 if defined executablepath (echo;Â·¾¶:		!executablepath!)
-if defined commandline (
-	echo;ÃüÁîĞĞ:		!commandline!
-) else (
-	for %%a in (wmic.exe) do (
-		if "%%~$path:a" neq "" (
-			for /f "tokens=2* delims==" %%a in (
-				'"2>nul wmic process where processid=!jclj! get commandline /value"'
-			) do (
-				set "commandline=%%a"
-				set "commandline=!commandline:~0,-1!"
-				echo;ÃüÁîĞĞ:		!commandline!
-			)
-		) else (
-			<nul set /p "=ÃüÁîĞĞ:		"
-			%pws% "Try { (Get-Process -Id !jclj! -ErrorAction Stop).Path } Catch { $p = Get-CimInstance Win32_Process -Filter \"ProcessId = !jclj!\"; if ($p) { $p.CommandLine } }"
-		)
-	)
-)
+<nul set /p "=ÃüÁîĞĞ:		"
+%pws% $p=Get-CimInstance Win32_Process -Filter ProcessId=!jclj!;$p.CommandLine
 tasklist /fi "pid eq !jclj!" /m
 ver
 %hx%
