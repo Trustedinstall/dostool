@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-			
+
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -66,8 +66,8 @@ setlocal
 set "dosqssj=!time!"
 >nul chcp 936
 title DOS工具箱
-set ver=20260401
-set versize=175720
+set ver=20260501
+set versize=176955
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -237,7 +237,7 @@ goto :eof
 exit 0
 :1
 setlocal
-title 清除U盘里的lpk.dll病毒!system!
+title !a1!!system!
 cls
 echo;按任意键开始清除lpl.dll病毒&>nul pause
 cls
@@ -261,7 +261,7 @@ endlocal
 goto memuv2
 :2
 setlocal
-title 清除U盘里的jwgkvsq.vmx病毒，并免疫该病毒!system!
+title !a2!!system!
 cls
 echo;按任意键开始清除jwgkvsq.vmx病毒&>nul pause
 cls
@@ -285,7 +285,7 @@ endlocal
 goto memuv2
 :3
 setlocal
-title 清理系统垃圾!system!
+title !a3!!system!
 cls
 set sc=delasd123
 set scw=rdasd123
@@ -335,7 +335,7 @@ echo;清理完成
 endlocal
 goto memuv2
 :4
-title 显示系统信息!system!
+title !a4!!system!
 cls
 systeminfo
 mode
@@ -343,21 +343,21 @@ mode
 %pause%
 goto memuv2
 :5
-title 解除任务管理器被禁用!system!
+title !a5!!system!
 cls
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v DisableTaskmgr /t reg_dword /d 0 /f
 %hx%
 %pause%
 goto memuv2
 :6
-title 显示被隐藏文件(中了该类病毒后)!system!
+title !a6!!system!
 cls
 reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\Hidden\SHOWALL" /v CheckedValue /t reg_dword /d 1 /f
 %hx%
 %pause%
 goto memuv2
 :7
-title 解除注册表被禁用!system!
+title !a7!!system!
 cls
 call :16.5
 %hx%
@@ -365,7 +365,7 @@ call :16.5
 goto memuv2
 :8
 setlocal
-title 牛顿法计算开方!system!
+title !a8!!system!
 cls
 set /p "s=被开方数: "
 call :checkvar s num&&goto 8.1
@@ -398,7 +398,7 @@ endlocal
 goto 8
 :9
 setlocal
-title 命令提示符!system!
+title !a9!!system!
 for /f "delims=" %%a in ('hostname') do (set "hostname=%%a")
 cls
 ver
@@ -411,7 +411,7 @@ endlocal
 goto memuv2
 :10
 setlocal
-title 将磁盘格式转换为NTFS!system!
+title !a10!!system!
 cls
 %hx%
 call :sypf sypf
@@ -429,7 +429,7 @@ endlocal
 goto memuv2
 :11
 setlocal
-title 磁盘修复!system!
+title !a11!!system!
 cls
 %hx%
 call :sypf sypf
@@ -452,7 +452,7 @@ goto memuv2
 :12
 setlocal
 color cf
-title 格式化!system!
+title !a12!!system!
 call :bel
 cls
 %sel% shuru "格式化有一定的危险性，是否继续(y/n): " yn
@@ -485,7 +485,7 @@ endlocal
 goto memuv2
 :13
 setlocal
-title DOS计算器!system!
+title !a13!!system!
 cls
 %hx%
 echo;注意:DOS计算只能进行整数运算，计算结果只能精确到整数
@@ -502,7 +502,7 @@ echo;计算结果:!biaodashi!=!jieguo!
 %hx%
 goto 13.1
 :14
-title 解除命令提示符被禁用!system!
+title !a14!!system!
 cls
 reg add "HKCU\Software\Policies\Microsoft\Windows\System" /v DisableCMD /t reg_dword /d 0 /f
 %hx%
@@ -510,7 +510,7 @@ reg add "HKCU\Software\Policies\Microsoft\Windows\System" /v DisableCMD /t reg_d
 goto memuv2
 :15
 setlocal
-title 随机数生成器!system!
+title !a15!!system!
 set cs=0
 cls
 echo;说明:只能输入整数，随机数范围(0-32767)(e=返回菜单)
@@ -533,7 +533,7 @@ if /i "!tuichusuijishu!" equ "e" (endlocal&goto memuv2)
 goto 15.1
 :16
 setlocal
-title 清除KHATRA病毒!system!
+title !a16!!system!
 cls
 echo;按任意键开始清除KHATRT病毒&>nul pause
 cls
@@ -642,7 +642,7 @@ start compmgmt.msc
 goto memuv2
 :21
 setlocal
-title 用户管理!system!
+title !a21!!system!
 cls
 %hx%
 for %%a in (
@@ -951,7 +951,7 @@ if "!errorlevel!" equ "2" (endlocal&goto guanji)
 goto guanji.9
 :23
 setlocal
-title DOS任务管理器!system!
+title !a23!!system!
 cls
 %hx%
 for %%a in (
@@ -1269,7 +1269,7 @@ endlocal
 goto 23
 :24
 setlocal
-title 文件系统信息查询!system!
+title !a24!!system!
 cls
 %hx%
 for %%a in (
@@ -1393,7 +1393,7 @@ endlocal
 goto 24
 :25
 setlocal
-title 创建指定大小的文件!system!
+title !a25!!system!
 cls
 set cjlj=
 set /p "cjlj=输入文件路径(e=返回): "
@@ -1413,7 +1413,7 @@ endlocal
 goto memuv2
 :26
 setlocal
-title 免疫U盘病毒!system!
+title !a26!!system!
 cls
 echo;此功能针对U盘进行免疫，避免autorun类型的病毒自动启动
 %hx%
@@ -1483,7 +1483,7 @@ endlocal
 goto 26
 :27
 setlocal
-title 磁盘碎片整理!system!
+title !a27!!system!
 cls
 %hx%
 echo;[1]整理所有磁盘
@@ -1530,7 +1530,7 @@ endlocal
 goto 27
 :28
 setlocal
-title 一键删除空文件夹!system!
+title !a28!!system!
 cls
 echo;注意:如果对系统盘进行操作可能会被杀毒软件拦截
 %hx%
@@ -1602,7 +1602,7 @@ endlocal
 goto memuv2
 :29
 setlocal
-title ping测试网络延迟!system!
+title !a29!!system!
 cls
 call :findcommand curl.exe curl&&(
 	echo;正在检测网络状态...
@@ -1638,7 +1638,7 @@ endlocal
 goto memuv2
 :30
 setlocal
-title 硬件检测!system!
+title !a30!!system!
 cls
 for %%a in (wmic.exe) do (
 	if "%%~$path:a" equ "" (goto 30.1)
@@ -2712,7 +2712,7 @@ Get-CimInstance Win32_VideoController -ErrorAction SilentlyContinue | ForEach-Ob
 #driverversion#
 :31
 setlocal
-title 读心术!system!
+title !a31!!system!
 cls
 echo;想一个大于0且小于128的数(不包括128)
 %hx%
@@ -2906,7 +2906,7 @@ endlocal
 goto memuv2
 :32
 setlocal
-title DOS闹钟!system!
+title !a32!!system!
 cls
 %hx%
 for %%a in (
@@ -3026,7 +3026,7 @@ endlocal
 goto 32
 :33
 setlocal
-title 计时器!system!
+title !a33!!system!
 cls
 echo;计时器精确度0.01秒
 %hx%
@@ -3046,7 +3046,7 @@ endlocal
 goto memuv2
 :34
 setlocal
-title 随机密码生成器!system!
+title !a34!!system!
 cls
 set mmws=
 set mmxz=
@@ -3072,7 +3072,7 @@ endlocal
 goto memuv2
 :35
 setlocal
-title 删除每个盘符下的System Volume Information文件夹!system!
+title !a35!!system!
 cls
 echo;按任意键开始删除System Volume Information文件夹&>nul pause
 cls
@@ -3092,7 +3092,7 @@ endlocal
 goto memuv2
 :36
 setlocal
-title 二进制转换器!system!
+title !a36!!system!
 cls
 echo;最大支持2147483647的十进制转换
 %hx%
@@ -3168,7 +3168,7 @@ call :sjc !dosqssj! !time! jg format
 cls
 echo;关于DOS工具箱
 %hx%
-echo;版本:		1.9.6 (!ver!.!versize!)
+echo;版本:		1.9.8 (!ver!.!versize!)
 if defined system (
 	echo;操作系统:	!system:~3! !bit!位
 ) else (
@@ -3185,7 +3185,7 @@ endlocal
 goto memuv2
 :37
 setlocal
-title 文本浏览!system!
+title !a37!!system!
 cls
 %hx%
 echo;要显示多个文件,就用空格隔开路径,显示文件以后:
@@ -3206,7 +3206,7 @@ more /e /p "!wenben!"
 endlocal
 goto memuv2
 :38
-title 显示计算机与用户的设置!system!
+title !a38!!system!
 cls
 %hx%
 gpresult /z
@@ -3215,7 +3215,7 @@ gpresult /z
 goto memuv2
 :39
 setlocal
-title NTFS压缩!system!
+title !a39!!system!
 cls
 echo;此功能只能用于NTFS分区
 %hx%
@@ -3306,7 +3306,7 @@ endlocal
 goto 39
 :40
 setlocal
-title 获取文件所有权限!system!
+title !a40!!system!
 cls
 echo;此功能只能用于NTFS或REFS分区
 %hx%
@@ -3337,7 +3337,7 @@ for /f "delims=" %%a in ("!ntfswjqx!") do (
 endlocal
 goto memuv2
 :41
-title 显示开机启动项!system!
+title !a41!!system!
 cls
 %hx%
 if /i "!system:~11,1!" equ "x" (
@@ -3382,7 +3382,7 @@ start mshta "javascript:with (new ActiveXObject('WMPlayer.OCX').cdromCollection.
 goto memuv2
 :42
 setlocal
-title 语音阅读器!system!
+title !a42!!system!
 cls
 set ydnr=
 set /p "ydnr=输入要阅读的内容: "
@@ -3394,7 +3394,7 @@ endlocal
 goto memuv2
 :43
 setlocal
-title 批处理文件风险分析!system!
+title !a43!!system!
 set dx=0
 cls
 set batfx=
@@ -3423,7 +3423,7 @@ endlocal
 goto memuv2
 :44
 setlocal
-title 文件搜索!system!
+title !a44!!system!
 cls
 set sswjm=
 set /p "sswjm=输入要搜索的文件名(默认在当前目录中搜索): "
@@ -3436,7 +3436,7 @@ endlocal
 goto memuv2
 :45
 setlocal
-title 修复已损坏的文件!system!
+title !a45!!system!
 cls
 set xfwj=
 set /p "xfwj=拖动要修复的文件到此窗口: "
@@ -3454,7 +3454,7 @@ endlocal
 goto memuv2
 :46
 setlocal
-title 暴力破解压缩包密码!system!
+title !a46!!system!
 cls
 set rarazlj=
 call :regq "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\WinRAR.exe" "path" rarazlj
@@ -3559,7 +3559,7 @@ endlocal
 goto memuv2
 :47
 setlocal
-title Wifi热点!system!
+title !a47!!system!
 cls
 %hx%
 for %%a in (
@@ -3634,7 +3634,7 @@ endlocal
 goto 47
 :48
 setlocal
-title 反编译chm文件!system!
+title !a48!!system!
 cls
 set chmlj=
 set /p "chmlj=反拖动要反编译的chm文件到此窗口(e=返回): "
@@ -3673,7 +3673,7 @@ endlocal
 goto memuv2
 :49
 :js
-title 关闭无响应进程!system!
+title !a49!!system!
 cls
 taskkill /f /fi "status eq not responding"
 %hx%
@@ -3681,7 +3681,7 @@ taskkill /f /fi "status eq not responding"
 goto memuv2
 :50
 setlocal
-title 文件比较器!system!
+title !a50!!system!
 cls
 echo;拖动要比较的文件到此窗口(比较过程中连按 "Ctrl+C" 2次可结束比较)
 %hx%
@@ -3699,7 +3699,7 @@ endlocal
 goto memuv2
 :51
 setlocal
-title 将文字写入剪切板!system!
+title !a51!!system!
 cls
 set nz=
 set /p "nz=输入要写入到剪切板的文字内容:"
@@ -3722,7 +3722,7 @@ goto memuv2
 :53
 setlocal
 cls
-title 已知年月日计算星期!system!
+title !a53!!system!
 set jsxq=
 set /p "jsxq=输入年月日(例如20150605): "
 call :checkvar jsxq year&&(
@@ -3795,7 +3795,7 @@ goto memuv2
 setlocal
 if /i "!processor_architecture!" equ "x86" (set bit=32) else (set bit=64)
 cls
-title 查询系统激活状态!system!
+title !a54!!system!
 if defined system (echo;操作系统: !system:~3! !bit!位)
 if "!system:~11,2!" equ "XP" (echo;Windows XP系统无法使用此功能查询)
 %hx%
@@ -3833,7 +3833,7 @@ goto 54
 :55
 setlocal
 cls
-title 创建指定文件的快捷方式到桌面!system!
+title !a55!!system!
 set kjfs=
 set /p "kjfs=拖动目标文件到此窗口: "
 call :var kjfs
@@ -3851,7 +3851,7 @@ goto memuv2
 :57
 setlocal
 cls
-title 字数统计!system!
+title !a57!!system!
 set zstj=
 set /p "zstj=输入文字:"
 call :strlen zstj jg
@@ -3863,7 +3863,7 @@ goto memuv2
 :58
 setlocal
 cls
-title 创建符号链接或目录链接!system!
+title !a58!!system!
 %sel% jord "输入链接类型(j=目录链接 d=符号链接): " jd
 if "!jord!" equ "1" (set jord=j)
 if "!jord!" equ "2" (set jord=d)
@@ -3891,13 +3891,13 @@ if /i "!jord!" equ "j" (
 endlocal
 goto memuv2
 :59
-title 打开管理控制台!system!
+title !a59!!system!
 start mmc
 goto memuv2
 :60
 setlocal
 cls
-title 解除Streams文件锁定!system!
+title !a60!!system!
 set jcwjsd=
 set /p "jcwjsd=拖动目标文件到此窗口: "
 call :ljjc jcwjsd&&(
@@ -3914,7 +3914,7 @@ endlocal
 goto memuv2
 :61
 setlocal
-title 创建、删除或列出卷装入点!system!
+title !a61!!system!
 cls
 %hx%
 for %%a in (
@@ -4087,7 +4087,7 @@ endlocal
 goto 61
 :62
 setlocal
-title 注册表搜索!system!
+title !a62!!system!
 cls
 set zcbss=
 set /p "zcbss=输入你要搜索的名称: "
@@ -4113,7 +4113,7 @@ endlocal
 goto memuv2
 :63
 setlocal
-title Base64编解码!system!
+title !a63!!system!
 cls
 if not exist "!windir!\system32\certutil.exe" (
 	echo;没有找到certutil.exe
@@ -4192,7 +4192,7 @@ if exist "%temp%\codetmp" (del /f /q "%temp%\codetmp")
 title Base64编码!system!
 set basebm=
 set /p "basebm=输入要编码的字符串或文件路径: "
-if not defined basebm! (goto 63-2)
+if not defined basebm (goto 63-2)
 if not exist "!basebm!" (
 	>"%temp%\tmp" <nul set /p "=!basebm!"
 	>nul certutil -encode -f "%temp%\tmp" "%temp%\codetmp"
@@ -4235,7 +4235,7 @@ endlocal
 goto 63
 :64
 setlocal
-title 8.3短文件名管理!system!
+title !a64!!system!
 cls
 %hx%
 for %%a in (
@@ -4276,7 +4276,7 @@ endlocal
 goto 64
 :65
 setlocal
-title 智能NTFS压缩!system!
+title !a65!!system!
 cls
 set url=
 set /p "url=输入要压缩的文件夹: "
@@ -4311,7 +4311,7 @@ set sysmain=
 for /f "tokens=3 delims=: " %%a in ('sc query sysmain') do (
 	if /i "%%a" equ "running" (set sysmain=1)
 )
-if defined sysmain(
+if defined sysmain (
 	>nul 2>nul sc stop sysmain 4:5:2 "DOS工具箱 - 智能NTFS压缩 - 清空缓存"
 )
 call :pwiex clearcache
@@ -4327,7 +4327,7 @@ title 比较压缩前后的读取时间...
 for /f "tokens=*" %%a in (%temp%\loadtime.log) do (call :ifloadfile %%a)
 title 解压不适合压缩的文件...
 for /f "tokens=*" %%a in (%temp%\uncompact.log) do (compact /u %%a)
-title 智能NTFS压缩!system!
+title !a65!!system!
 if "!sysmain!" equ "1" (>nul 2>nul net start sysmain)
 del /f /q "%temp%\listfile.log";^
 		"%temp%\loadtime.log";^
@@ -4505,7 +4505,7 @@ Add-Type -TypeDefinition $Source -Language CSharp
 #clearcache#
 :66
 setlocal
-title 计算文件哈希值!system!
+title !a66!!system!
 cls
 set url=
 set /p "url=输入文件路径(e=返回菜单): "
@@ -4546,7 +4546,7 @@ goto memuv2
 :67
 setlocal
 cls
-title 创建虚拟盘符!system!
+title !a67!!system!
 echo;虚拟盘符只能在当前DOS工具箱内访问
 %hx%
 for %%a in (
@@ -4617,7 +4617,7 @@ endlocal
 goto 67
 :68
 setlocal
-title 解压msi安装文件!system!
+title !a68!!system!
 cls
 set msiurl=
 set /p "msiurl=输入msi文件路径(e=返回菜单): "
@@ -4663,7 +4663,7 @@ endlocal
 goto memuv2
 :69
 setlocal
-title 生成CMD控制台色彩表!system!
+title !a69!!system!
 cls
 color 07
 set cs=0
@@ -4781,7 +4781,7 @@ endlocal
 goto memuv2
 :70
 setlocal
-title KMS激活Windows!system!
+title !a70!!system!
 cls
 for %%a in (
 	"Core=TX9XD-98N7V-6WMQ6-BX7FG-H8Q99"
@@ -4850,7 +4850,7 @@ endlocal
 goto memuv2
 :71
 setlocal
-title curl多进程下载!system!
+title !a71!!system!
 cls
 call :findcommand curl.exe curl||(
 	<nul set /p "=没有找到curl.exe"
@@ -4960,7 +4960,7 @@ cls
 echo;开始下载文件...
 if not defined filesize (goto 71.3)
 if "!tr!" equ "1" (goto 71.3)
-title curl多进程下载 - 等待文件下载完成(按e返回菜单)!system!
+title !a71! - 等待文件下载完成(按e返回菜单)!system!
 call :md "%temp%\down"||(
 	echo;不能创建临时文件夹: "%temp%\down"
 	call :out 2
@@ -5048,7 +5048,7 @@ popd
 rd /s /q "%temp%\down"
 :71.4
 cls
-title curl多进程下载!system!
+title !a71!!system!
 if exist "!dir!\!filename!" (
 	for /f "delims=" %%a in ("!dir!\!filename!") do (
 		echo;计算下载速度...
@@ -5384,9 +5384,9 @@ if defined origin-to-force-quic-on (
 if "!chrome-command-line!" equ "1" (
 	>chrome-command-line <nul set /p "=chrome --test-type !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors!"
 )
-set "tmpcmd=!temp!\用域前置参数启动Chromium类浏览器.cmd"
+set "tmpcmd=!temp!\!a72!.cmd"
 >"!tmpcmd!" (
-	echo;@echo off^&setlocal enabledelayedexpansion^&title 用域前置参数启动Chromium类浏览器!system!^&chcp 936^>nul
+	echo;@echo off^&setlocal enabledelayedexpansion^&title !a72!!system!^&chcp 936^>nul
 	echo;start "" "!chrome!" --profile-directory=Default !user-data-dir! --start-maximized --test-type !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors!
 	echo;exit 0
 )
@@ -5396,7 +5396,7 @@ endlocal
 goto memuv2
 :73
 setlocal
-title 逐一复制文件并压缩!system!
+title !a73!!system!
 cls
 set source_dir=
 set target_dir=
@@ -5471,7 +5471,7 @@ goto 73
 :74
 setlocal
 cls
-title 打开证书管理单元!system!
+title !a74!!system!
 %hx%
 for %%a in (
 	"[1]certmgr	[证书 - 当前用户]"
@@ -5491,7 +5491,7 @@ goto 74
 :75
 setlocal
 color 0a
-title bat加密!system!
+title !a75!!system!
 cls
 echo;此工具只可以用于纯文本文件加密
 %hx%
@@ -5603,7 +5603,7 @@ endlocal
 goto 75
 :76
 setlocal
-title vbs计算器!system!
+title !a76!!system!
 set vbsbds=
 set vbsjieguo=
 cls
@@ -5617,7 +5617,7 @@ endlocal
 goto 76
 :77
 setlocal
-title 执行w32tm /resync对时!system!
+title !a77!!system!
 cls
 set timesvr=
 for /f "tokens=3 delims=: " %%a in ('sc query w32time') do (
@@ -5663,7 +5663,7 @@ endlocal
 goto memuv2
 :78
 setlocal
-title 随机生成MAC地址!system!
+title !a78!!system!
 cls
 set mac=1
 set /p "mac=输入需要生成的MAC地址数量(默认数量1条)(e=返回菜单): "
@@ -5679,8 +5679,95 @@ for /l %%a in (1,1,!mac!) do (call :ranmac)
 %pause%
 endlocal
 goto memuv2
+:79
+setlocal
+title !a79!!system!
+cls
+call :findcommand certutil.exe||(
+	<nul set /p "=需要 certutil.exe"
+	call :out 2
+	endlocal
+	goto memuv2
+)
+set /p "hexfile=输入需要查看的文件路径(不推荐查看超过 1MB 的文件)(e=返回菜单): "
+call :var hexfile
+if /i "!hexfile!" equ "e" (endlocal&goto memuv2)
+call :ljjc hexfile&&(
+	<nul set /p "=无效路径"
+	call :out 2
+	endlocal
+	goto 79
+)
+%hx%
+call :encodehex !hexfile!
+%hx%
+%pause%
+endlocal
+goto memuv2
+:80
+setlocal
+title !a80!!system!
+cls
+call :findcommand certutil.exe||(
+	<nul set /p "=需要 certutil.exe"
+	call :out 2
+	endlocal
+	goto memuv2
+)
+echo;输入16进制内容(支持空格、逗号、分号分隔与不分隔)(e=返回菜单):
+set /p "hex="
+call :var hex
+if /i "!hex!" equ "e" (endlocal&goto memuv2)
+set /p "output=输入生成的文件路径(e=返回菜单): "
+if not defined output (
+	<nul set /p "=路径不能为空"
+	call :out 2
+	endlocal
+	goto 80
+)
+call :var output
+if /i "!output!" equ "e" (endlocal&goto memuv2)
+call :decodehex "!hex!" "!output!"
+if errorlevel 1 (
+	echo;16进制内容无效或文件生成失败
+) else (
+	for /f "delims=" %%a in ("!output!") do (
+		echo;文件: %%~fa
+		echo;大小: %%~za 字节
+	)
+)
+%hx%
+%pause%
+endlocal
+goto memuv2
+:decodehex
+if not exist "!windir!\system32\certutil.exe" (exit /b 1)
+if "%~2" equ "" (exit /b 1)
+for /f "delims=0123456789abcdefABCDEF;, " %%a in ("%~1") do (exit /b 1)
+setlocal
+set "hex=%~1"
+set "hex=!hex: =!"
+set "hex=!hex:;=!"
+set "hex=!hex:,=!"
+call :strlen hex hexlen
+set /a "hexlen%%=2"
+if "!hexlen!" neq "0" (exit /b 1)
+>"!temp!\tmp.hex" echo;!hex!
+>nul certutil -decodehex -f "!temp!\tmp.hex" "%~2" 4
+set "err=!errorlevel!"
+2>nul del /f /q "!temp!\tmp.hex"
+exit /b !err!
+:encodehex
+if not exist "!windir!\system32\certutil.exe" (exit /b 1)
+if "%~1" equ "" (exit /b 1)
+setlocal
+>nul certutil -encodehex -f "%~1" "!temp!\tmp.hex"
+set "err=!errorlevel!"
+if exist "!temp!\tmp.hex" (more "!temp!\tmp.hex")
+2>nul del /f /q "!temp!\tmp.hex"
+exit /b !err!
 :hash
-if not exist "!windir!\system32\certutil.exe" (goto :eof)
+if not exist "!windir!\system32\certutil.exe" (exit /b 1)
 for /f "skip=1 eol=C" %%a in ('certutil -hashfile "%~1" %2') do (
 	if "%3" neq "" (set "%3=%%a") else (echo;%%a)
 )
@@ -5958,6 +6045,8 @@ for %%a in (
 	"VBS计算器"
 	"执行w32tm /resync对时"
 	"随机生成MAC地址"
+	"16进制查看器"
+	"16进制文件生成"
 ) do (
 	set /a "maxa+=1"
 	set "a!maxa!=%%~a"
