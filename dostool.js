@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-			
+				
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -64,10 +64,11 @@ goto :eof
 (
 setlocal
 set "dosqssj=!time!"
+cd /d "%~dp0"
 >nul chcp 936
 title DOS工具箱
 set ver=20260501
-set versize=176955
+set versize=176935
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -5778,7 +5779,7 @@ cls
 title 更新DOS工具箱 - 当前版本: !ver!!system!
 set "doh=--doh-url https://v.recipes/dns-ecs"
 set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36""
-set "curlpix=--remove-on-error --compressed -L# -C - --ca-native --retry 1 --retry-delay 1 --connect-timeout 3 --max-time 10"
+set "curlpix=--compressed -L# -C - --ca-native --retry 1 --retry-delay 1 --connect-timeout 3 --max-time 10"
 set updatename=update.js
 set updos=dostool.js
 set curl=
@@ -5865,7 +5866,7 @@ echo;使用链接:	!url!
 if defined curl (
 	if defined host (echo;Host域名:	!host:~10,-1!)
 	"!curl!" !proxy! !doh! !host! !resolve! !ua! ^
-	--remove-on-error --compressed -RL# -C - ^
+	--compressed -RL# -C - ^
 	--ca-native --retry 2 --retry-delay 1 --connect-timeout 5 --max-time 30 ^
 	--output-dir "!temp!" -o dostool "!url!"
 ) else (
