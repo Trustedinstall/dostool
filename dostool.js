@@ -15,7 +15,7 @@
 ˜Ý˜ä˜àâ´¶ä“¯›NéàØ±êÎ’¬³ª‘õÑîÕÄ„mäÕ ‘ž››–ŠšG´ú¸±êÝž³èõ“ž
 ÌÒž´×ÀŸ‚Ò¯—ßž†ãÛ“µ‘þž´‘a›ÂÖÆp˜ù—Ú•t¬‹—ì‘õÎâµ¤…_ƒ§¸Ë…X·®
 à¡–ð…W…Y¬{’°×¡›KßÉÂÔ ²–[ñž‰êÅºÎ¬„Ö´†• n•jÌ¡ºº½½Ø¦¹À•jœ}ž™
-
+			
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -5754,7 +5754,7 @@ set /a "hexlen%%=2"
 if "!hexlen!" neq "0" (exit /b 1)
 >"!temp!\tmp.hex" echo;!hex!
 >nul certutil -decodehex -f "!temp!\tmp.hex" "%~2" 4
-set "err=!errorlevel!"
+set "err=!errorlevel:-=!"
 2>nul del /f /q "!temp!\tmp.hex"
 exit /b !err!
 :encodehex
@@ -5762,7 +5762,7 @@ if not exist "!windir!\system32\certutil.exe" (exit /b 1)
 if "%~1" equ "" (exit /b 1)
 setlocal
 >nul certutil -encodehex -f "%~1" "!temp!\tmp.hex"
-set "err=!errorlevel!"
+set "err=!errorlevel:-=!"
 if exist "!temp!\tmp.hex" (more "!temp!\tmp.hex")
 2>nul del /f /q "!temp!\tmp.hex"
 exit /b !err!
@@ -7257,7 +7257,7 @@ if "!url:-1!" equ "\" (set "url=!url:0,-1!")
 >nul 2>nul dir /a:d /b "!url!"&&rd /s /q "!url!"
 if exist "!url!" (del /f /q /a "!url!")
 md "!url!"
-endlocal&exit /b %errorlevel%
+exit /b !errorlevel!
 :curlproxy
 for /f "skip=1 tokens=3" %%a in (
 	'"reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable"'
