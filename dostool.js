@@ -15,7 +15,7 @@
 ò›ò‰ò‡‚¥∂‰ìØõNÈ‡ÿ±ÍŒí¨≥™ëı—Ó’ƒÑm‰’†ëûõõñùäöG¥˙∏±êÍÅ›û≥Ëıìû
 Ã“û¥◊¿üÇ“ØóﬂûÜÅ„Å€ìµë˛û¥ëaõ¬÷∆ùpò˘ó⁄ït¨ãóÏëıŒ‚µ§Ö_Éß∏ÀÖX∑Æ
 ‡°ñÖWÖY¨{í∞◊°õKﬂ…¬‘†≤ñ[êÒûâÍ≈∫Œ¨Ñ÷¥Üï†nïjÃ°∫∫ΩΩÿ¶π¿ïjú}ûô
-				
+
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -68,13 +68,15 @@ cd /d "%~dp0"
 >nul chcp 936
 title DOSπ§æﬂœ‰
 set ver=20260501
-set versize=176935
+set versize=177005
 set xz0=0
 set nx1=[+]œ¬“ª“≥
 set nx2=[-]…œ“ª“≥
 set hx=echo;_______________________________________________________________________________
 set "pause=<nul set /p "=∞¥»Œ“‚º¸∑µªÿ"&>nul pause"
 set "pws=powershell -mta -nologo -noprofile -command"
+set certutil=cert
+set "certutil=!certutil!util"
 if /i "!systemdrive!" equ "x:" (
 	set "system= - Windows PE"
 ) else (
@@ -4152,7 +4154,7 @@ call :var basebm
 if not defined basebm (goto 63-1)
 if not exist "!basebm!" (
 	>"%temp%\tmp" echo;!basebm!
-	>nul certutil -decode -f "%temp%\tmp" "%temp%\codetmp"
+	>nul !certutil! -decode -f "%temp%\tmp" "%temp%\codetmp"
 	goto 63-11
 )
 call :ljjc basebm dir||(
@@ -4161,7 +4163,7 @@ call :ljjc basebm dir||(
 	goto 63-1
 )
 :63-12
->nul certutil -decode -f "!basebm!" "%temp%\codetmp"
+>nul !certutil! -decode -f "!basebm!" "%temp%\codetmp"
 :63-11
 cls
 %hx%
@@ -4196,7 +4198,7 @@ set /p "basebm= ‰»Î“™±‡¬Îµƒ◊÷∑˚¥ÆªÚŒƒº˛¬∑æ∂: "
 if not defined basebm (goto 63-2)
 if not exist "!basebm!" (
 	>"%temp%\tmp" <nul set /p "=!basebm!"
-	>nul certutil -encode -f "%temp%\tmp" "%temp%\codetmp"
+	>nul !certutil! -encode -f "%temp%\tmp" "%temp%\codetmp"
 	goto 63-21
 )
 call :ljjc basebm dir||(
@@ -4205,7 +4207,7 @@ call :ljjc basebm dir||(
 	goto 63-2
 )
 :63-22
->nul certutil -encode -f "!basebm!" "%temp%\codetmp"
+>nul !certutil! -encode -f "!basebm!" "%temp%\codetmp"
 :63-21
 cls
 %hx%
@@ -5593,7 +5595,7 @@ call :ljjc jiami&&(
 cls
 for /f "delims=" %%a in ("!jiami!") do (
 	>"%temp%\1.tmp" <nul set /p "=//4NCg=="
-	>nul certutil -decode -f "%temp%\1.tmp" "%temp%\2.tmp"
+	>nul !certutil! -decode -f "%temp%\1.tmp" "%temp%\2.tmp"
 	>nul copy /b /y "%temp%\2.tmp"+"%%a" "%%~dpaº”√‹_%%~na%%~xa"
 	del /f /q "%temp%\1.tmp";"%temp%\2.tmp"
 )
@@ -5754,7 +5756,7 @@ call :strlen hex hexlen
 set /a "hexlen%%=2"
 if "!hexlen!" neq "0" (exit /b 1)
 >"!temp!\tmp.hex" echo;!hex!
->nul certutil -decodehex -f "!temp!\tmp.hex" "%~2" 4
+>nul !certutil! -decodehex -f "!temp!\tmp.hex" "%~2" 4
 set "err=!errorlevel:-=!"
 2>nul del /f /q "!temp!\tmp.hex"
 exit /b !err!
@@ -5762,14 +5764,14 @@ exit /b !err!
 if not exist "!windir!\system32\certutil.exe" (exit /b 1)
 if "%~1" equ "" (exit /b 1)
 setlocal
->nul certutil -encodehex -f "%~1" "!temp!\tmp.hex"
+>nul !certutil! -encodehex -f "%~1" "!temp!\tmp.hex"
 set "err=!errorlevel:-=!"
 if exist "!temp!\tmp.hex" (more "!temp!\tmp.hex")
 2>nul del /f /q "!temp!\tmp.hex"
 exit /b !err!
 :hash
 if not exist "!windir!\system32\certutil.exe" (exit /b 1)
-for /f "skip=1 eol=C" %%a in ('certutil -hashfile "%~1" %2') do (
+for /f "skip=1 eol=C" %%a in ('!certutil! -hashfile "%~1" %2') do (
 	if "%3" neq "" (set "%3=%%a") else (echo;%%a)
 )
 goto :eof
@@ -5820,7 +5822,7 @@ if defined curl (
 		if defined curl (
 			"!curl!" !proxy! !doh! !ua! !curlpix! --output-dir "!temp!" -o dostoolupdate "%%~a/!updatename!"
 		) else (
-			certutil -urlcache -split -f "%%~a/!updatename!" "!temp!\dostoolupdate"
+			!certutil! -urlcache -split -f "%%~a/!updatename!" "!temp!\dostoolupdate"
 		)
 	)
 	if exist "%temp%\dostoolupdate" (
@@ -5870,7 +5872,7 @@ if defined curl (
 	--ca-native --retry 2 --retry-delay 1 --connect-timeout 5 --max-time 30 ^
 	--output-dir "!temp!" -o dostool "!url!"
 ) else (
-	certutil -urlcache -split -f "!url!" "%temp%\dostool"
+	!certutil! -urlcache -split -f "!url!" "%temp%\dostool"
 )
 call :hash "%temp%\dostool" sha1 hash
 if /i "!hash!" equ "!doshash!" (
@@ -7433,7 +7435,7 @@ if "%~1" equ "4" (
 				call :checkvar_ipv4 ip||goto ip_end
 			)
 		) else (
-			>nul 2>nul certutil -urlcache -split -f "%%~a" "!temp!\ip"
+			>nul 2>nul !certutil! -urlcache -split -f "%%~a" "!temp!\ip"
 			for /f "usebackq delims=" %%a in ("!temp!\ip") do (set "ip=%%a")
 			if defined ip (
 				call :checkvar_ipv4 ip||goto ip_end
@@ -7454,7 +7456,7 @@ if "%~1" equ "6" (
 				call :checkvar_ipv6 ip||goto ip_end
 			)
 		) else (
-			>nul 2>nul certutil -urlcache -split -f "%%~a" "!temp!\ip"
+			>nul 2>nul !certutil! -urlcache -split -f "%%~a" "!temp!\ip"
 			for /f "usebackq delims=" %%a in ("!temp!\ip") do (set "ip=%%a")
 			if defined ip (
 				call :checkvar_ipv6 ip||goto ip_end
