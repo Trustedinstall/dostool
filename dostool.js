@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-		
+	
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -30,9 +30,9 @@ echo;等待管理员权限...
 for %%a in (wt.exe) do (
 	if "%%~$path:a" neq "" (
 		set "filepath=wt"
-		set "arg=%~0 ks"
+		set "arg=%~f0 ks"
 	) else (
-		set "filepath=%~0"
+		set "filepath=%~f0"
 		set "arg=ks"
 	)
 )
@@ -42,7 +42,7 @@ for /f "tokens=3 delims=.]" %%a in ('ver') do (
 			if "%%~$path:a" neq "" (
 				>nul 2>nul sudo config&&(
 					sudo "!filepath!" !arg!
-					exit 0
+					exit /b !errorlevel!
 				)
 			)
 		)
@@ -53,10 +53,10 @@ for /f "tokens=3 delims=.]" %%a in ('ver') do (
 		)
 	)
 )
-exit 0
+exit /b !errorlevel!
 :pwst
 powershell -mta -nologo -noprofile start-process -filepath "!filepath!" -argumentlist '!arg!' -verb runas
-goto :eof
+exit /b !errorlevel!
 :msst
 start /min mshta vbscript:createobject("shell.application").shellexecute("!filepath!","!arg!","","runas",1)(window.close)
 goto :eof
@@ -68,7 +68,7 @@ cd /d "%~dp0"
 >nul chcp 936
 title DOS工具箱
 set ver=20260501
-set versize=177310
+set versize=177540
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -1089,7 +1089,7 @@ for %%a in (wmic.exe) do (
 			>nul 2>nul set "!var!"
 		)
 	) else (
-		for /f "delims=" %%a in ('"%0 pwiex proinfo !jclj!"') do (
+		for /f "delims=" %%a in ('""%~f0" pwiex proinfo !jclj!"') do (
 			>nul 2>nul set "%%a"
 		)
 	)
@@ -1199,8 +1199,8 @@ for %%a in (wmic.exe) do (
 			set "cpu=!cpu:~0,-1!"
 		)
 	) else (
-		for /f "tokens=2 delims==" %%a in ('"call %0 pwiex netcard"') do (set "netcard=%%a")
-		for /f "tokens=2 delims==" %%a in ('"call %0 pwiex cpu"') do (set "cpu=%%a")
+		for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex netcard"') do (set "netcard=%%a")
+		for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex cpu"') do (set "cpu=%%a")
 	)
 )
 cls
@@ -1229,12 +1229,12 @@ for %%a in (wmic.exe) do (
 			)
 		)
 	) else (
-		for /f "tokens=2 delims==" %%a in ('"call %0 pwiex downspeed"') do (
+		for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex downspeed"') do (
 			set /a "xh+=1"
 			if "!xh!" equ "1" (set "downspeed=%%a")
 			if "!xh!" equ "2" (
 				set "upspeed=%%a"
-				for /f "tokens=2 delims==" %%a in ('"call %0 pwiex cpuide"') do (set /a "lyl=100-%%a")
+				for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex cpuide"') do (set /a "lyl=100-%%a")
 			)
 		)
 	)
@@ -2167,16 +2167,16 @@ mode
 endlocal
 goto memuv2
 :30.1
-for /f "delims=" %%a in ('"call %0 pwiex LastBootUpTime"') do (
+for /f "delims=" %%a in ('"call "%~f0" pwiex LastBootUpTime"') do (
 	echo;系统启动时间:	%%a
 	echo;
 )
-for /f "delims=" %%a in ('"call %0 pwiex InstallDate"') do (
+for /f "delims=" %%a in ('"call "%~f0" pwiex InstallDate"') do (
 	echo;系统安装日期:	%%a
 	echo;
 )
 set cs=
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex cpu"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex cpu"') do (
 	set /a "cs+=1"
 	if "!cs!" equ "1" (
 		<nul set /p "=CPU:"
@@ -2186,14 +2186,14 @@ for /f "tokens=2 delims==" %%a in ('"call %0 pwiex cpu"') do (
 	)
 )
 echo;
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex numberofcores"') do (
-	for /f "tokens=2 delims==" %%b in ('"call %0 pwiex corenum"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex numberofcores"') do (
+	for /f "tokens=2 delims==" %%b in ('"call "%~f0" pwiex corenum"') do (
 		echo;		%%a核心 %%b线程
 		echo;
 	)
 )
 set cs=
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex processorid"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex processorid"') do (
 	set /a "cs+=1"
 	if "!cs!" equ "1" (
 		<nul set /p "=CPUID:"
@@ -2204,7 +2204,7 @@ for /f "tokens=2 delims==" %%a in ('"call %0 pwiex processorid"') do (
 )
 echo;
 set ch=
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex maxcachesize"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex maxcachesize"') do (
 	set /a "ch+=1"
 	set dw=0
 	if "!ch!" equ "1" (
@@ -2232,7 +2232,7 @@ for /f "tokens=2 delims==" %%a in ('"call %0 pwiex maxcachesize"') do (
 	)
 )
 set cs=
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex currentclockspeed"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex currentclockspeed"') do (
 	set /a "cs+=1"
 	if "!cs!" equ "1" (
 		<nul set /p "=CPU主频:"
@@ -2242,36 +2242,36 @@ for /f "tokens=2 delims==" %%a in ('"call %0 pwiex currentclockspeed"') do (
 	)
 )
 echo;
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex datawidth"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex datawidth"') do (
 	echo;数据位宽: 	%%a bit
 	echo;
 )
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex extclock"') do (echo;外频: 		%%a MHz)
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex extclock"') do (echo;外频: 		%%a MHz)
 %hx%
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex manufacturer"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex manufacturer"') do (
 	echo;主板制造商:	%%a
 	echo;
 )
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex product"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex product"') do (
 	echo;主板型号:	%%a
 	echo;
 )
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex uuid"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex uuid"') do (
 	echo;主板UUID:	%%a
 	echo;
 )
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex biosmanufacturer"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex biosmanufacturer"') do (
 	echo;BIOS制造商:	%%a
 	echo;
 )
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex smbiosbiosversion"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex smbiosbiosversion"') do (
 	echo;BIOS版本:	%%a
 	echo;
 )
-for /f "delims=" %%a in ('"call %0 pwiex releasedate"') do (echo;BIOS制造日期: 	%%a)
+for /f "delims=" %%a in ('"call "%~f0" pwiex releasedate"') do (echo;BIOS制造日期: 	%%a)
 %hx%
 set cs=
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex desktopmonitor"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex desktopmonitor"') do (
 	set /a "cs+=1"
 	if "!cs!" equ "1" (
 		<nul set /p "=显示器型号:"
@@ -2282,7 +2282,7 @@ for /f "tokens=2 delims==" %%a in ('"call %0 pwiex desktopmonitor"') do (
 )
 echo;
 set cs=
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex monitormanufacturer"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex monitormanufacturer"') do (
 	set /a "cs+=1"
 	if "!cs!" equ "1" (
 		<nul set /p "=显示器制造商:"
@@ -2293,7 +2293,7 @@ for /f "tokens=2 delims==" %%a in ('"call %0 pwiex monitormanufacturer"') do (
 )
 echo;
 set cs=
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex resolution"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex resolution"') do (
 	set /a "cs+=1"
 	if "!cs!" equ "1" (
 		<nul set /p "=分辨率:"
@@ -2304,7 +2304,7 @@ for /f "tokens=2 delims==" %%a in ('"call %0 pwiex resolution"') do (
 )
 %hx%
 set cs=
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex gpu"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex gpu"') do (
 	set /a "cs+=1"
 	if "!cs!" equ "1" (
 		<nul set /p "=显卡:"
@@ -2315,7 +2315,7 @@ for /f "tokens=2 delims==" %%a in ('"call %0 pwiex gpu"') do (
 )
 echo;
 set cs=
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex gpuram"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex gpuram"') do (
 	set /a "cs+=1"
 	set dw=0
 	if "!cs!" equ "1" (
@@ -2328,22 +2328,22 @@ for /f "tokens=2 delims==" %%a in ('"call %0 pwiex gpuram"') do (
 	)
 )
 echo;
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex videomodedescription"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex videomodedescription"') do (
 	echo;当前显示模式: 	%%a
 	echo;
 )
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex currentrefreshrate"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex currentrefreshrate"') do (
 	echo;当前刷新率: 	%%a Hz
 	echo;
 )
-for /f "delims=" %%a in ('"call %0 pwiex driverdate"') do (
+for /f "delims=" %%a in ('"call "%~f0" pwiex driverdate"') do (
 	echo;驱动日期: 	%%a
 	echo;
 )
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex driverversion"') do (echo;驱动版本: 	%%a)
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex driverversion"') do (echo;驱动版本: 	%%a)
 %hx%
 set cs=
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex disk"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex disk"') do (
 	set /a "cs+=1"
 	if "!cs!" equ "1" (
 		<nul set /p "=硬盘型号:"
@@ -2354,7 +2354,7 @@ for /f "tokens=2 delims==" %%a in ('"call %0 pwiex disk"') do (
 )
 echo;
 set cs=0
-for /f "delims=" %%a in ('"call %0 pwiex diskinfo"') do (
+for /f "delims=" %%a in ('"call "%~f0" pwiex diskinfo"') do (
 	if "!cs!" equ "0" (echo;固件版本	接口类型	硬盘容量	总扇区数	分区数)
 	set /a "cs+=1"
 	>nul 2>nul set "%%a"
@@ -2397,10 +2397,10 @@ for /f "delims=" %%a in ('"call %0 pwiex diskinfo"') do (
 call :sypf sypf
 echo;!sypf!
 echo;
-for /f "delims=" %%a in ('"call %0 pwiex volumeinfo"') do (echo;%%a)
+for /f "delims=" %%a in ('"call "%~f0" pwiex volumeinfo"') do (echo;%%a)
 %hx%
 set cs=
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex printer"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex printer"') do (
 	set /a "cs+=1"
 	if "!cs!" equ "1" (
 		<nul set /p "=打印机制造商:"
@@ -2411,7 +2411,7 @@ for /f "tokens=2 delims==" %%a in ('"call %0 pwiex printer"') do (
 )
 echo;
 set cs=
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex printerdriver"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex printerdriver"') do (
 	set /a "cs+=1"
 	if "!cs!" equ "1" (
 		<nul set /p "=打印机型号:"
@@ -2422,7 +2422,7 @@ for /f "tokens=2 delims==" %%a in ('"call %0 pwiex printerdriver"') do (
 )
 echo;
 set cs=
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex soundcard"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex soundcard"') do (
 	set /a "cs+=1"
 	if "!cs!" equ "1" (
 		<nul set /p "=声卡:"
@@ -2433,7 +2433,7 @@ for /f "tokens=2 delims==" %%a in ('"call %0 pwiex soundcard"') do (
 )
 echo;
 set cs=
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex netcard"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex netcard"') do (
 	set /a "cs+=1"
 	if "!cs!" equ "1" (
 		<nul set /p "=网卡:"
@@ -2444,7 +2444,7 @@ for /f "tokens=2 delims==" %%a in ('"call %0 pwiex netcard"') do (
 )
 echo;
 set cs=
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex netspeed"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex netspeed"') do (
 	set /a "cs+=1"
 	set /a "netspeed=%%a/1000000"
 	if "!cs!" equ "1" (
@@ -2457,7 +2457,7 @@ for /f "tokens=2 delims==" %%a in ('"call %0 pwiex netspeed"') do (
 	)
 )
 set cs=
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex Gateway"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex Gateway"') do (
 	for %%a in (%%a) do (
 		set /a "cs+=1"
 		if "!cs!" equ "1" (
@@ -2476,7 +2476,7 @@ call :findcommand curl.exe&&(
 	)
 )
 set cs=
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex ipaddress"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex ipaddress"') do (
 	for %%a in (%%a) do (
 		set /a "cs+=1"
 		if "!cs!" equ "1" (
@@ -2489,7 +2489,7 @@ for /f "tokens=2 delims==" %%a in ('"call %0 pwiex ipaddress"') do (
 )
 echo;
 set cs=
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex macaddress"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex macaddress"') do (
 	set /a "cs+=1"
 	if "!cs!" equ "1" (
 		<nul set /p "=网卡MAC地址:"
@@ -2500,7 +2500,7 @@ for /f "tokens=2 delims==" %%a in ('"call %0 pwiex macaddress"') do (
 )
 %hx%
 set cs=
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex mem"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex mem"') do (
 	set /a "cs+=1"
 	set dw=0
 	if "!cs!" equ "1" (
@@ -2514,7 +2514,7 @@ for /f "tokens=2 delims==" %%a in ('"call %0 pwiex mem"') do (
 )
 echo;
 set cs=
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex memspeed"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex memspeed"') do (
 	set /a "cs+=1"
 	if "!cs!" equ "1" (
 		<nul set /p "=内存频率:"
@@ -2525,7 +2525,7 @@ for /f "tokens=2 delims==" %%a in ('"call %0 pwiex memspeed"') do (
 )
 echo;
 set cs=
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex pagefile"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex pagefile"') do (
 	set /a "cs+=1"
 	if "!cs!" equ "1" (
 		<nul set /p "=分页文件:"
@@ -2536,7 +2536,7 @@ for /f "tokens=2 delims==" %%a in ('"call %0 pwiex pagefile"') do (
 )
 echo;
 set cs=
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex pagefileallocatedbasesize"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex pagefileallocatedbasesize"') do (
 	set /a "cs+=1"
 	if "!cs!" equ "1" (
 		<nul set /p "=已分配大小:"
@@ -2549,7 +2549,7 @@ for /f "tokens=2 delims==" %%a in ('"call %0 pwiex pagefileallocatedbasesize"') 
 )
 echo;
 set cs=
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex pagefilecurrentusage"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex pagefilecurrentusage"') do (
 	set /a "cs+=1"
 	if "!cs!" equ "1" (
 		<nul set /p "=当前使用量:"
@@ -2562,7 +2562,7 @@ for /f "tokens=2 delims==" %%a in ('"call %0 pwiex pagefilecurrentusage"') do (
 )
 echo;
 set cs=
-for /f "tokens=2 delims==" %%a in ('"call %0 pwiex pagefilepeakusage"') do (
+for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex pagefilepeakusage"') do (
 	set /a "cs+=1"
 	if "!cs!" equ "1" (
 		<nul set /p "=峰值使用量:"
@@ -5839,7 +5839,7 @@ if !checkver! gtr 0 (
 	call :colortxt a !gxver!
 	call :xdwjs %~z0 b old
 	call :xdwjs !dossize! b new
-	call :hash %0 sha1 oldhash
+	call :hash "%~f0" sha1 oldhash
 	echo;
 	echo;文件大小: !old! [%~z0 字节] → !new! [!dossize! 字节]
 	echo;SHA1: !oldhash! → !doshash!
@@ -5878,7 +5878,7 @@ call :hash "%temp%\dostool" sha1 hash
 if /i "!hash!" equ "!doshash!" (
 	endlocal
 	endlocal
-	copy /z /y "%temp%\dostool" %0&del /f /q "%temp%\dostool"&goto chushihua
+	copy /z /y "%temp%\dostool" "%~f0"&del /f /q "%temp%\dostool"&goto chushihua
 )
 call :colortxt c 文件无效
 echo;
@@ -6219,8 +6219,8 @@ set "qrgb=!qrgb:.=;!"
 <nul set /p "=!cswz!48;2;!brgb!;38;2;!qrgb!m%~3!cswz!!ysbak!"
 goto :eof
 :su
->"%temp%\su.cmd" <nul set /p "=!comspec! /c "%~dpnx0" ks"
-powershell -mta -nologo -noprofile -command "$cmd=[IO.File]::ReadAllText('%~dpnx0') -split '#su\#.*'; iex ($cmd[1])"
+>"%temp%\su.cmd" <nul set /p "=!comspec! /c "%~f0" ks"
+powershell -mta -nologo -noprofile -command "$cmd=[IO.File]::ReadAllText('%~f0') -split '#su\#.*'; iex ($cmd[1])"
 rem 延迟删除文件确保能被上一条指令读取
 call :out 1
 del /f /q "%temp%\su.cmd";"%Temp%\CMSTP.inf"
