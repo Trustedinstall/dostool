@@ -67,8 +67,8 @@ set "dosqssj=!time!"
 cd /d "%~dp0"
 >nul chcp 936
 title DOS工具箱
-set ver=20260501
-set versize=177540
+set ver=20260701
+set versize=178810
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -869,7 +869,7 @@ call :checkvar guanjidaojishi num&&(
 	call :out 2
 	goto guanji.1
 )
-shutdown /s /f /t !guanjidaojishi!
+shutdown /s /f /t !guanjidaojishi! /d p:0:0 /c "DOS工具箱 - 关机"
 endlocal
 goto guanji
 :guanji.2
@@ -884,7 +884,7 @@ call :checkvar chongqidaojishi num&&(
 	call :out 2
 	goto guanji.2
 )
-shutdown /r /f /t !chongqidaojishi!
+shutdown /r /f /t !chongqidaojishi! /d p:0:0 /c "DOS工具箱 - 重启"
 endlocal
 goto guanji
 :guanji.3
@@ -3171,7 +3171,7 @@ call :sjc !dosqssj! !time! jg format
 cls
 echo;关于DOS工具箱
 %hx%
-echo;版本:		1.9.8 (!ver!.!versize!)
+echo;版本:		1.9.9 (!ver!.!versize!)
 if defined system (
 	echo;操作系统:	!system:~3! !bit!位
 ) else (
@@ -3354,8 +3354,8 @@ echo;
 for %%a in (
 	"HKCU\Software\Microsoft\Windows\CurrentVersion\Run"
 	"HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
-	"HKCU\Software\Microsoft\WindowsNT\CurrentVersion\Windows\load"
-	"HKLM\SOFTWARE\Microsoft\WindowsNT\CurrentVersion\Winlogon\Userinit"
+	"HKCU\Software\Microsoft\Windows NT\CurrentVersion\Windows\load"
+	"HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\Userinit"
 	"HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run"
 	"HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run"
 	"HKCU\Software\Microsoft\Windows\CurrentVersion\RunServicesOnce"
@@ -4864,7 +4864,7 @@ call :findcommand curl.exe curl||(
 :71.1
 cls
 set "doh=--doh-url https://v.recipes/dns-ecs"
-set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36""
+set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36""
 set filename=
 set url=
 set /p "url=输入下载链接(e=返回): "
@@ -5743,6 +5743,50 @@ if errorlevel 1 (
 %pause%
 endlocal
 goto memuv2
+:81
+setlocal
+title !a81!!system!
+cls
+for %%a in (
+	"[1]立即重启到安全模式"
+	"[2]立即重启到带网络连接的安全模式"
+	"[0]返回菜单"
+) do (
+	echo;%%~a
+)
+%hx%
+%sel% shuru "输入选项: " 120
+if "!shuru!" equ "1" (set mode=minimal&goto 81.1)
+if "!shuru!" equ "2" (set mode=network&goto 81.1)
+if "!shuru!" equ "3" (endlocal&goto memuv2)
+if "!shuru!" equ "0" (endlocal&goto memuv2)
+<nul set /p "=请输入正确的选项"
+call :out 2
+endlocal
+goto 81
+:81.1
+cls
+bcdedit /set {current} safeboot !mode!&&(
+	>"!windir!\temp\clear_temp_safe_mode.cmd" (
+		echo;@echo off
+		echo;echo;取消安全模式启动参数
+		echo;bcdedit /deletevalue {current} safeboot
+		echo;echo;删除此脚本在注册表中的启动项
+		echo;reg delete "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "taskman" /f
+		echo;del /f /q %%0
+	)
+	if exist "!windir!\temp\clear_temp_safe_mode.cmd" (
+		reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" ^
+		/v "taskman" /t REG_SZ /d "!windir!\temp\clear_temp_safe_mode.cmd" /f&&(
+			shutdown /r /f /t 0 /d p:0:0 /c "DOS工具箱 - 重启到安全模式"&exit 0
+		)
+	)
+	bcdedit /deletevalue {current} safeboot
+)
+%hx%
+%pause%
+endlocal
+goto memuv2
 :decodehex
 if not exist "!windir!\system32\certutil.exe" (exit /b 1)
 if "%~2" equ "" (exit /b 1)
@@ -5780,7 +5824,7 @@ setlocal
 cls
 title 更新DOS工具箱 - 当前版本: !ver!!system!
 set "doh=--doh-url https://v.recipes/dns-ecs"
-set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36""
+set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36""
 set "curlpix=--compressed -L# -C - --ca-native --retry 1 --retry-delay 1 --connect-timeout 3 --max-time 10"
 set updatename=update.js
 set updos=dostool.js
@@ -6050,6 +6094,7 @@ for %%a in (
 	"78 随机生成MAC地址"
 	"79 16进制查看器"
 	"80 16进制文件生成"
+	"81 重启到安全模式"
 ) do (
 	set /a "maxa+=1"
 	for /f "tokens=1*" %%a in ("%%~a") do (
@@ -7041,7 +7086,7 @@ set "filename=%~3"
 set "dir=%~4"
 set "par=%~5"
 set "doh=--doh-url https://v.recipes/dns-ecs"
-set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36""
+set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36""
 if not defined url (
 	echo;链接不能为空
 	goto :eof
