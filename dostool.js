@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-		
+	
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -5781,7 +5781,7 @@ bcdedit /set {current} safeboot !mode!&&(
 			echo;bcdedit /deletevalue {current} safeboot
 			echo;echo;删除此脚本在注册表中的启动项
 			echo;reg delete "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "taskman" /f
-			echo;del /f /q %%0&exit 0
+			echo;del /f /q %%0^&exit 0
 		)
 		for /f "usebackq" %%a ("!windir!\temp\clear_temp_safe_mode.cmd") do (
 			if "%%~za" neq "0" (shutdown /r /f /t 0 /d p:0:0 /c "DOS工具箱 - 重启到安全模式"&exit 0)
