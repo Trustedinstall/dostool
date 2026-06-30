@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-				
+		
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -68,7 +68,7 @@ cd /d "%~dp0"
 >nul chcp 936
 title DOS工具箱
 set ver=20260701
-set versize=178720
+set versize=179005
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -3331,7 +3331,7 @@ if not exist "!ntfswjqx!" (
 	goto 40
 )
 %hx%
-for %%a in ("!ntfswjqx!") do (
+for /f "delims=" %%a in ("!ntfswjqx!") do (
 	call :isntfs %%~da||call :wjqx "%%~fa"
 	call :isrefs %%~da||call :wjqx "%%~fa"
 )
@@ -3493,7 +3493,7 @@ call :ljjc yswjlj&&(
 	endlocal
 	goto 46
 )
-for %%a in ("!yswjlj!") do (
+for /f "delims=" %%a in ("!yswjlj!") do (
 	if /i "%%~xa" equ ".7z" (
 		set "rarpd=!rarpd7z!"
 		goto rarwjok
@@ -3519,7 +3519,7 @@ call :ljjc pjzd&&(
 	call :out 2
 	goto rarwjok
 )
-for %%a in ("!pjzd!") do (
+for /f "delims=" %%a in ("!pjzd!") do (
 	if /i "%%~xa" neq ".txt" (
 		<nul set /p "=不是txt文件"
 		call :out 2
@@ -3652,7 +3652,7 @@ call :ljjc chmlj&&(
 	endlocal
 	goto 48
 )
-for %%a in ("!chmlj!") do (
+for /f "delims=" %%a in ("!chmlj!") do (
 	if /i "%%~xa" neq ".chm" (
 		%hx%
 		<nul set /p "=不是chm文件"
@@ -3842,7 +3842,7 @@ set /p "kjfs=拖动目标文件到此窗口: "
 call :var kjfs
 if not defined kjfs (endlocal&goto 55)
 call :lj kjfs kjfs
-for %%a in ("!kjfs!") do (set "kjfsmc=%%~na")
+for /f "delims=" %%a in ("!kjfs!") do (set "kjfsmc=%%~na")
 mshta VBScript:Execute("Set a=CreateObject(""WScript.Shell""):Set b=a.CreateShortcut(a.SpecialFolders(""Desktop"") & ""\!kjfsmc!.lnk""):b.TargetPath=""!kjfs!"":b.WorkingDirectory=""%~dp0"":b.Save:close")
 %hx%
 %pause%
@@ -4288,7 +4288,7 @@ call :ljjc url dir&&(
 	call :out 2
 	goto 65
 )
-for %%a in ("!url!") do (
+for /f "delims=" %%a in ("!url!") do (
 	call :isntfs %%~da&&(
 		<nul set /p "=%%~da 不是一个NTFS分区"
 		call :out 2
@@ -4524,7 +4524,7 @@ call :ljjc url&&(
 )
 cls
 echo;文件:		"!url!"
-for %%a in ("!url!") do (
+for /f "delims=" %%a in ("!url!") do (
 	if %%~za gtr 1024 (
 		call :xdwjs %%~za b dw
 		echo;文件大小:	!dw! %%~za 字节
@@ -4635,7 +4635,7 @@ call :ljjc msiurl&&(
 	endlocal
 	goto 68
 )
-for %%a in ("!msiurl!") do (
+for /f "delims=" %%a in ("!msiurl!") do (
 	if /i "%%~xa" neq ".msi" (
 		<nul set /p "=不是msi文件"
 		call :out 2
@@ -4651,7 +4651,7 @@ if /i "!msidir!" equ "e" (
 	goto memuv2
 )
 if not defined msidir (
-	for %%a in ("!msiurl!") do (set "msidir=%%~dpna")
+	for /f "delims=" %%a in ("!msiurl!") do (set "msidir=%%~dpna")
 )
 call :lj msidir msidir
 echo;开始解压...
@@ -5053,7 +5053,7 @@ rd /s /q "%temp%\down"
 cls
 title !a71!!system!
 if exist "!dir!\!filename!" (
-	for %%a in ("!dir!\!filename!") do (
+	for /f "delims=" %%a in ("!dir!\!filename!") do (
 		echo;计算下载速度...
 		call :sjc !kssj! !jssj! raw
 		call :sjc !kssj! !jssj! xzys format
@@ -5297,14 +5297,14 @@ if exist "chrome.exe" (
 	for /f "skip=1 tokens=2*" %%a in (
 		'"2>nul reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe" /v Path"'
 	) do (
-		set "chrome=%%b"
+		set "chrome=%%~b"
 	)
-	for %%a in ("!chrome!") do (set "chrome=%%~fa")
+	for /f "delims=" %%a in ("!chrome!") do (set "chrome=%%~fa")
 	if exist "!chrome!\Chrome.exe" (
 		set "chrome=!chrome!\Chrome.exe"
 		goto startchrome
 	) else (
-		for %%a in ("!chromium!") do (set "chrome=%%~fa")
+		for /f "delims=" %%a in ("!chromium!") do (set "chrome=%%~fa")
 		if exist "!chrome!" (
 			goto startchrome
 		) else (
@@ -5316,7 +5316,7 @@ if exist "chrome.exe" (
 	)
 )
 :startchrome
-for %%a in ("!chrome!") do (
+for /f "delims=" %%a in ("!chrome!") do (
 	for /f "tokens=1 delims=." %%a in ('"2>nul dir /ad /b "%%~dpa*.0.*""') do (
 		if %%a gtr 140 (
 			<nul set /p "=内核版本过高,请使用 Chromium 140 及以下版本."
@@ -5339,7 +5339,7 @@ for %%a in ("!chrome!") do (
 	)
 )
 if "!brpro!" equ "1" (
-	for %%a in ("!chrome!") do (
+	for /f "delims=" %%a in ("!chrome!") do (
 		for /f "tokens=1 delims=," %%b in (
 			'tasklist /fi "imagename eq %%~nxa" /fo csv /nh'
 		) do (
@@ -5405,7 +5405,7 @@ set source_dir=
 set target_dir=
 set /p "source_dir=输入源目录: "
 call :ljjc source_dir dir&&goto 73.3
-for %%a in ("!source_dir!") do (
+for /f "delims=" %%a in ("!source_dir!") do (
 	if "%%~nxa" equ "" (
 		set "sdirname=%%~da"
 		set "sdirname=!sdirname:~0,-1!"
@@ -5533,7 +5533,7 @@ call :ljjc jiami&&(
 	goto 75.1
 )
 cls
-for %%b in ("!jiami!") do (
+for /f "delims=" %%b in ("!jiami!") do (
 	set /a "batpdjg=%%~zb%%2"
 	if "!batpdjg!" equ "1" (set "batpdjg= ") else (set "batpdjg=")
 	set aaa=
@@ -5567,7 +5567,7 @@ call :ljjc jiemi&&(
 	goto 75.2
 )
 cls
-for %%a in ("!jiemi!") do (
+for /f "delims=" %%a in ("!jiemi!") do (
 	>"%temp%\1.tmp" echo;
 	>nul copy /b /y "%temp%\1.tmp"+"%%a" "%%~dpa解密_%%~na%%~xa"
 	del /f /q "%temp%\1.tmp"
@@ -5593,7 +5593,7 @@ call :ljjc jiami&&(
 	goto 75.3
 )
 cls
-for %%a in ("!jiami!") do (
+for /f "delims=" %%a in ("!jiami!") do (
 	>"%temp%\1.tmp" <nul set /p "=//4NCg=="
 	>nul !certutil! -decode -f "%temp%\1.tmp" "%temp%\2.tmp"
 	>nul copy /b /y "%temp%\2.tmp"+"%%a" "%%~dpa加密_%%~na%%~xa"
@@ -5734,7 +5734,7 @@ call :decodehex "!hex!" "!output!"
 if errorlevel 1 (
 	echo;16进制内容无效或文件生成失败
 ) else (
-	for %%a in ("!output!") do (
+	for /f "delims=" %%a in ("!output!") do (
 		echo;文件: %%~fa
 		echo;大小: %%~za 字节
 	)
@@ -5783,7 +5783,7 @@ bcdedit /set {current} safeboot !mode!&&(
 			echo;reg delete "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "taskman" /f
 			echo;del /f /q %%0^&exit 0
 		)
-		for %%a in ("!windir!\temp\clear_temp_safe_mode.cmd") do (
+		for /f "delims=" %%a in ("!windir!\temp\clear_temp_safe_mode.cmd") do (
 			if "%%~za" neq "0" (shutdown /r /f /t 0 /d p:0:0 /c "DOS工具箱 - 重启到安全模式"&exit 0)
 		)
 	)
@@ -7266,7 +7266,7 @@ set __yse=
 goto :eof
 :lj
 setlocal
-for %%a in ("!%1!") do (
+for /f "delims=" %%a in ("!%1!") do (
 	set "var=%%~fa"
 	if "!var:~-1!" equ "\" (set "var=!var:~0,-1!")
 )
@@ -7275,7 +7275,7 @@ goto :eof
 :ljjc
 if not defined %1 (exit /b 0)
 setlocal
-for %%a in ("!%1!") do (
+for /f "delims=" %%a in ("!%1!") do (
 	set "var=%%~fa"
 	set "var=!var:?=!"
 	if "!var:~-1!" equ "\" (set "var=!var:~0,-1!")
