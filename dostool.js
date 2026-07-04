@@ -68,7 +68,7 @@ cd /d "%~dp0"
 >nul chcp 936
 title DOS工具箱
 set ver=20260701
-set versize=179005
+set versize=179010
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -3499,7 +3499,7 @@ for /f "delims=" %%a in ("!yswjlj!") do (
 		goto rarwjok
 	)
 	for %%a in (.rar .zip) do (
-		if "%%~xa" equ "%%a" (goto rarwjok)
+		if /i "%%~xa" equ "%%a" (goto rarwjok)
 	)
 	<nul set /p "=无效的文件格式"
 	call :out 2
@@ -5540,8 +5540,8 @@ for /f "delims=" %%b in ("!jiami!") do (
 	for /l %%b in (0,1,128) do (set "aaa=!aaa!%%%%a ")
 	set "aaa=!aaa:~0,-1!!batpdjg!"
 	>"%temp%\1.tmp" (
-	echo;!aaa!
-	echo;cls
+		echo;!aaa!
+		echo;cls
 	)
 	>nul copy /b /y "%temp%\1.tmp"+"%%b" "%%~dpb加密_%%~nb%%~xb"
 	del /f /q "%temp%\1.tmp"
