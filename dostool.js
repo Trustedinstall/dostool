@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-		
+	
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -68,7 +68,7 @@ cd /d "%~dp0"
 >nul chcp 936
 title DOS工具箱
 set ver=20260701
-set versize=179010
+set versize=179030
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -237,7 +237,7 @@ if defined winv (
 )
 goto :eof
 :0
-exit 0
+exit /b 0
 :1
 setlocal
 title !a1!!system!
@@ -891,9 +891,9 @@ goto guanji
 title 注销!system!
 cls
 %sel% shuru "是否立即注销(y/n): " yn
-if "!shuru!" equ "1" (logoff&exit 0)
+if "!shuru!" equ "1" (logoff&exit /b 0)
 if "!shuru!" equ "2" (endlocal&goto guanji)
-if /i "!shuru!" equ "y" (logoff&exit 0)
+if /i "!shuru!" equ "y" (logoff&exit /b 0)
 if /i "!shuru!" equ "n" (endlocal&goto guanji)
 <nul set /p "=请输入正确的选项"
 call :out 2
@@ -5391,7 +5391,7 @@ set "tmpcmd=!temp!\!a72!.cmd"
 >"!tmpcmd!" (
 	echo;@echo off^&setlocal enabledelayedexpansion^&title !a72!!system!^&chcp 936^>nul
 	echo;start "" "!chrome!" --profile-directory=Default !user-data-dir! --start-maximized --test-type !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors!
-	echo;exit 0
+	echo;exit /b 0
 )
 explorer "!tmpcmd!"
 del /f /q "!tmpcmd!"
@@ -5781,10 +5781,10 @@ bcdedit /set {current} safeboot !mode!&&(
 			echo;bcdedit /deletevalue {current} safeboot
 			echo;echo;删除此脚本在注册表中的启动项
 			echo;reg delete "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v "taskman" /f
-			echo;del /f /q %%0^&exit 0
+			echo;del /f /q %%0^&exit /b 0
 		)
 		for /f "delims=" %%a in ("!windir!\temp\clear_temp_safe_mode.cmd") do (
-			if "%%~za" neq "0" (shutdown /r /f /t 0 /d p:0:0 /c "DOS工具箱 - 重启到安全模式"&exit 0)
+			if "%%~za" neq "0" (shutdown /r /f /t 0 /d p:0:0 /c "DOS工具箱 - 重启到安全模式"&exit /b 0)
 		)
 	)
 	bcdedit /deletevalue {current} safeboot
@@ -6275,7 +6275,7 @@ powershell -mta -nologo -noprofile -command "$cmd=[IO.File]::ReadAllText('%~f0')
 rem 延迟删除文件确保能被上一条指令读取
 call :out 1
 del /f /q "%temp%\su.cmd";"%Temp%\CMSTP.inf"
-exit 0
+exit /b 0
 #su#
 #UAC Bypass poc using SendKeys
 Function Set-INFFile {
