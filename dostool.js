@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-	
+				
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -68,7 +68,7 @@ cd /d "%~dp0"
 >nul chcp 936
 title DOS工具箱
 set ver=20260701
-set versize=179030
+set versize=173920
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -1190,52 +1190,46 @@ cls
 echo;正在获取网络信息...
 for %%a in (wmic.exe) do (
 	if "%%~$path:a" neq "" (
-		for /f "tokens=2 delims==" %%a in ('"2>nul wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get name /value"') do (
-			set "netcard=%%a"
-			set "netcard=!netcard:~0,-1!"
-		)
-		for /f "tokens=2 delims==" %%a in ('"2>nul wmic cpu get name /value"') do (
-			set "cpu=%%a"
-			set "cpu=!cpu:~0,-1!"
-		)
+		set "netcard='"2>nul wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get name /value"'"
+		set "cpu='"2>nul wmic cpu get name /value"'"
 	) else (
-		for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex netcard"') do (set "netcard=%%a")
-		for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex cpu"') do (set "cpu=%%a")
+		set "netcard='"call "%~f0" pwiex netcard"'"
+		set "cpu='"call "%~f0" pwiex cpu"'"
 	)
+)
+for /f "tokens=2 delims==" %%a in (!netcard!) do (
+	set "netcard=%%a"
+	set "netcard=!netcard:~0,-1!"
+)
+for /f "tokens=2 delims==" %%a in (!cpu!) do (
+	set "cpu=%%a"
+	set "cpu=!cpu:~0,-1!"
 )
 cls
 :23.4.1
 set xh=
 for %%a in (wmic.exe) do (
 	if "%%~$path:a" neq "" (
-		for /f "tokens=2 delims==" %%a in (
-			'"2>nul wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get BytesReceivedPersec,BytesSentPersec /value"'
-		) do (
-			set /a "xh+=1"
-			if "!xh!" equ "1" (
-				set "downspeed=%%a"
-				set "downspeed=!downspeed:~0,-1!"
-			)
-			if "!xh!" equ "2" (
-				set "upspeed=%%a"
-				set "upspeed=!upspeed:~0,-1!"
-				for /f "tokens=2 delims==" %%a in (
-					'2^>nul wmic Path Win32_PerfFormattedData_PerfOS_Processor Where "Name='_Total'" Get PercentIdleTime /value'
-				) do (
-					set "bfb=%%a"
-					set "bfb=!bfb:~0,-1!"
-					set /a "lyl=100-bfb"
-				)
-			)
-		)
+		set "dspeed='"2>nul wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get BytesReceivedPersec,BytesSentPersec /value"'"
+		set "cpuide='"2>nul wmic Path Win32_PerfFormattedData_PerfOS_Processor Where ^"Name='_Total'^" Get PercentIdleTime /value"'"
 	) else (
-		for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex downspeed"') do (
-			set /a "xh+=1"
-			if "!xh!" equ "1" (set "downspeed=%%a")
-			if "!xh!" equ "2" (
-				set "upspeed=%%a"
-				for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex cpuide"') do (set /a "lyl=100-%%a")
-			)
+		set "dspeed='"call "%~f0" pwiex downspeed"'"
+		set "cpuide='"call "%~f0" pwiex cpuide"'"
+	)
+)
+for /f "tokens=2 delims==" %%a in (!dspeed!) do (
+	set /a "xh+=1"
+	if "!xh!" equ "1" (
+		set "downspeed=%%a"
+		set "downspeed=!downspeed:~0,-1!"
+	)
+	if "!xh!" equ "2" (
+		set "upspeed=%%a"
+		set "upspeed=!upspeed:~0,-1!"
+		for /f "tokens=2 delims==" %%a in (!cpuide!) do (
+			set "bfb=%%a"
+			set "bfb=!bfb:~0,-1!"
+			set /a "lyl=100-bfb"
 		)
 	)
 )
@@ -1644,20 +1638,108 @@ setlocal
 title !a30!!system!
 cls
 for %%a in (wmic.exe) do (
-	if "%%~$path:a" equ "" (goto 30.1)
+	if "%%~$path:a" equ "" (
+		set "LastBootUpTime='"call "%~f0" pwiex LastBootUpTime"'"
+		set "InstallDate='"call "%~f0" pwiex InstallDate"'"
+		set "cpu='"call "%~f0" pwiex cpu"'"
+		set "corenum='"call "%~f0" pwiex corenum"'"
+		set "numberofcores='"call "%~f0" pwiex numberofcores"'"
+		set "processorid='"call "%~f0" pwiex processorid"'"
+		set "maxcachesize='"call "%~f0" pwiex maxcachesize"'"
+		set "currentclockspeed='"call "%~f0" pwiex currentclockspeed"'"
+		set "datawidth='"call "%~f0" pwiex datawidth"'"
+		set "extclock='"call "%~f0" pwiex extclock"'"
+		set "manufacturer='"call "%~f0" pwiex manufacturer"'"
+		set "product='"call "%~f0" pwiex product"'"
+		set "uuid='"call "%~f0" pwiex uuid"'"
+		set "biosmanufacturer='"call "%~f0" pwiex biosmanufacturer"'"
+		set "smbiosbiosversion='"call "%~f0" pwiex smbiosbiosversion"'"
+		set "releasedate='"call "%~f0" pwiex releasedate"'"
+		set "desktopmonitor='"call "%~f0" pwiex desktopmonitor"'"
+		set "monitormanufacturer='"call "%~f0" pwiex monitormanufacturer"'"
+		set "x_resolution='"call "%~f0" pwiex x_resolution"'"
+		set "y_resolution='"call "%~f0" pwiex y_resolution"'"
+		set "gpu='"call "%~f0" pwiex gpu"'"
+		set "gpuram='"call "%~f0" pwiex gpuram"'"
+		set "videomodedescription='"call "%~f0" pwiex videomodedescription"'"
+		set "currentrefreshrate='"call "%~f0" pwiex currentrefreshrate"'"
+		set "driverdate='"call "%~f0" pwiex driverdate"'"
+		set "driverversion='"call "%~f0" pwiex driverversion"'"
+		set "disk='"call "%~f0" pwiex disk"'"
+		set "diskinfo='"call "%~f0" pwiex diskinfo"'"
+		set "volumeinfo='"call "%~f0" pwiex volumeinfo"'"
+		set "printer='"call "%~f0" pwiex printer"'"
+		set "printerdriver='"call "%~f0" pwiex printerdriver"'"
+		set "soundcard='"call "%~f0" pwiex soundcard"'"
+		set "netcard='"call "%~f0" pwiex netcard"'"
+		set "netspeed='"call "%~f0" pwiex netspeed"'"
+		set "gateway='"call "%~f0" pwiex Gateway"'"
+		set "ipaddress='"call "%~f0" pwiex ipaddress"'"
+		set "macaddress='"call "%~f0" pwiex macaddress"'"
+		set "mem='"call "%~f0" pwiex mem"'"
+		set "memspeed='"call "%~f0" pwiex memspeed"'"
+		set "pagefile='"call "%~f0" pwiex pagefile"'"
+		set "pagefileallocatedbasesize='"call "%~f0" pwiex pagefileallocatedbasesize"'"
+		set "pagefilecurrentusage='"call "%~f0" pwiex pagefilecurrentusage"'"
+		set "pagefilepeakusage='"call "%~f0" pwiex pagefilepeakusage"'"
+	) else (
+		set "LastBootUpTime='"2>nul Wmic OS Get LastBootUpTime /value"'"
+		set "InstallDate='"2>nul Wmic OS Get InstallDate /value"'"
+		set "cpu='"2>nul Wmic CPU Get Name /value"'"
+		set "corenum='"2>nul Wmic CPU Get numberOflogicalprocessors /value"'"
+		set "numberofcores='"2>nul Wmic CPU Get numberofcores /value"'"
+		set "processorid='"2>nul Wmic CPU Get processorid /value"'"
+		set "maxcachesize='"2>nul wmic path win32_cachememory get maxcachesize /value"'"
+		set "currentclockspeed='"2>nul wmic cpu get currentclockspeed /value"'"
+		set "datawidth='"2>nul wmic cpu get datawidth /value"'"
+		set "extclock='"2>nul wmic cpu get extclock /value"'"
+		set "manufacturer='"2>nul wmic cpu get manufacturer /value"'"
+		set "product='"2>nul wmic baseboard get product /value"'"
+		set "uuid='"2>nul Wmic Csproduct Get Uuid /value"'"
+		set "biosmanufacturer='"2>nul Wmic BIOS Get Manufacturer /value"'"
+		set "smbiosbiosversion='"2>nul Wmic BIOS Get SMBIOSBIOSVersion /value"'"
+		set "releasedate='"2>nul Wmic BIOS Get ReleaseDate /value"'"
+		set "desktopmonitor='"2>nul wmic desktopmonitor get name /value"'"
+		set "monitormanufacturer='"2>nul wmic desktopmonitor get monitormanufacturer /value"'"
+		set "x_resolution='"2>nul wmic path win32_videocontroller get currenthorizontalresolution /value"'"
+		set "y_resolution='"2>nul wmic path win32_videocontroller get currentverticalresolution /value"'"
+		set "gpu='"2>nul wmic path win32_videocontroller get name /value"'"
+		set "gpuram='"2>nul wmic path win32_videocontroller get adapterram /value"'"
+		set "videomodedescription='"2>nul wmic path win32_videocontroller get videomodedescription /value"'"
+		set "currentrefreshrate='"2>nul wmic path win32_videocontroller get currentrefreshrate /value"'"
+		set "driverdate='"2>nul wmic path win32_videocontroller get driverdate /value"'"
+		set "driverversion='"2>nul wmic path win32_videocontroller get driverversion /value"'"
+		set "disk='"2>nul wmic diskdrive get model /value"'"
+		set "diskinfo='"2>nul wmic diskdrive get interfacetype,size,totalsectors,partitions,firmwarerevision /value"'"
+		set "volumeinfo='"2>nul wmic logicaldisk get name,volumename,description,filesystem,size,freespace"'"
+		set "printer='"2>nul Wmic Printer where Default='TRUE' get caption /value"'"
+		set "printerdriver='"2>nul Wmic Printer where Default='TRUE' get drivername /value"'"
+		set "soundcard='"2>nul wmic sounddev get name /value"'"
+		set "netcard='"2>nul Wmic Path Win32_NetworkAdapterConfiguration WHERE IPEnabled='TRUE' get caption /value"'"
+		set "netspeed='"2>nul Wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get CurrentBandwidth /value"'"
+		set "gateway='"2>nul Wmic Path Win32_NetworkAdapterConfiguration WHERE IPEnabled='TRUE' get defaultipgateway /value"'"
+		set "ipaddress='"2>nul Wmic Path Win32_NetworkAdapterConfiguration WHERE IPEnabled='TRUE' get ipaddress /value"'"
+		set "macaddress='"2>nul Wmic Path Win32_NetworkAdapterConfiguration WHERE IPEnabled='TRUE' get macaddress /value"'"
+		set "mem='"2>nul wmic memorychip get capacity /value"'"
+		set "memspeed='"2>nul wmic memorychip get speed /value"'"
+		set "pagefile='"2>nul wmic pagefile get name /value"'"
+		set "pagefileallocatedbasesize='"2>nul wmic pagefile get AllocatedBaseSize /value"'"
+		set "pagefilecurrentusage='"2>nul wmic pagefile get CurrentUsage /value"'"
+		set "pagefilepeakusage='"2>nul wmic pagefile get PeakUsage /value"'"
+	)
 )
-for /f "tokens=2 delims==" %%a in ('"2>nul Wmic OS Get LastBootUpTime /value"') do (
+for /f "tokens=2 delims==" %%a in (!LastBootUpTime!) do (
 	set "systemstarttime=%%a"
-	echo;系统启动时间:	!systemstarttime:~0,4!年!systemstarttime:~4,2!月!systemstarttime:~6,2!日 !systemstarttime:~8,2!:!systemstarttime:~10,2!:!systemstarttime:~12,2!
+	echo;系统启动时间:	!systemstarttime:~0,-1!
 	echo;
 )
-for /f "tokens=2 delims==" %%a in ('"2>nul Wmic OS Get InstallDate /value"') do (
+for /f "tokens=2 delims==" %%a in (!InstallDate!) do (
 	set "systeminstalltime=%%a"
-	echo;系统安装日期:	!systeminstalltime:~0,4!年!systeminstalltime:~4,2!月!systeminstalltime:~6,2!日 !systeminstalltime:~8,2!:!systeminstalltime:~10,2!:!systeminstalltime:~12,2!
+	echo;系统安装日期:	!systeminstalltime:~0,-1!
 	echo;
 )
 set cs=
-for /f "tokens=2 delims==" %%a in ('"2>nul wmic cpu get name /value"') do (
+for /f "tokens=2 delims==" %%a in (!cpu!) do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
@@ -1670,8 +1752,8 @@ for /f "tokens=2 delims==" %%a in ('"2>nul wmic cpu get name /value"') do (
 	)
 )
 echo;
-for /f "tokens=2 delims==" %%a in ('"2>nul wmic cpu get numberofcores /value"') do (
-	for /f "tokens=2 delims==" %%b in ('"2>nul wmic cpu get numberOflogicalprocessors /value"') do (
+for /f "tokens=2 delims==" %%a in (!numberofcores!) do (
+	for /f "tokens=2 delims==" %%b in (!corenum!) do (
 		set "var1=%%a"
 		set "var2=%%b"
 		echo;		!var1:~0,-1!核心 !var2:~0,-1!线程
@@ -1679,7 +1761,7 @@ for /f "tokens=2 delims==" %%a in ('"2>nul wmic cpu get numberofcores /value"') 
 	)
 )
 set cs=
-for /f "tokens=2 delims==" %%a in ('"2>nul wmic cpu get processorid /value"') do (
+for /f "tokens=2 delims==" %%a in (!processorid!) do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
@@ -1693,7 +1775,7 @@ for /f "tokens=2 delims==" %%a in ('"2>nul wmic cpu get processorid /value"') do
 )
 echo;
 set ch=
-for /f "tokens=2 delims==" %%a in ('"2>nul wmic path win32_cachememory get maxcachesize /value"') do (
+for /f "tokens=2 delims==" %%a in (!maxcachesize!) do (
 	set /a "ch+=1"
 	set dw=0
 	if "!ch!" equ "1" (
@@ -1721,7 +1803,7 @@ for /f "tokens=2 delims==" %%a in ('"2>nul wmic path win32_cachememory get maxca
 	)
 )
 set cs=
-for /f "tokens=2 delims==" %%a in ('"2>nul wmic cpu get currentclockspeed /value"') do (
+for /f "tokens=2 delims==" %%a in (!currentclockspeed!) do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
@@ -1734,50 +1816,50 @@ for /f "tokens=2 delims==" %%a in ('"2>nul wmic cpu get currentclockspeed /value
 	)
 )
 echo;
-for /f "tokens=2 delims==" %%a in ('"2>nul wmic cpu get datawidth /value"') do (
+for /f "tokens=2 delims==" %%a in (!datawidth!) do (
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
 		echo;数据位宽: 	!var:~0,-1! bit
 		echo;
 	)
 )
-for /f "tokens=2 delims==" %%a in ('"2>nul wmic cpu get extclock /value"') do (
+for /f "tokens=2 delims==" %%a in (!extclock!) do (
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (echo;外频: 		!var:~0,-1! MHz)
 )
 %hx%
-for /f "tokens=2 delims==" %%a in ('"2>nul wmic baseboard get manufacturer /value"') do (
+for /f "tokens=2 delims==" %%a in (!biosmanufacturer!) do (
 	set "var=%%a"
 	echo;主板制造商:	!var:~0,-1!
 	echo;
 )
-for /f "tokens=2 delims==" %%a in ('"2>nul wmic baseboard get product /value"') do (
+for /f "tokens=2 delims==" %%a in (!product!) do (
 	set "var=%%a"
 	echo;主板型号:	!var:~0,-1!
 	echo;
 )
-for /f "tokens=2 delims==" %%a in ('"2>nul Wmic Csproduct Get Uuid /value"') do (
+for /f "tokens=2 delims==" %%a in (!uuid!) do (
 	set "var=%%a"
 	echo;主板UUID:	!var:~0,-1!
 	echo;
 )
-for /f "tokens=2 delims==" %%a in ('"2>nul wmic bios get manufacturer /value"') do (
+for /f "tokens=2 delims==" %%a in (!biosmanufacturer!) do (
 	set "var=%%a"
 	echo;BIOS制造商:	!var:~0,-1!
 	echo;
 )
-for /f "tokens=2 delims==" %%a in ('"2>nul wmic bios get smbiosbiosversion /value"') do (
+for /f "tokens=2 delims==" %%a in (!smbiosbiosversion!) do (
 	set "var=%%a"
 	echo;BIOS版本:	!var:~0,-1!
 	echo;
 )
-for /f "tokens=2 delims==" %%a in ('"2>nul wmic bios get releasedate /value"') do (
+for /f "tokens=2 delims==" %%a in (!releasedate!) do (
 	set "bioszzrq=%%a"
-	echo;BIOS制造日期: 	!bioszzrq:~0,4!年!bioszzrq:~4,2!月!bioszzrq:~6,2!日
+	echo;BIOS制造日期: 	!bioszzrq:~0,-1!
 )
 %hx%
 set cs=
-for /f "tokens=2 delims==" %%a in ('"2>nul wmic desktopmonitor get name /value"') do (
+for /f "tokens=2 delims==" %%a in (!desktopmonitor!) do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
@@ -1791,7 +1873,7 @@ for /f "tokens=2 delims==" %%a in ('"2>nul wmic desktopmonitor get name /value"'
 )
 echo;
 set cs=
-for /f "tokens=2 delims==" %%a in ('"2>nul wmic desktopmonitor get monitormanufacturer /value"') do (
+for /f "tokens=2 delims==" %%a in (!monitormanufacturer!) do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
@@ -1805,8 +1887,8 @@ for /f "tokens=2 delims==" %%a in ('"2>nul wmic desktopmonitor get monitormanufa
 )
 echo;
 set cs=
-for /f "tokens=2 delims==" %%a in ('"2>nul wmic path win32_videocontroller get currenthorizontalresolution /value"') do (
-	for /f "tokens=2 delims==" %%b in ('"2>nul wmic path win32_videocontroller get currentverticalresolution /value"') do (
+for /f "tokens=2 delims==" %%a in (!x_resolution!) do (
+	for /f "tokens=2 delims==" %%b in (!y_resolution!) do (
 		set /a "cs+=1"
 		set "var1=%%a"
 		set "var2=%%b"
@@ -1820,7 +1902,7 @@ for /f "tokens=2 delims==" %%a in ('"2>nul wmic path win32_videocontroller get c
 )
 %hx%
 set cs=
-for /f "tokens=2 delims==" %%a in ('"2>nul wmic path win32_videocontroller get name /value"') do (
+for /f "tokens=2 delims==" %%a in (!gpu!) do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
@@ -1834,7 +1916,7 @@ for /f "tokens=2 delims==" %%a in ('"2>nul wmic path win32_videocontroller get n
 )
 echo;
 set cs=
-for /f "tokens=2 delims==" %%a in ('"2>nul wmic path win32_videocontroller get adapterram /value"') do (
+for /f "tokens=2 delims==" %%a in (!gpuram!) do (
 	set /a "cs+=1"
 	set dw=0
 	if "!cs!" equ "1" (
@@ -1847,28 +1929,28 @@ for /f "tokens=2 delims==" %%a in ('"2>nul wmic path win32_videocontroller get a
 	)
 )
 echo;
-for /f "tokens=2 delims==" %%a in ('"2>nul wmic path win32_videocontroller get videomodedescription /value"') do (
+for /f "tokens=2 delims==" %%a in (!videomodedescription!) do (
 	set "var=%%a"
 	echo;当前显示模式: 	!var:~0,-1!
 	echo;
 )
-for /f "tokens=2 delims==" %%a in ('"2>nul wmic path win32_videocontroller get currentrefreshrate /value"') do (
+for /f "tokens=2 delims==" %%a in (!currentrefreshrate!) do (
 	set "var=%%a"
 	echo;当前刷新率: 	!var:~0,-1! Hz
 	echo;
 )
-for /f "tokens=2 delims==" %%a in ('"2>nul wmic path win32_videocontroller get driverdate /value"') do (
+for /f "tokens=2 delims==" %%a in (!driverdate!) do (
 	set "qdrq=%%a"
-	echo;驱动日期: 	!qdrq:~0,4!年!qdrq:~4,2!月!qdrq:~6,2!日
+	echo;驱动日期: 	!qdrq:~0,-1!
 	echo;
 )
-for /f "tokens=2 delims==" %%a in ('"2>nul wmic path win32_videocontroller get driverversion /value"') do (
+for /f "tokens=2 delims==" %%a in (!driverversion!) do (
 	set "var=%%a"
 	echo;驱动版本: 	!var:~0,-1!
 )
 %hx%
 set cs=
-for /f "tokens=2 delims==" %%a in ('"2>nul wmic diskdrive get model /value"') do (
+for /f "tokens=2 delims==" %%a in (!disk!) do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
@@ -1882,7 +1964,7 @@ for /f "tokens=2 delims==" %%a in ('"2>nul wmic diskdrive get model /value"') do
 )
 echo;
 set cs=0
-for /f "delims=" %%a in ('"2>nul wmic diskdrive get interfacetype,size,totalsectors,partitions,firmwarerevision /value"') do (
+for /f "delims=" %%a in (!diskinfo!) do (
 	set "var=%%a"
 	set "var=!var:~0,-1!"
 	if defined var (
@@ -1929,13 +2011,13 @@ for /f "delims=" %%a in ('"2>nul wmic diskdrive get interfacetype,size,totalsect
 call :sypf sypf
 echo;!sypf!
 echo;
-for /f "delims=" %%a in ('"2>nul wmic logicaldisk get name,volumename,description,filesystem,size,freespace"') do (
+for /f "delims=" %%a in (!volumeinfo!) do (
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (echo;!var:~0,-1!)
 )
 %hx%
 set cs=
-for /f "tokens=2 delims==" %%a in ('"2>nul Wmic Printer where Default='TRUE' get caption /value"') do (
+for /f "tokens=2 delims==" %%a in (!Printer!) do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
@@ -1949,7 +2031,7 @@ for /f "tokens=2 delims==" %%a in ('"2>nul Wmic Printer where Default='TRUE' get
 )
 echo;
 set cs=
-for /f "tokens=2 delims==" %%a in ('"2>nul Wmic Printer where Default='TRUE' get drivername /value"') do (
+for /f "tokens=2 delims==" %%a in (!printerdriver!) do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
@@ -1963,7 +2045,7 @@ for /f "tokens=2 delims==" %%a in ('"2>nul Wmic Printer where Default='TRUE' get
 )
 echo;
 set cs=
-for /f "tokens=2 delims==" %%a in ('"2>nul wmic sounddev get name /value"') do (
+for /f "tokens=2 delims==" %%a in (!soundcard!) do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
@@ -1977,7 +2059,7 @@ for /f "tokens=2 delims==" %%a in ('"2>nul wmic sounddev get name /value"') do (
 )
 echo;
 set cs=
-for /f "tokens=2 delims=]" %%a in ('"2>nul Wmic Path Win32_NetworkAdapterConfiguration WHERE IPEnabled='TRUE' get caption /value"') do (
+for /f "tokens=2 delims=]" %%a in (!netcard!) do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
@@ -1991,7 +2073,7 @@ for /f "tokens=2 delims=]" %%a in ('"2>nul Wmic Path Win32_NetworkAdapterConfigu
 )
 echo;
 set cs=
-for /f "tokens=2 delims==" %%a in ('"2>nul Wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get CurrentBandwidth /value"') do (
+for /f "tokens=2 delims==" %%a in (!netspeed!) do (
 	set /a "cs+=1"
 	set netspeed=
 	set "netspeed=%%a"
@@ -2007,7 +2089,7 @@ for /f "tokens=2 delims==" %%a in ('"2>nul Wmic path Win32_PerfFormattedData_Tcp
 	)
 )
 set cs=
-for /f "tokens=2 delims==" %%a in ('"2>nul Wmic Path Win32_NetworkAdapterConfiguration WHERE IPEnabled='TRUE' get defaultipgateway /value"') do (
+for /f "tokens=2 delims==" %%a in (!gateway!) do (
 	set mrwg=
 	set "mrwg=%%a"
 	set "mrwg=!mrwg:{=!"
@@ -2032,7 +2114,7 @@ call :findcommand curl.exe&&(
 	)
 )
 set cs=
-for /f "tokens=2 delims==" %%a in ('"2>nul Wmic Path Win32_NetworkAdapterConfiguration WHERE IPEnabled='TRUE' get ipaddress /value"') do (
+for /f "tokens=2 delims==" %%a in (!ipaddress!) do (
 	set ipdz=
 	set "ipdz=%%a"
 	set "ipdz=!ipdz:{=!"
@@ -2051,7 +2133,7 @@ for /f "tokens=2 delims==" %%a in ('"2>nul Wmic Path Win32_NetworkAdapterConfigu
 )
 echo;
 set cs=
-for /f "tokens=2 delims==" %%a in ('"2>nul Wmic Path Win32_NetworkAdapterConfiguration WHERE IPEnabled='TRUE' get macaddress /value"') do (
+for /f "tokens=2 delims==" %%a in (!macaddress!) do (
 	set /a "cs+=1"
 	set maxdz=
 	set "macdz=%%a"
@@ -2070,7 +2152,7 @@ for /f "tokens=2 delims==" %%a in ('"2>nul Wmic Path Win32_NetworkAdapterConfigu
 )
 %hx%
 set cs=
-for /f "tokens=2 delims==" %%a in ('"2>nul wmic memorychip get capacity /value"') do (
+for /f "tokens=2 delims==" %%a in (!mem!) do (
 	set /a "cs+=1"
 	set dw=0
 	if "!cs!" equ "1" (
@@ -2084,7 +2166,7 @@ for /f "tokens=2 delims==" %%a in ('"2>nul wmic memorychip get capacity /value"'
 )
 echo;
 set cs=
-for /f "tokens=2 delims==" %%a in ('"2>nul wmic memorychip get speed /value"') do (
+for /f "tokens=2 delims==" %%a in (!memspeed!) do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
@@ -2098,7 +2180,7 @@ for /f "tokens=2 delims==" %%a in ('"2>nul wmic memorychip get speed /value"') d
 )
 echo;
 set cs=
-for /f "tokens=2 delims==" %%a in ('"2>nul wmic pagefile get name /value"') do (
+for /f "tokens=2 delims==" %%a in (!pagefile!) do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
@@ -2112,7 +2194,7 @@ for /f "tokens=2 delims==" %%a in ('"2>nul wmic pagefile get name /value"') do (
 )
 echo;
 set cs=
-for /f "tokens=2 delims==" %%a in ('"2>nul wmic pagefile get AllocatedBaseSize /value"') do (
+for /f "tokens=2 delims==" %%a in (!pagefileAllocatedBaseSize!) do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
@@ -2128,7 +2210,7 @@ for /f "tokens=2 delims==" %%a in ('"2>nul wmic pagefile get AllocatedBaseSize /
 )
 echo;
 set cs=
-for /f "tokens=2 delims==" %%a in ('"2>nul wmic pagefile get CurrentUsage /value"') do (
+for /f "tokens=2 delims==" %%a in (!pagefileCurrentUsage!) do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
@@ -2144,7 +2226,7 @@ for /f "tokens=2 delims==" %%a in ('"2>nul wmic pagefile get CurrentUsage /value
 )
 echo;
 set cs=
-for /f "tokens=2 delims==" %%a in ('"2>nul wmic pagefile get PeakUsage /value"') do (
+for /f "tokens=2 delims==" %%a in (!pagefilePeakUsage!) do (
 	set /a "cs+=1"
 	set "var=%%a"
 	if "!var:~0,-1!" neq "" (
@@ -2166,552 +2248,140 @@ mode
 %pause%
 endlocal
 goto memuv2
-:30.1
-for /f "delims=" %%a in ('"call "%~f0" pwiex LastBootUpTime"') do (
-	echo;系统启动时间:	%%a
-	echo;
-)
-for /f "delims=" %%a in ('"call "%~f0" pwiex InstallDate"') do (
-	echo;系统安装日期:	%%a
-	echo;
-)
-set cs=
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex cpu"') do (
-	set /a "cs+=1"
-	if "!cs!" equ "1" (
-		<nul set /p "=CPU:"
-		echo;		%%a
-	) else (
-		echo;			%%a
-	)
-)
-echo;
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex numberofcores"') do (
-	for /f "tokens=2 delims==" %%b in ('"call "%~f0" pwiex corenum"') do (
-		echo;		%%a核心 %%b线程
-		echo;
-	)
-)
-set cs=
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex processorid"') do (
-	set /a "cs+=1"
-	if "!cs!" equ "1" (
-		<nul set /p "=CPUID:"
-		echo;		%%a
-	) else (
-		echo;			%%a
-	)
-)
-echo;
-set ch=
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex maxcachesize"') do (
-	set /a "ch+=1"
-	set dw=0
-	if "!ch!" equ "1" (
-		call :xdwjs %%a kb dw
-		echo;一级缓存:	!dw!
-		echo;
-	) else (
-		if "!ch!" equ "2" (
-			call :xdwjs %%a kb dw
-			echo;二级缓存:	!dw!
-			echo;
-		) else (
-			if "!ch!" equ "3" (
-				call :xdwjs %%a kb dw
-				echo;三级缓存:	!dw!
-				echo;
-			) else (
-				if "!ch!" equ "4" (
-					call :xdwjs %%a kb dw
-					echo;四级缓存:	!dw!
-					echo;
-				)
-			)
-		)
-	)
-)
-set cs=
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex currentclockspeed"') do (
-	set /a "cs+=1"
-	if "!cs!" equ "1" (
-		<nul set /p "=CPU主频:"
-		echo;	%%a MHz
-	) else (
-		echo;		%%a MHz
-	)
-)
-echo;
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex datawidth"') do (
-	echo;数据位宽: 	%%a bit
-	echo;
-)
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex extclock"') do (echo;外频: 		%%a MHz)
-%hx%
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex manufacturer"') do (
-	echo;主板制造商:	%%a
-	echo;
-)
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex product"') do (
-	echo;主板型号:	%%a
-	echo;
-)
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex uuid"') do (
-	echo;主板UUID:	%%a
-	echo;
-)
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex biosmanufacturer"') do (
-	echo;BIOS制造商:	%%a
-	echo;
-)
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex smbiosbiosversion"') do (
-	echo;BIOS版本:	%%a
-	echo;
-)
-for /f "delims=" %%a in ('"call "%~f0" pwiex releasedate"') do (echo;BIOS制造日期: 	%%a)
-%hx%
-set cs=
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex desktopmonitor"') do (
-	set /a "cs+=1"
-	if "!cs!" equ "1" (
-		<nul set /p "=显示器型号:"
-		echo;	%%a
-	) else (
-		echo;		%%a
-	)
-)
-echo;
-set cs=
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex monitormanufacturer"') do (
-	set /a "cs+=1"
-	if "!cs!" equ "1" (
-		<nul set /p "=显示器制造商:"
-		echo;	%%a
-	) else (
-		echo;		%%a
-	)
-)
-echo;
-set cs=
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex resolution"') do (
-	set /a "cs+=1"
-	if "!cs!" equ "1" (
-		<nul set /p "=分辨率:"
-		echo;		%%a
-	) else (
-		echo;			%%a
-	)
-)
-%hx%
-set cs=
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex gpu"') do (
-	set /a "cs+=1"
-	if "!cs!" equ "1" (
-		<nul set /p "=显卡:"
-		echo;		%%a
-	) else (
-		echo;			%%a
-	)
-)
-echo;
-set cs=
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex gpuram"') do (
-	set /a "cs+=1"
-	set dw=0
-	if "!cs!" equ "1" (
-		call :xdwjs %%a b dw
-		<nul set /p "=显存容量:"
-		echo;	!dw!
-	) else (
-		call :xdwjs %%a b dw
-		echo;		!dw!
-	)
-)
-echo;
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex videomodedescription"') do (
-	echo;当前显示模式: 	%%a
-	echo;
-)
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex currentrefreshrate"') do (
-	echo;当前刷新率: 	%%a Hz
-	echo;
-)
-for /f "delims=" %%a in ('"call "%~f0" pwiex driverdate"') do (
-	echo;驱动日期: 	%%a
-	echo;
-)
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex driverversion"') do (echo;驱动版本: 	%%a)
-%hx%
-set cs=
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex disk"') do (
-	set /a "cs+=1"
-	if "!cs!" equ "1" (
-		<nul set /p "=硬盘型号:"
-		echo;	%%a
-	) else (
-		echo;		%%a
-	)
-)
-echo;
-set cs=0
-for /f "delims=" %%a in ('"call "%~f0" pwiex diskinfo"') do (
-	if "!cs!" equ "0" (echo;固件版本	接口类型	硬盘容量	总扇区数	分区数)
-	set /a "cs+=1"
-	>nul 2>nul set "%%a"
-	if "!cs!" equ "5" (
-		call :xdwjs !size! b size
-		call :strlen firmwarerevision dc
-		if !dc! lss 8 (
-			set "dsp=!firmwarerevision!		"
-		) else (
-			set "dsp=!firmwarerevision!	"
-		)
-		call :strlen interfacetype dc
-		if !dc! lss 8 (
-			set "dsp=!dsp!!interfacetype!		"
-		) else (
-			set "dsp=!dsp!!interfacetype!	"
-		)
-		call :strlen size dc
-		if !dc! lss 8 (
-			set "dsp=!dsp!!size!		"
-		) else (
-			set "dsp=!dsp!!size!	"
-		)
-		call :strlen totalsectors dc
-		if !dc! lss 8 (
-			set "dsp=!dsp!!totalsectors!		"
-		) else (
-			set "dsp=!dsp!!totalsectors!	"
-		)
-		call :strlen partitions dc
-		if !dc! lss 8 (
-			set "dsp=!dsp!!partitions!"
-		) else (
-			set "dsp=!dsp!!partitions!"
-		)
-		echo;!dsp!
-		set cs=
-	)
-)
-call :sypf sypf
-echo;!sypf!
-echo;
-for /f "delims=" %%a in ('"call "%~f0" pwiex volumeinfo"') do (echo;%%a)
-%hx%
-set cs=
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex printer"') do (
-	set /a "cs+=1"
-	if "!cs!" equ "1" (
-		<nul set /p "=打印机制造商:"
-		echo;	%%a
-	) else (
-		echo;		%%a
-	)
-)
-echo;
-set cs=
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex printerdriver"') do (
-	set /a "cs+=1"
-	if "!cs!" equ "1" (
-		<nul set /p "=打印机型号:"
-		echo;	%%a
-	) else (
-		echo;		%%a
-	)
-)
-echo;
-set cs=
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex soundcard"') do (
-	set /a "cs+=1"
-	if "!cs!" equ "1" (
-		<nul set /p "=声卡:"
-		echo;		%%a
-	) else (
-		echo;		%%a
-	)
-)
-echo;
-set cs=
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex netcard"') do (
-	set /a "cs+=1"
-	if "!cs!" equ "1" (
-		<nul set /p "=网卡:"
-		echo;		%%a
-	) else (
-		echo;		%%a
-	)
-)
-echo;
-set cs=
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex netspeed"') do (
-	set /a "cs+=1"
-	set /a "netspeed=%%a/1000000"
-	if "!cs!" equ "1" (
-		<nul set /p "=网络连接速度:"
-		echo;	!netspeed! Mbps
-		echo;
-	) else (
-		echo;		!netspeed! Mbps
-		echo;
-	)
-)
-set cs=
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex Gateway"') do (
-	for %%a in (%%a) do (
-		set /a "cs+=1"
-		if "!cs!" equ "1" (
-			<nul set /p "=网关地址:"
-			echo;	%%a
-		) else (
-			echo;		%%a
-		)
-	)
-)
-echo;
-call :findcommand curl.exe&&(
-	>nul ping /n 1 www.baidu.com
-	if not errorlevel 1 (
-		call :ip 4 ip&&echo;外部IP地址:	!ip!
-	)
-)
-set cs=
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex ipaddress"') do (
-	for %%a in (%%a) do (
-		set /a "cs+=1"
-		if "!cs!" equ "1" (
-			<nul set /p "=IP地址:"
-			echo;		%%a
-		) else (
-			echo;		%%a
-		)
-	)
-)
-echo;
-set cs=
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex macaddress"') do (
-	set /a "cs+=1"
-	if "!cs!" equ "1" (
-		<nul set /p "=网卡MAC地址:"
-		echo;	%%a
-	) else (
-		echo;		%%a
-	)
-)
-%hx%
-set cs=
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex mem"') do (
-	set /a "cs+=1"
-	set dw=0
-	if "!cs!" equ "1" (
-		<nul set /p "=内存容量:"
-		call :xdwjs %%a b dw
-		echo;	!dw!
-	) else (
-		call :xdwjs %%a b dw
-		if "!dw!" neq "0" (echo;		!dw!)
-	)
-)
-echo;
-set cs=
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex memspeed"') do (
-	set /a "cs+=1"
-	if "!cs!" equ "1" (
-		<nul set /p "=内存频率:"
-		echo;	%%a MHz
-	) else (
-		echo;		%%a MHz
-	)
-)
-echo;
-set cs=
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex pagefile"') do (
-	set /a "cs+=1"
-	if "!cs!" equ "1" (
-		<nul set /p "=分页文件:"
-		echo;	%%a
-	) else (
-		echo;		%%a
-	)
-)
-echo;
-set cs=
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex pagefileallocatedbasesize"') do (
-	set /a "cs+=1"
-	if "!cs!" equ "1" (
-		<nul set /p "=已分配大小:"
-		call :xdwjs %%a mb AllocatedBaseSize
-		echo;	!AllocatedBaseSize!
-	) else (
-		call :xdwjs %%a mb AllocatedBaseSize
-		echo;		!AllocatedBaseSize!
-	)
-)
-echo;
-set cs=
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex pagefilecurrentusage"') do (
-	set /a "cs+=1"
-	if "!cs!" equ "1" (
-		<nul set /p "=当前使用量:"
-		call :xdwjs %%a mb CurrentUsage
-		echo;	!CurrentUsage!
-	) else (
-		call :xdwjs %%a mb CurrentUsage
-		echo;		!CurrentUsage!
-	)
-)
-echo;
-set cs=
-for /f "tokens=2 delims==" %%a in ('"call "%~f0" pwiex pagefilepeakusage"') do (
-	set /a "cs+=1"
-	if "!cs!" equ "1" (
-		<nul set /p "=峰值使用量:"
-		call :xdwjs %%a mb PeakUsage
-		echo;	!PeakUsage!
-	) else (
-		call :xdwjs %%a mb PeakUsage
-		echo;		!PeakUsage!
-	)
-)
-echo;
-if exist "!windir!\system32\systeminfo.exe" (systeminfo|find "内存")
-%hx%
-mode
-%hx%
-%pause%
-endlocal
-goto memuv2
 #netcard#
-Get-CimInstance Win32_PerfFormattedData_Tcpip_NetworkInterface -ErrorAction SilentlyContinue | ForEach-Object { "Name=$($_.Name)" }
+Get-CimInstance Win32_PerfFormattedData_Tcpip_NetworkInterface -ErrorAction SilentlyContinue | ForEach-Object { "Name=$($_.Name) " }
 #netcard#
 #corenum#
-Get-CimInstance Win32_Processor -ErrorAction SilentlyContinue | ForEach-Object { "NumberOfLogicalProcessors=$($_.NumberOfLogicalProcessors)" }
+Get-CimInstance Win32_Processor -ErrorAction SilentlyContinue | ForEach-Object { "NumberOfLogicalProcessors=$($_.NumberOfLogicalProcessors) " }
 #corenum#
 #cpu#
-Get-CimInstance Win32_Processor -ErrorAction SilentlyContinue | ForEach-Object { "Name=$($_.Name)" }
+Get-CimInstance Win32_Processor -ErrorAction SilentlyContinue | ForEach-Object { "Name=$($_.Name) " }
 #cpu#
 #downspeed#
-Get-CimInstance Win32_PerfFormattedData_Tcpip_NetworkInterface -ErrorAction SilentlyContinue | ForEach-Object { "BytesReceivedPersec=$($_.BytesReceivedPersec)"; "BytesSentPersec=$($_.BytesSentPersec)" }
+Get-CimInstance Win32_PerfFormattedData_Tcpip_NetworkInterface -ErrorAction SilentlyContinue | ForEach-Object { "BytesReceivedPersec=$($_.BytesReceivedPersec) "; "BytesSentPersec=$($_.BytesSentPersec) " }
 #downspeed#
 #cpuide#
-$procs=Get-CimInstance Win32_PerfFormattedData_PerfOS_Processor -ErrorAction SilentlyContinue | Where-Object {$_.Name -eq '_Total'}; $procs | ForEach-Object { "PercentIdleTime=$($_.PercentIdleTime)" }
+$procs=Get-CimInstance Win32_PerfFormattedData_PerfOS_Processor -ErrorAction SilentlyContinue | Where-Object {$_.Name -eq '_Total'}; $procs | ForEach-Object { "PercentIdleTime=$($_.PercentIdleTime) " }
 #cpuide#
 #LastBootUpTime#
-(Get-CimInstance -ClassName Win32_OperatingSystem -ErrorAction SilentlyContinue).LastBootUpTime
+Get-CimInstance -ClassName Win32_OperatingSystem -ErrorAction SilentlyContinue | ForEach-Object { "LastBootUpTime=$($_.LastBootUpTime) " }
 #LastBootUpTime#
 #InstallDate#
-(Get-CimInstance -ClassName Win32_OperatingSystem -ErrorAction SilentlyContinue).InstallDate
+Get-CimInstance -ClassName Win32_OperatingSystem -ErrorAction SilentlyContinue | ForEach-Object { "InstallDate=$($_.InstallDate) " }
 #InstallDate#
 #numberofcores#
-Get-CimInstance Win32_Processor -ErrorAction SilentlyContinue | ForEach-Object { "numberofcores=$($_.numberofcores)" }
+Get-CimInstance Win32_Processor -ErrorAction SilentlyContinue | ForEach-Object { "numberofcores=$($_.numberofcores) " }
 #numberofcores#
 #processorid#
-Get-CimInstance Win32_Processor -ErrorAction SilentlyContinue | ForEach-Object { "processorid=$($_.processorid)" }
+Get-CimInstance Win32_Processor -ErrorAction SilentlyContinue | ForEach-Object { "processorid=$($_.processorid) " }
 #processorid#
 #maxcachesize#
-Get-CimInstance win32_cachememory -ErrorAction SilentlyContinue | ForEach-Object { "maxcachesize=$($_.maxcachesize)" }
+Get-CimInstance win32_cachememory -ErrorAction SilentlyContinue | ForEach-Object { "maxcachesize=$($_.maxcachesize) " }
 #maxcachesize#
 #currentclockspeed#
-Get-CimInstance Win32_Processor -ErrorAction SilentlyContinue | ForEach-Object { "currentclockspeed=$($_.currentclockspeed)" }
+Get-CimInstance Win32_Processor -ErrorAction SilentlyContinue | ForEach-Object { "currentclockspeed=$($_.currentclockspeed) " }
 #currentclockspeed#
 #datawidth#
-Get-CimInstance Win32_Processor -ErrorAction SilentlyContinue | ForEach-Object { "datawidth=$($_.datawidth)" }
+Get-CimInstance Win32_Processor -ErrorAction SilentlyContinue | ForEach-Object { "datawidth=$($_.datawidth) " }
 #datawidth#
 #extclock#
-Get-CimInstance Win32_Processor -ErrorAction SilentlyContinue | ForEach-Object { "extclock=$($_.extclock)" }
+Get-CimInstance Win32_Processor -ErrorAction SilentlyContinue | ForEach-Object { "extclock=$($_.extclock) " }
 #extclock#
 #manufacturer#
-Get-CimInstance Win32_BaseBoard -ErrorAction SilentlyContinue | ForEach-Object { "manufacturer=$($_.manufacturer)" }
+Get-CimInstance Win32_BaseBoard -ErrorAction SilentlyContinue | ForEach-Object { "manufacturer=$($_.manufacturer) " }
 #manufacturer#
 #product#
-Get-CimInstance Win32_BaseBoard -ErrorAction SilentlyContinue | ForEach-Object { "product=$($_.product)" }
+Get-CimInstance Win32_BaseBoard -ErrorAction SilentlyContinue | ForEach-Object { "product=$($_.product) " }
 #product#
 #uuid#
-Get-CimInstance Win32_ComputerSystemProduct -ErrorAction SilentlyContinue | ForEach-Object { "uuid=$($_.uuid)" }
+Get-CimInstance Win32_ComputerSystemProduct -ErrorAction SilentlyContinue | ForEach-Object { "uuid=$($_.uuid) " }
 #uuid#
 #biosmanufacturer#
-Get-CimInstance Win32_BIOS -ErrorAction SilentlyContinue | ForEach-Object { "biosmanufacturer=$($_.manufacturer)" }
+Get-CimInstance Win32_BIOS -ErrorAction SilentlyContinue | ForEach-Object { "biosmanufacturer=$($_.manufacturer) " }
 #biosmanufacturer#
 #smbiosbiosversion#
-Get-CimInstance Win32_BIOS -ErrorAction SilentlyContinue | ForEach-Object { "smbiosbiosversion=$($_.SMBIOSBIOSVersion)" }
+Get-CimInstance Win32_BIOS -ErrorAction SilentlyContinue | ForEach-Object { "smbiosbiosversion=$($_.SMBIOSBIOSVersion) " }
 #smbiosbiosversion#
 #releasedate#
-(Get-CimInstance -ClassName win32_bios -ErrorAction SilentlyContinue).ReleaseDate
+Get-CimInstance -ClassName win32_bios -ErrorAction SilentlyContinue | ForEach-Object { "ReleaseDate=$($_.ReleaseDate) " }
 #releasedate#
 #desktopmonitor#
-Get-CimInstance Win32_DesktopMonitor -ErrorAction SilentlyContinue | ForEach-Object { "desktopmonitor=$($_.name)" }
+Get-CimInstance Win32_DesktopMonitor -ErrorAction SilentlyContinue | ForEach-Object { "desktopmonitor=$($_.name) " }
 #desktopmonitor#
 #monitormanufacturer#
-Get-CimInstance Win32_DesktopMonitor -ErrorAction SilentlyContinue | ForEach-Object { "monitormanufacturer=$($_.MonitorManufacturer)" }
+Get-CimInstance Win32_DesktopMonitor -ErrorAction SilentlyContinue | ForEach-Object { "monitormanufacturer=$($_.MonitorManufacturer) " }
 #monitormanufacturer#
 #disk#
-Get-CimInstance Win32_DiskDrive -ErrorAction SilentlyContinue | ForEach-Object { "disk=$($_.Model)" }
+Get-CimInstance Win32_DiskDrive -ErrorAction SilentlyContinue | ForEach-Object { "disk=$($_.Model) " }
 #disk#
 #diskinfo#
-Get-CimInstance Win32_DiskDrive -ErrorAction SilentlyContinue | ForEach-Object { "interfacetype=$($_.InterfaceType)"; "size=$($_.Size)"; "totalsectors=$($_.TotalSectors)"; "partitions=$($_.Partitions)"; "firmwarerevision=$($_.FirmwareRevision)" }
+Get-CimInstance Win32_DiskDrive -ErrorAction SilentlyContinue | ForEach-Object { "interfacetype=$($_.InterfaceType) "; "size=$($_.Size) "; "totalsectors=$($_.TotalSectors) "; "partitions=$($_.Partitions) "; "firmwarerevision=$($_.FirmwareRevision) " }
 #diskinfo#
 #volumeinfo#
 [Console]::OutputEncoding = [System.Text.Encoding]::GetEncoding(936); Get-CimInstance Win32_LogicalDisk | Select-Object @{Name='Name';Expression={$_.DeviceID}},VolumeName,Description,FileSystem,Size,FreeSpace | Format-Table -AutoSize | Out-String -Width 4096
 #volumeinfo#
 #printer#
-Get-CimInstance Win32_Printer -Filter "Default=$true" -ErrorAction SilentlyContinue | ForEach-Object { "printercaption=$($_.Caption)" }
+Get-CimInstance Win32_Printer -Filter "Default=$true" -ErrorAction SilentlyContinue | ForEach-Object { "printercaption=$($_.Caption) " }
 #printer#
 #printerdriver#
-Get-CimInstance Win32_Printer -Filter "Default=$true" -ErrorAction SilentlyContinue | ForEach-Object { "printerdriver=$($_.DriverName)" }
+Get-CimInstance Win32_Printer -Filter "Default=$true" -ErrorAction SilentlyContinue | ForEach-Object { "printerdriver=$($_.DriverName) " }
 #printerdriver#
 #soundcard#
-Get-CimInstance Win32_SoundDevice -ErrorAction SilentlyContinue | ForEach-Object { "soundcard=$($_.Name)" }
+Get-CimInstance Win32_SoundDevice -ErrorAction SilentlyContinue | ForEach-Object { "soundcard=$($_.Name) " }
 #soundcard#
 #netspeed#
-Get-CimInstance -ClassName Win32_PerfFormattedData_Tcpip_NetworkInterface -ErrorAction SilentlyContinue | ForEach-Object { "CurrentBandwidth=$($_.CurrentBandwidth)" }
+Get-CimInstance -ClassName Win32_PerfFormattedData_Tcpip_NetworkInterface -ErrorAction SilentlyContinue | ForEach-Object { "CurrentBandwidth=$($_.CurrentBandwidth) " }
 #netspeed#
 #gateway#
-Get-CimInstance Win32_NetworkAdapterConfiguration -Filter "IPEnabled=$true" -ErrorAction SilentlyContinue | ForEach-Object { "defaultipgateway=$($_.DefaultIPGateway)" }
+Get-CimInstance Win32_NetworkAdapterConfiguration -Filter "IPEnabled=$true" -ErrorAction SilentlyContinue | ForEach-Object { "defaultipgateway=$($_.DefaultIPGateway) " }
 #gateway#
 #ipaddress#
-Get-CimInstance Win32_NetworkAdapterConfiguration -Filter "IPEnabled=$true" -ErrorAction SilentlyContinue | ForEach-Object { "ipaddress=$($_.IPAddress)" }
+Get-CimInstance Win32_NetworkAdapterConfiguration -Filter "IPEnabled=$true" -ErrorAction SilentlyContinue | ForEach-Object { "ipaddress=$($_.IPAddress) " }
 #ipaddress#
 #macaddress#
-Get-CimInstance Win32_NetworkAdapterConfiguration -Filter "IPEnabled=$true" -ErrorAction SilentlyContinue | ForEach-Object { "macaddress=$($_.MACAddress)" }
+Get-CimInstance Win32_NetworkAdapterConfiguration -Filter "IPEnabled=$true" -ErrorAction SilentlyContinue | ForEach-Object { "macaddress=$($_.MACAddress) " }
 #macaddress#
 #mem#
-Get-CimInstance Win32_PhysicalMemory -ErrorAction SilentlyContinue | ForEach-Object { "capacity=$($_.Capacity)" }
+Get-CimInstance Win32_PhysicalMemory -ErrorAction SilentlyContinue | ForEach-Object { "capacity=$($_.Capacity) " }
 #mem#
 #memspeed#
-Get-CimInstance Win32_PhysicalMemory -ErrorAction SilentlyContinue | ForEach-Object { "speed=$($_.Speed)" }
+Get-CimInstance Win32_PhysicalMemory -ErrorAction SilentlyContinue | ForEach-Object { "speed=$($_.Speed) " }
 #memspeed#
 #pagefile#
-Get-CimInstance Win32_PageFileUsage -ErrorAction SilentlyContinue | ForEach-Object { "name=$($_.Name)" }
+Get-CimInstance Win32_PageFileUsage -ErrorAction SilentlyContinue | ForEach-Object { "name=$($_.Name) " }
 #pagefile#
 #pagefileallocatedbasesize#
-Get-CimInstance Win32_PageFileUsage -ErrorAction SilentlyContinue | ForEach-Object { "allocatedbasesize=$($_.AllocatedBaseSize)" }
+Get-CimInstance Win32_PageFileUsage -ErrorAction SilentlyContinue | ForEach-Object { "allocatedbasesize=$($_.AllocatedBaseSize) " }
 #pagefileallocatedbasesize#
 #pagefilecurrentusage#
-Get-CimInstance Win32_PageFileUsage -ErrorAction SilentlyContinue | ForEach-Object { "currentusage=$($_.CurrentUsage)" }
+Get-CimInstance Win32_PageFileUsage -ErrorAction SilentlyContinue | ForEach-Object { "currentusage=$($_.CurrentUsage) " }
 #pagefilecurrentusage#
 #pagefilepeakusage#
-Get-CimInstance Win32_PageFileUsage -ErrorAction SilentlyContinue | ForEach-Object { "peakusage=$($_.PeakUsage)" }
+Get-CimInstance Win32_PageFileUsage -ErrorAction SilentlyContinue | ForEach-Object { "peakusage=$($_.PeakUsage) " }
 #pagefilepeakusage#
-#resolution#
-Get-CimInstance Win32_VideoController -ErrorAction SilentlyContinue | ForEach-Object { "resolution=$($_.CurrentHorizontalResolution)x$($_.CurrentVerticalResolution)" }
-#resolution#
+#x_resolution#
+Get-CimInstance Win32_VideoController -ErrorAction SilentlyContinue | ForEach-Object { "CurrentHorizontalResolution=$($_.CurrentHorizontalResolution) " }
+#x_resolution#
+#y_resolution#
+Get-CimInstance Win32_VideoController -ErrorAction SilentlyContinue | ForEach-Object { "CurrentVerticalResolution=$($_.CurrentVerticalResolution) " }
+#y_resolution#
 #gpu#
-Get-CimInstance Win32_VideoController -ErrorAction SilentlyContinue | ForEach-Object { "gpu=$($_.Name)" }
+Get-CimInstance Win32_VideoController -ErrorAction SilentlyContinue | ForEach-Object { "gpu=$($_.Name) " }
 #gpu#
 #gpuram#
-Get-CimInstance Win32_VideoController -ErrorAction SilentlyContinue | ForEach-Object { "gpuram=$($_.AdapterRAM)" }
+Get-CimInstance Win32_VideoController -ErrorAction SilentlyContinue | ForEach-Object { "gpuram=$($_.AdapterRAM) " }
 #gpuram#
 #videomodedescription#
-Get-CimInstance Win32_VideoController -ErrorAction SilentlyContinue | ForEach-Object { "videomodedescription=$($_.VideoModeDescription)" }
+Get-CimInstance Win32_VideoController -ErrorAction SilentlyContinue | ForEach-Object { "videomodedescription=$($_.VideoModeDescription) " }
 #videomodedescription#
 #currentrefreshrate#
-Get-CimInstance Win32_VideoController -ErrorAction SilentlyContinue | ForEach-Object { "currentrefreshrate=$($_.CurrentRefreshRate)" }
+Get-CimInstance Win32_VideoController -ErrorAction SilentlyContinue | ForEach-Object { "currentrefreshrate=$($_.CurrentRefreshRate) " }
 #currentrefreshrate#
 #driverdate#
-(Get-CimInstance -ClassName Win32_VideoController -ErrorAction SilentlyContinue).DriverDate
+Get-CimInstance -ClassName Win32_VideoController -ErrorAction SilentlyContinue | ForEach-Object { "DriverDate=$($_.DriverDate) " }
 #driverdate#
 #driverversion#
-Get-CimInstance Win32_VideoController -ErrorAction SilentlyContinue | ForEach-Object { "driverversion=$($_.DriverVersion)" }
+Get-CimInstance Win32_VideoController -ErrorAction SilentlyContinue | ForEach-Object { "driverversion=$($_.DriverVersion) " }
 #driverversion#
 :31
 setlocal
