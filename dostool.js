@@ -15,7 +15,7 @@
 ò›ò‰ò‡‚¥∂‰ìØõNÈ‡ÿ±ÍŒí¨≥™ëı—Ó’ƒÑm‰’†ëûõõñùäöG¥˙∏±êÍÅ›û≥Ëıìû
 Ã“û¥◊¿üÇ“ØóﬂûÜÅ„Å€ìµë˛û¥ëaõ¬÷∆ùpò˘ó⁄ït¨ãóÏëıŒ‚µ§Ö_Éß∏ÀÖX∑Æ
 ‡°ñÖWÖY¨{í∞◊°õKﬂ…¬‘†≤ñ[êÒûâÍ≈∫Œ¨Ñ÷¥Üï†nïjÃ°∫∫ΩΩÿ¶π¿ïjú}ûô
-				
+			
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -68,7 +68,7 @@ cd /d "%~dp0"
 >nul chcp 936
 title DOSπ§æﬂœ‰
 set ver=20260701
-set versize=173920
+set versize=173895
 set xz0=0
 set nx1=[+]œ¬“ª“≥
 set nx2=[-]…œ“ª“≥
@@ -5155,8 +5155,8 @@ for %%a in (
 )
 %hx%
 %sel% shuru " ‰»Î—°œÓ: " 120
-if "!shuru!" equ "1" (start certmgr.msc&goto memuv2)
-if "!shuru!" equ "2" (start certlm.msc&goto memuv2)
+if "!shuru!" equ "1" (start certmgr.msc)
+if "!shuru!" equ "2" (start certlm.msc)
 if "!shuru!" equ "3" (endlocal&goto memuv2)
 if "!shuru!" equ "0" (endlocal&goto memuv2)
 endlocal
