@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-			
+	
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -68,7 +68,7 @@ cd /d "%~dp0"
 >nul chcp 936
 title DOS工具箱
 set ver=20260701
-set versize=173895
+set versize=175280
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -228,7 +228,14 @@ if defined winv (
 		set fyacs=
 		set fya=
 	) else (
-		for /l %%a in (1,1,26) do (set "fya=!fya!!fy!")
+		for /f "delims=: skip=4 tokens=2" %%a in ('mode con') do (
+			set /a "cs+=1"
+			if "!cs!" equ "1" (set "l=%%a")
+		)
+		set cs=
+		set /a "l/=3"
+		for /l %%a in (1,1,!l!) do (set "fya=!fya!!fy!")
+		set l=
 		echo;!fya!
 		set /a "fyacs+=1"
 	)
@@ -1964,50 +1971,35 @@ for /f "tokens=2 delims==" %%a in (!disk!) do (
 )
 echo;
 set cs=0
+set firmwarerevision0=固件版本
+set interfacetype0=接口类型
+set totalsectors0=总扇区数
+set partitions0=分区数
+set size0=硬盘容量
+set num=1
+call :xysav
+<nul set /p "=读取硬盘信息..."
+call :xyres
 for /f "delims=" %%a in (!diskinfo!) do (
 	set "var=%%a"
 	set "var=!var:~0,-1!"
 	if defined var (
-		if "!cs!" equ "0" (echo;固件版本	接口类型	硬盘容量	总扇区数	分区数)
 		set /a "cs+=1"
-		>nul 2>nul set "!var!"
+		for /f "tokens=1* delims==" %%a in ("!var!") do (
+			if /i "%%a" equ "size" (
+				call :xdwjs %%b b jg
+				>nul 2>nul set "%%a!num!=!jg!"
+			) else (
+				>nul 2>nul set "%%a!num!=%%b"
+			)
+		)
 		if "!cs!" equ "5" (
-			call :xdwjs !size! b size
-			call :strlen firmwarerevision dc
-			if !dc! lss 8 (
-				set "dsp=!firmwarerevision!		"
-			) else (
-				set "dsp=!firmwarerevision!	"
-			)
-			call :strlen interfacetype dc
-			if !dc! lss 8 (
-				set "dsp=!dsp!!interfacetype!		"
-			) else (
-				set "dsp=!dsp!!interfacetype!	"
-			)
-			call :strlen size dc
-			if !dc! lss 8 (
-				set "dsp=!dsp!!size!		"
-			) else (
-				set "dsp=!dsp!!size!	"
-			)
-			call :strlen totalsectors dc
-			if !dc! lss 8 (
-				set "dsp=!dsp!!totalsectors!		"
-			) else (
-				set "dsp=!dsp!!totalsectors!	"
-			)
-			call :strlen partitions dc
-			if !dc! lss 8 (
-				set "dsp=!dsp!!partitions!"
-			) else (
-				set "dsp=!dsp!!partitions!"
-			)
-			echo;!dsp!
-			set cs=
+			set cs=0
+			set /a "num+=1"
 		)
 	)
 )
+call :dplist "interfacetype firmwarerevision size totalsectors partitions" 8
 call :sypf sypf
 echo;!sypf!
 echo;
@@ -3512,8 +3504,7 @@ set /p "kjfs=拖动目标文件到此窗口: "
 call :var kjfs
 if not defined kjfs (endlocal&goto 55)
 call :lj kjfs kjfs
-for /f "delims=" %%a in ("!kjfs!") do (set "kjfsmc=%%~na")
-mshta VBScript:Execute("Set a=CreateObject(""WScript.Shell""):Set b=a.CreateShortcut(a.SpecialFolders(""Desktop"") & ""\!kjfsmc!.lnk""):b.TargetPath=""!kjfs!"":b.WorkingDirectory=""%~dp0"":b.Save:close")
+call :lnk "!kjfs!"
 %hx%
 %pause%
 endlocal
@@ -7198,5 +7189,72 @@ if defined ip (
 	exit /b 0
 )
 exit /b 1
+:dplist
+if "%~1" equ "" (goto :eof)
+for /f "delims=0123456789" %%a in ("%~2") do (goto :eof)
+setlocal
+if "%~2" equ "" (set tnum=4) else (set "tnum=%~2")
+set lcd=0
+set maxlcd=0
+for %%a in (%~1) do (call :dplist.1 "%%a")
+for %%a in (%~1) do (
+	set "%%a.maxlen=0"
+	for /l %%b in (0,1,!maxlcd!) do (
+		if "!%%a%%b!" equ "" (set "%%a%%b=[null]")
+		set slen=0
+		call :dplist.2 %%a%%b %%a%%b.len
+		if !%%a%%b.len! gtr !%%a.maxlen! (set "%%a.maxlen=!%%a%%b.len!")
+	)
+)
+for /l %%a in (0,1,!maxlcd!) do (
+	for %%b in (%~1) do (
+		set /a "_tab=%%b.maxlen-%%b%%a.len+tnum"
+		for /l %%c in (1,1,!_tab!) do (set "%%b%%a=!%%b%%a! ")
+		<nul set /p "=!%%b%%a!"
+	)
+	echo;
+)
+goto :eof
+:dplist.1
+if not defined %~1!lcd! (goto :eof)
+if !lcd! gtr !maxlcd! (set "maxlcd=!lcd!")
+set /a "lcd+=1"
+goto dplist.1
+:dplist.2
+if "!%~1:~%slen%,1!" equ "" (goto :eof)
+if "!%~1:~%slen%,1!" gtr "Z" (set /a "%~2+=2") else (set /a "%~2+=1")
+set /a "slen+=1"
+goto dplist.2
+:lnk
+if "%~1" equ "" (goto :eof)
+for /f "delims=" %%a in ("%~1") do (
+	for /f "tokens=3 delims=.]" %%a in ('ver') do (
+		if %%a lss 22000 (
+			for %%a in (mshta.exe) do (
+				if "%%~$path:a" neq "" (
+					call :mslnk "%~1" "%~n1" "%~dp1"
+					goto :eof
+				)
+			)
+		)
+	)
+	call :pwiex lnk "%~1" "%~n1" "%~dp1"
+)
+goto :eof
+:mslnk
+start /min mshta VBScript:Execute("Set a=CreateObject(""WScript.Shell""):Set b=a.CreateShortcut(a.SpecialFolders(""Desktop"") & ""\%~2.lnk""):b.TargetPath=""%~1"":b.WorkingDirectory=""%~3"":b.Save:close")
+goto :eof
+#lnk#
+param(
+	[string]$kjfs,
+	[string]$kjfsmc,
+	[string]$dp1
+)
+$ws = New-Object -ComObject WScript.Shell
+$lnk = $ws.CreateShortcut([Environment]::GetFolderPath("Desktop") + "\$kjfsmc.lnk")
+$lnk.TargetPath = $kjfs
+$lnk.WorkingDirectory = $dp1
+$lnk.Save()
+#lnk#
 :winnt
 @echo;Incompatible with the current system operating environment
