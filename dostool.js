@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-	
+		
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -68,7 +68,7 @@ cd /d "%~dp0"
 >nul chcp 936
 title DOS工具箱
 set ver=20260701
-set versize=175280
+set versize=175575
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -138,11 +138,19 @@ if not defined a!start! (
 )
 set /a "end=start+8"
 set /a "memuys=start/9+1"
-if defined winv (
-	echo;				菜单 - 第!cswz!!ysbak:~0,3!92m!memuys!!cswz!!ysbak!页
-) else (
-	echo;				菜单 - 第!memuys!页
+for /f "delims=: skip=4 tokens=2" %%a in ('mode con') do (
+	set /a "cs+=1"
+	if "!cs!" equ "1" (set "l=%%a")
 )
+set cs=
+set /a "spn=(l-(11+memuys))/2"
+for /l %%a in (1,1,!spn!) do (set "sp=!sp! ")
+if defined winv (
+	echo;!sp!菜单 - 第!cswz!!ysbak:~0,3!92m!memuys!!cswz!!ysbak!页
+) else (
+	echo;!sp!菜单 - 第!memuys!页
+)
+set sp=
 for /f "delims=. " %%a in ("!time!") do (echo;现在是 !date! %%a)
 call :memuv2.2
 set xx=0
@@ -159,25 +167,32 @@ set /a "pd=end+1"
 if defined a!pd! (
 	set /a "pd=start-1"
 	if !pd! lss 1 (
+		set /a "spn=l-25"
+		for /l %%a in (1,1,!spn!) do (set "sp=!sp! ")
 		if defined winv (
-			echo;[0]退出								!cswz!42;97m!nx1!!cswz!!ysbak!
+			echo;[0]退出!sp!!cswz!42;97m!nx1!!cswz!!ysbak!
 		) else (
-			echo;[0]退出								!nx1!
+			echo;[0]退出!sp!!nx1!
 		)
 	) else (
+		set /a "spn=l-38"
+		for /l %%a in (1,1,!spn!) do (set "sp=!sp! ")
 		if defined winv (
-			echo;[0]退出						!cswz!42;97m!nx1!	!nx2!!cswz!!ysbak!
+			echo;[0]退出!sp!!cswz!42;97m!nx1!	!nx2!!cswz!!ysbak!
 		) else (
-			echo;[0]退出						!nx1!	!nx2!
+			echo;[0]退出!sp!!nx1!	!nx2!
 		)
 	)
 ) else (
+	set /a "spn=l-25"
+	for /l %%a in (1,1,!spn!) do (set "sp=!sp! ")
 	if defined winv (
-		echo;[0]退出								!cswz!42;97m!nx2!!cswz!!ysbak!
+		echo;[0]退出!sp!!cswz!42;97m!nx2!!cswz!!ysbak!
 	) else (
-		echo;[0]退出								!nx2!
+		echo;[0]退出!sp!!nx2!
 	)
 )
+set sp=
 call :memuv2.2
 set caidan=
 set /p "caidan=请输入你的选择: "
@@ -228,14 +243,9 @@ if defined winv (
 		set fyacs=
 		set fya=
 	) else (
-		for /f "delims=: skip=4 tokens=2" %%a in ('mode con') do (
-			set /a "cs+=1"
-			if "!cs!" equ "1" (set "l=%%a")
-		)
-		set cs=
-		set /a "l/=3"
-		for /l %%a in (1,1,!l!) do (set "fya=!fya!!fy!")
-		set l=
+		set /a "ln=l/3"
+		for /l %%a in (1,1,!ln!) do (set "fya=!fya!!fy!")
+		set ln=
 		echo;!fya!
 		set /a "fyacs+=1"
 	)
@@ -7200,19 +7210,20 @@ for %%a in (%~1) do (call :dplist.1 "%%a")
 for %%a in (%~1) do (
 	set "%%a.maxlen=0"
 	for /l %%b in (0,1,!maxlcd!) do (
-		if "!%%a%%b!" equ "" (set "%%a%%b=[null]")
+		if "!%%a%%b!" equ "" (set "%%a%%b= ")
 		set slen=0
 		call :dplist.2 %%a%%b %%a%%b.len
 		if !%%a%%b.len! gtr !%%a.maxlen! (set "%%a.maxlen=!%%a%%b.len!")
 	)
 )
 for /l %%a in (0,1,!maxlcd!) do (
+	set line=
 	for %%b in (%~1) do (
 		set /a "_tab=%%b.maxlen-%%b%%a.len+tnum"
 		for /l %%c in (1,1,!_tab!) do (set "%%b%%a=!%%b%%a! ")
-		<nul set /p "=!%%b%%a!"
+		set "line=!line!!%%b%%a!"
 	)
-	echo;
+	echo;!line!
 )
 goto :eof
 :dplist.1
