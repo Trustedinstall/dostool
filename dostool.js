@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-		
+	
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -27,30 +27,27 @@ if /i "%1" equ "ks" (goto ks)
 if not exist "!windir!\system32\fltmc.exe" (goto ks)
 >nul 2>nul fltmc&&goto ks
 echo;等待管理员权限...
-for %%a in (wt.exe) do (
-	if "%%~$path:a" neq "" (
-		set "filepath=wt"
-		set "arg=%~f0 ks"
-	) else (
-		set "filepath=%~f0"
-		set "arg=ks"
-	)
+call :findcommand wt.exe
+if errorlevel 1 (
+	set "filepath=%~f0"
+	set "arg=ks"
+) else (
+	set "filepath=wt"
+	set "arg=%~f0 ks"
 )
 for /f "tokens=3 delims=.]" %%a in ('ver') do (
 	if %%a gtr 22000 (
-		for %%a in (sudo.exe) do (
-			if "%%~$path:a" neq "" (
-				>nul 2>nul sudo config&&(
-					sudo "!filepath!" !arg!
-					exit /b !errorlevel!
-				)
+		call :findcommand sudo.exe
+		if not errorlevel 1 (
+			>nul 2>nul sudo config&&(
+				sudo "!filepath!" !arg!
+				exit /b !errorlevel!
 			)
 		)
 		call :pwst
 	) else (
-		for %%a in (mshta.exe) do (
-			if "%%~$path:a" neq "" (call :msst) else (call :pwst)
-		)
+		call :findcommand mshta.exe
+		if errorlevel 1 (call :pwst) else (call :msst)
 	)
 )
 exit /b !errorlevel!
@@ -68,7 +65,7 @@ cd /d "%~dp0"
 >nul chcp 936
 title DOS工具箱
 set ver=20260701
-set versize=175575
+set versize=176075
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -1045,20 +1042,19 @@ if "!pid!" neq "!jclj!" (
 	goto 23.6
 )
 cls
-for %%a in (wmic.exe) do (
-	if "%%~$path:a" neq "" (
-		for /f "tokens=2 delims==" %%a in (
-			'"2>nul wmic process where processid=!jclj! get executablepath /value"'
-		) do (
-			set "jclj1=%%a"
-			set "jclj1=!jclj1:~0,-1!"
-		)
-	) else (
-		for /f "delims=" %%a in (
-			'2^>nul %pws% "Try { (Get-Process -Id !jclj! -ErrorAction Stop).Path } Catch { $p = Get-CimInstance Win32_Process -Filter \"ProcessId = !jclj!\"; if ($p) { $p.ExecutablePath } }"'
-		) do (
-			set "jclj1=%%a"
-		)
+call :findcommand wmic.exe
+if errorlevel 1 (
+	for /f "delims=" %%a in (
+		'2^>nul %pws% "Try { (Get-Process -Id !jclj! -ErrorAction Stop).Path } Catch { $p = Get-CimInstance Win32_Process -Filter \"ProcessId = !jclj!\"; if ($p) { $p.ExecutablePath } }"'
+	) do (
+		set "jclj1=%%a"
+	)
+) else (
+	for /f "tokens=2 delims==" %%a in (
+		'"2>nul wmic process where processid=!jclj! get executablepath /value"'
+	) do (
+		set "jclj1=%%a"
+		set "jclj1=!jclj1:~0,-1!"
 	)
 )
 echo;文件路径: !jclj1!
@@ -1098,17 +1094,16 @@ if "!pid!" neq "!jclj!" (
 )
 cls
 %hx%
-for %%a in (wmic.exe) do (
-	if "%%~$path:a" neq "" (
-		for /f "delims=" %%a in ('"2>nul wmic process where processid=!jclj! get * /value"') do (
-			set "var=%%a"
-			set "var=!var:~0,-1!"
-			>nul 2>nul set "!var!"
-		)
-	) else (
-		for /f "delims=" %%a in ('""%~f0" pwiex proinfo !jclj!"') do (
-			>nul 2>nul set "%%a"
-		)
+call :findcommand wmic.exe
+if errorlevel 1 (
+	for /f "delims=" %%a in ('""%~f0" pwiex proinfo !jclj!"') do (
+		>nul 2>nul set "%%a"
+	)
+) else (
+	for /f "delims=" %%a in ('"2>nul wmic process where processid=!jclj! get * /value"') do (
+		set "var=%%a"
+		set "var=!var:~0,-1!"
+		>nul 2>nul set "!var!"
 	)
 )
 if defined name (echo;名称:		!name!)
@@ -1205,14 +1200,13 @@ set ysbak=97;40m
 title 循环显示CPU占用率与网络速度!system!
 cls
 echo;正在获取网络信息...
-for %%a in (wmic.exe) do (
-	if "%%~$path:a" neq "" (
-		set "netcard='"2>nul wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get name /value"'"
-		set "cpu='"2>nul wmic cpu get name /value"'"
-	) else (
-		set "netcard='"call "%~f0" pwiex netcard"'"
-		set "cpu='"call "%~f0" pwiex cpu"'"
-	)
+call :findcommand wmic.exe
+if errorlevel 1 (
+	set "netcard='"call "%~f0" pwiex netcard"'"
+	set "cpu='"call "%~f0" pwiex cpu"'"
+) else (
+	set "netcard='"2>nul wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get name /value"'"
+	set "cpu='"2>nul wmic cpu get name /value"'"
 )
 for /f "tokens=2 delims==" %%a in (!netcard!) do (
 	set "netcard=%%a"
@@ -1225,14 +1219,13 @@ for /f "tokens=2 delims==" %%a in (!cpu!) do (
 cls
 :23.4.1
 set xh=
-for %%a in (wmic.exe) do (
-	if "%%~$path:a" neq "" (
-		set "dspeed='"2>nul wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get BytesReceivedPersec,BytesSentPersec /value"'"
-		set "cpuide='"2>nul wmic Path Win32_PerfFormattedData_PerfOS_Processor Where ^"Name='_Total'^" Get PercentIdleTime /value"'"
-	) else (
-		set "dspeed='"call "%~f0" pwiex downspeed"'"
-		set "cpuide='"call "%~f0" pwiex cpuide"'"
-	)
+call :findcommand wmic.exe
+if errorlevel 1 (
+	set "dspeed='"call "%~f0" pwiex downspeed"'"
+	set "cpuide='"call "%~f0" pwiex cpuide"'"
+) else (
+	set "dspeed='"2>nul wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get BytesReceivedPersec,BytesSentPersec /value"'"
+	set "cpuide='"2>nul wmic Path Win32_PerfFormattedData_PerfOS_Processor Where ^"Name='_Total'^" Get PercentIdleTime /value"'"
 )
 for /f "tokens=2 delims==" %%a in (!dspeed!) do (
 	set /a "xh+=1"
@@ -1654,96 +1647,95 @@ goto memuv2
 setlocal
 title !a30!!system!
 cls
-for %%a in (wmic.exe) do (
-	if "%%~$path:a" equ "" (
-		set "LastBootUpTime='"call "%~f0" pwiex LastBootUpTime"'"
-		set "InstallDate='"call "%~f0" pwiex InstallDate"'"
-		set "cpu='"call "%~f0" pwiex cpu"'"
-		set "corenum='"call "%~f0" pwiex corenum"'"
-		set "numberofcores='"call "%~f0" pwiex numberofcores"'"
-		set "processorid='"call "%~f0" pwiex processorid"'"
-		set "maxcachesize='"call "%~f0" pwiex maxcachesize"'"
-		set "currentclockspeed='"call "%~f0" pwiex currentclockspeed"'"
-		set "datawidth='"call "%~f0" pwiex datawidth"'"
-		set "extclock='"call "%~f0" pwiex extclock"'"
-		set "manufacturer='"call "%~f0" pwiex manufacturer"'"
-		set "product='"call "%~f0" pwiex product"'"
-		set "uuid='"call "%~f0" pwiex uuid"'"
-		set "biosmanufacturer='"call "%~f0" pwiex biosmanufacturer"'"
-		set "smbiosbiosversion='"call "%~f0" pwiex smbiosbiosversion"'"
-		set "releasedate='"call "%~f0" pwiex releasedate"'"
-		set "desktopmonitor='"call "%~f0" pwiex desktopmonitor"'"
-		set "monitormanufacturer='"call "%~f0" pwiex monitormanufacturer"'"
-		set "x_resolution='"call "%~f0" pwiex x_resolution"'"
-		set "y_resolution='"call "%~f0" pwiex y_resolution"'"
-		set "gpu='"call "%~f0" pwiex gpu"'"
-		set "gpuram='"call "%~f0" pwiex gpuram"'"
-		set "videomodedescription='"call "%~f0" pwiex videomodedescription"'"
-		set "currentrefreshrate='"call "%~f0" pwiex currentrefreshrate"'"
-		set "driverdate='"call "%~f0" pwiex driverdate"'"
-		set "driverversion='"call "%~f0" pwiex driverversion"'"
-		set "disk='"call "%~f0" pwiex disk"'"
-		set "diskinfo='"call "%~f0" pwiex diskinfo"'"
-		set "volumeinfo='"call "%~f0" pwiex volumeinfo"'"
-		set "printer='"call "%~f0" pwiex printer"'"
-		set "printerdriver='"call "%~f0" pwiex printerdriver"'"
-		set "soundcard='"call "%~f0" pwiex soundcard"'"
-		set "netcard='"call "%~f0" pwiex netcard"'"
-		set "netspeed='"call "%~f0" pwiex netspeed"'"
-		set "gateway='"call "%~f0" pwiex Gateway"'"
-		set "ipaddress='"call "%~f0" pwiex ipaddress"'"
-		set "macaddress='"call "%~f0" pwiex macaddress"'"
-		set "mem='"call "%~f0" pwiex mem"'"
-		set "memspeed='"call "%~f0" pwiex memspeed"'"
-		set "pagefile='"call "%~f0" pwiex pagefile"'"
-		set "pagefileallocatedbasesize='"call "%~f0" pwiex pagefileallocatedbasesize"'"
-		set "pagefilecurrentusage='"call "%~f0" pwiex pagefilecurrentusage"'"
-		set "pagefilepeakusage='"call "%~f0" pwiex pagefilepeakusage"'"
-	) else (
-		set "LastBootUpTime='"2>nul Wmic OS Get LastBootUpTime /value"'"
-		set "InstallDate='"2>nul Wmic OS Get InstallDate /value"'"
-		set "cpu='"2>nul Wmic CPU Get Name /value"'"
-		set "corenum='"2>nul Wmic CPU Get numberOflogicalprocessors /value"'"
-		set "numberofcores='"2>nul Wmic CPU Get numberofcores /value"'"
-		set "processorid='"2>nul Wmic CPU Get processorid /value"'"
-		set "maxcachesize='"2>nul wmic path win32_cachememory get maxcachesize /value"'"
-		set "currentclockspeed='"2>nul wmic cpu get currentclockspeed /value"'"
-		set "datawidth='"2>nul wmic cpu get datawidth /value"'"
-		set "extclock='"2>nul wmic cpu get extclock /value"'"
-		set "manufacturer='"2>nul wmic cpu get manufacturer /value"'"
-		set "product='"2>nul wmic baseboard get product /value"'"
-		set "uuid='"2>nul Wmic Csproduct Get Uuid /value"'"
-		set "biosmanufacturer='"2>nul Wmic BIOS Get Manufacturer /value"'"
-		set "smbiosbiosversion='"2>nul Wmic BIOS Get SMBIOSBIOSVersion /value"'"
-		set "releasedate='"2>nul Wmic BIOS Get ReleaseDate /value"'"
-		set "desktopmonitor='"2>nul wmic desktopmonitor get name /value"'"
-		set "monitormanufacturer='"2>nul wmic desktopmonitor get monitormanufacturer /value"'"
-		set "x_resolution='"2>nul wmic path win32_videocontroller get currenthorizontalresolution /value"'"
-		set "y_resolution='"2>nul wmic path win32_videocontroller get currentverticalresolution /value"'"
-		set "gpu='"2>nul wmic path win32_videocontroller get name /value"'"
-		set "gpuram='"2>nul wmic path win32_videocontroller get adapterram /value"'"
-		set "videomodedescription='"2>nul wmic path win32_videocontroller get videomodedescription /value"'"
-		set "currentrefreshrate='"2>nul wmic path win32_videocontroller get currentrefreshrate /value"'"
-		set "driverdate='"2>nul wmic path win32_videocontroller get driverdate /value"'"
-		set "driverversion='"2>nul wmic path win32_videocontroller get driverversion /value"'"
-		set "disk='"2>nul wmic diskdrive get model /value"'"
-		set "diskinfo='"2>nul wmic diskdrive get interfacetype,size,totalsectors,partitions,firmwarerevision /value"'"
-		set "volumeinfo='"2>nul wmic logicaldisk get name,volumename,description,filesystem,size,freespace"'"
-		set "printer='"2>nul Wmic Printer where Default='TRUE' get caption /value"'"
-		set "printerdriver='"2>nul Wmic Printer where Default='TRUE' get drivername /value"'"
-		set "soundcard='"2>nul wmic sounddev get name /value"'"
-		set "netcard='"2>nul Wmic Path Win32_NetworkAdapterConfiguration WHERE IPEnabled='TRUE' get caption /value"'"
-		set "netspeed='"2>nul Wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get CurrentBandwidth /value"'"
-		set "gateway='"2>nul Wmic Path Win32_NetworkAdapterConfiguration WHERE IPEnabled='TRUE' get defaultipgateway /value"'"
-		set "ipaddress='"2>nul Wmic Path Win32_NetworkAdapterConfiguration WHERE IPEnabled='TRUE' get ipaddress /value"'"
-		set "macaddress='"2>nul Wmic Path Win32_NetworkAdapterConfiguration WHERE IPEnabled='TRUE' get macaddress /value"'"
-		set "mem='"2>nul wmic memorychip get capacity /value"'"
-		set "memspeed='"2>nul wmic memorychip get speed /value"'"
-		set "pagefile='"2>nul wmic pagefile get name /value"'"
-		set "pagefileallocatedbasesize='"2>nul wmic pagefile get AllocatedBaseSize /value"'"
-		set "pagefilecurrentusage='"2>nul wmic pagefile get CurrentUsage /value"'"
-		set "pagefilepeakusage='"2>nul wmic pagefile get PeakUsage /value"'"
-	)
+call :findcommand wmic.exe
+if errorlevel 1 (
+	set "LastBootUpTime='"call "%~f0" pwiex LastBootUpTime"'"
+	set "InstallDate='"call "%~f0" pwiex InstallDate"'"
+	set "cpu='"call "%~f0" pwiex cpu"'"
+	set "corenum='"call "%~f0" pwiex corenum"'"
+	set "numberofcores='"call "%~f0" pwiex numberofcores"'"
+	set "processorid='"call "%~f0" pwiex processorid"'"
+	set "maxcachesize='"call "%~f0" pwiex maxcachesize"'"
+	set "currentclockspeed='"call "%~f0" pwiex currentclockspeed"'"
+	set "datawidth='"call "%~f0" pwiex datawidth"'"
+	set "extclock='"call "%~f0" pwiex extclock"'"
+	set "manufacturer='"call "%~f0" pwiex manufacturer"'"
+	set "product='"call "%~f0" pwiex product"'"
+	set "uuid='"call "%~f0" pwiex uuid"'"
+	set "biosmanufacturer='"call "%~f0" pwiex biosmanufacturer"'"
+	set "smbiosbiosversion='"call "%~f0" pwiex smbiosbiosversion"'"
+	set "releasedate='"call "%~f0" pwiex releasedate"'"
+	set "desktopmonitor='"call "%~f0" pwiex desktopmonitor"'"
+	set "monitormanufacturer='"call "%~f0" pwiex monitormanufacturer"'"
+	set "x_resolution='"call "%~f0" pwiex x_resolution"'"
+	set "y_resolution='"call "%~f0" pwiex y_resolution"'"
+	set "gpu='"call "%~f0" pwiex gpu"'"
+	set "gpuram='"call "%~f0" pwiex gpuram"'"
+	set "videomodedescription='"call "%~f0" pwiex videomodedescription"'"
+	set "currentrefreshrate='"call "%~f0" pwiex currentrefreshrate"'"
+	set "driverdate='"call "%~f0" pwiex driverdate"'"
+	set "driverversion='"call "%~f0" pwiex driverversion"'"
+	set "disk='"call "%~f0" pwiex disk"'"
+	set "diskinfo='"call "%~f0" pwiex diskinfo"'"
+	set "volumeinfo='"call "%~f0" pwiex volumeinfo"'"
+	set "printer='"call "%~f0" pwiex printer"'"
+	set "printerdriver='"call "%~f0" pwiex printerdriver"'"
+	set "soundcard='"call "%~f0" pwiex soundcard"'"
+	set "netcard='"call "%~f0" pwiex netcard"'"
+	set "netspeed='"call "%~f0" pwiex netspeed"'"
+	set "gateway='"call "%~f0" pwiex Gateway"'"
+	set "ipaddress='"call "%~f0" pwiex ipaddress"'"
+	set "macaddress='"call "%~f0" pwiex macaddress"'"
+	set "mem='"call "%~f0" pwiex mem"'"
+	set "memspeed='"call "%~f0" pwiex memspeed"'"
+	set "pagefile='"call "%~f0" pwiex pagefile"'"
+	set "pagefileallocatedbasesize='"call "%~f0" pwiex pagefileallocatedbasesize"'"
+	set "pagefilecurrentusage='"call "%~f0" pwiex pagefilecurrentusage"'"
+	set "pagefilepeakusage='"call "%~f0" pwiex pagefilepeakusage"'"
+) else (
+	set "LastBootUpTime='"2>nul wmic OS Get LastBootUpTime /value"'"
+	set "InstallDate='"2>nul wmic OS Get InstallDate /value"'"
+	set "cpu='"2>nul wmic CPU Get Name /value"'"
+	set "corenum='"2>nul wmic CPU Get numberOflogicalprocessors /value"'"
+	set "numberofcores='"2>nul wmic CPU Get numberofcores /value"'"
+	set "processorid='"2>nul wmic CPU Get processorid /value"'"
+	set "maxcachesize='"2>nul wmic path win32_cachememory get maxcachesize /value"'"
+	set "currentclockspeed='"2>nul wmic cpu get currentclockspeed /value"'"
+	set "datawidth='"2>nul wmic cpu get datawidth /value"'"
+	set "extclock='"2>nul wmic cpu get extclock /value"'"
+	set "manufacturer='"2>nul wmic cpu get manufacturer /value"'"
+	set "product='"2>nul wmic baseboard get product /value"'"
+	set "uuid='"2>nul wmic Csproduct Get Uuid /value"'"
+	set "biosmanufacturer='"2>nul wmic BIOS Get Manufacturer /value"'"
+	set "smbiosbiosversion='"2>nul wmic BIOS Get SMBIOSBIOSVersion /value"'"
+	set "releasedate='"2>nul wmic BIOS Get ReleaseDate /value"'"
+	set "desktopmonitor='"2>nul wmic desktopmonitor get name /value"'"
+	set "monitormanufacturer='"2>nul wmic desktopmonitor get monitormanufacturer /value"'"
+	set "x_resolution='"2>nul wmic path win32_videocontroller get currenthorizontalresolution /value"'"
+	set "y_resolution='"2>nul wmic path win32_videocontroller get currentverticalresolution /value"'"
+	set "gpu='"2>nul wmic path win32_videocontroller get name /value"'"
+	set "gpuram='"2>nul wmic path win32_videocontroller get adapterram /value"'"
+	set "videomodedescription='"2>nul wmic path win32_videocontroller get videomodedescription /value"'"
+	set "currentrefreshrate='"2>nul wmic path win32_videocontroller get currentrefreshrate /value"'"
+	set "driverdate='"2>nul wmic path win32_videocontroller get driverdate /value"'"
+	set "driverversion='"2>nul wmic path win32_videocontroller get driverversion /value"'"
+	set "disk='"2>nul wmic diskdrive get model /value"'"
+	set "diskinfo='"2>nul wmic diskdrive get interfacetype,size,totalsectors,partitions,firmwarerevision /value"'"
+	set "volumeinfo='"2>nul wmic logicaldisk get name,volumename,description,filesystem,size,freespace"'"
+	set "printer='"2>nul wmic Printer where Default='TRUE' get caption /value"'"
+	set "printerdriver='"2>nul wmic Printer where Default='TRUE' get drivername /value"'"
+	set "soundcard='"2>nul wmic sounddev get name /value"'"
+	set "netcard='"2>nul wmic Path Win32_NetworkAdapterConfiguration WHERE IPEnabled='TRUE' get caption /value"'"
+	set "netspeed='"2>nul wmic path Win32_PerfFormattedData_Tcpip_NetworkInterface get CurrentBandwidth /value"'"
+	set "gateway='"2>nul wmic Path Win32_NetworkAdapterConfiguration WHERE IPEnabled='TRUE' get defaultipgateway /value"'"
+	set "ipaddress='"2>nul wmic Path Win32_NetworkAdapterConfiguration WHERE IPEnabled='TRUE' get ipaddress /value"'"
+	set "macaddress='"2>nul wmic Path Win32_NetworkAdapterConfiguration WHERE IPEnabled='TRUE' get macaddress /value"'"
+	set "mem='"2>nul wmic memorychip get capacity /value"'"
+	set "memspeed='"2>nul wmic memorychip get speed /value"'"
+	set "pagefile='"2>nul wmic pagefile get name /value"'"
+	set "pagefileallocatedbasesize='"2>nul wmic pagefile get AllocatedBaseSize /value"'"
+	set "pagefilecurrentusage='"2>nul wmic pagefile get CurrentUsage /value"'"
+	set "pagefilepeakusage='"2>nul wmic pagefile get PeakUsage /value"'"
 )
 for /f "tokens=2 delims==" %%a in (!LastBootUpTime!) do (
 	set "systemstarttime=%%a"
@@ -3050,11 +3042,46 @@ for /f "delims=" %%a in (
 %pause%
 goto memuv2
 :kcd
+call :findcommand mshta.exe
+if errorlevel 1 (
+	call :pwiex kcd
+	goto memuv2
+) else (
+	for /f "tokens=3 delims=.]" %%a in ('ver') do (
+		if %%a gtr 22000 (
+			call :pwiex kcd
+			goto memuv2
+		)
+	)
+)
 start mshta "javascript:new ActiveXObject('WMPlayer.OCX').cdromCollection.Item(0).Eject();window.close();"
 goto memuv2
+#kcd#
+$wmp = New-Object -ComObject "WMPlayer.OCX"
+$cdrom = $wmp.cdromCollection.Item(0)
+$cdrom.Eject()
+#kcd#
 :gcd
+call :findcommand mshta.exe
+if errorlevel 1 (
+	call :pwiex gcd
+	goto memuv2
+) else (
+	for /f "tokens=3 delims=.]" %%a in ('ver') do (
+		if %%a gtr 22000 (
+			call :pwiex gcd
+			goto memuv2
+		)
+	)
+)
 start mshta "javascript:with (new ActiveXObject('WMPlayer.OCX').cdromCollection.Item(0)){Eject();Eject();}window.close();"
 goto memuv2
+#gcd#
+$wmp = New-Object -ComObject "WMPlayer.OCX"
+$cdrom = $wmp.cdromCollection.Item(0)
+$cdrom.Eject()
+$cdrom.Eject()
+#gcd#
 :42
 setlocal
 title !a42!!system!
@@ -3062,11 +3089,34 @@ cls
 set ydnr=
 set /p "ydnr=输入要阅读的内容: "
 call :var ydnr
+call :findcommand mshta.exe
+if errorlevel 1 (
+	call :pwiex voice "!ydnr!"
+	goto 42.1
+) else (
+	for /f "tokens=3 delims=.]" %%a in ('ver') do (
+		if %%a gtr 22000 (
+			call :pwiex voice "!ydnr!"
+			goto 42.1
+		)
+	)
+)
 start mshta vbscript:createobject("sapi.spvoice").speak("!ydnr!")(window.close)
+:42.1
 %hx%
 %pause%
 endlocal
 goto memuv2
+#voice#
+param(
+	[Parameter(Mandatory=$true)]
+	[string]$text
+)
+Add-Type -AssemblyName System.Speech
+$sp = New-Object System.Speech.Synthesis.SpeechSynthesizer
+$sp.Speak($text)
+$sp.Dispose()
+#voice#
 :43
 setlocal
 title !a43!!system!
@@ -3389,8 +3439,28 @@ if errorlevel 1 (echo;写入失败) else (echo;写入成功)
 endlocal
 goto memuv2
 :51.1
+call :findcommand mshta.exe
+if errorlevel 1 (
+	call :pwiex clip "!nz!"
+	goto :eof
+) else (
+	for /f "tokens=3 delims=.]" %%a in ('ver') do (
+		if %%a gtr 22000 (
+			call :pwiex clip "!nz!"
+			goto :eof
+		)
+	)
+)
 mshta vbscript:clipboardData.SetData("text","!nz!")(window.close)
 goto :eof
+#clip#
+param(
+	[Parameter(Mandatory=$true, Position=0)]
+	$FirstParam
+)
+Add-Type -AssemblyName System.Windows.Forms
+[System.Windows.Forms.Clipboard]::SetText([string]$FirstParam)
+#clip#
 :52
 start services.msc
 goto memuv2
@@ -3789,7 +3859,8 @@ goto memuv2
 setlocal
 title !a63!!system!
 cls
-if not exist "!windir!\system32\certutil.exe" (
+call :findcommand certutil.exe
+if errorlevel 1 (
 	echo;没有找到certutil.exe
 	echo;不能继续Base64编解码
 	%hx%
@@ -5085,47 +5156,27 @@ for /f "delims=" %%a in ("!source_dir!") do (
 	)
 )
 set /p "target_dir=输入目标目录: "
-call :ljjc target_dir dir&&goto 73.3
-pushd "!source_dir!"
+call :lj target_dir target_dir
 echo;取消文件隐藏属性...
-for /f "delims=" %%a in ('"2>nul dir /a:h /s /b"') do (attrib -h "%%a")
-if exist "!temp!\list.txt" (del /f /q "!temp!\list.txt")
-echo;检测Everything的安装路径与运行状态...
-call :regq "HKLM\SOFTWARE\voidtools\Everything" "InstallLocation" eveurl
-if exist "!eveurl!\Everything.exe" (
-	for /f "tokens=1 delims=," %%a in (
-		'tasklist /fi "status eq running" /fi "username eq %username%" /fi "imagename eq everything.exe" /fo csv /nh'
-	) do (
-		if /i "%%~a" equ "everything.exe" (
-			if exist "!eveurl!\es.exe" (
-				cls
-				echo;使用Everything读取文件列表
-				>"!temp!\list.txt" "!eveurl!\es.exe" -path "!source_dir!" /a-d -sort-size-descending -full-path-and-name
-			)
-		)
-	)
-)
-if not exist "!temp!\list.txt" (
-	cls
-	echo;使用dir命令读取文件列表
-	>"!temp!\list.txt" dir /a:-d /b /s /o:-s
-)
-for /f "usebackq delims=" %%a in ("!temp!\list.txt") do (
-	cls
-	set "relative_path=%%~dpa"
-	set "relative_path=!relative_path:%source_dir%=!"
-	set "target_path=!target_dir!\!sdirname!!relative_path!"
-	if not exist "!target_path!" (md "!target_path!")
-	echo;"%%a" → "!target_path!%%~nxa"
-	copy /y /z "%%a" "!target_path!%%~nxa"
-	call :73.2 "!target_path!%%~nxa" %%~za %%~xa
-)
-del /f /q "!temp!\list.txt"
-popd
+for /f "delims=" %%a in ('"2>nul dir /ah /s /b"') do (attrib -h "%%~fa")
+cls
+call :73.1 "!source_dir!" "!target_dir!\!sdirname!"
 %hx%
 %pause%
 endlocal
 goto memuv2
+:73.1
+if not exist "%~2\" (md "%~2")
+pushd "%~1"
+for /f "delims=" %%a in ('"2>nul dir /a-d /b "%~1""') do (
+	cls
+	echo;"%%~fa" → "%~2\%%~nxa"
+	>nul copy /y "%%~fa" "%~2"
+	call :73.2 "%~2\%%~nxa" %%~za %%~xa
+)
+for /f "delims=" %%a in ('"2>nul dir /ad /b "%~1""') do (call :73.1 "%%~fa" "%~2\%%~nxa")
+popd
+goto :eof
 :73.2
 if %2 gtr 4096 (
 	for %%a in (
