@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-				
+
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -65,7 +65,7 @@ cd /d "%~dp0"
 >nul chcp 936
 title DOS工具箱
 set ver=20260701
-set versize=176350
+set versize=176400
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -4045,9 +4045,21 @@ for %%a in (
 	if exist "%temp%\%%a" (del /f /q "%temp%\%%a")
 )
 title 记录文件列表...
+for %%a in (
+	.7z .ogg .mpg .gif .zip .rar .png .jpg .wmf .wmv .bik .bk2 .mp3
+	.acc .m4a .ape .mp4 .avi .flv .f4v .mkv .3gp .cab .pdf .jpeg .flac
+) do (
+	set "%%a=1"
+)
 for /f "delims=" %%a in ('dir /a /s /b "!url!"') do (
 	echo;"%%a" %%~za %%~xa
-	call :listfile "%%a" %%~za %%~xa
+	>nul 2>nul dir /a:d /b "%%~a"||(
+		if %%~za gtr 4096 (
+			if %%~za leq 104857600 (
+				if not defined %%~xa (>>"%temp%\listfile.log" echo;"%%~a")
+			)
+		)
+	)
 )
 title 整理碎片...
 defrag "!url!" /u /v
@@ -4100,21 +4112,6 @@ copy /z "!file!" nul
 set "jssj=!time!"
 call :sjc !kssj! !jssj! raw
 echo;读取用时: !raw! ms
-goto :eof
-:listfile
->nul 2>nul dir /a:d /b "%~1"||(
-	if %2 gtr 4096 (
-		if !size! leq 104857600 (
-			for %%a in (
-				.7z .ogg .mpg .gif .zip .rar .png .jpg .wmf .wmv .bik .bk2 .mp3
-				.acc .m4a .ape .mp4 .avi .flv .f4v .mkv .3gp .cab .pdf .jpeg .flac
-			) do (
-				if /i "%3" equ "%%a" (goto :eof)
-			)
-			>>"%temp%\listfile.log" echo;"%~1"
-		)
-	)
-)
 goto :eof
 #clearcache#
 $Source = @"
@@ -5146,7 +5143,7 @@ cls
 set source_dir=
 set target_dir=
 set /p "source_dir=输入源目录: "
-call :ljjc source_dir dir&&goto 73.3
+call :ljjc source_dir dir&&goto 73.2
 for /f "delims=" %%a in ("!source_dir!") do (
 	if "%%~nxa" equ "" (
 		set "sdirname=%%~da"
@@ -5170,12 +5167,24 @@ for /f "delims=" %%a in ('"2>nul dir /ah /s /b "!source_dir!""') do (
 	set /a "hcs+=1"
 	set "h!hcs!=%%~fa"
 )
+for %%a in (
+	.7z .ogg .mpg .gif .zip .rar .png .jpg .wmf .wmv .bik .bk2 .mp3
+	.acc .m4a .ape .mp4 .avi .flv .f4v .mkv .3gp .cab .pdf .jpeg .flac
+) do (
+	set "%%a=1"
+)
+set err=
 call :73.1 "!source_dir!" "!target_dir!\!sdirname!"
 if defined hcs (
 	for /l %%a in (1,1,!hcs!) do (attrib +h "!h%%a!")
 )
 if defined hscs (
 	for /l %%a in (1,1,!hscs!) do (attrib +h +s "!hs%%a!")
+)
+if defined err (
+	cls
+	for /l %%a in (1,1,!err!) do (echo;!err%%a!)
+	echo;以上文件复制失败
 )
 %hx%
 %pause%
@@ -5187,24 +5196,18 @@ pushd "%~1"
 for %%a in (*) do (
 	cls
 	echo;"%%~fa" → "%~2\%%~nxa"
-	>nul copy /y "%%~fa" "%~2"
-	call :73.2 "%~2\%%~nxa" %%~za %%~xa
+	>nul copy /y /z "%%~fa" "%~2"||(
+		set /a "err+=1"
+		set "err!err!="%%~fa""
+	)
+	if %%~za gtr 4096 (
+		if not defined %%~xa (compact /c /exe:lzx "%~2\%%~nxa")
+	)
 )
 for /d %%a in (*) do (call :73.1 "%%~fa" "%~2\%%~nxa")
 popd
 goto :eof
 :73.2
-if %2 gtr 4096 (
-	for %%a in (
-		.7z .ogg .mpg .gif .zip .rar .png .jpg .wmf .wmv .bik .bk2 .mp3
-		.acc .m4a .ape .mp4 .avi .flv .f4v .mkv .3gp .cab .pdf .jpeg .flac
-	) do (
-		if /i "%3" equ "%%a" (goto :eof)
-	)
-	compact /c /exe:lzx "%~1"
-)
-goto :eof
-:73.3
 <nul set /p "=无效输入"
 call :out 2
 endlocal
