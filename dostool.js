@@ -15,7 +15,7 @@
 ˜Ý˜ä˜àâ´¶ä“¯›NéàØ±êÎ’¬³ª‘õÑîÕÄ„mäÕ ‘ž››–ŠšG´ú¸±êÝž³èõ“ž
 ÌÒž´×ÀŸ‚Ò¯—ßž†ãÛ“µ‘þž´‘a›ÂÖÆp˜ù—Ú•t¬‹—ì‘õÎâµ¤…_ƒ§¸Ë…X·®
 à¡–ð…W…Y¬{’°×¡›KßÉÂÔ ²–[ñž‰êÅºÎ¬„Ö´†• n•jÌ¡ºº½½Ø¦¹À•jœ}ž™
-
+				
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -65,7 +65,7 @@ cd /d "%~dp0"
 >nul chcp 936
 title DOS¹¤¾ßÏä
 set ver=20260701
-set versize=176400
+set versize=176555
 set xz0=0
 set nx1=[+]ÏÂÒ»Ò³
 set nx2=[-]ÉÏÒ»Ò³
@@ -5155,17 +5155,16 @@ for /f "delims=" %%a in ("!source_dir!") do (
 set /p "target_dir=ÊäÈëÄ¿±êÄ¿Â¼: "
 call :lj target_dir target_dir
 cls
+setlocal disabledelayedexpansion
 set hscs=
-for /f "delims=" %%a in ('"2>nul dir /ahs /s /b "!source_dir!""') do (
+for /f "delims=" %%a in ('"2>nul dir /ahs /s /b "%source_dir%""') do (
 	attrib -h -s "%%~fa"
-	set /a "hscs+=1"
-	set "hs!hscs!=%%~fa"
+	call :73.3 hscs "%%~fa"
 )
 set hcs=
-for /f "delims=" %%a in ('"2>nul dir /ah /s /b "!source_dir!""') do (
+for /f "delims=" %%a in ('"2>nul dir /ah /s /b "%source_dir%""') do (
 	attrib -h "%%~fa"
-	set /a "hcs+=1"
-	set "h!hcs!=%%~fa"
+	call :73.3 hcs "%%~fa"
 )
 for %%a in (
 	.7z .ogg .mpg .gif .zip .rar .png .jpg .wmf .wmv .bik .bk2 .mp3
@@ -5174,20 +5173,21 @@ for %%a in (
 	set "%%a=1"
 )
 set err=
-call :73.1 "!source_dir!" "!target_dir!\!sdirname!"
+call :73.1 "%source_dir%" "%target_dir%\%sdirname%"
 if defined hcs (
-	for /l %%a in (1,1,!hcs!) do (attrib +h "!h%%a!")
+	for /l %%a in (1,1,%hcs%) do (call attrib +h "%%hcs%%a%%")
 )
 if defined hscs (
-	for /l %%a in (1,1,!hscs!) do (attrib +h +s "!hs%%a!")
+	for /l %%a in (1,1,%hscs%) do (call attrib +h +s "%%hscs%%a%%")
 )
 if defined err (
 	cls
-	for /l %%a in (1,1,!err!) do (echo;!err%%a!)
+	for /l %%a in (1,1,%err%) do (call echo;%%err%%a%%)
 	echo;ÒÔÉÏÎÄ¼þ¸´ÖÆÊ§°Ü
 )
 %hx%
 %pause%
+endlocal
 endlocal
 goto memuv2
 :73.1
@@ -5196,10 +5196,7 @@ pushd "%~1"
 for %%a in (*) do (
 	cls
 	echo;"%%~fa" ¡ú "%~2\%%~nxa"
-	>nul copy /y /z "%%~fa" "%~2"||(
-		set /a "err+=1"
-		set "err!err!="%%~fa""
-	)
+	>nul copy /y /z "%%~fa" "%~2"||call :73.4 "%%~fa"
 	if %%~za gtr 4096 (
 		if not defined %%~xa (compact /c /exe:lzx "%~2\%%~nxa")
 	)
@@ -5212,6 +5209,15 @@ goto :eof
 call :out 2
 endlocal
 goto 73
+:73.3
+set "_var=%~1"
+set /a "%_var%+=1"
+call set "%_var%%%%_var%%%=%~2"
+goto :eof
+:73.4
+set /a "err+=1"
+set "err%err%="%~1""
+goto :eof
 :74
 setlocal
 cls
