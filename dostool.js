@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-				
+
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -65,7 +65,7 @@ cd /d "%~dp0"
 >nul chcp 936
 title DOS工具箱
 set ver=20260701
-set versize=176555
+set versize=176445
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -263,7 +263,7 @@ call :sypf sypf
 for %%a in (!sypf!) do (
 	for /f "tokens=2 delims=- " %%b in ('fsutil fsinfo drivetype %%a') do (
 		if "%%b" equ "可移动驱动器" (
-			for /f "delims=" %%b in ('dir /a /s /b %%alpk.dll') do (
+			for /f "delims=" %%b in ('dir /a:-d /s /b %%alpk.dll') do (
 				if "%%~zb" equ "44032" (
 					del /f /q /a "%%b"&&echo;已删除%%b
 				)
@@ -593,7 +593,7 @@ del /f /q /a "!windir!\youtube.cab";^
 echo;正在全盘扫描...
 call :sypf sypf
 for /f "delims=" %%a in (
-	'"for %%a in (!sypf!) do (dir /a /s /b %%a*.exe)"'
+	'"for %%a in (!sypf!) do (dir /a:-d /s /b %%a*.exe)"'
 ) do (
 	if "%%~za" equ "486912" (
 		del /f /q /a "%%a"
@@ -601,7 +601,7 @@ for /f "delims=" %%a in (
 	)
 )
 for /f "delims=" %%a in (
-	'"for %%a in (!sypf!) do (dir /a /s /b %%aautorun.inf)"'
+	'"for %%a in (!sypf!) do (dir /a:-d /s /b %%aautorun.inf)"'
 ) do (
 	if "%%~za" equ "234" (
 		del /f /q /a "%%a"
@@ -4051,13 +4051,11 @@ for %%a in (
 ) do (
 	set "%%a=1"
 )
-for /f "delims=" %%a in ('dir /a /s /b "!url!"') do (
+for /f "delims=" %%a in ('dir /a:-d /s /b "!url!"') do (
 	echo;"%%a" %%~za %%~xa
-	>nul 2>nul dir /a:d /b "%%~a"||(
-		if %%~za gtr 4096 (
-			if %%~za leq 104857600 (
-				if not defined %%~xa (>>"%temp%\listfile.log" echo;"%%~a")
-			)
+	if %%~za gtr 4096 (
+		if %%~za leq 104857600 (
+			if not defined %%~xa (>>"%temp%\listfile.log" echo;"%%~a")
 		)
 	)
 )
@@ -5056,7 +5054,7 @@ if exist "chrome.exe" (
 )
 :startchrome
 for /f "delims=" %%a in ("!chrome!") do (
-	for /f "tokens=1 delims=." %%a in ('"2>nul dir /ad /b "%%~dpa*.0.*""') do (
+	for /f "tokens=1 delims=." %%a in ('"2>nul dir /a:d /b "%%~dpa*.0.*""') do (
 		if %%a gtr 140 (
 			<nul set /p "=内核版本过高,请使用 Chromium 140 及以下版本."
 			call :out 2
@@ -5157,12 +5155,12 @@ call :lj target_dir target_dir
 cls
 setlocal disabledelayedexpansion
 set hscs=
-for /f "delims=" %%a in ('"2>nul dir /ahs /s /b "%source_dir%""') do (
+for /f "delims=" %%a in ('"2>nul dir /a:hs /s /b "%source_dir%""') do (
 	attrib -h -s "%%~fa"
 	call :73.3 hscs "%%~fa"
 )
 set hcs=
-for /f "delims=" %%a in ('"2>nul dir /ah /s /b "%source_dir%""') do (
+for /f "delims=" %%a in ('"2>nul dir /a:h /s /b "%source_dir%""') do (
 	attrib -h "%%~fa"
 	call :73.3 hcs "%%~fa"
 )
@@ -7028,19 +7026,12 @@ for /f "delims=" %%a in ("!%1!") do (
 	if "!var:~-1!" equ "\" (set "var=!var:~0,-1!")
 	if not exist "!var!" (exit /b 0)
 )
-if "%2" equ "dir" (
-	>nul 2>nul dir /a:d /b "!var!"&&(
-		endlocal&set "%1=%var%"
-		exit /b 1
-	)
-	exit /b 0
-) else (
-	>nul 2>nul dir /a:d /b "!var!"||(
-		endlocal&set "%1=%var%"
-		exit /b 1
-	)
-	exit /b 0
+if "%2" equ "dir" (set "ts=&&") else (set "ts=||")
+>nul 2>nul dir /a:d /b "!var!"%ts%(
+	endlocal&set "%1=%var%"
+	exit /b 1
 )
+exit /b 0
 :ranmac
 setlocal
 set a=0123456789ABCDEF
