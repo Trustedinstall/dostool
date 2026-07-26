@@ -15,7 +15,7 @@
 ò›ò‰ò‡‚¥∂‰ìØõNÈ‡ÿ±ÍŒí¨≥™ëı—Ó’ƒÑm‰’†ëûõõñùäöG¥˙∏±êÍÅ›û≥Ëıìû
 Ã“û¥◊¿üÇ“ØóﬂûÜÅ„Å€ìµë˛û¥ëaõ¬÷∆ùpò˘ó⁄ït¨ãóÏëıŒ‚µ§Ö_Éß∏ÀÖX∑Æ
 ‡°ñÖWÖY¨{í∞◊°õKﬂ…¬‘†≤ñ[êÒûâÍ≈∫Œ¨Ñ÷¥Üï†nïjÃ°∫∫ΩΩÿ¶π¿ïjú}ûô
-
+		
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -65,7 +65,7 @@ cd /d "%~dp0"
 >nul chcp 936
 title DOSπ§æﬂœ‰
 set ver=20260701
-set versize=176445
+set versize=176500
 set xz0=0
 set nx1=[+]œ¬“ª“≥
 set nx2=[-]…œ“ª“≥
@@ -140,7 +140,9 @@ for /f "delims=: skip=4 tokens=2" %%a in ('mode con') do (
 	if "!cs!" equ "1" (set "l=%%a")
 )
 set cs=
-set /a "spn=(l-(11+memuys))/2"
+call :strlen memuys memuys.len
+set /a "spn=(l-(11+memuys.len))/2"
+set memuys.len=
 for /l %%a in (1,1,!spn!) do (set "sp=!sp! ")
 if defined winv (
 	echo;!sp!≤Àµ• - µ⁄!cswz!!ysbak:~0,3!92m!memuys!!cswz!!ysbak!“≥
