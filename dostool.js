@@ -15,7 +15,7 @@
 ˜Ý˜ä˜àâ´¶ä“¯›NéàØ±êÎ’¬³ª‘õÑîÕÄ„mäÕ ‘ž››–ŠšG´ú¸±êÝž³èõ“ž
 ÌÒž´×ÀŸ‚Ò¯—ßž†ãÛ“µ‘þž´‘a›ÂÖÆp˜ù—Ú•t¬‹—ì‘õÎâµ¤…_ƒ§¸Ë…X·®
 à¡–ð…W…Y¬{’°×¡›KßÉÂÔ ²–[ñž‰êÅºÎ¬„Ö´†• n•jÌ¡ºº½½Ø¦¹À•jœ}ž™
-	
+		
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -65,7 +65,7 @@ cd /d "%~dp0"
 >nul chcp 936
 title DOS¹¤¾ßÏä
 set ver=20260701
-set versize=176550
+set versize=175390
 set xz0=0
 set nx1=[+]ÏÂÒ»Ò³
 set nx2=[-]ÉÏÒ»Ò³
@@ -5883,131 +5883,48 @@ goto chushihua
 call :pwiex offdisplay
 goto memuv2
 :colortxt
+if "%~2" equ "" (goto :eof)
+for /f "delims=0123456789abcdefABCDEF" %%a in ("%~1") do (goto :eof)
 setlocal
-if defined winv (goto colortxt2)
 set "bj=%1"
-if "!bj:~1,1!" equ "" (
-	set "bj1=!bj!"
-	set "bj2=!color!"
-) else (
-	set "bj1=!bj:~0,1!"
-	set "bj2=!bj:~1,1!"
-)
-pushd "%temp%"
->"%~2" <nul set /p "=!bs! "
-findstr /v /a:!bj2!!bj1! /r "^$" "%~2" nul
+if "!bj:~1,1!" equ "" (set "bj=!color!!bj!")
+if defined winv (goto colortxt2)
+pushd "!temp!"
+>"%~2" <nul set /p "=!bs!"
+findstr /v /a:!bj:~0,1!!bj:~1,1! /r "^$" "%~2" nul
 >nul 2>nul del /f /q "%~2"
 popd
 goto :eof
 :colortxt2
-set "bj=%1"
-if 0x%bj:~0,1% gtr 0x9 (goto colortxt2.2)
-if 0x%bj:~0,1% gtr 0x4 (goto colortxt2.1)
-if "!bj:~0,1!" equ "0" (
-	set bj1=40;
-) else (
-	if "!bj:~0,1!" equ "1" (
-		set bj1=44;
-	) else (
-		if "!bj:~0,1!" equ "2" (
-			set bj1=42;
-		) else (
-			if "!bj:~0,1!" equ "3" (
-				set bj1=46;
-			) else (
-				if "!bj:~0,1!" equ "4" (
-					set bj1=41;
-				)
-			)
+for %%a in (
+	"0 40" "1 44" "2 42" "3 46"
+	"4 41" "5 45" "6 43" "7 47"
+	"8 100" "9 104" "a 102" "b 106"
+	"c 101" "d 105" "e 103" "f 107"
+) do (
+	for /f "tokens=1,2" %%a in ("%%~a") do (
+		if /i "!bj:~0,1!" equ "%%~a" (
+			set "bj1=%%~b"
+			goto colortxt2.1
 		)
 	)
 )
-goto colortxt2.3
 :colortxt2.1
-if "!bj:~0,1!" equ "5" (
-	set bj1=45;
-) else (
-	if "!bj:~0,1!" equ "6" (
-		set bj1=43;
-	) else (
-		if "!bj:~0,1!" equ "7" (
-			set bj1=47;
-		) else (
-			if "!bj:~0,1!" equ "8" (
-				set bj2=90m
-			) else (
-				if "!bj:~0,1!" equ "9" (
-					set bj2=94m
-				)
-			)
+for %%a in (
+	"0 30" "1 34" "2 32" "3 36"
+	"4 31" "5 35" "6 33" "7 37"
+	"8 90" "9 94" "a 92" "b 96"
+	"c 91" "d 95" "e 93" "f 97"
+) do (
+	for /f "tokens=1,2" %%a in ("%%~a") do (
+		if /i "!bj:~1,1!" equ "%%~a" (
+			set "bj2=%%~b"
+			goto colortxt2.2
 		)
 	)
 )
-goto colortxt2.3
 :colortxt2.2
-if /i "!bj:~0,1!" equ "a" (
-	set bj2=92m
-) else (
-	if /i "!bj:~0,1!" equ "b" (
-		set bj2=96m
-	) else (
-		if /i "!bj:~0,1!" equ "c" (
-			set bj2=91m
-		) else (
-			if /i "!bj:~0,1!" equ "d" (
-				set bj2=95m
-			) else (
-				if /i "!bj:~0,1!" equ "e" (
-					set bj2=93m
-				) else (
-					if /i "!bj:~0,1!" equ "f" (
-						set bj2=97m
-					)
-				)
-			)
-		)
-	)
-)
-:colortxt2.3
-if 0x%bj:~1,1% gtr 0xb (goto colortxt2.5)
-if "!bj:~1,1!" equ "8" (
-	set bj2=90m
-) else (
-	if "!bj:~1,1!" equ "9" (
-		set bj2=94m
-	) else (
-		if /i "!bj:~1,1!" equ "a" (
-			set bj2=92m
-		) else (
-			if /i "!bj:~1,1!" equ "b" (
-				set bj2=96m
-			)
-		)
-	)
-)
-goto colortxt2.6
-:colortxt2.5
-if /i "!bj:~1,1!" equ "" (
-	set "bj1=!ysbak:~0,3!"
-) else (
-	if /i "!bj:~1,1!" equ "c" (
-		set bj2=91m
-	) else (
-		if /i "!bj:~1,1!" equ "d" (
-			set bj2=95m
-		) else (
-			if /i "!bj:~1,1!" equ "e" (
-				set bj2=93m
-			) else (
-				if /i "!bj:~1,1!" equ "f" (
-					set bj2=97m
-				)
-			)
-		)
-	)
-)
-:colortxt2.6
-<nul set /p "=!cswz!!bj1!!bj2!%~2!cswz!!ysbak!"
+<nul set /p "=!cswz!!bj1!;!bj2!m%~2!cswz!!ysbak!"
 goto :eof
 :rgb
 setlocal
