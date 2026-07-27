@@ -15,7 +15,7 @@
 ˜Ý˜ä˜àâ´¶ä“¯›NéàØ±êÎ’¬³ª‘õÑîÕÄ„mäÕ ‘ž››–ŠšG´ú¸±êÝž³èõ“ž
 ÌÒž´×ÀŸ‚Ò¯—ßž†ãÛ“µ‘þž´‘a›ÂÖÆp˜ù—Ú•t¬‹—ì‘õÎâµ¤…_ƒ§¸Ë…X·®
 à¡–ð…W…Y¬{’°×¡›KßÉÂÔ ²–[ñž‰êÅºÎ¬„Ö´†• n•jÌ¡ºº½½Ø¦¹À•jœ}ž™
-		
+	
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -65,7 +65,7 @@ cd /d "%~dp0"
 >nul chcp 936
 title DOS¹¤¾ßÏä
 set ver=20260701
-set versize=176500
+set versize=176550
 set xz0=0
 set nx1=[+]ÏÂÒ»Ò³
 set nx2=[-]ÉÏÒ»Ò³
@@ -87,6 +87,7 @@ for /f "tokens=3 delims=.]" %%a in ('ver') do (
 	if %%a geq 22000 (set "system=!system:Windows 10=Windows 11!")
 )
 for /f %%a in ('"echo;prompt $E|cmd"') do (set "cswz=%%a[")
+for /f %%a in ('"echo;prompt $H|cmd"') do (set "bs=%%a")
 if exist "!windir!\system32\choice.exe" (
 	set "sel=call :choice"
 ) else (
@@ -5886,15 +5887,15 @@ setlocal
 if defined winv (goto colortxt2)
 set "bj=%1"
 if "!bj:~1,1!" equ "" (
-	set "bj1=!color!"
-	set "bj2=!bj!"
+	set "bj1=!bj!"
+	set "bj2=!color!"
 ) else (
 	set "bj1=!bj:~0,1!"
 	set "bj2=!bj:~1,1!"
 )
 pushd "%temp%"
->"%~2" <nul set /p "=!cswz:~0,-1!"
-findstr /v /a:!bj1!!bj2! /r "^$" "%~2" nul
+>"%~2" <nul set /p "=!bs! "
+findstr /v /a:!bj2!!bj1! /r "^$" "%~2" nul
 >nul 2>nul del /f /q "%~2"
 popd
 goto :eof
