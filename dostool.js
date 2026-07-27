@@ -15,7 +15,7 @@
 ˜İ˜ä˜àâ´¶ä“¯›NéàØ±êÎ’¬³ª‘õÑîÕÄ„mäÕ ‘››–ŠšG´ú¸±êİ³èõ“
 ÌÒ´×ÀŸ‚Ò¯—ß†ãÛ“µ‘ş´‘a›ÂÖÆp˜ù—Ú•t¬‹—ì‘õÎâµ¤…_ƒ§¸Ë…X·®
 à¡–ğ…W…Y¬{’°×¡›KßÉÂÔ ²–[ñ‰êÅºÎ¬„Ö´†• n•jÌ¡ºº½½Ø¦¹À•jœ}™
-		
+	
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -5886,7 +5886,7 @@ goto memuv2
 if "%~2" equ "" (goto :eof)
 for /f "delims=0123456789abcdefABCDEF" %%a in ("%~1") do (goto :eof)
 setlocal
-set "bj=%1"
+set "bj=%~1"
 if "!bj:~1,1!" equ "" (set "bj=!color!!bj!")
 if defined winv (goto colortxt2)
 pushd "!temp!"
