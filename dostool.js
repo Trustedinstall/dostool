@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-	
+		
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -65,7 +65,7 @@ cd /d "%~dp0"
 >nul chcp 936
 title DOS工具箱
 set ver=20260701
-set versize=175390
+set versize=174125
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -86,8 +86,10 @@ for /f "tokens=3 delims=.]" %%a in ('ver') do (
 	if %%a geq 10586 (set winv=1)
 	if %%a geq 22000 (set "system=!system:Windows 10=Windows 11!")
 )
-for /f %%a in ('"echo;prompt $E|cmd"') do (set "cswz=%%a[")
-for /f %%a in ('"echo;prompt $H|cmd"') do (set "bs=%%a")
+for /f "tokens=1,2" %%a in ('"echo;prompt $E $H|cmd"') do (
+	set "cswz=%%a["
+	set "bs=%%b"
+)
 if exist "!windir!\system32\choice.exe" (
 	set "sel=call :choice"
 ) else (
@@ -136,7 +138,7 @@ if not defined a!start! (
 )
 set /a "end=start+8"
 set /a "memuys=start/9+1"
-for /f "delims=: skip=4 tokens=2" %%a in ('mode con') do (
+for /f "skip=4 tokens=2 delims=:" %%a in ('mode con') do (
 	set /a "cs+=1"
 	if "!cs!" equ "1" (set "l=%%a")
 )
@@ -4410,113 +4412,40 @@ title !a69!!system!
 cls
 color 07
 set cs=0
-for /l %%a in (40,1,47) do (
-	for /l %%b in (90,1,97) do (
-		if "%%a" equ "40" (
-			set bj=0
-		) else (
-			if "%%a" equ "41" (
-				set bj=4
-			) else (
-				if "%%a" equ "42" (
-					set bj=2
-				) else (
-					if "%%a" equ "43" (
-						set bj=6
-					) else (
-						if "%%a" equ "44" (
-							set bj=1
-						) else (
-							if "%%a" equ "45" (
-								set bj=5
-							) else (
-								if "%%a" equ "46" (
-									set bj=3
-								) else (
-									if "%%a" equ "47" (
-										set bj=7
-									)
-								)
-							)
-						)
-					)
-				)
+set txt=
+for %%a in (
+	"0 40" "1 44" "2 42" "3 46"
+	"4 41" "5 45" "6 43" "7 47"
+	"8 100" "9 104" "a 102" "b 106"
+	"c 101" "d 105" "e 103" "f 107"
+) do (
+	for %%b in (
+		"0 30" "1 34" "2 32" "3 36"
+		"4 31" "5 35" "6 33" "7 37"
+		"8 90" "9 94" "a 92" "b 96"
+		"c 91" "d 95" "e 93" "f 97"
+	) do (
+		for /f "tokens=1-4" %%a in ("%%~a %%~b") do (
+			set "txt=!txt!!cswz!%%b;%%dm %%a%%c "
+			set /a "cs+=1"
+			if "!cs!" equ "16" (
+				echo;!txt!
+				set cs=0
+				set txt=
 			)
 		)
-		if "%%b" equ "90" (
-			set zt=8
-		) else (
-			if "%%b" equ "91" (
-				set zt=c
-			) else (
-				if "%%b" equ "92" (
-					set zt=a
-				) else (
-					if "%%b" equ "93" (
-						set zt=e
-					) else (
-						if "%%b" equ "94" (
-							set zt=9
-						) else (
-							if "%%b" equ "95" (
-								set zt=d
-							) else (
-								if "%%b" equ "96" (
-									set zt=b
-								) else (
-									if "%%b" equ "97" (
-										set zt=f
-									)
-								)
-							)
-						)
-					)
-				)
-			)
-		)
-		if !cs! lss 7 (
-			<nul set /p "=!cswz!%%b;%%am  !bj!!zt!  !cswz!0m"
-			set /a "cs+=1"
-		) else (
-			echo;!cswz!%%b;%%am  !bj!!zt!  !cswz!0m
-			set cs=0
-		)
 	)
 )
-set cs=0
-for /l %%a in (40,1,47) do (
-	for /l %%b in (90,1,97) do (
-		if !cs! lss 7 (
-			<nul set /p "=!cswz!%%b;%%am %%b;%%a!cswz!0m"
-			set /a "cs+=1"
-		) else (
-			echo;!cswz!%%b;%%am %%b;%%a!cswz!0m
-			set cs=0
-		)
-	)
-)
-for /l %%a in (90,1,97) do (
-	for /l %%b in (40,1,47) do (
-		if !cs! lss 7 (
-			<nul set /p "=!cswz!%%b;%%am %%b;%%a!cswz!0m"
-			set /a "cs+=1"
-		) else (
-			echo;!cswz!%%b;%%am %%b;%%a!cswz!0m
-			set cs=0
-		)
-	)
-)
+<nul set /p "=!cswz!0m"
 call :xysav
-call :xyset 27 1
-for /l %%b in (1,1,4) do (
-	for /l %%a in (255,-13,0) do (<nul set /p "=!cswz!48;2;255;0;%%am !cswz!0m")
-	for /l %%a in (0,13,255) do (<nul set /p "=!cswz!48;2;255;%%a;0m !cswz!0m")
-	for /l %%a in (255,-13,0) do (<nul set /p "=!cswz!48;2;%%a;255;0m !cswz!0m")
-	for /l %%a in (0,13,255) do (<nul set /p "=!cswz!48;2;0;255;%%am !cswz!0m")
-	for /l %%a in (255,-13,0) do (<nul set /p "=!cswz!48;2;0;%%a;255m !cswz!0m")
-	for /l %%a in (0,13,255) do (<nul set /p "=!cswz!48;2;%%a;0;255m !cswz!0m")
-	echo;
-)
+call :xyset 19 1
+for /l %%a in (255,-13,0) do (set "rgb=!rgb!!cswz!48;2;255;0;%%am ")
+for /l %%a in (0,13,255) do (set "rgb=!rgb!!cswz!48;2;255;%%a;0m ")
+for /l %%a in (255,-13,0) do (set "rgb=!rgb!!cswz!48;2;%%a;255;0m ")
+for /l %%a in (0,13,255) do (set "rgb=!rgb!!cswz!48;2;0;255;%%am ")
+for /l %%a in (255,-13,0) do (set "rgb=!rgb!!cswz!48;2;0;%%a;255m ")
+for /l %%a in (0,13,255) do (set "rgb=!rgb!!cswz!48;2;%%a;0;255m !cswz!0m")
+for /l %%a in (1,1,10) do (echo;!rgb!)
 call :xyres
 %hx%
 %pause%
@@ -4957,19 +4886,19 @@ if not exist "!temp!\sni.ini" (
 
 		"#youtube google"
 		"#mt7.gstatic.com=[2404:6800:4008:c15::5a]"
-		"mt7.gstatic.com=142.251.170.161"
+		"mt7.gstatic.com=142.250.141.189"
 		"#alt6.gstatic.com=[2404:6800:4008:c15::5a]"
-		"alt6.gstatic.com=142.251.170.161"
+		"alt6.gstatic.com=142.250.141.189"
 		"#click.google-analytics.com=[2404:6800:4008:c15::5a]"
-		"click.google-analytics.com=142.251.170.161"
+		"click.google-analytics.com=142.250.141.189"
 		"#pagead1.googleadservices.com=[2404:6800:4008:c15::5a]"
-		"pagead1.googleadservices.com=142.251.170.161"
+		"pagead1.googleadservices.com=142.250.141.189"
 		"#pagead2.googlesyndication.com=[2404:6800:4008:c15::5a]"
-		"pagead2.googlesyndication.com=142.251.170.161"
+		"pagead2.googlesyndication.com=142.250.141.189"
 		"#static.doubleclick.net=[2404:6800:4008:c15::5a]"
-		"static.doubleclick.net=142.251.170.161"
+		"static.doubleclick.net=142.250.141.189"
 		"#www.googletagmanager.com=[2404:6800:4008:c15::5a]"
-		"www.googletagmanager.com=142.251.170.161"
+		"www.googletagmanager.com=142.250.141.189"
 
 		"#nyaa"
 		"nyaa.ddos-guard.net=nyaa.si"
@@ -5643,7 +5572,7 @@ if !checkver! gtr 0 (
 	echo;SHA1: !oldhash! → !doshash!
 	%hx%
 	set shuru=
-	set /p "shuru=按回车键更新，按e返回菜单:"
+	set /p "shuru=按回车键更新，按e返回菜单: "
 	call :var shuru
 	if not defined shuru (goto startupdate)
 	if /i "!shuru!" equ "e" (
