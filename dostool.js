@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-		
+			
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -65,7 +65,7 @@ cd /d "%~dp0"
 >nul chcp 936
 title DOS工具箱
 set ver=20260701
-set versize=174125
+set versize=174195
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -4414,8 +4414,8 @@ color 07
 set cs=0
 set txt=
 for %%a in (
-	"0 40" "1 44" "2 42" "3 46"
-	"4 41" "5 45" "6 43" "7 47"
+	"0 40"	"1 44"	"2 42"	"3 46"
+	"4 41"	"5 45"	"6 43"	"7 47"
 	"8 100" "9 104" "a 102" "b 106"
 	"c 101" "d 105" "e 103" "f 107"
 ) do (
@@ -4580,7 +4580,7 @@ for /f "tokens=2" %%a in ('findstr /i /c:"Accept-Ranges:" "%temp%\tag"') do (set
 for /f "tokens=2" %%a in ('findstr /i /c:"Content-Length:" "%temp%\tag"') do (set "filesize=%%a")
 for /f "tokens=2 delims==" %%a in ('findstr /i /c:"filename=" "%temp%\tag"') do (set "filename=%%a")
 del /f /q "%temp%\tag"
-if "!trflag!" neq "bytes" (set tr=1)
+if /i "!trflag!" neq "bytes" (set tr=1)
 if defined filesize (
 	if !filesize! geq 1024 (
 		call :xdwjs !filesize! b dw
@@ -5826,8 +5826,8 @@ popd
 goto :eof
 :colortxt2
 for %%a in (
-	"0 40" "1 44" "2 42" "3 46"
-	"4 41" "5 45" "6 43" "7 47"
+	"0 40"	"1 44"	"2 42"	"3 46"
+	"4 41"	"5 45"	"6 43"	"7 47"
 	"8 100" "9 104" "a 102" "b 106"
 	"c 101" "d 105" "e 103" "f 107"
 ) do (
@@ -6731,15 +6731,26 @@ if defined doh (
 		)
 	)
 )
-curl !proxy! !doh! !par! !ua! -I#L --ca-native --remove-on-error -o tag --connect-timeout 5 --max-time 10 --output-dir "%temp%" "!url!"
-if not exist "%temp%\tag" (
-	echo;没有获取到文件信息
-	goto :eof
+set http=
+set hc=
+set httpcode=
+set trflag=
+set filesize=
+for /f "tokens=1,2 delims=: " %%a in (
+	'"curl !proxy! !doh! !par! !ua! -IsL --ca-native --connect-timeout 5 --max-time 10 "!url!""'
+) do (
+	if not defined httpcode (
+		set "http=%%~a"
+		if /i "!http:~0,4!" equ "HTTP" (
+			set "hc=%%~b"
+			if "!hc:~0,1!" equ "2" (set httpcode=1)
+		)
+	) else (
+		if /i "%%~a" equ "Accept-Ranges" (set "trflag=%%~b")
+		if /i "%%~a" equ "Content-Length" (set "filesize=%%~b")
+	)
 )
-for /f "tokens=2" %%a in ('findstr /i /c:"Accept-Ranges:" "%temp%\tag"') do (set "trflag=%%a")
-for /f "tokens=2" %%a in ('findstr /i /c:"Content-Length:" "%temp%\tag"') do (set "filesize=%%a")
-del /f /q "%temp%\tag"
-if "!trflag!" neq "bytes" (set tr=1)
+if /i "!trflag!" neq "bytes" (set tr=1)
 if not defined filesize (goto curldxc_3)
 if "!tr!" equ "1" (goto curldxc_3)
 set /a "fd=filesize/tr"
