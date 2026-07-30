@@ -161,15 +161,15 @@ for /f "skip=4 tokens=3 delims=: " %%a in ('mode con') do (
 )
 :memuv2.2
 if defined winv (
-	echo;!sp1!菜单 - 第!cswz!!ysbak:~0,3!92m!memuys!!cswz!!ysbak!页
 	set /a "ln=lbk/3"
 	set fya=
 	for /l %%a in (1,1,!ln!) do (set "fya=!fya!!fy!")
 	set ln=
 	set "fya=echo;!fya!"
+	echo;!sp1!菜单 - 第!cswz!!ysbak:~0,3!92m!memuys!!cswz!!ysbak!页
 ) else (
-	echo;!sp1!菜单 - 第!memuys!页
 	set "fya=!hx!"
+	echo;!sp1!菜单 - 第!memuys!页
 )
 set memuys=
 for /f "delims=. " %%a in ("!time!") do (echo;现在是 !date! %%a)
