@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-				
+		
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -65,7 +65,7 @@ cd /d "%~dp0"
 >nul chcp 936
 title DOS工具箱
 set ver=20260701
-set versize=174220
+set versize=174110
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -138,24 +138,42 @@ if not defined a!start! (
 )
 set /a "end=start+8"
 set /a "memuys=start/9+1"
-for /f "skip=4 tokens=2 delims=:" %%a in ('mode con') do (
-	set /a "cs+=1"
-	if "!cs!" equ "1" (set "l=%%a")
+for /f "skip=4 tokens=3 delims=: " %%a in ('mode con') do (
+	if "!lbk!" neq "%%a" (
+		set /a "spn1=(%%a-12)/2"
+		set /a "spn2=%%a-25"
+		set /a "spn3=%%a-38"
+		for /l %%a in (1,1,!spn2!) do (
+			set /a "cs+=1"
+			set "sp=!sp! "
+			if "!cs!" equ "!spn1!" (set "sp1=!sp!")
+			if "!cs!" equ "!spn2!" (set "sp2=!sp!")
+			if "!cs!" equ "!spn3!" (set "sp3=!sp!")
+		)
+		set cs=
+		set sp=
+		set spn1=
+		set spn2=
+		set spn3=
+		set "lbk=%%a"
+	)
+	goto memuv2.2
 )
-set cs=
-call :strlen memuys memuys.len
-set /a "spn=(l-(11+memuys.len))/2"
-set memuys.len=
-for /l %%a in (1,1,!spn!) do (set "sp=!sp! ")
+:memuv2.2
 if defined winv (
-	echo;!sp!菜单 - 第!cswz!!ysbak:~0,3!92m!memuys!!cswz!!ysbak!页
+	echo;!sp1!菜单 - 第!cswz!!ysbak:~0,3!92m!memuys!!cswz!!ysbak!页
+	set /a "ln=lbk/3"
+	set fya=
+	for /l %%a in (1,1,!ln!) do (set "fya=!fya!!fy!")
+	set ln=
+	set "fya=echo;!fya!"
 ) else (
-	echo;!sp!菜单 - 第!memuys!页
+	echo;!sp1!菜单 - 第!memuys!页
+	set "fya=!hx!"
 )
-set sp=
+set memuys=
 for /f "delims=. " %%a in ("!time!") do (echo;现在是 !date! %%a)
-call :memuv2.2
-set xx=0
+%fya%
 for /l %%a in (!start!,1,!end!) do (
 	set /a "xx+=1"
 	if defined a%%a (
@@ -165,37 +183,32 @@ for /l %%a in (!start!,1,!end!) do (
 		set "xz!xx!="
 	)
 )
+set xx=
 set /a "pd=end+1"
 if defined a!pd! (
 	set /a "pd=start-1"
 	if !pd! lss 1 (
-		set /a "spn=l-25"
-		for /l %%a in (1,1,!spn!) do (set "sp=!sp! ")
 		if defined winv (
-			echo;[0]退出!sp!!cswz!42;97m!nx1!!cswz!!ysbak!
+			echo;[0]退出!sp2!!cswz!42;97m!nx1!!cswz!!ysbak!
 		) else (
-			echo;[0]退出!sp!!nx1!
+			echo;[0]退出!sp2!!nx1!
 		)
 	) else (
-		set /a "spn=l-38"
-		for /l %%a in (1,1,!spn!) do (set "sp=!sp! ")
 		if defined winv (
-			echo;[0]退出!sp!!cswz!42;97m!nx1!	!nx2!!cswz!!ysbak!
+			echo;[0]退出!sp3!!cswz!42;97m!nx1!	!nx2!!cswz!!ysbak!
 		) else (
-			echo;[0]退出!sp!!nx1!	!nx2!
+			echo;[0]退出!sp3!!nx1!	!nx2!
 		)
 	)
 ) else (
-	set /a "spn=l-25"
-	for /l %%a in (1,1,!spn!) do (set "sp=!sp! ")
 	if defined winv (
-		echo;[0]退出!sp!!cswz!42;97m!nx2!!cswz!!ysbak!
+		echo;[0]退出!sp2!!cswz!42;97m!nx2!!cswz!!ysbak!
 	) else (
-		echo;[0]退出!sp!!nx2!
+		echo;[0]退出!sp2!!nx2!
 	)
 )
-set sp=
-call :memuv2.2
+set pd=
+%fya%
 set caidan=
 set /p "caidan=请输入你的选择: "
 if not defined caidan (goto memuv2.1)
@@ -238,23 +251,6 @@ if defined !caidan! (goto !%caidan%!)
 <nul set /p "=请输入正确的选项"
 call :out 2
 goto memuv2
-:memuv2.2
-if defined winv (
-	if defined fyacs (
-		echo;!fya!
-		set fyacs=
-		set fya=
-	) else (
-		set /a "ln=l/3"
-		for /l %%a in (1,1,!ln!) do (set "fya=!fya!!fy!")
-		set ln=
-		echo;!fya!
-		set /a "fyacs+=1"
-	)
-) else (
-	%hx%
-)
-goto :eof
 :0
 exit /b 0
 :1
