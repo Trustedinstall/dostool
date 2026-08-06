@@ -15,7 +15,7 @@
 ˜Ý˜ä˜àâ´¶ä“¯›NéàØ±êÎ’¬³ª‘õÑîÕÄ„mäÕ ‘ž››–ŠšG´ú¸±êÝž³èõ“ž
 ÌÒž´×ÀŸ‚Ò¯—ßž†ãÛ“µ‘þž´‘a›ÂÖÆp˜ù—Ú•t¬‹—ì‘õÎâµ¤…_ƒ§¸Ë…X·®
 à¡–ð…W…Y¬{’°×¡›KßÉÂÔ ²–[ñž‰êÅºÎ¬„Ö´†• n•jÌ¡ºº½½Ø¦¹À•jœ}ž™
-		
+	
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -65,7 +65,7 @@ cd /d "%~dp0"
 >nul chcp 936
 title DOS¹¤¾ßÏä
 set ver=20260701
-set versize=174110
+set versize=174085
 set xz0=0
 set nx1=[+]ÏÂÒ»Ò³
 set nx2=[-]ÉÏÒ»Ò³
@@ -6904,7 +6904,7 @@ goto :eof
 if "%~1" equ "" (goto :eof)
 setlocal
 set "url=%~1"
-if "!url:-1!" equ "\" (set "url=!url:0,-1!")
+if "!url:~-1!" equ "\" (set "url=!url:~0,-1!")
 >nul 2>nul dir /a:d /b "!url!"&&rd /s /q "!url!"
 if exist "!url!" (del /f /q /a "!url!")
 md "!url!"
@@ -6940,15 +6940,13 @@ if defined doh (
 goto :eof
 :isntfs
 if "%1" neq "" (
-	setlocal
-	set "var=%1"
-	>nul 2>nul fsutil fsinfo ntfsinfo !var:\=!&&exit /b 1
+	>nul 2>nul fsutil fsinfo ntfsinfo %%~d1&&exit /b 1
 	exit /b 0
 )
 goto :eof
 :isrefs
 if "%1" neq "" (
-	>nul 2>nul fsutil fsinfo refsinfo %1&&exit /b 1
+	>nul 2>nul fsutil fsinfo refsinfo %%~d1&&exit /b 1
 	exit /b 0
 )
 goto :eof
