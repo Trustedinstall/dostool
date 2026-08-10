@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-	
+				
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -64,8 +64,8 @@ set "dosqssj=!time!"
 cd /d "%~dp0"
 >nul chcp 936
 title DOS工具箱
-set ver=20260701
-set versize=174085
+set ver=20260801
+set versize=174025
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -1566,7 +1566,7 @@ cls
 echo;检测Everything的安装路径与运行状态...
 call :regq "HKLM\SOFTWARE\voidtools\Everything" "InstallLocation" eveurl
 if exist "!eveurl!\Everything.exe" (
-	for /f "tokens=1 delims=," %%a in (
+	for /f "delims=," %%a in (
 		'tasklist /fi "status eq running" /fi "username eq %username%" /fi "imagename eq everything.exe" /fo csv /nh'
 	) do (
 		if /i "%%~a" equ "everything.exe" (
@@ -4700,7 +4700,7 @@ if "!errorlevel!" equ "2" (
 if "!jccs!" neq "!tr!" (
 	set nocurl=
 	for /l %%a in (1,1,!tr!) do (
-		for /f "tokens=1 delims=," %%a in (
+		for /f "delims=," %%a in (
 			'tasklist /fi "imagename eq curl.exe" /fi "windowtitle eq curl多进程下载_%%a" /fo csv /nh'
 		) do (
 			if /i "%%~a" neq "curl.exe" (set /a "nocurl+=1")
@@ -4982,7 +4982,7 @@ if exist "chrome.exe" (
 )
 :startchrome
 for /f "delims=" %%a in ("!chrome!") do (
-	for /f "tokens=1 delims=." %%a in ('"2>nul dir /a:d /b "%%~dpa*.0.*""') do (
+	for /f "delims=." %%a in ('"2>nul dir /a:d /b "%%~dpa*.0.*""') do (
 		if %%a gtr 140 (
 			<nul set /p "=内核版本过高,请使用 Chromium 140 及以下版本."
 			call :out 2
@@ -4991,7 +4991,7 @@ for /f "delims=" %%a in ("!chrome!") do (
 		)
 	)
 	if "!brpro!" equ "1" (
-		for /f "tokens=1 delims=," %%b in (
+		for /f "delims=," %%b in (
 			'tasklist /fi "imagename eq %%~nxa" /fo csv /nh'
 		) do (
 			if /i "%%~b" equ "%%~nxa" (
@@ -5005,7 +5005,7 @@ for /f "delims=" %%a in ("!chrome!") do (
 )
 if "!brpro!" equ "1" (
 	for /f "delims=" %%a in ("!chrome!") do (
-		for /f "tokens=1 delims=," %%b in (
+		for /f "delims=," %%b in (
 			'tasklist /fi "imagename eq %%~nxa" /fo csv /nh'
 		) do (
 			if /i "%%~b" equ "%%~nxa" (
@@ -6361,7 +6361,7 @@ goto :eof
 :checkvar_-num
 if not defined %1 (exit /b 0)
 for /f "delims=0123456789-" %%a in ("!%1!") do (exit /b 0)
-for /f "tokens=1 delims=-" %%a in ("!%1!") do (
+for /f "delims=-" %%a in ("!%1!") do (
 	if "!%1:~0,1!" equ "-" (exit /b 1) else (exit /b 0)
 )
 goto :eof
@@ -6797,7 +6797,7 @@ for /l %%a in (1,1,!tr!) do (
 if "!次数!" neq "!tr!" (
 	set nocurl=
 	for /l %%a in (1,1,!tr!) do (
-		for /f "tokens=1 delims=," %%a in (
+		for /f "delims=," %%a in (
 			'tasklist /fi "imagename eq curl.exe" /fi "windowtitle eq curl多进程下载_%%a" /fo csv /nh'
 		) do (
 			if /i "%%~a" neq "curl.exe" (set /a "nocurl+=1")
