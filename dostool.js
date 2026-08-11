@@ -15,7 +15,7 @@
 ˜Ý˜ä˜àâ´¶ä“¯›NéàØ±êÎ’¬³ª‘õÑîÕÄ„mäÕ ‘ž››–ŠšG´ú¸±êÝž³èõ“ž
 ÌÒž´×ÀŸ‚Ò¯—ßž†ãÛ“µ‘þž´‘a›ÂÖÆp˜ù—Ú•t¬‹—ì‘õÎâµ¤…_ƒ§¸Ë…X·®
 à¡–ð…W…Y¬{’°×¡›KßÉÂÔ ²–[ñž‰êÅºÎ¬„Ö´†• n•jÌ¡ºº½½Ø¦¹À•jœ}ž™
-				
+		
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -65,7 +65,7 @@ cd /d "%~dp0"
 >nul chcp 936
 title DOS¹¤¾ßÏä
 set ver=20260801
-set versize=174025
+set versize=174020
 set xz0=0
 set nx1=[+]ÏÂÒ»Ò³
 set nx2=[-]ÉÏÒ»Ò³
@@ -6694,7 +6694,7 @@ for /f "tokens=2 delims==" %%a in ('set tr') do (
 		goto :eof
 	)
 )
-if not defined dir (set "dir=%%~dp0")
+if not defined dir (set "dir=%~dp0")
 >nul 2>nul dir /a:d /b "!dir!"||(
 	echo;ÎÄ¼þ¼Ð "!dir!" ²»´æÔÚ
 	goto :eof
@@ -6940,13 +6940,13 @@ if defined doh (
 goto :eof
 :isntfs
 if "%1" neq "" (
-	>nul 2>nul fsutil fsinfo ntfsinfo %%~d1&&exit /b 1
+	>nul 2>nul fsutil fsinfo ntfsinfo %~d1&&exit /b 1
 	exit /b 0
 )
 goto :eof
 :isrefs
 if "%1" neq "" (
-	>nul 2>nul fsutil fsinfo refsinfo %%~d1&&exit /b 1
+	>nul 2>nul fsutil fsinfo refsinfo %~d1&&exit /b 1
 	exit /b 0
 )
 goto :eof
