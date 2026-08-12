@@ -15,7 +15,7 @@
 ò›ò‰ò‡‚¥∂‰ìØõNÈ‡ÿ±ÍŒí¨≥™ëı—Ó’ƒÑm‰’†ëûõõñùäöG¥˙∏±êÍÅ›û≥Ëıìû
 Ã“û¥◊¿üÇ“ØóﬂûÜÅ„Å€ìµë˛û¥ëaõ¬÷∆ùpò˘ó⁄ït¨ãóÏëıŒ‚µ§Ö_Éß∏ÀÖX∑Æ
 ‡°ñÖWÖY¨{í∞◊°õKﬂ…¬‘†≤ñ[êÒûâÍ≈∫Œ¨Ñ÷¥Üï†nïjÃ°∫∫ΩΩÿ¶π¿ïjú}ûô
-		
+
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -65,7 +65,7 @@ cd /d "%~dp0"
 >nul chcp 936
 title DOSπ§æﬂœ‰
 set ver=20260801
-set versize=174020
+set versize=174200
 set xz0=0
 set nx1=[+]œ¬“ª“≥
 set nx2=[-]…œ“ª“≥
@@ -4435,12 +4435,20 @@ for %%a in (
 <nul set /p "=!cswz!0m"
 call :xysav
 call :xyset 19 1
-for /l %%a in (255,-13,0) do (set "rgb=!rgb!!cswz!48;2;255;0;%%am ")
-for /l %%a in (0,13,255) do (set "rgb=!rgb!!cswz!48;2;255;%%a;0m ")
-for /l %%a in (255,-13,0) do (set "rgb=!rgb!!cswz!48;2;%%a;255;0m ")
-for /l %%a in (0,13,255) do (set "rgb=!rgb!!cswz!48;2;0;255;%%am ")
-for /l %%a in (255,-13,0) do (set "rgb=!rgb!!cswz!48;2;0;%%a;255m ")
-for /l %%a in (0,13,255) do (set "rgb=!rgb!!cswz!48;2;%%a;0;255m !cswz!0m")
+set a=
+for /f "skip=4 tokens=3 delims=: " %%a in ('mode con') do (
+	if not defined a (
+		set /a "a=1536/%%a"
+		set /a "d=1536%%%%a"
+		if !d! gtr 0 (set /a "a+=1")
+	)
+)
+for /l %%a in (255,-!a!,0) do (set "rgb=!rgb!!cswz!48;2;255;0;%%am ")
+for /l %%a in (0,!a!,255) do (set "rgb=!rgb!!cswz!48;2;255;%%a;0m ")
+for /l %%a in (255,-!a!,0) do (set "rgb=!rgb!!cswz!48;2;%%a;255;0m ")
+for /l %%a in (0,!a!,255) do (set "rgb=!rgb!!cswz!48;2;0;255;%%am ")
+for /l %%a in (255,-!a!,0) do (set "rgb=!rgb!!cswz!48;2;0;%%a;255m ")
+for /l %%a in (0,!a!,255) do (set "rgb=!rgb!!cswz!48;2;%%a;0;255m !cswz!0m")
 for /l %%a in (1,1,10) do (echo;!rgb!)
 call :xyres
 %hx%
