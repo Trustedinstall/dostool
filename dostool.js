@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-
+		
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -65,7 +65,7 @@ cd /d "%~dp0"
 >nul chcp 936
 title DOS工具箱
 set ver=20260801
-set versize=174200
+set versize=174905
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -138,9 +138,9 @@ if not defined a!start! (
 )
 set /a "end=start+8"
 set /a "memuys=start/9+1"
-for /f "skip=4 tokens=3 delims=: " %%a in ('mode con') do (
+for /f "skip=4 tokens=3 delims=: " %%a in ('"2>nul mode con"') do (
 	if "!lbk!" neq "%%a" (
-		set /a "spn1=(%%a-12)/2"
+		set /a "spn1=(%%a-18)/2"
 		set /a "spn2=%%a-25"
 		set /a "spn3=%%a-38"
 		for /l %%a in (1,1,!spn2!) do (
@@ -160,6 +160,12 @@ for /f "skip=4 tokens=3 delims=: " %%a in ('mode con') do (
 	goto memuv2.2
 )
 :memuv2.2
+if not defined lbk (
+	set "sp1=				"
+	set "sp2=								"
+	set "sp3=						"
+	set lbk=80
+)
 if defined winv (
 	set /a "ln=lbk/3"
 	set fya=
@@ -3987,15 +3993,17 @@ cls
 for %%a in (
 	"[1]查询8.3短文件名状态"
 	"[2]禁止8.3短文件名创建"
+	"[3]删除目录中所有文件的短名称"
 	"[0]返回菜单"
 ) do (
 	echo;%%~a
 )
 %hx%
-%sel% shuru "输入选项: " 120
+%sel% shuru "输入选项: " 1230
 if "!shuru!" equ "1" (goto 64-1)
 if "!shuru!" equ "2" (goto 64-2)
-if "!shuru!" equ "3" (endlocal&goto memuv2)
+if "!shuru!" equ "3" (goto 64-3)
+if "!shuru!" equ "4" (endlocal&goto memuv2)
 if "!shuru!" equ "0" (endlocal&goto memuv2)
 <nul set /p "=请输入正确的选项"
 call :out 2
@@ -4016,6 +4024,18 @@ goto 64
 :64-2
 cls
 fsutil 8dot3name set 1
+%hx%
+%pause%
+endlocal
+goto 64
+:64-3
+cls
+set pf=
+set /p "pf=输入要删除短名称的目录: "
+if not defined pf (endlocal&goto 64)
+call :var pf
+call :lj pf pf
+fsutil 8dot3name strip /f /s /v "!pf!"
 %hx%
 %pause%
 endlocal
@@ -6949,15 +6969,25 @@ goto :eof
 :isntfs
 if "%1" neq "" (
 	>nul 2>nul fsutil fsinfo ntfsinfo %~d1&&exit /b 1
-	exit /b 0
 )
-goto :eof
+exit /b 0
 :isrefs
 if "%1" neq "" (
 	>nul 2>nul fsutil fsinfo refsinfo %~d1&&exit /b 1
+)
+exit /b 0
+:fsysname
+if not exist "!windir!\System32\fsutil.exe" (exit /b 1)
+if "%1" neq "" (
+	set __name=
+	for /f "skip=3 tokens=2 delims=:" %%a in ('"2>nul fsutil fsinfo volumeinfo %~d1"') do (
+		if not defined __name (set "__name=%%~a")
+	)
+	if "%~2" neq "" (set "%~2=!__name:~1!") else (echo;!__name:~1!)
+	set __name=
 	exit /b 0
 )
-goto :eof
+exit /b 1
 :wjqx
 if exist "!windir!\system32\takeown.exe" (takeown /r /d y /skipsl /f "%~1")
 echo;y|cacls "%~1" /t /c /g %username%:f
@@ -6966,8 +6996,8 @@ goto :eof
 :sypf
 if "%1" equ "" (goto :eof)
 if exist "!windir!\System32\fsutil.exe" (
-	for /f "tokens=1*" %%a in ('fsutil fsinfo drives') do (
-		set "%1=%%b"
+	for /f "tokens=1*" %%a in ('"2>nul fsutil fsinfo drives"') do (
+		set "%1=%%~b"
 		goto :eof
 	)
 )
