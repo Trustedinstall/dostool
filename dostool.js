@@ -15,7 +15,7 @@
 樰樹樴獯朵摨汵猷乇晡挰唱戸杨漳刴湔爲灈洊潑欸代副愱佪灣桴摓
 桃灤桌焸爷椷瀱併佦摰扊灤慳浡制漰橓椱晅瑡楈戸吴丹卂儳杆匵樊
 唷栶匴匶瑊挵住汯呱略牪朳愸瀴昱何瑒执啎爊昷獭汉浇卅估昷渳灆
-		
+
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -27,7 +27,7 @@ if /i "%1" equ "ks" (goto ks)
 if not exist "!windir!\system32\fltmc.exe" (goto ks)
 >nul 2>nul fltmc&&goto ks
 echo;等待管理员权限...
-call :findcommand wt.exe
+call :where wt.exe
 if errorlevel 1 (
 	set "filepath=%~f0"
 	set "arg=ks"
@@ -37,7 +37,7 @@ if errorlevel 1 (
 )
 for /f "tokens=3 delims=.]" %%a in ('ver') do (
 	if %%a gtr 22000 (
-		call :findcommand sudo.exe
+		call :where sudo.exe
 		if not errorlevel 1 (
 			>nul 2>nul sudo config&&(
 				sudo "!filepath!" !arg!
@@ -46,7 +46,7 @@ for /f "tokens=3 delims=.]" %%a in ('ver') do (
 		)
 		call :pwst
 	) else (
-		call :findcommand mshta.exe
+		call :where mshta.exe
 		if errorlevel 1 (call :pwst) else (call :msst)
 	)
 )
@@ -65,7 +65,7 @@ cd /d "%~dp0"
 >nul chcp 936
 title DOS工具箱
 set ver=20260801
-set versize=174905
+set versize=174900
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
@@ -1049,7 +1049,7 @@ if "!pid!" neq "!jclj!" (
 	goto 23.6
 )
 cls
-call :findcommand wmic.exe
+call :where wmic.exe
 if errorlevel 1 (
 	for /f "delims=" %%a in (
 		'2^>nul %pws% "Try { (Get-Process -Id !jclj! -ErrorAction Stop).Path } Catch { $p = Get-CimInstance Win32_Process -Filter \"ProcessId = !jclj!\"; if ($p) { $p.ExecutablePath } }"'
@@ -1101,7 +1101,7 @@ if "!pid!" neq "!jclj!" (
 )
 cls
 %hx%
-call :findcommand wmic.exe
+call :where wmic.exe
 if errorlevel 1 (
 	for /f "delims=" %%a in ('""%~f0" pwiex proinfo !jclj!"') do (
 		>nul 2>nul set "%%a"
@@ -1207,7 +1207,7 @@ set ysbak=97;40m
 title 循环显示CPU占用率与网络速度!system!
 cls
 echo;正在获取网络信息...
-call :findcommand wmic.exe
+call :where wmic.exe
 if errorlevel 1 (
 	set "netcard='"call "%~f0" pwiex netcard"'"
 	set "cpu='"call "%~f0" pwiex cpu"'"
@@ -1226,7 +1226,7 @@ for /f "tokens=2 delims==" %%a in (!cpu!) do (
 cls
 :23.4.1
 set xh=
-call :findcommand wmic.exe
+call :where wmic.exe
 if errorlevel 1 (
 	set "dspeed='"call "%~f0" pwiex downspeed"'"
 	set "cpuide='"call "%~f0" pwiex cpuide"'"
@@ -1618,7 +1618,7 @@ goto memuv2
 setlocal
 title !a29!!system!
 cls
-call :findcommand curl.exe curl&&(
+call :where curl.exe curl&&(
 	echo;正在检测网络状态...
 	>nul ping /n 1 www.baidu.com
 	if not errorlevel 1 (
@@ -1654,7 +1654,7 @@ goto memuv2
 setlocal
 title !a30!!system!
 cls
-call :findcommand wmic.exe
+call :where wmic.exe
 if errorlevel 1 (
 	set "LastBootUpTime='"call "%~f0" pwiex LastBootUpTime"'"
 	set "InstallDate='"call "%~f0" pwiex InstallDate"'"
@@ -2108,7 +2108,7 @@ for /f "tokens=2 delims==" %%a in (!gateway!) do (
 	)
 )
 echo;
-call :findcommand curl.exe&&(
+call :where curl.exe&&(
 	>nul ping /n 1 www.baidu.com
 	if not errorlevel 1 (
 		call :ip 4 ip&&echo;外部IP地址:	!ip!
@@ -3049,7 +3049,7 @@ for /f "delims=" %%a in (
 %pause%
 goto memuv2
 :kcd
-call :findcommand mshta.exe
+call :where mshta.exe
 if errorlevel 1 (
 	call :pwiex kcd
 	goto memuv2
@@ -3069,7 +3069,7 @@ $cdrom = $wmp.cdromCollection.Item(0)
 $cdrom.Eject()
 #kcd#
 :gcd
-call :findcommand mshta.exe
+call :where mshta.exe
 if errorlevel 1 (
 	call :pwiex gcd
 	goto memuv2
@@ -3096,7 +3096,7 @@ cls
 set ydnr=
 set /p "ydnr=输入要阅读的内容: "
 call :var ydnr
-call :findcommand mshta.exe
+call :where mshta.exe
 if errorlevel 1 (
 	call :pwiex voice "!ydnr!"
 	goto 42.1
@@ -3446,7 +3446,7 @@ if errorlevel 1 (echo;写入失败) else (echo;写入成功)
 endlocal
 goto memuv2
 :51.1
-call :findcommand mshta.exe
+call :where mshta.exe
 if errorlevel 1 (
 	call :pwiex clip "!nz!"
 	goto :eof
@@ -3866,7 +3866,7 @@ goto memuv2
 setlocal
 title !a63!!system!
 cls
-call :findcommand certutil.exe
+call :where certutil.exe
 if errorlevel 1 (
 	echo;没有找到certutil.exe
 	echo;不能继续Base64编解码
@@ -4548,7 +4548,7 @@ goto memuv2
 setlocal
 title !a71!!system!
 cls
-call :findcommand curl.exe curl||(
+call :where curl.exe curl||(
 	<nul set /p "=没有找到curl.exe"
 	call :out 2
 	endlocal
@@ -4556,7 +4556,7 @@ call :findcommand curl.exe curl||(
 )
 :71.1
 cls
-set "doh=--doh-url https://dns.bebasid.com/dns-query"
+set "doh=--doh-url https://77.88.8.8/dns-query"
 set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36""
 set filename=
 set url=
@@ -4820,6 +4820,7 @@ if not exist "!temp!\sni.ini" (
 		"calendar.proton.me=h.pr.tn"
 		"lumo.proton.me=i.pr.tn"
 		"sheets.proton.me=j.pr.tn"
+		"meet.proton.me=k.pr.tn"
 
 		"#youtube"
 		"@.youtube.com=click.google-analytics.com"
@@ -4907,6 +4908,7 @@ if not exist "!temp!\sni.ini" (
 		"h.pr.tn=calendar.proton.me"
 		"i.pr.tn=lumo.proton.me"
 		"j.pr.tn=sheets.proton.me"
+		"k.pr.tn=meet.proton.me"
 
 		"#youtube google"
 		"#mt7.gstatic.com=[2404:6800:4008:c15::5a]"
@@ -5083,7 +5085,7 @@ if "!chrome-command-line!" equ "1" (
 set "tmpcmd=!temp!\!a72!.cmd"
 >"!tmpcmd!" (
 	echo;@echo off^&setlocal enabledelayedexpansion^&title !a72!!system!^&chcp 936^>nul
-	echo;start "" "!chrome!" --profile-directory=Default !user-data-dir! --start-maximized --test-type !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors!
+	echo;start "" /max "!chrome!" --profile-directory=Default !user-data-dir! --test-type !host-rules! !host-resolver-rules! !origin-to-force-quic-on! !ignore-certificate-errors!
 	echo;exit /b 0
 )
 explorer "!tmpcmd!"
@@ -5387,7 +5389,7 @@ goto memuv2
 setlocal
 title !a79!!system!
 cls
-call :findcommand certutil.exe||(
+call :where certutil.exe||(
 	<nul set /p "=需要 certutil.exe"
 	call :out 2
 	endlocal
@@ -5412,7 +5414,7 @@ goto memuv2
 setlocal
 title !a80!!system!
 cls
-call :findcommand certutil.exe||(
+call :where certutil.exe||(
 	<nul set /p "=需要 certutil.exe"
 	call :out 2
 	endlocal
@@ -5448,7 +5450,7 @@ goto memuv2
 setlocal
 title !a81!!system!
 cls
-call :findcommand bcdedit.exe||(
+call :where bcdedit.exe||(
 	<nul set /p "=需要 bcdedit.exe"
 	call :out 2
 	endlocal
@@ -5530,7 +5532,7 @@ goto :eof
 setlocal
 cls
 title 更新DOS工具箱 - 当前版本: !ver!!system!
-set "doh=--doh-url https://dns.bebasid.com/dns-query"
+set "doh=--doh-url https://77.88.8.8/dns-query"
 set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36""
 set "curlpix=--compressed -L# -C - --ca-native --retry 1 --retry-delay 1 --connect-timeout 3 --max-time 10"
 set updatename=update.js
@@ -5541,7 +5543,7 @@ set url=
 set gxver=
 echo;检查最新版本...
 if exist "%temp%\dostoolupdate" (del /f /q "%temp%\dostoolupdate")
-call :findcommand curl.exe curl
+call :where curl.exe curl
 if defined curl (
 	set df=raw.github.io
 	set "githost=-H "Host: raw.githubusercontent.com""
@@ -6709,7 +6711,7 @@ set "tr=%2"
 set "filename=%~3"
 set "dir=%~4"
 set "par=%~5"
-set "doh=--doh-url https://dns.bebasid.com/dns-query"
+set "doh=--doh-url https://77.88.8.8/dns-query"
 set "ua=-A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36""
 if not defined url (
 	echo;链接不能为空
@@ -7074,8 +7076,12 @@ for /f "skip=1 tokens=2*" %%a in ('"2>nul reg query "%~1" /ve"') do (
 	if "%~2" neq "" (set "%~2=%%b") else (echo;%%b)
 )
 goto :eof
-:findcommand
+:where
 if "%~nx1" equ "" (exit /b 1)
+for /f "delims=" %%a in ('"2>nul where "%~nx1""') do (
+	if "%2" neq "" (set "%2=%%~a")
+	exit /b 0
+)
 if exist "%~nx1" (
 	>nul 2>nul dir /a:d /b "%~nx1"||(
 		if "%2" neq "" (set "%2=%~nx1")
@@ -7105,7 +7111,7 @@ goto :eof
 if "%~1" equ "" (exit /b 1)
 setlocal
 set ip=
-call :findcommand curl.exe curl
+call :where curl.exe curl
 if "%~1" equ "4" (
 	for %%a in (
 		"https://ip4.now"
