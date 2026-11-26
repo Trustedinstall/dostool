@@ -52,7 +52,9 @@ for /f "tokens=3 delims=.]" %%a in ('ver') do (
 )
 exit /b !errorlevel!
 :pwst
-powershell -mta -nologo -noprofile start-process -filepath "!filepath!" -argumentlist '!arg!' -verb runas
+set pws=powershell
+call :where pwsh.exe&&set pws=pwsh
+%pws% -mta -nologo -noprofile -command "Start-Process -FilePath '!filepath!' -ArgumentList '!arg!' -Verb RunAs"
 exit /b !errorlevel!
 :msst
 start /min mshta vbscript:createobject("shell.application").shellexecute("!filepath!","!arg!","","runas",1)(window.close)
@@ -65,13 +67,15 @@ cd /d "%~dp0"
 >nul chcp 936
 title DOS工具箱
 set ver=20260801
-set versize=174900
+set versize=175145
 set xz0=0
 set nx1=[+]下一页
 set nx2=[-]上一页
 set hx=echo;_______________________________________________________________________________
 set "pause=<nul set /p "=按任意键返回"&>nul pause"
-set "pws=powershell -mta -nologo -noprofile -command"
+set pws=powershell
+call :where pwsh.exe&&set pws=pwsh
+set "pws=%pws% -mta -nologo -noprofile -command"
 set certutil=cert
 set "certutil=!certutil!util"
 if /i "!systemdrive!" equ "x:" (
@@ -5890,8 +5894,12 @@ set "qrgb=!qrgb:.=;!"
 <nul set /p "=!cswz!48;2;!brgb!;38;2;!qrgb!m%~3!cswz!!ysbak!"
 goto :eof
 :su
->"%temp%\su.cmd" <nul set /p "=!comspec! /c "%~f0" ks"
-powershell -mta -nologo -noprofile -command "$cmd=[IO.File]::ReadAllText('%~f0') -split '#su\#.*'; iex ($cmd[1])"
+call :where wt.exe
+if errorlevel 1 (set "_wt="!comspec!" /c") else (set _wt=wt)
+>"%temp%\su.cmd" <nul set /p "=!_wt! "%~f0" ks"
+set _pwsh=powershell
+call :where pwsh.exe&&set _pwsh=pwsh
+%_pwsh% -mta -nologo -noprofile -command "$cmd=[IO.File]::ReadAllText('%~f0') -split '#su\#.*'; iex ($cmd[1])"
 rem 延迟删除文件确保能被上一条指令读取
 call :out 1
 del /f /q "%temp%\su.cmd";"%Temp%\CMSTP.inf"
