@@ -15,7 +15,7 @@
 ò›ò‰ò‡‚¥∂‰ìØõNÈ‡ÿ±ÍŒí¨≥™ëı—Ó’ƒÑm‰’†ëûõõñùäöG¥˙∏±êÍÅ›û≥Ëıìû
 Ã“û¥◊¿üÇ“ØóﬂûÜÅ„Å€ìµë˛û¥ëaõ¬÷∆ùpò˘ó⁄ït¨ãóÏëıŒ‚µ§Ö_Éß∏ÀÖX∑Æ
 ‡°ñÖWÖY¨{í∞◊°õKﬂ…¬‘†≤ñ[êÒûâÍ≈∫Œ¨Ñ÷¥Üï†nïjÃ°∫∫ΩΩÿ¶π¿ïjú}ûô
-
+	
 :chushihua
 @if not "%os%" == "Windows_NT" goto winnt
 @echo off&setlocal enabledelayedexpansion
@@ -67,7 +67,7 @@ cd /d "%~dp0"
 >nul chcp 936
 title DOSπ§æﬂœ‰
 set ver=20260801
-set versize=175145
+set versize=175120
 set xz0=0
 set nx1=[+]œ¬“ª“≥
 set nx2=[-]…œ“ª“≥
@@ -5894,8 +5894,8 @@ set "qrgb=!qrgb:.=;!"
 <nul set /p "=!cswz!48;2;!brgb!;38;2;!qrgb!m%~3!cswz!!ysbak!"
 goto :eof
 :su
-call :where wt.exe
-if errorlevel 1 (set "_wt="!comspec!" /c") else (set _wt=wt)
+set "_wt=!comspec! /c"
+call :where wt.exe&&set _wt=wt
 >"%temp%\su.cmd" <nul set /p "=!_wt! "%~f0" ks"
 set _pwsh=powershell
 call :where pwsh.exe&&set _pwsh=pwsh
